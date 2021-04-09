@@ -650,9 +650,14 @@ struct sock *__vsock_create(struct net *net,
 		vsk->trusted = psk->trusted;
 		vsk->owner = get_cred(psk->owner);
 		vsk->connect_timeout = psk->connect_timeout;
+<<<<<<< HEAD
 		security_sk_clone(parent, sk);
 	} else {
 		vsk->trusted = ns_capable_noaudit(&init_user_ns, CAP_NET_ADMIN);
+=======
+	} else {
+		vsk->trusted = capable(CAP_NET_ADMIN);
+>>>>>>> FETCH_HEAD
 		vsk->owner = get_current_cred();
 		vsk->connect_timeout = VSOCK_DEFAULT_CONNECT_TIMEOUT;
 	}
@@ -831,12 +836,19 @@ static int vsock_shutdown(struct socket *sock, int mode)
 	 */
 
 	sk = sock->sk;
+<<<<<<< HEAD
 
 	lock_sock(sk);
 	if (sock->state == SS_UNCONNECTED) {
 		err = -ENOTCONN;
 		if (sk->sk_type == SOCK_STREAM)
 			goto out;
+=======
+	if (sock->state == SS_UNCONNECTED) {
+		err = -ENOTCONN;
+		if (sk->sk_type == SOCK_STREAM)
+			return err;
+>>>>>>> FETCH_HEAD
 	} else {
 		sock->state = SS_DISCONNECTING;
 		err = 0;
@@ -845,8 +857,15 @@ static int vsock_shutdown(struct socket *sock, int mode)
 	/* Receive and send shutdowns are treated alike. */
 	mode = mode & (RCV_SHUTDOWN | SEND_SHUTDOWN);
 	if (mode) {
+<<<<<<< HEAD
 		sk->sk_shutdown |= mode;
 		sk->sk_state_change(sk);
+=======
+		lock_sock(sk);
+		sk->sk_shutdown |= mode;
+		sk->sk_state_change(sk);
+		release_sock(sk);
+>>>>>>> FETCH_HEAD
 
 		if (sk->sk_type == SOCK_STREAM) {
 			sock_reset_flag(sk, SOCK_DONE);
@@ -854,8 +873,11 @@ static int vsock_shutdown(struct socket *sock, int mode)
 		}
 	}
 
+<<<<<<< HEAD
 out:
 	release_sock(sk);
+=======
+>>>>>>> FETCH_HEAD
 	return err;
 }
 
@@ -1124,6 +1146,10 @@ static void vsock_connect_timeout(struct work_struct *work)
 {
 	struct sock *sk;
 	struct vsock_sock *vsk;
+<<<<<<< HEAD
+=======
+	int cancel = 0;
+>>>>>>> FETCH_HEAD
 
 	vsk = container_of(work, struct vsock_sock, connect_work.work);
 	sk = sk_vsock(vsk);
@@ -1134,9 +1160,17 @@ static void vsock_connect_timeout(struct work_struct *work)
 		sk->sk_state = SS_UNCONNECTED;
 		sk->sk_err = ETIMEDOUT;
 		sk->sk_error_report(sk);
+<<<<<<< HEAD
 		vsock_transport_cancel_pkt(vsk);
 	}
 	release_sock(sk);
+=======
+		cancel = 1;
+	}
+	release_sock(sk);
+	if (cancel)
+		vsock_transport_cancel_pkt(vsk);
+>>>>>>> FETCH_HEAD
 
 	sock_put(sk);
 }

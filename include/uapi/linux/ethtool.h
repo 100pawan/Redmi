@@ -13,7 +13,11 @@
 #ifndef _UAPI_LINUX_ETHTOOL_H
 #define _UAPI_LINUX_ETHTOOL_H
 
+<<<<<<< HEAD
 #include <linux/const.h>
+=======
+#include <linux/kernel.h>
+>>>>>>> FETCH_HEAD
 #include <linux/types.h>
 #include <linux/if_ether.h>
 

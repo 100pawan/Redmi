@@ -72,6 +72,7 @@ static void sync_for_device(struct msm_gem_object *msm_obj)
 	}
 }
 
+<<<<<<< HEAD
 static void sync_for_cpu(struct msm_gem_object *msm_obj)
 {
 	struct device *dev = msm_obj->base.dev->dev;
@@ -85,6 +86,8 @@ static void sync_for_cpu(struct msm_gem_object *msm_obj)
 	}
 }
 
+=======
+>>>>>>> FETCH_HEAD
 /* allocate pages from VRAM carveout, used when no IOMMU: */
 static struct page **get_pages_vram(struct drm_gem_object *obj,
 		int npages)
@@ -167,6 +170,7 @@ static void put_pages(struct drm_gem_object *obj)
 
 	if (msm_obj->pages) {
 		if (msm_obj->sgt) {
+<<<<<<< HEAD
 			/* For non-cached buffers, ensure the new
 			 * pages are clean because display controller,
 			 * GPU, etc. are not coherent:
@@ -174,6 +178,8 @@ static void put_pages(struct drm_gem_object *obj)
 			if (msm_obj->flags & (MSM_BO_WC|MSM_BO_UNCACHED))
 				sync_for_cpu(msm_obj);
 
+=======
+>>>>>>> FETCH_HEAD
 			sg_free_table(msm_obj->sgt);
 			kfree(msm_obj->sgt);
 		}

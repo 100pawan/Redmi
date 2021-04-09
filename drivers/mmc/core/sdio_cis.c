@@ -24,17 +24,23 @@
 #include "sdio_cis.h"
 #include "sdio_ops.h"
 
+<<<<<<< HEAD
 #define SDIO_READ_CIS_TIMEOUT_MS  (10 * 1000) /* 10s */
 
+=======
+>>>>>>> FETCH_HEAD
 static int cistpl_vers_1(struct mmc_card *card, struct sdio_func *func,
 			 const unsigned char *buf, unsigned size)
 {
 	unsigned i, nr_strings;
 	char **buffer, *string;
 
+<<<<<<< HEAD
 	if (size < 2)
 		return 0;
 
+=======
+>>>>>>> FETCH_HEAD
 	/* Find all null-terminated (including zero length) strings in
 	   the TPLLV1_INFO field. Trailing garbage is ignored. */
 	buf += 2;
@@ -271,8 +277,11 @@ static int sdio_read_cis(struct mmc_card *card, struct sdio_func *func)
 
 	do {
 		unsigned char tpl_code, tpl_link;
+<<<<<<< HEAD
 		unsigned long timeout = jiffies +
 			msecs_to_jiffies(SDIO_READ_CIS_TIMEOUT_MS);
+=======
+>>>>>>> FETCH_HEAD
 
 		ret = mmc_io_rw_direct(card, 0, 0, ptr++, 0, &tpl_code);
 		if (ret)
@@ -333,8 +342,11 @@ static int sdio_read_cis(struct mmc_card *card, struct sdio_func *func)
 			prev = &this->next;
 
 			if (ret == -ENOENT) {
+<<<<<<< HEAD
 				if (time_after(jiffies, timeout))
 					break;
+=======
+>>>>>>> FETCH_HEAD
 				/* warn about unknown tuples */
 				pr_warn_ratelimited("%s: queuing unknown"
 				       " CIS tuple 0x%02x (%u bytes)\n",

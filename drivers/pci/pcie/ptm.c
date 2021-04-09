@@ -47,6 +47,13 @@ void pci_ptm_init(struct pci_dev *dev)
 	if (!pci_is_pcie(dev))
 		return;
 
+<<<<<<< HEAD
+=======
+	pos = pci_find_ext_capability(dev, PCI_EXT_CAP_ID_PTM);
+	if (!pos)
+		return;
+
+>>>>>>> FETCH_HEAD
 	/*
 	 * Enable PTM only on interior devices (root ports, switch ports,
 	 * etc.) on the assumption that it causes no link traffic until an
@@ -56,6 +63,7 @@ void pci_ptm_init(struct pci_dev *dev)
 	     pci_pcie_type(dev) == PCI_EXP_TYPE_RC_END))
 		return;
 
+<<<<<<< HEAD
 	/*
 	 * Switch Downstream Ports are not permitted to have a PTM
 	 * capability; their PTM behavior is controlled by the Upstream
@@ -73,6 +81,8 @@ void pci_ptm_init(struct pci_dev *dev)
 	if (!pos)
 		return;
 
+=======
+>>>>>>> FETCH_HEAD
 	pci_read_config_dword(dev, pos + PCI_PTM_CAP, &cap);
 	local_clock = (cap & PCI_PTM_GRANULARITY_MASK) >> 8;
 
@@ -82,6 +92,10 @@ void pci_ptm_init(struct pci_dev *dev)
 	 * the spec recommendation (PCIe r3.1, sec 7.32.3), select the
 	 * furthest upstream Time Source as the PTM Root.
 	 */
+<<<<<<< HEAD
+=======
+	ups = pci_upstream_bridge(dev);
+>>>>>>> FETCH_HEAD
 	if (ups && ups->ptm_enabled) {
 		ctrl = PCI_PTM_CTRL_ENABLE;
 		if (ups->ptm_granularity == 0)

@@ -60,7 +60,11 @@ static u64 __ro_after_init x86_spec_ctrl_mask = SPEC_CTRL_IBRS;
 u64 __ro_after_init x86_amd_ls_cfg_base;
 u64 __ro_after_init x86_amd_ls_cfg_ssbd_mask;
 
+<<<<<<< HEAD
 /* Control conditional STIBP in switch_to() */
+=======
+/* Control conditional STIPB in switch_to() */
+>>>>>>> FETCH_HEAD
 DEFINE_STATIC_KEY_FALSE(switch_to_cond_stibp);
 /* Control conditional IBPB in switch_mm() */
 DEFINE_STATIC_KEY_FALSE(switch_mm_cond_ibpb);
@@ -580,9 +584,13 @@ early_param("nospectre_v1", nospectre_v1_cmdline);
 static enum spectre_v2_mitigation spectre_v2_enabled __ro_after_init =
 	SPECTRE_V2_NONE;
 
+<<<<<<< HEAD
 static enum spectre_v2_user_mitigation spectre_v2_user_stibp __ro_after_init =
 	SPECTRE_V2_USER_NONE;
 static enum spectre_v2_user_mitigation spectre_v2_user_ibpb __ro_after_init =
+=======
+static enum spectre_v2_user_mitigation spectre_v2_user __ro_after_init =
+>>>>>>> FETCH_HEAD
 	SPECTRE_V2_USER_NONE;
 
 #ifdef RETPOLINE
@@ -634,11 +642,18 @@ enum spectre_v2_user_cmd {
 };
 
 static const char * const spectre_v2_user_strings[] = {
+<<<<<<< HEAD
 	[SPECTRE_V2_USER_NONE]			= "User space: Vulnerable",
 	[SPECTRE_V2_USER_STRICT]		= "User space: Mitigation: STIBP protection",
 	[SPECTRE_V2_USER_STRICT_PREFERRED]	= "User space: Mitigation: STIBP always-on protection",
 	[SPECTRE_V2_USER_PRCTL]			= "User space: Mitigation: STIBP via prctl",
 	[SPECTRE_V2_USER_SECCOMP]		= "User space: Mitigation: STIBP via seccomp and prctl",
+=======
+	[SPECTRE_V2_USER_NONE]		= "User space: Vulnerable",
+	[SPECTRE_V2_USER_STRICT]	= "User space: Mitigation: STIBP protection",
+	[SPECTRE_V2_USER_PRCTL]		= "User space: Mitigation: STIBP via prctl",
+	[SPECTRE_V2_USER_SECCOMP]	= "User space: Mitigation: STIBP via seccomp and prctl",
+>>>>>>> FETCH_HEAD
 };
 
 static const struct {
@@ -732,13 +747,19 @@ spectre_v2_user_select_mitigation(enum spectre_v2_mitigation_cmd v2_cmd)
 	if (boot_cpu_has(X86_FEATURE_IBPB)) {
 		setup_force_cpu_cap(X86_FEATURE_USE_IBPB);
 
+<<<<<<< HEAD
 		spectre_v2_user_ibpb = mode;
+=======
+>>>>>>> FETCH_HEAD
 		switch (cmd) {
 		case SPECTRE_V2_USER_CMD_FORCE:
 		case SPECTRE_V2_USER_CMD_PRCTL_IBPB:
 		case SPECTRE_V2_USER_CMD_SECCOMP_IBPB:
 			static_branch_enable(&switch_mm_always_ibpb);
+<<<<<<< HEAD
 			spectre_v2_user_ibpb = SPECTRE_V2_USER_STRICT;
+=======
+>>>>>>> FETCH_HEAD
 			break;
 		case SPECTRE_V2_USER_CMD_PRCTL:
 		case SPECTRE_V2_USER_CMD_AUTO:
@@ -754,6 +775,7 @@ spectre_v2_user_select_mitigation(enum spectre_v2_mitigation_cmd v2_cmd)
 			"always-on" : "conditional");
 	}
 
+<<<<<<< HEAD
 	/*
 	 * If enhanced IBRS is enabled or SMT impossible, STIBP is not
 	 * required.
@@ -780,6 +802,23 @@ spectre_v2_user_select_mitigation(enum spectre_v2_mitigation_cmd v2_cmd)
 
 set_mode:
 	pr_info("%s\n", spectre_v2_user_strings[mode]);
+=======
+	/* If enhanced IBRS is enabled no STIPB required */
+	if (spectre_v2_enabled == SPECTRE_V2_IBRS_ENHANCED)
+		return;
+
+	/*
+	 * If SMT is not possible or STIBP is not available clear the STIPB
+	 * mode.
+	 */
+	if (!smt_possible || !boot_cpu_has(X86_FEATURE_STIBP))
+		mode = SPECTRE_V2_USER_NONE;
+set_mode:
+	spectre_v2_user = mode;
+	/* Only print the STIBP mode when SMT possible */
+	if (smt_possible)
+		pr_info("%s\n", spectre_v2_user_strings[mode]);
+>>>>>>> FETCH_HEAD
 }
 
 static const char * const spectre_v2_strings[] = {
@@ -1019,11 +1058,18 @@ void arch_smt_update(void)
 {
 	mutex_lock(&spec_ctrl_mutex);
 
+<<<<<<< HEAD
 	switch (spectre_v2_user_stibp) {
 	case SPECTRE_V2_USER_NONE:
 		break;
 	case SPECTRE_V2_USER_STRICT:
 	case SPECTRE_V2_USER_STRICT_PREFERRED:
+=======
+	switch (spectre_v2_user) {
+	case SPECTRE_V2_USER_NONE:
+		break;
+	case SPECTRE_V2_USER_STRICT:
+>>>>>>> FETCH_HEAD
 		update_stibp_strict();
 		break;
 	case SPECTRE_V2_USER_PRCTL:
@@ -1248,6 +1294,7 @@ static int ssb_prctl_set(struct task_struct *task, unsigned long ctrl)
 	return 0;
 }
 
+<<<<<<< HEAD
 static bool is_spec_ib_user_controlled(void)
 {
 	return spectre_v2_user_ibpb == SPECTRE_V2_USER_PRCTL ||
@@ -1256,10 +1303,13 @@ static bool is_spec_ib_user_controlled(void)
 		spectre_v2_user_stibp == SPECTRE_V2_USER_SECCOMP;
 }
 
+=======
+>>>>>>> FETCH_HEAD
 static int ib_prctl_set(struct task_struct *task, unsigned long ctrl)
 {
 	switch (ctrl) {
 	case PR_SPEC_ENABLE:
+<<<<<<< HEAD
 		if (spectre_v2_user_ibpb == SPECTRE_V2_USER_NONE &&
 		    spectre_v2_user_stibp == SPECTRE_V2_USER_NONE)
 			return 0;
@@ -1283,6 +1333,16 @@ static int ib_prctl_set(struct task_struct *task, unsigned long ctrl)
 		    task_spec_ib_force_disable(task))
 			return -EPERM;
 
+=======
+		if (spectre_v2_user == SPECTRE_V2_USER_NONE)
+			return 0;
+		/*
+		 * Indirect branch speculation is always disabled in strict
+		 * mode.
+		 */
+		if (spectre_v2_user == SPECTRE_V2_USER_STRICT)
+			return -EPERM;
+>>>>>>> FETCH_HEAD
 		task_clear_spec_ib_disable(task);
 		task_update_spec_tif(task);
 		break;
@@ -1292,6 +1352,7 @@ static int ib_prctl_set(struct task_struct *task, unsigned long ctrl)
 		 * Indirect branch speculation is always allowed when
 		 * mitigation is force disabled.
 		 */
+<<<<<<< HEAD
 		if (spectre_v2_user_ibpb == SPECTRE_V2_USER_NONE &&
 		    spectre_v2_user_stibp == SPECTRE_V2_USER_NONE)
 			return -EPERM;
@@ -1299,6 +1360,12 @@ static int ib_prctl_set(struct task_struct *task, unsigned long ctrl)
 		if (!is_spec_ib_user_controlled())
 			return 0;
 
+=======
+		if (spectre_v2_user == SPECTRE_V2_USER_NONE)
+			return -EPERM;
+		if (spectre_v2_user == SPECTRE_V2_USER_STRICT)
+			return 0;
+>>>>>>> FETCH_HEAD
 		task_set_spec_ib_disable(task);
 		if (ctrl == PR_SPEC_FORCE_DISABLE)
 			task_set_spec_ib_force_disable(task);
@@ -1328,8 +1395,12 @@ void arch_seccomp_spec_mitigate(struct task_struct *task)
 {
 	if (ssb_mode == SPEC_STORE_BYPASS_SECCOMP)
 		ssb_prctl_set(task, PR_SPEC_FORCE_DISABLE);
+<<<<<<< HEAD
 	if (spectre_v2_user_ibpb == SPECTRE_V2_USER_SECCOMP ||
 	    spectre_v2_user_stibp == SPECTRE_V2_USER_SECCOMP)
+=======
+	if (spectre_v2_user == SPECTRE_V2_USER_SECCOMP)
+>>>>>>> FETCH_HEAD
 		ib_prctl_set(task, PR_SPEC_FORCE_DISABLE);
 }
 #endif
@@ -1358,21 +1429,37 @@ static int ib_prctl_get(struct task_struct *task)
 	if (!boot_cpu_has_bug(X86_BUG_SPECTRE_V2))
 		return PR_SPEC_NOT_AFFECTED;
 
+<<<<<<< HEAD
 	if (spectre_v2_user_ibpb == SPECTRE_V2_USER_NONE &&
 	    spectre_v2_user_stibp == SPECTRE_V2_USER_NONE)
 		return PR_SPEC_ENABLE;
 	else if (is_spec_ib_user_controlled()) {
+=======
+	switch (spectre_v2_user) {
+	case SPECTRE_V2_USER_NONE:
+		return PR_SPEC_ENABLE;
+	case SPECTRE_V2_USER_PRCTL:
+	case SPECTRE_V2_USER_SECCOMP:
+>>>>>>> FETCH_HEAD
 		if (task_spec_ib_force_disable(task))
 			return PR_SPEC_PRCTL | PR_SPEC_FORCE_DISABLE;
 		if (task_spec_ib_disable(task))
 			return PR_SPEC_PRCTL | PR_SPEC_DISABLE;
 		return PR_SPEC_PRCTL | PR_SPEC_ENABLE;
+<<<<<<< HEAD
 	} else if (spectre_v2_user_ibpb == SPECTRE_V2_USER_STRICT ||
 	    spectre_v2_user_stibp == SPECTRE_V2_USER_STRICT ||
 	    spectre_v2_user_stibp == SPECTRE_V2_USER_STRICT_PREFERRED)
 		return PR_SPEC_DISABLE;
 	else
 		return PR_SPEC_NOT_AFFECTED;
+=======
+	case SPECTRE_V2_USER_STRICT:
+		return PR_SPEC_DISABLE;
+	default:
+		return PR_SPEC_NOT_AFFECTED;
+	}
+>>>>>>> FETCH_HEAD
 }
 
 int arch_prctl_spec_ctrl_get(struct task_struct *task, unsigned long which)
@@ -1613,13 +1700,20 @@ static char *stibp_state(void)
 	if (spectre_v2_enabled == SPECTRE_V2_IBRS_ENHANCED)
 		return "";
 
+<<<<<<< HEAD
 	switch (spectre_v2_user_stibp) {
+=======
+	switch (spectre_v2_user) {
+>>>>>>> FETCH_HEAD
 	case SPECTRE_V2_USER_NONE:
 		return ", STIBP: disabled";
 	case SPECTRE_V2_USER_STRICT:
 		return ", STIBP: forced";
+<<<<<<< HEAD
 	case SPECTRE_V2_USER_STRICT_PREFERRED:
 		return ", STIBP: always-on";
+=======
+>>>>>>> FETCH_HEAD
 	case SPECTRE_V2_USER_PRCTL:
 	case SPECTRE_V2_USER_SECCOMP:
 		if (static_key_enabled(&switch_to_cond_stibp))

@@ -899,7 +899,11 @@ int rxrpc_request_key(struct rxrpc_sock *rx, char __user *optval, int optlen)
 
 	_enter("");
 
+<<<<<<< HEAD
 	if (optlen <= 0 || optlen > PAGE_SIZE - 1 || rx->securities)
+=======
+	if (optlen <= 0 || optlen > PAGE_SIZE - 1)
+>>>>>>> FETCH_HEAD
 		return -EINVAL;
 
 	description = memdup_user_nul(optval, optlen);
@@ -1104,9 +1108,14 @@ static long rxrpc_read(const struct key *key,
 			break;
 
 		default: /* we have a ticket we can't encode */
+<<<<<<< HEAD
 			pr_err("Unsupported key token type (%u)\n",
 			       token->security_index);
 			return -ENOPKG;
+=======
+			BUG();
+			continue;
+>>>>>>> FETCH_HEAD
 		}
 
 		_debug("token[%u]: toksize=%u", ntoks, toksize);
@@ -1140,6 +1149,7 @@ static long rxrpc_read(const struct key *key,
 			goto fault;					\
 		xdr += (_l + 3) >> 2;					\
 	} while(0)
+<<<<<<< HEAD
 #define ENCODE_BYTES(l, s)						\
 	do {								\
 		u32 _l = (l);						\
@@ -1148,6 +1158,8 @@ static long rxrpc_read(const struct key *key,
 			memcpy((u8 *)xdr + _l, &zero, 4 - (_l & 3));	\
 		xdr += (_l + 3) >> 2;					\
 	} while(0)
+=======
+>>>>>>> FETCH_HEAD
 #define ENCODE64(x)					\
 	do {						\
 		__be64 y = cpu_to_be64(x);		\
@@ -1176,7 +1188,11 @@ static long rxrpc_read(const struct key *key,
 		case RXRPC_SECURITY_RXKAD:
 			ENCODE(token->kad->vice_id);
 			ENCODE(token->kad->kvno);
+<<<<<<< HEAD
 			ENCODE_BYTES(8, token->kad->session_key);
+=======
+			ENCODE_DATA(8, token->kad->session_key);
+>>>>>>> FETCH_HEAD
 			ENCODE(token->kad->start);
 			ENCODE(token->kad->expiry);
 			ENCODE(token->kad->primary_flag);
@@ -1226,9 +1242,14 @@ static long rxrpc_read(const struct key *key,
 			break;
 
 		default:
+<<<<<<< HEAD
 			pr_err("Unsupported key token type (%u)\n",
 			       token->security_index);
 			return -ENOPKG;
+=======
+			BUG();
+			break;
+>>>>>>> FETCH_HEAD
 		}
 
 		ASSERTCMP((unsigned long)xdr - (unsigned long)oldxdr, ==,

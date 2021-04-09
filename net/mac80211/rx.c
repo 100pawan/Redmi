@@ -2098,7 +2098,10 @@ static int ieee80211_802_1x_port_control(struct ieee80211_rx_data *rx)
 
 static int ieee80211_drop_unencrypted(struct ieee80211_rx_data *rx, __le16 fc)
 {
+<<<<<<< HEAD
 	struct ieee80211_hdr *hdr = (void *)rx->skb->data;
+=======
+>>>>>>> FETCH_HEAD
 	struct sk_buff *skb = rx->skb;
 	struct ieee80211_rx_status *status = IEEE80211_SKB_RXCB(skb);
 
@@ -2109,6 +2112,7 @@ static int ieee80211_drop_unencrypted(struct ieee80211_rx_data *rx, __le16 fc)
 	if (status->flag & RX_FLAG_DECRYPTED)
 		return 0;
 
+<<<<<<< HEAD
 	/* check mesh EAPOL frames first */
 	if (unlikely(rx->sta && ieee80211_vif_is_mesh(&rx->sdata->vif) &&
 		     ieee80211_is_data(fc))) {
@@ -2134,6 +2138,8 @@ static int ieee80211_drop_unencrypted(struct ieee80211_rx_data *rx, __le16 fc)
 	}
 
 drop_check:
+=======
+>>>>>>> FETCH_HEAD
 	/* Drop unencrypted frames if key is set. */
 	if (unlikely(!ieee80211_has_protected(fc) &&
 		     !ieee80211_is_any_nullfunc(fc) &&
@@ -3802,8 +3808,11 @@ void ieee80211_check_fast_rx(struct sta_info *sta)
 
 	rcu_read_lock();
 	key = rcu_dereference(sta->ptk[sta->ptk_idx]);
+<<<<<<< HEAD
 	if (!key)
 		key = rcu_dereference(sdata->default_unicast_key);
+=======
+>>>>>>> FETCH_HEAD
 	if (key) {
 		switch (key->conf.cipher) {
 		case WLAN_CIPHER_SUITE_TKIP:

@@ -863,13 +863,17 @@ static inline struct kobject *get_glue_dir(struct device *dev)
  */
 static void cleanup_glue_dir(struct device *dev, struct kobject *glue_dir)
 {
+<<<<<<< HEAD
 	unsigned int ref;
 
+=======
+>>>>>>> FETCH_HEAD
 	/* see if we live in a "glue" directory */
 	if (!live_in_glue_dir(glue_dir, dev))
 		return;
 
 	mutex_lock(&gdp_mutex);
+<<<<<<< HEAD
 	/**
 	 * There is a race condition between removing glue directory
 	 * and adding a new device under the glue directory.
@@ -920,6 +924,9 @@ static void cleanup_glue_dir(struct device *dev, struct kobject *glue_dir)
 	 */
 	ref = atomic_read(&glue_dir->kref.refcount);
 	if (!kobject_has_children(glue_dir) && !--ref)
+=======
+	if (!kobject_has_children(glue_dir) && atomic_read(&glue_dir->kref.refcount) == 1)
+>>>>>>> FETCH_HEAD
 		kobject_del(glue_dir);
 	kobject_put(glue_dir);
 	mutex_unlock(&gdp_mutex);
@@ -2353,10 +2360,16 @@ static inline bool fwnode_is_primary(struct fwnode_handle *fwnode)
  */
 void set_primary_fwnode(struct device *dev, struct fwnode_handle *fwnode)
 {
+<<<<<<< HEAD
 	struct device *parent = dev->parent;
 	struct fwnode_handle *fn = dev->fwnode;
 
 	if (fwnode) {
+=======
+	if (fwnode) {
+		struct fwnode_handle *fn = dev->fwnode;
+
+>>>>>>> FETCH_HEAD
 		if (fwnode_is_primary(fn))
 			fn = fn->secondary;
 
@@ -2366,6 +2379,7 @@ void set_primary_fwnode(struct device *dev, struct fwnode_handle *fwnode)
 		}
 		dev->fwnode = fwnode;
 	} else {
+<<<<<<< HEAD
 		if (fwnode_is_primary(fn)) {
 			dev->fwnode = fn->secondary;
 			if (!(parent && fn == parent->fwnode))
@@ -2373,6 +2387,10 @@ void set_primary_fwnode(struct device *dev, struct fwnode_handle *fwnode)
 		} else {
 			dev->fwnode = NULL;
 		}
+=======
+		dev->fwnode = fwnode_is_primary(dev->fwnode) ?
+			dev->fwnode->secondary : NULL;
+>>>>>>> FETCH_HEAD
 	}
 }
 EXPORT_SYMBOL_GPL(set_primary_fwnode);

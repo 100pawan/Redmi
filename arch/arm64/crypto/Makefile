@@ -37,7 +37,11 @@ CFLAGS_aes-glue-ce.o	:= -DUSE_V8_CRYPTO_EXTENSIONS
 
 obj-$(CONFIG_CRYPTO_CRC32_ARM64) += crc32-arm64.o
 
+<<<<<<< HEAD
  CFLAGS_crc32-arm64.o	:= -march=armv8-a+crc -mcpu=cortex-a53+crc
+=======
+CFLAGS_crc32-arm64.o	:= -mcpu=generic+crc
+>>>>>>> FETCH_HEAD
 
 $(obj)/aes-glue-%.o: $(src)/aes-glue.c FORCE
 	$(call if_changed_rule,cc_o_c)

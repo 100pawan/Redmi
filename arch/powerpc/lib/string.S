@@ -89,7 +89,11 @@ _GLOBAL(memchr)
 EXPORT_SYMBOL(memchr)
 
 #ifdef CONFIG_PPC32
+<<<<<<< HEAD
 _GLOBAL(__arch_clear_user)
+=======
+_GLOBAL(__clear_user)
+>>>>>>> FETCH_HEAD
 	addi	r6,r3,-4
 	li	r3,0
 	li	r5,0
@@ -130,5 +134,9 @@ _GLOBAL(__arch_clear_user)
 	PPC_LONG	1b,91b
 	PPC_LONG	8b,92b
 	.text
+<<<<<<< HEAD
 EXPORT_SYMBOL(__arch_clear_user)
+=======
+EXPORT_SYMBOL(__clear_user)
+>>>>>>> FETCH_HEAD
 #endif

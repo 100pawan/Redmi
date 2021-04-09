@@ -199,7 +199,11 @@ static int qxl_device_init(struct qxl_device *qdev,
 				&(qdev->ram_header->cursor_ring_hdr),
 				sizeof(struct qxl_command),
 				QXL_CURSOR_RING_SIZE,
+<<<<<<< HEAD
 				qdev->io_base + QXL_IO_NOTIFY_CURSOR,
+=======
+				qdev->io_base + QXL_IO_NOTIFY_CMD,
+>>>>>>> FETCH_HEAD
 				false,
 				&qdev->cursor_event);
 

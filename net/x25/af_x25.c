@@ -679,8 +679,12 @@ static int x25_bind(struct socket *sock, struct sockaddr *uaddr, int addr_len)
 	int len, i, rc = 0;
 
 	if (addr_len != sizeof(struct sockaddr_x25) ||
+<<<<<<< HEAD
 	    addr->sx25_family != AF_X25 ||
 	    strnlen(addr->sx25_addr.x25_addr, X25_ADDR_LEN) == X25_ADDR_LEN) {
+=======
+	    addr->sx25_family != AF_X25) {
+>>>>>>> FETCH_HEAD
 		rc = -EINVAL;
 		goto out;
 	}
@@ -774,8 +778,12 @@ static int x25_connect(struct socket *sock, struct sockaddr *uaddr,
 
 	rc = -EINVAL;
 	if (addr_len != sizeof(struct sockaddr_x25) ||
+<<<<<<< HEAD
 	    addr->sx25_family != AF_X25 ||
 	    strnlen(addr->sx25_addr.x25_addr, X25_ADDR_LEN) == X25_ADDR_LEN)
+=======
+	    addr->sx25_family != AF_X25)
+>>>>>>> FETCH_HEAD
 		goto out;
 
 	rc = -ENETUNREACH;
@@ -825,7 +833,11 @@ static int x25_connect(struct socket *sock, struct sockaddr *uaddr,
 	sock->state = SS_CONNECTED;
 	rc = 0;
 out_put_neigh:
+<<<<<<< HEAD
 	if (rc && x25->neighbour) {
+=======
+	if (rc) {
+>>>>>>> FETCH_HEAD
 		read_lock_bh(&x25_list_lock);
 		x25_neigh_put(x25->neighbour);
 		x25->neighbour = NULL;
@@ -1049,7 +1061,10 @@ int x25_rx_call_request(struct sk_buff *skb, struct x25_neigh *nb,
 	makex25->lci           = lci;
 	makex25->dest_addr     = dest_addr;
 	makex25->source_addr   = source_addr;
+<<<<<<< HEAD
 	x25_neigh_hold(nb);
+=======
+>>>>>>> FETCH_HEAD
 	makex25->neighbour     = nb;
 	makex25->facilities    = facilities;
 	makex25->dte_facilities= dte_facilities;

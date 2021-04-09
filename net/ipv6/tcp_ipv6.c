@@ -409,7 +409,11 @@ static void tcp_v6_err(struct sk_buff *skb, struct inet6_skb_parm *opt,
 		if (!sock_owned_by_user(sk))
 			tcp_v6_mtu_reduced(sk);
 		else if (!test_and_set_bit(TCP_MTU_REDUCED_DEFERRED,
+<<<<<<< HEAD
 					   &sk->sk_tsq_flags))
+=======
+					   &tp->tsq_flags))
+>>>>>>> FETCH_HEAD
 			sock_hold(sk);
 		goto out;
 	}
@@ -992,11 +996,14 @@ static int tcp_v6_conn_request(struct sock *sk, struct sk_buff *skb)
 	if (!ipv6_unicast_destination(skb))
 		goto drop;
 
+<<<<<<< HEAD
 	if (ipv6_addr_v4mapped(&ipv6_hdr(skb)->saddr)) {
 		__IP6_INC_STATS(sock_net(sk), NULL, IPSTATS_MIB_INHDRERRORS);
 		return 0;
 	}
 
+=======
+>>>>>>> FETCH_HEAD
 	return tcp_conn_request(&tcp6_request_sock_ops,
 				&tcp_request_sock_ipv6_ops, sk, skb);
 

@@ -134,6 +134,7 @@ struct cpuset {
 	int relax_domain_level;
 };
 
+<<<<<<< HEAD
 #ifdef CONFIG_CPUSET_ASSIST
 struct cs_target {
 	const char *name;
@@ -141,6 +142,8 @@ struct cs_target {
 };
 #endif
 
+=======
+>>>>>>> FETCH_HEAD
 static inline struct cpuset *css_cs(struct cgroup_subsys_state *css)
 {
 	return css ? container_of(css, struct cpuset, css) : NULL;
@@ -828,6 +831,10 @@ static void rebuild_sched_domains_unlocked(void)
 	cpumask_var_t *doms;
 	int ndoms;
 
+<<<<<<< HEAD
+=======
+	cpu_hotplug_mutex_held();
+>>>>>>> FETCH_HEAD
 	lockdep_assert_held(&cpuset_mutex);
 
 	/*
@@ -1717,6 +1724,11 @@ static ssize_t cpuset_write_resmask(struct kernfs_open_file *of,
 	struct cpuset *trialcs;
 	int retval = -ENODEV;
 
+<<<<<<< HEAD
+=======
+	buf = strstrip(buf);
+
+>>>>>>> FETCH_HEAD
 	/*
 	 * CPU or memory hotunplug may leave @cs w/o any execution
 	 * resources, in which case the hotplug code asynchronously updates
@@ -1773,6 +1785,7 @@ out_unlock:
 	return retval ?: nbytes;
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_CPUSET_ASSIST
 static ssize_t cpuset_write_resmask_assist(struct kernfs_open_file *of,
 					   struct cs_target tgt, size_t nbytes,
@@ -1816,6 +1829,8 @@ static ssize_t cpuset_write_resmask_wrapper(struct kernfs_open_file *of,
 	return cpuset_write_resmask(of, buf, nbytes, off);
 }
 
+=======
+>>>>>>> FETCH_HEAD
 /*
  * These ascii lists should be read in a single call, by using a user
  * buffer large enough to hold the entire map.  If read in smaller
@@ -1908,7 +1923,11 @@ static struct cftype files[] = {
 	{
 		.name = "cpus",
 		.seq_show = cpuset_common_seq_show,
+<<<<<<< HEAD
 		.write = cpuset_write_resmask_wrapper,
+=======
+		.write = cpuset_write_resmask,
+>>>>>>> FETCH_HEAD
 		.max_write_len = (100U + 6 * NR_CPUS),
 		.private = FILE_CPULIST,
 	},

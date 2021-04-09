@@ -9,7 +9,10 @@
 #include <asm/asm-compat.h>
 #include <asm/processor.h>
 #include <asm/page.h>
+<<<<<<< HEAD
 #include <asm/kup.h>
+=======
+>>>>>>> FETCH_HEAD
 
 #define VERIFY_READ	0
 #define VERIFY_WRITE	1
@@ -106,6 +109,7 @@ struct exception_table_entry {
 	__put_user_check((__typeof__(*(ptr)))(x), (ptr), sizeof(*(ptr)))
 
 #define __get_user(x, ptr) \
+<<<<<<< HEAD
 	__get_user_nocheck((x), (ptr), sizeof(*(ptr)), true)
 #define __put_user(x, ptr) \
 	__put_user_nocheck((__typeof__(*(ptr)))(x), (ptr), sizeof(*(ptr)), true)
@@ -114,6 +118,11 @@ struct exception_table_entry {
 	__get_user_nocheck((x), (ptr), sizeof(*(ptr)), false)
 #define __put_user_allowed(x, ptr) \
 	__put_user_nocheck((__typeof__(*(ptr)))(x), (ptr), sizeof(*(ptr)), false)
+=======
+	__get_user_nocheck((x), (ptr), sizeof(*(ptr)))
+#define __put_user(x, ptr) \
+	__put_user_nocheck((__typeof__(*(ptr)))(x), (ptr), sizeof(*(ptr)))
+>>>>>>> FETCH_HEAD
 
 #define __get_user_inatomic(x, ptr) \
 	__get_user_nosleep((x), (ptr), sizeof(*(ptr)))
@@ -167,7 +176,11 @@ extern long __put_user_bad(void);
 		: "r" (x), "b" (addr), "i" (-EFAULT), "0" (err))
 #endif /* __powerpc64__ */
 
+<<<<<<< HEAD
 #define __put_user_size_allowed(x, ptr, size, retval)		\
+=======
+#define __put_user_size(x, ptr, size, retval)			\
+>>>>>>> FETCH_HEAD
 do {								\
 	retval = 0;						\
 	switch (size) {						\
@@ -179,6 +192,7 @@ do {								\
 	}							\
 } while (0)
 
+<<<<<<< HEAD
 #define __put_user_size(x, ptr, size, retval)			\
 do {								\
 	allow_write_to_user(ptr, size);				\
@@ -201,6 +215,16 @@ do {								\
 	else									\
 		__put_user_size_allowed(__pu_val, __pu_addr, __pu_size, __pu_err); \
 								\
+=======
+#define __put_user_nocheck(x, ptr, size)			\
+({								\
+	long __pu_err;						\
+	__typeof__(*(ptr)) __user *__pu_addr = (ptr);		\
+	if (!is_kernel_addr((unsigned long)__pu_addr))		\
+		might_fault();					\
+	__chk_user_ptr(ptr);					\
+	__put_user_size((x), __pu_addr, (size), __pu_err);	\
+>>>>>>> FETCH_HEAD
 	__pu_err;						\
 })
 
@@ -208,6 +232,7 @@ do {								\
 ({									\
 	long __pu_err = -EFAULT;					\
 	__typeof__(*(ptr)) __user *__pu_addr = (ptr);			\
+<<<<<<< HEAD
 	__typeof__(*(ptr)) __pu_val = (x);				\
 	__typeof__(size) __pu_size = (size);				\
 									\
@@ -215,6 +240,11 @@ do {								\
 	if (access_ok(VERIFY_WRITE, __pu_addr, __pu_size))			\
 		__put_user_size(__pu_val, __pu_addr, __pu_size, __pu_err); \
 									\
+=======
+	might_fault();							\
+	if (access_ok(VERIFY_WRITE, __pu_addr, size))			\
+		__put_user_size((x), __pu_addr, (size), __pu_err);	\
+>>>>>>> FETCH_HEAD
 	__pu_err;							\
 })
 
@@ -222,12 +252,17 @@ do {								\
 ({								\
 	long __pu_err;						\
 	__typeof__(*(ptr)) __user *__pu_addr = (ptr);		\
+<<<<<<< HEAD
 	__typeof__(*(ptr)) __pu_val = (x);			\
 	__typeof__(size) __pu_size = (size);			\
 								\
 	__chk_user_ptr(__pu_addr);				\
 	__put_user_size(__pu_val, __pu_addr, __pu_size, __pu_err); \
 								\
+=======
+	__chk_user_ptr(ptr);					\
+	__put_user_size((x), __pu_addr, (size), __pu_err);	\
+>>>>>>> FETCH_HEAD
 	__pu_err;						\
 })
 
@@ -274,7 +309,11 @@ extern long __get_user_bad(void);
 		: "b" (addr), "i" (-EFAULT), "0" (err))
 #endif /* __powerpc64__ */
 
+<<<<<<< HEAD
 #define __get_user_size_allowed(x, ptr, size, retval)		\
+=======
+#define __get_user_size(x, ptr, size, retval)			\
+>>>>>>> FETCH_HEAD
 do {								\
 	retval = 0;						\
 	__chk_user_ptr(ptr);					\
@@ -289,6 +328,7 @@ do {								\
 	}							\
 } while (0)
 
+<<<<<<< HEAD
 #define __get_user_size(x, ptr, size, retval)			\
 do {								\
 	allow_read_from_user(ptr, size);			\
@@ -297,10 +337,14 @@ do {								\
 } while (0)
 
 #define __get_user_nocheck(x, ptr, size, do_allow)			\
+=======
+#define __get_user_nocheck(x, ptr, size)			\
+>>>>>>> FETCH_HEAD
 ({								\
 	long __gu_err;						\
 	unsigned long __gu_val;					\
 	__typeof__(*(ptr)) __user *__gu_addr = (ptr);	\
+<<<<<<< HEAD
 	__typeof__(size) __gu_size = (size);			\
 								\
 	__chk_user_ptr(__gu_addr);				\
@@ -313,6 +357,14 @@ do {								\
 		__get_user_size_allowed(__gu_val, __gu_addr, __gu_size, __gu_err); \
 	(x) = (__typeof__(*(ptr)))__gu_val;			\
 								\
+=======
+	__chk_user_ptr(ptr);					\
+	if (!is_kernel_addr((unsigned long)__gu_addr))		\
+		might_fault();					\
+	barrier_nospec();					\
+	__get_user_size(__gu_val, __gu_addr, (size), __gu_err);	\
+	(x) = (__typeof__(*(ptr)))__gu_val;			\
+>>>>>>> FETCH_HEAD
 	__gu_err;						\
 })
 
@@ -321,6 +373,7 @@ do {								\
 	long __gu_err = -EFAULT;					\
 	unsigned long  __gu_val = 0;					\
 	__typeof__(*(ptr)) __user *__gu_addr = (ptr);		\
+<<<<<<< HEAD
 	__typeof__(size) __gu_size = (size);				\
 									\
 	might_fault();							\
@@ -330,6 +383,14 @@ do {								\
 	}								\
 	(x) = (__force __typeof__(*(ptr)))__gu_val;				\
 									\
+=======
+	might_fault();							\
+	if (access_ok(VERIFY_READ, __gu_addr, (size))) {		\
+		barrier_nospec();					\
+		__get_user_size(__gu_val, __gu_addr, (size), __gu_err);	\
+	}								\
+	(x) = (__force __typeof__(*(ptr)))__gu_val;				\
+>>>>>>> FETCH_HEAD
 	__gu_err;							\
 })
 
@@ -338,6 +399,7 @@ do {								\
 	long __gu_err;						\
 	unsigned long __gu_val;					\
 	__typeof__(*(ptr)) __user *__gu_addr = (ptr);	\
+<<<<<<< HEAD
 	__typeof__(size) __gu_size = (size);			\
 								\
 	__chk_user_ptr(__gu_addr);				\
@@ -345,6 +407,12 @@ do {								\
 	__get_user_size(__gu_val, __gu_addr, __gu_size, __gu_err); \
 	(x) = (__force __typeof__(*(ptr)))__gu_val;			\
 								\
+=======
+	__chk_user_ptr(ptr);					\
+	barrier_nospec();					\
+	__get_user_size(__gu_val, __gu_addr, (size), __gu_err);	\
+	(x) = (__force __typeof__(*(ptr)))__gu_val;			\
+>>>>>>> FETCH_HEAD
 	__gu_err;						\
 })
 
@@ -359,6 +427,7 @@ extern unsigned long __copy_tofrom_user(void __user *to,
 static inline unsigned long copy_from_user(void *to,
 		const void __user *from, unsigned long n)
 {
+<<<<<<< HEAD
 	unsigned long ret;
 
 	if (likely(access_ok(VERIFY_READ, from, n))) {
@@ -367,6 +436,11 @@ static inline unsigned long copy_from_user(void *to,
 		ret = __copy_tofrom_user((__force void __user *)to, from, n);
 		prevent_user_access(to, from, n);
 		return ret;
+=======
+	if (likely(access_ok(VERIFY_READ, from, n))) {
+		check_object_size(to, n, false);
+		return __copy_tofrom_user((__force void __user *)to, from, n);
+>>>>>>> FETCH_HEAD
 	}
 	memset(to, 0, n);
 	return n;
@@ -399,9 +473,14 @@ extern unsigned long copy_in_user(void __user *to, const void __user *from,
 static inline unsigned long __copy_from_user_inatomic(void *to,
 		const void __user *from, unsigned long n)
 {
+<<<<<<< HEAD
 	unsigned long ret;
 	if (__builtin_constant_p(n) && (n <= 8)) {
 		ret = 1;
+=======
+	if (__builtin_constant_p(n) && (n <= 8)) {
+		unsigned long ret = 1;
+>>>>>>> FETCH_HEAD
 
 		switch (n) {
 		case 1:
@@ -428,15 +507,20 @@ static inline unsigned long __copy_from_user_inatomic(void *to,
 	check_object_size(to, n, false);
 
 	barrier_nospec();
+<<<<<<< HEAD
 	allow_read_from_user(from, n);
 	ret = __copy_tofrom_user((__force void __user *)to, from, n);
 	prevent_read_from_user(from, n);
 	return ret;
+=======
+	return __copy_tofrom_user((__force void __user *)to, from, n);
+>>>>>>> FETCH_HEAD
 }
 
 static inline unsigned long __copy_to_user_inatomic(void __user *to,
 		const void *from, unsigned long n)
 {
+<<<<<<< HEAD
 	unsigned long ret;
 
 	if (__builtin_constant_p(n) && (n <= 8)) {
@@ -454,6 +538,23 @@ static inline unsigned long __copy_to_user_inatomic(void __user *to,
 			break;
 		case 8:
 			__put_user_size_allowed(*(u64 *)from, (u64 __user *)to, 8, ret);
+=======
+	if (__builtin_constant_p(n) && (n <= 8)) {
+		unsigned long ret = 1;
+
+		switch (n) {
+		case 1:
+			__put_user_size(*(u8 *)from, (u8 __user *)to, 1, ret);
+			break;
+		case 2:
+			__put_user_size(*(u16 *)from, (u16 __user *)to, 2, ret);
+			break;
+		case 4:
+			__put_user_size(*(u32 *)from, (u32 __user *)to, 4, ret);
+			break;
+		case 8:
+			__put_user_size(*(u64 *)from, (u64 __user *)to, 8, ret);
+>>>>>>> FETCH_HEAD
 			break;
 		}
 		if (ret == 0)
@@ -461,10 +562,15 @@ static inline unsigned long __copy_to_user_inatomic(void __user *to,
 	}
 
 	check_object_size(from, n, true);
+<<<<<<< HEAD
 	allow_write_to_user(to, n);
 	ret = __copy_tofrom_user(to, (__force const void __user *)from, n);
 	prevent_write_to_user(to, n);
 	return ret;
+=======
+
+	return __copy_tofrom_user(to, (__force const void __user *)from, n);
+>>>>>>> FETCH_HEAD
 }
 
 static inline unsigned long __copy_from_user(void *to,
@@ -481,6 +587,7 @@ static inline unsigned long __copy_to_user(void __user *to,
 	return __copy_to_user_inatomic(to, from, size);
 }
 
+<<<<<<< HEAD
 unsigned long __arch_clear_user(void __user *addr, unsigned long size);
 
 static inline unsigned long clear_user(void __user *addr, unsigned long size)
@@ -498,12 +605,23 @@ static inline unsigned long clear_user(void __user *addr, unsigned long size)
 static inline unsigned long __clear_user(void __user *addr, unsigned long size)
 {
 	return clear_user(addr, size);
+=======
+extern unsigned long __clear_user(void __user *addr, unsigned long size);
+
+static inline unsigned long clear_user(void __user *addr, unsigned long size)
+{
+	might_fault();
+	if (likely(access_ok(VERIFY_WRITE, addr, size)))
+		return __clear_user(addr, size);
+	return size;
+>>>>>>> FETCH_HEAD
 }
 
 extern long strncpy_from_user(char *dst, const char __user *src, long count);
 extern __must_check long strlen_user(const char __user *str);
 extern __must_check long strnlen_user(const char __user *str, long n);
 
+<<<<<<< HEAD
 
 #define user_access_begin()	do { } while (0)
 #define user_access_end()	prevent_user_access(NULL, NULL, ~0ul)
@@ -514,6 +632,8 @@ extern __must_check long strnlen_user(const char __user *str, long n);
 #define unsafe_copy_to_user(d, s, l, e) \
 	unsafe_op_wrap(__copy_to_user_inatomic(d, s, l), e)
 
+=======
+>>>>>>> FETCH_HEAD
 #endif  /* __ASSEMBLY__ */
 #endif /* __KERNEL__ */
 

@@ -57,6 +57,10 @@
 #include <linux/workqueue.h>
 #include <linux/scatterlist.h>
 #include <linux/io.h>
+<<<<<<< HEAD
+=======
+#include <linux/async.h>
+>>>>>>> FETCH_HEAD
 #include <linux/log2.h>
 #include <linux/slab.h>
 #include <linux/glob.h>
@@ -4371,8 +4375,14 @@ static const struct ata_blacklist_entry ata_device_blacklist [] = {
 	/* https://bugzilla.kernel.org/show_bug.cgi?id=15573 */
 	{ "C300-CTFDDAC128MAG",	"0001",		ATA_HORKAGE_NONCQ, },
 
+<<<<<<< HEAD
 	/* Sandisk SD7/8/9s lock up hard on large trims */
 	{ "SanDisk SD[789]*",	NULL,		ATA_HORKAGE_MAX_TRIM_128M, },
+=======
+	/* Some Sandisk SSDs lock up hard with NCQ enabled.  Reported on
+	   SD7SN6S256G and SD8SN8U256G */
+	{ "SanDisk SD[78]SN*G",	NULL,		ATA_HORKAGE_NONCQ, },
+>>>>>>> FETCH_HEAD
 
 	/* devices which puke on READ_NATIVE_MAX */
 	{ "HDS724040KLSA80",	"KFAOA20N",	ATA_HORKAGE_BROKEN_HPA, },
@@ -4895,10 +4905,14 @@ int ata_std_qc_defer(struct ata_queued_cmd *qc)
 	return ATA_DEFER_LINK;
 }
 
+<<<<<<< HEAD
 enum ata_completion_errors ata_noop_qc_prep(struct ata_queued_cmd *qc)
 {
 	return AC_ERR_OK;
 }
+=======
+void ata_noop_qc_prep(struct ata_queued_cmd *qc) { }
+>>>>>>> FETCH_HEAD
 
 /**
  *	ata_sg_init - Associate command with scatter-gather table.
@@ -5316,9 +5330,13 @@ void ata_qc_issue(struct ata_queued_cmd *qc)
 		return;
 	}
 
+<<<<<<< HEAD
 	qc->err_mask |= ap->ops->qc_prep(qc);
 	if (unlikely(qc->err_mask))
 		goto err;
+=======
+	ap->ops->qc_prep(qc);
+>>>>>>> FETCH_HEAD
 	trace_ata_qc_issue(qc);
 	qc->err_mask |= ap->ops->qc_issue(qc);
 	if (unlikely(qc->err_mask))
@@ -6413,7 +6431,11 @@ int ata_host_register(struct ata_host *host, struct scsi_host_template *sht)
 	/* perform each probe asynchronously */
 	for (i = 0; i < host->n_ports; i++) {
 		struct ata_port *ap = host->ports[i];
+<<<<<<< HEAD
 		ap->cookie = async_schedule(async_port_probe, ap);
+=======
+		async_schedule(async_port_probe, ap);
+>>>>>>> FETCH_HEAD
 	}
 
 	return 0;
@@ -6553,11 +6575,19 @@ void ata_host_detach(struct ata_host *host)
 {
 	int i;
 
+<<<<<<< HEAD
 	for (i = 0; i < host->n_ports; i++) {
 		/* Ensure ata_port probe has completed */
 		async_synchronize_cookie(host->ports[i]->cookie + 1);
 		ata_port_detach(host->ports[i]);
 	}
+=======
+	/* Ensure ata_port probe has completed */
+	async_synchronize_full();
+
+	for (i = 0; i < host->n_ports; i++)
+		ata_port_detach(host->ports[i]);
+>>>>>>> FETCH_HEAD
 
 	/* the host is dead now, dissociate ACPI */
 	ata_acpi_dissociate(host);

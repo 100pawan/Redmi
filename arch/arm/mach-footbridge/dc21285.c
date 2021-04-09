@@ -69,6 +69,7 @@ dc21285_read_config(struct pci_bus *bus, unsigned int devfn, int where,
 	if (addr)
 		switch (size) {
 		case 1:
+<<<<<<< HEAD
 			asm volatile("ldrb	%0, [%1, %2]"
 				: "=r" (v) : "r" (addr), "r" (where) : "cc");
 			break;
@@ -78,6 +79,17 @@ dc21285_read_config(struct pci_bus *bus, unsigned int devfn, int where,
 			break;
 		case 4:
 			asm volatile("ldr	%0, [%1, %2]"
+=======
+			asm("ldrb	%0, [%1, %2]"
+				: "=r" (v) : "r" (addr), "r" (where) : "cc");
+			break;
+		case 2:
+			asm("ldrh	%0, [%1, %2]"
+				: "=r" (v) : "r" (addr), "r" (where) : "cc");
+			break;
+		case 4:
+			asm("ldr	%0, [%1, %2]"
+>>>>>>> FETCH_HEAD
 				: "=r" (v) : "r" (addr), "r" (where) : "cc");
 			break;
 		}
@@ -103,17 +115,29 @@ dc21285_write_config(struct pci_bus *bus, unsigned int devfn, int where,
 	if (addr)
 		switch (size) {
 		case 1:
+<<<<<<< HEAD
 			asm volatile("strb	%0, [%1, %2]"
+=======
+			asm("strb	%0, [%1, %2]"
+>>>>>>> FETCH_HEAD
 				: : "r" (value), "r" (addr), "r" (where)
 				: "cc");
 			break;
 		case 2:
+<<<<<<< HEAD
 			asm volatile("strh	%0, [%1, %2]"
+=======
+			asm("strh	%0, [%1, %2]"
+>>>>>>> FETCH_HEAD
 				: : "r" (value), "r" (addr), "r" (where)
 				: "cc");
 			break;
 		case 4:
+<<<<<<< HEAD
 			asm volatile("str	%0, [%1, %2]"
+=======
+			asm("str	%0, [%1, %2]"
+>>>>>>> FETCH_HEAD
 				: : "r" (value), "r" (addr), "r" (where)
 				: "cc");
 			break;

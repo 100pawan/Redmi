@@ -175,6 +175,7 @@ static int __init relocate_exception_table(long offset)
 static inline __init unsigned long rotate_xor(unsigned long hash,
 					      const void *area, size_t size)
 {
+<<<<<<< HEAD
 	const typeof(hash) *ptr = PTR_ALIGN(area, sizeof(hash));
 	size_t diff, i;
 
@@ -183,6 +184,10 @@ static inline __init unsigned long rotate_xor(unsigned long hash,
 		return hash;
 
 	size = ALIGN_DOWN(size - diff, sizeof(hash));
+=======
+	size_t i;
+	unsigned long *ptr = (unsigned long *)area;
+>>>>>>> FETCH_HEAD
 
 	for (i = 0; i < size / sizeof(hash); i++) {
 		/* Rotate by odd number of bits and XOR. */

@@ -81,8 +81,11 @@
 #include <linux/kcov.h>
 #include <linux/cpufreq_times.h>
 
+<<<<<<< HEAD
 #include <linux/oom_score_notifier.h>
 
+=======
+>>>>>>> FETCH_HEAD
 #include <asm/pgtable.h>
 #include <asm/pgalloc.h>
 #include <asm/uaccess.h>
@@ -200,7 +203,11 @@ static unsigned long *alloc_thread_stack_node(struct task_struct *tsk, int node)
 
 	stack = __vmalloc_node_range(THREAD_SIZE, THREAD_SIZE,
 				     VMALLOC_START, VMALLOC_END,
+<<<<<<< HEAD
 				     THREADINFO_GFP,
+=======
+				     THREADINFO_GFP | __GFP_HIGHMEM,
+>>>>>>> FETCH_HEAD
 				     PAGE_KERNEL,
 				     0, node, __builtin_return_address(0));
 
@@ -420,10 +427,17 @@ static void set_max_threads(unsigned int max_threads_suggested)
 	 * The number of threads shall be limited such that the thread
 	 * structures may only consume a small part of the available memory.
 	 */
+<<<<<<< HEAD
 	if (fls64(totalram_pages()) + fls64(PAGE_SIZE) > 64)
 		threads = MAX_THREADS;
 	else
 		threads = div64_u64((u64) totalram_pages() * (u64) PAGE_SIZE,
+=======
+	if (fls64(totalram_pages) + fls64(PAGE_SIZE) > 64)
+		threads = MAX_THREADS;
+	else
+		threads = div64_u64((u64) totalram_pages * (u64) PAGE_SIZE,
+>>>>>>> FETCH_HEAD
 				    (u64) THREAD_SIZE * 8UL);
 
 	if (threads > max_threads_suggested)
@@ -501,8 +515,11 @@ static struct task_struct *dup_task_struct(struct task_struct *orig, int node)
 
 	err = arch_dup_task_struct(tsk, orig);
 
+<<<<<<< HEAD
 	tsk->flags &= ~PF_SU;
 
+=======
+>>>>>>> FETCH_HEAD
 	/*
 	 * arch_dup_task_struct() clobbers the stack-related fields.  Make
 	 * sure they're properly initialized before using any stack-related
@@ -1098,8 +1115,29 @@ static int wait_for_vfork_done(struct task_struct *child,
  * restoring the old one. . .
  * Eric Biederman 10 January 1998
  */
+<<<<<<< HEAD
 static void mm_release(struct task_struct *tsk, struct mm_struct *mm)
 {
+=======
+void mm_release(struct task_struct *tsk, struct mm_struct *mm)
+{
+	/* Get rid of any futexes when releasing the mm */
+#ifdef CONFIG_FUTEX
+	if (unlikely(tsk->robust_list)) {
+		exit_robust_list(tsk);
+		tsk->robust_list = NULL;
+	}
+#ifdef CONFIG_COMPAT
+	if (unlikely(tsk->compat_robust_list)) {
+		compat_exit_robust_list(tsk);
+		tsk->compat_robust_list = NULL;
+	}
+#endif
+	if (unlikely(!list_empty(&tsk->pi_state_list)))
+		exit_pi_state_list(tsk);
+#endif
+
+>>>>>>> FETCH_HEAD
 	uprobe_free_utask(tsk);
 
 	/* Get rid of any cached register state */
@@ -1132,6 +1170,7 @@ static void mm_release(struct task_struct *tsk, struct mm_struct *mm)
 		complete_vfork_done(tsk);
 }
 
+<<<<<<< HEAD
 void exit_mm_release(struct task_struct *tsk, struct mm_struct *mm)
 {
 	futex_exit_release(tsk);
@@ -1144,6 +1183,8 @@ void exec_mm_release(struct task_struct *tsk, struct mm_struct *mm)
 	mm_release(tsk, mm);
 }
 
+=======
+>>>>>>> FETCH_HEAD
 /*
  * Allocate a new mm structure and copy contents from the
  * mm structure of the passed in task structure.
@@ -1856,8 +1897,19 @@ static __latent_entropy struct task_struct *copy_process(
 #ifdef CONFIG_BLOCK
 	p->plug = NULL;
 #endif
+<<<<<<< HEAD
 	futex_init_task(p);
 
+=======
+#ifdef CONFIG_FUTEX
+	p->robust_list = NULL;
+#ifdef CONFIG_COMPAT
+	p->compat_robust_list = NULL;
+#endif
+	INIT_LIST_HEAD(&p->pi_state_list);
+	p->pi_state_cache = NULL;
+#endif
+>>>>>>> FETCH_HEAD
 	/*
 	 * sigaltstack should be cleared when sharing the same VM
 	 */
@@ -1878,9 +1930,20 @@ static __latent_entropy struct task_struct *copy_process(
 	/* ok, now we should be set up.. */
 	p->pid = pid_nr(pid);
 	if (clone_flags & CLONE_THREAD) {
+<<<<<<< HEAD
 		p->group_leader = current->group_leader;
 		p->tgid = current->tgid;
 	} else {
+=======
+		p->exit_signal = -1;
+		p->group_leader = current->group_leader;
+		p->tgid = current->tgid;
+	} else {
+		if (clone_flags & CLONE_PARENT)
+			p->exit_signal = current->group_leader->exit_signal;
+		else
+			p->exit_signal = (clone_flags & CSIGNAL);
+>>>>>>> FETCH_HEAD
 		p->group_leader = p;
 		p->tgid = p->pid;
 	}
@@ -1925,6 +1988,7 @@ static __latent_entropy struct task_struct *copy_process(
 	if (clone_flags & (CLONE_PARENT|CLONE_THREAD)) {
 		p->real_parent = current->real_parent;
 		p->parent_exec_id = current->parent_exec_id;
+<<<<<<< HEAD
 		if (clone_flags & CLONE_THREAD)
 			p->exit_signal = -1;
 		else
@@ -1933,6 +1997,11 @@ static __latent_entropy struct task_struct *copy_process(
 		p->real_parent = current;
 		p->parent_exec_id = current->self_exec_id;
 		p->exit_signal = (clone_flags & CSIGNAL);
+=======
+	} else {
+		p->real_parent = current;
+		p->parent_exec_id = current->self_exec_id;
+>>>>>>> FETCH_HEAD
 	}
 
 	spin_lock(&current->sighand->siglock);
@@ -1966,11 +2035,14 @@ static __latent_entropy struct task_struct *copy_process(
 
 		init_task_pid(p, PIDTYPE_PID, pid);
 		if (thread_group_leader(p)) {
+<<<<<<< HEAD
 #ifdef CONFIG_OOM_SCORE_NOTIFIER
 			retval = oom_score_notify_new(p);
 			if (retval)
 				goto bad_fork_cancel_cgroup;
 #endif
+=======
+>>>>>>> FETCH_HEAD
 			init_task_pid(p, PIDTYPE_PGID, task_pgrp(current));
 			init_task_pid(p, PIDTYPE_SID, task_session(current));
 

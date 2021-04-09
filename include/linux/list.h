@@ -557,6 +557,7 @@ static inline void list_splice_tail_init(struct list_head *list,
 	     pos = list_next_entry(pos, member))
 
 /**
+<<<<<<< HEAD
  * list_for_each_entry_from_reverse - iterate backwards over list of given type
  *                                    from the current point
  * @pos:	the type * to use as a loop cursor.
@@ -570,6 +571,8 @@ static inline void list_splice_tail_init(struct list_head *list,
 	     pos = list_prev_entry(pos, member))
 
 /**
+=======
+>>>>>>> FETCH_HEAD
  * list_for_each_entry_safe - iterate over list of given type safe against removal of list entry
  * @pos:	the type * to use as a loop cursor.
  * @n:		another type * to use as temporary storage

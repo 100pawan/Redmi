@@ -58,6 +58,7 @@ struct xenbus_watch
 	/* Path being watched. */
 	const char *node;
 
+<<<<<<< HEAD
 	unsigned int nr_pending;
 
 	/*
@@ -67,6 +68,8 @@ struct xenbus_watch
 	bool (*will_handle)(struct xenbus_watch *,
 			    const char **vec, unsigned int len);
 
+=======
+>>>>>>> FETCH_HEAD
 	/* Callback (executed in a process context with no locks held). */
 	void (*callback)(struct xenbus_watch *,
 			 const char **vec, unsigned int len);
@@ -203,6 +206,7 @@ void xenbus_suspend_cancel(void);
 
 int xenbus_watch_path(struct xenbus_device *dev, const char *path,
 		      struct xenbus_watch *watch,
+<<<<<<< HEAD
 		      bool (*will_handle)(struct xenbus_watch *,
 					  const char **, unsigned int),
 		      void (*callback)(struct xenbus_watch *,
@@ -211,6 +215,12 @@ __printf(5, 6)
 int xenbus_watch_pathfmt(struct xenbus_device *dev, struct xenbus_watch *watch,
 			 bool (*will_handle)(struct xenbus_watch *,
 					     const char **, unsigned int),
+=======
+		      void (*callback)(struct xenbus_watch *,
+				       const char **, unsigned int));
+__printf(4, 5)
+int xenbus_watch_pathfmt(struct xenbus_device *dev, struct xenbus_watch *watch,
+>>>>>>> FETCH_HEAD
 			 void (*callback)(struct xenbus_watch *,
 					  const char **, unsigned int),
 			 const char *pathfmt, ...);

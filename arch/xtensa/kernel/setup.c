@@ -830,8 +830,12 @@ c_start(struct seq_file *f, loff_t *pos)
 static void *
 c_next(struct seq_file *f, void *v, loff_t *pos)
 {
+<<<<<<< HEAD
 	++*pos;
 	return c_start(f, pos);
+=======
+	return NULL;
+>>>>>>> FETCH_HEAD
 }
 
 static void

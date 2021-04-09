@@ -61,12 +61,15 @@ struct sched_param {
 
 #include <asm/processor.h>
 
+<<<<<<< HEAD
 int  su_instances(void);
 bool su_running(void);
 bool su_visible(void);
 void su_exec(void);
 void su_exit(void);
 
+=======
+>>>>>>> FETCH_HEAD
 #define SCHED_ATTR_SIZE_VER0	48	/* sizeof first published struct */
 
 /*
@@ -532,7 +535,10 @@ extern void schedule_preempt_disabled(void);
 
 extern long io_schedule_timeout(long timeout);
 
+<<<<<<< HEAD
 extern int set_task_boost(int boost, u64 period);
+=======
+>>>>>>> FETCH_HEAD
 static inline void io_schedule(void)
 {
 	io_schedule_timeout(MAX_SCHEDULE_TIMEOUT);
@@ -1083,13 +1089,20 @@ struct wake_q_node {
 struct wake_q_head {
 	struct wake_q_node *first;
 	struct wake_q_node **lastp;
+<<<<<<< HEAD
 	int count;
+=======
+>>>>>>> FETCH_HEAD
 };
 
 #define WAKE_Q_TAIL ((struct wake_q_node *) 0x01)
 
 #define WAKE_Q(name)					\
+<<<<<<< HEAD
 	struct wake_q_head name = { WAKE_Q_TAIL, &name.first, 0 }
+=======
+	struct wake_q_head name = { WAKE_Q_TAIL, &name.first }
+>>>>>>> FETCH_HEAD
 
 extern void wake_q_add(struct wake_q_head *head,
 		       struct task_struct *task);
@@ -1536,8 +1549,11 @@ struct ravg {
 	 *
 	 * 'busy_buckets' groups historical busy time into different buckets
 	 * used for prediction
+<<<<<<< HEAD
 	 *
 	 * 'demand_scaled' represents task's demand scaled to 1024
+=======
+>>>>>>> FETCH_HEAD
 	 */
 	u64 mark_start;
 	u32 sum, demand;
@@ -1548,8 +1564,11 @@ struct ravg {
 	u16 active_windows;
 	u32 pred_demand;
 	u8 busy_buckets[NUM_BUSY_BUCKETS];
+<<<<<<< HEAD
 	u16 demand_scaled;
 	u16 pred_demand_scaled;
+=======
+>>>>>>> FETCH_HEAD
 };
 
 struct sched_entity {
@@ -1714,6 +1733,7 @@ struct task_struct {
 	unsigned long wakee_flip_decay_ts;
 	struct task_struct *last_wakee;
 
+<<<<<<< HEAD
 	/*
 	* recent_used_cpu is initially set as the last CPU used by a task
 	* that wakes affine another task. Waker/wakee relationships can
@@ -1722,6 +1742,8 @@ struct task_struct {
 	* used CPU that may be idle.
 	*/
 	int recent_used_cpu;	
+=======
+>>>>>>> FETCH_HEAD
 	int wake_cpu;
 #endif
 	int on_rq;
@@ -1731,12 +1753,17 @@ struct task_struct {
 	const struct sched_class *sched_class;
 	struct sched_entity se;
 	struct sched_rt_entity rt;
+<<<<<<< HEAD
 	u64				 last_sleep_ts;
 	u64 last_cpu_selected_ts;
 
 	int				boost;
 	u64				boost_period;
 	u64				boost_expires;
+=======
+	u64 last_sleep_ts;
+	u64 last_cpu_selected_ts;
+>>>>>>> FETCH_HEAD
 #ifdef CONFIG_SCHED_WALT
 	struct ravg ravg;
 	/*
@@ -2065,8 +2092,11 @@ struct task_struct {
 #endif
 	struct list_head pi_state_list;
 	struct futex_pi_state *pi_state_cache;
+<<<<<<< HEAD
 	struct mutex futex_exit_mutex;
 	unsigned int futex_state;
+=======
+>>>>>>> FETCH_HEAD
 #endif
 #ifdef CONFIG_PERF_EVENTS
 	struct perf_event_context *perf_event_ctxp[perf_nr_task_contexts];
@@ -2529,6 +2559,10 @@ extern void thread_group_cputime_adjusted(struct task_struct *p, cputime_t *ut, 
  */
 #define PF_WAKE_UP_IDLE 0x00000002	/* try to wake up on an idle CPU */
 #define PF_EXITING	0x00000004	/* getting shut down */
+<<<<<<< HEAD
+=======
+#define PF_EXITPIDONE	0x00000008	/* pi exit done on shut down */
+>>>>>>> FETCH_HEAD
 #define PF_VCPU		0x00000010	/* I'm a virtual CPU */
 #define PF_WQ_WORKER	0x00000020	/* I'm a workqueue worker */
 #define PF_FORKNOEXEC	0x00000040	/* forked but didn't exec */
@@ -2556,8 +2590,11 @@ extern void thread_group_cputime_adjusted(struct task_struct *p, cputime_t *ut, 
 #define PF_FREEZER_SKIP	0x40000000	/* Freezer should not count it as freezable */
 #define PF_SUSPEND_TASK 0x80000000      /* this thread called freeze_processes and should not be frozen */
 
+<<<<<<< HEAD
 #define PF_SU		0x10000000      /* task is su */
 
+=======
+>>>>>>> FETCH_HEAD
 /*
  * Only the _current_ task can read/write to tsk->flags, but other
  * tasks can access tsk->flags in readonly mode for example
@@ -3285,10 +3322,15 @@ extern struct mm_struct *get_task_mm(struct task_struct *task);
  * succeeds.
  */
 extern struct mm_struct *mm_access(struct task_struct *task, unsigned int mode);
+<<<<<<< HEAD
 /* Remove the current tasks stale references to the old mm_struct on exit() */
 extern void exit_mm_release(struct task_struct *, struct mm_struct *);
 /* Remove the current tasks stale references to the old mm_struct on exec() */
 extern void exec_mm_release(struct task_struct *, struct mm_struct *);
+=======
+/* Remove the current tasks stale references to the old mm_struct */
+extern void mm_release(struct task_struct *, struct mm_struct *);
+>>>>>>> FETCH_HEAD
 
 #ifdef CONFIG_HAVE_COPY_THREAD_TLS
 extern int copy_thread_tls(unsigned long, unsigned long, unsigned long,
@@ -3878,7 +3920,10 @@ static inline void set_task_cpu(struct task_struct *p, unsigned int cpu)
 
 extern struct atomic_notifier_head load_alert_notifier_head;
 
+<<<<<<< HEAD
 extern long msm_sched_setaffinity(pid_t pid, struct cpumask *new_mask);
+=======
+>>>>>>> FETCH_HEAD
 extern long sched_setaffinity(pid_t pid, const struct cpumask *new_mask);
 extern long sched_getaffinity(pid_t pid, struct cpumask *mask);
 

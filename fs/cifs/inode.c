@@ -2188,6 +2188,7 @@ set_size_out:
 	if (rc == 0) {
 		cifsInode->server_eof = attrs->ia_size;
 		cifs_setsize(inode, attrs->ia_size);
+<<<<<<< HEAD
 
 		/*
 		 * The man page of truncate says if the size changed,
@@ -2197,6 +2198,8 @@ set_size_out:
 		attrs->ia_ctime = attrs->ia_mtime = current_time(inode);
 		attrs->ia_valid |= ATTR_CTIME | ATTR_MTIME;
 
+=======
+>>>>>>> FETCH_HEAD
 		cifs_truncate_page(inode->i_mapping, inode->i_size);
 	}
 

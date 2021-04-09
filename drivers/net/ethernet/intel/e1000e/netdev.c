@@ -136,12 +136,21 @@ static const struct e1000_reg_info e1000_reg_info_tbl[] = {
  * has bit 24 set while ME is accessing MAC CSR registers, wait if it is set
  * and try again a number of times.
  **/
+<<<<<<< HEAD
 static void __ew32_prepare(struct e1000_hw *hw)
+=======
+s32 __ew32_prepare(struct e1000_hw *hw)
+>>>>>>> FETCH_HEAD
 {
 	s32 i = E1000_ICH_FWSM_PCIM2PCI_COUNT;
 
 	while ((er32(FWSM) & E1000_ICH_FWSM_PCIM2PCI) && --i)
 		udelay(50);
+<<<<<<< HEAD
+=======
+
+	return i;
+>>>>>>> FETCH_HEAD
 }
 
 void __ew32(struct e1000_hw *hw, unsigned long reg, u32 val)
@@ -622,11 +631,19 @@ static void e1000e_update_rdt_wa(struct e1000_ring *rx_ring, unsigned int i)
 {
 	struct e1000_adapter *adapter = rx_ring->adapter;
 	struct e1000_hw *hw = &adapter->hw;
+<<<<<<< HEAD
 
 	__ew32_prepare(hw);
 	writel(i, rx_ring->tail);
 
 	if (unlikely(i != readl(rx_ring->tail))) {
+=======
+	s32 ret_val = __ew32_prepare(hw);
+
+	writel(i, rx_ring->tail);
+
+	if (unlikely(!ret_val && (i != readl(rx_ring->tail)))) {
+>>>>>>> FETCH_HEAD
 		u32 rctl = er32(RCTL);
 
 		ew32(RCTL, rctl & ~E1000_RCTL_EN);
@@ -639,11 +656,19 @@ static void e1000e_update_tdt_wa(struct e1000_ring *tx_ring, unsigned int i)
 {
 	struct e1000_adapter *adapter = tx_ring->adapter;
 	struct e1000_hw *hw = &adapter->hw;
+<<<<<<< HEAD
 
 	__ew32_prepare(hw);
 	writel(i, tx_ring->tail);
 
 	if (unlikely(i != readl(tx_ring->tail))) {
+=======
+	s32 ret_val = __ew32_prepare(hw);
+
+	writel(i, tx_ring->tail);
+
+	if (unlikely(!ret_val && (i != readl(tx_ring->tail)))) {
+>>>>>>> FETCH_HEAD
 		u32 tctl = er32(TCTL);
 
 		ew32(TCTL, tctl & ~E1000_TCTL_EN);
@@ -5920,19 +5945,28 @@ static void e1000_reset_task(struct work_struct *work)
 	struct e1000_adapter *adapter;
 	adapter = container_of(work, struct e1000_adapter, reset_task);
 
+<<<<<<< HEAD
 	rtnl_lock();
 	/* don't run the task if already down */
 	if (test_bit(__E1000_DOWN, &adapter->state)) {
 		rtnl_unlock();
 		return;
 	}
+=======
+	/* don't run the task if already down */
+	if (test_bit(__E1000_DOWN, &adapter->state))
+		return;
+>>>>>>> FETCH_HEAD
 
 	if (!(adapter->flags & FLAG_RESTART_NOW)) {
 		e1000e_dump(adapter);
 		e_err("Reset adapter unexpectedly\n");
 	}
 	e1000e_reinit_locked(adapter);
+<<<<<<< HEAD
 	rtnl_unlock();
+=======
+>>>>>>> FETCH_HEAD
 }
 
 /**
@@ -6319,6 +6353,7 @@ static int __e1000_shutdown(struct pci_dev *pdev, bool runtime)
 	struct net_device *netdev = pci_get_drvdata(pdev);
 	struct e1000_adapter *adapter = netdev_priv(netdev);
 	struct e1000_hw *hw = &adapter->hw;
+<<<<<<< HEAD
 	u32 ctrl, ctrl_ext, rctl, status, wufc;
 	int retval = 0;
 
@@ -6329,6 +6364,12 @@ static int __e1000_shutdown(struct pci_dev *pdev, bool runtime)
 		wufc = adapter->wol;
 	else
 		wufc = 0;
+=======
+	u32 ctrl, ctrl_ext, rctl, status;
+	/* Runtime suspend should only enable wakeup for link changes */
+	u32 wufc = runtime ? E1000_WUFC_LNKC : adapter->wol;
+	int retval = 0;
+>>>>>>> FETCH_HEAD
 
 	status = er32(STATUS);
 	if (status & E1000_STATUS_LU)
@@ -6387,7 +6428,11 @@ static int __e1000_shutdown(struct pci_dev *pdev, bool runtime)
 		e1000e_igp3_phy_powerdown_workaround_ich8lan(&adapter->hw);
 	} else if ((hw->mac.type == e1000_pch_lpt) ||
 		   (hw->mac.type == e1000_pch_spt)) {
+<<<<<<< HEAD
 		if (wufc && !(wufc & (E1000_WUFC_EX | E1000_WUFC_MC | E1000_WUFC_BC)))
+=======
+		if (!(wufc & (E1000_WUFC_EX | E1000_WUFC_MC | E1000_WUFC_BC)))
+>>>>>>> FETCH_HEAD
 			/* ULP does not support wake from unicast, multicast
 			 * or broadcast.
 			 */

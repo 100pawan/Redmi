@@ -64,7 +64,11 @@
 	s2mps15_pmic@66 {
 		compatible = "samsung,s2mps15-pmic";
 		reg = <0x66>;
+<<<<<<< HEAD
 		interrupts = <2 IRQ_TYPE_LEVEL_LOW>;
+=======
+		interrupts = <2 IRQ_TYPE_NONE>;
+>>>>>>> FETCH_HEAD
 		interrupt-parent = <&gpa0>;
 		pinctrl-names = "default";
 		pinctrl-0 = <&pmic_irq>;
@@ -131,7 +135,10 @@
 				regulator-min-microvolt = <700000>;
 				regulator-max-microvolt = <1150000>;
 				regulator-enable-ramp-delay = <125>;
+<<<<<<< HEAD
 				regulator-always-on;
+=======
+>>>>>>> FETCH_HEAD
 			};
 
 			ldo8_reg: LDO8 {

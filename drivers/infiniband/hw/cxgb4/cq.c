@@ -893,9 +893,12 @@ struct ib_cq *c4iw_create_cq(struct ib_device *ibdev,
 
 	rhp = to_c4iw_dev(ibdev);
 
+<<<<<<< HEAD
 	if (entries < 1 || entries > ibdev->attrs.max_cqe)
 		return ERR_PTR(-EINVAL);
 
+=======
+>>>>>>> FETCH_HEAD
 	if (vector >= rhp->rdev.lldi.nciq)
 		return ERR_PTR(-EINVAL);
 

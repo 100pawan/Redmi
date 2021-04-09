@@ -3012,7 +3012,10 @@ static noinline int audit_inode_permission(struct inode *inode,
 					   int result,
 					   unsigned flags)
 {
+<<<<<<< HEAD
 #ifdef CONFIG_AUDIT
+=======
+>>>>>>> FETCH_HEAD
 	struct common_audit_data ad;
 	struct inode_security_struct *isec = inode->i_security;
 	int rc;
@@ -3024,7 +3027,10 @@ static noinline int audit_inode_permission(struct inode *inode,
 			    audited, denied, result, &ad, flags);
 	if (rc)
 		return rc;
+<<<<<<< HEAD
 #endif
+=======
+>>>>>>> FETCH_HEAD
 	return 0;
 }
 

@@ -779,12 +779,19 @@ again:
 		nritems = btrfs_header_nritems(path->nodes[0]);
 		if (!nritems || (path->slots[0] >= nritems - 1)) {
 			ret = btrfs_next_leaf(root, path);
+<<<<<<< HEAD
 			if (ret < 0) {
 				goto out;
 			} else if (ret > 0) {
 				found_next = 1;
 				goto insert;
 			}
+=======
+			if (ret == 1)
+				found_next = 1;
+			if (ret != 0)
+				goto insert;
+>>>>>>> FETCH_HEAD
 			slot = path->slots[0];
 		}
 		btrfs_item_key_to_cpu(path->nodes[0], &found_key, slot);

@@ -919,6 +919,14 @@ static int scrub_handle_errored_block(struct scrub_block *sblock_to_check)
 	have_csum = sblock_to_check->pagev[0]->have_csum;
 	dev = sblock_to_check->pagev[0]->dev;
 
+<<<<<<< HEAD
+=======
+	if (sctx->is_dev_replace && !is_metadata && !have_csum) {
+		sblocks_for_recheck = NULL;
+		goto nodatasum_case;
+	}
+
+>>>>>>> FETCH_HEAD
 	/*
 	 * read all mirrors one after the other. This includes to
 	 * re-read the extent or metadata block that failed (that was
@@ -1031,6 +1039,7 @@ static int scrub_handle_errored_block(struct scrub_block *sblock_to_check)
 		goto out;
 	}
 
+<<<<<<< HEAD
 	/*
 	 * NOTE: Even for nodatasum case, it's still possible that it's a
 	 * compressed data extent, thus scrub_fixup_nodatasum(), which write
@@ -1040,10 +1049,18 @@ static int scrub_handle_errored_block(struct scrub_block *sblock_to_check)
 	 * reach disk before the newer write.
 	 */
 	if (0 && !is_metadata && !have_csum) {
+=======
+	if (!is_metadata && !have_csum) {
+>>>>>>> FETCH_HEAD
 		struct scrub_fixup_nodatasum *fixup_nodatasum;
 
 		WARN_ON(sctx->is_dev_replace);
 
+<<<<<<< HEAD
+=======
+nodatasum_case:
+
+>>>>>>> FETCH_HEAD
 		/*
 		 * !is_metadata and !have_csum, this means that the data
 		 * might not be COWed, that it might be modified

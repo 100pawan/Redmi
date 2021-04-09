@@ -191,7 +191,11 @@ static int rxrpc_send_data(struct rxrpc_sock *rx,
 	/* this should be in poll */
 	sk_clear_bit(SOCKWQ_ASYNC_NOSPACE, sk);
 
+<<<<<<< HEAD
 	if (sk->sk_shutdown & SEND_SHUTDOWN)
+=======
+	if (sk->sk_err || (sk->sk_shutdown & SEND_SHUTDOWN))
+>>>>>>> FETCH_HEAD
 		return -EPIPE;
 
 	more = msg->msg_flags & MSG_MORE;

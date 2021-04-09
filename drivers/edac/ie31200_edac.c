@@ -145,8 +145,11 @@
 	(n << (28 + (2 * skl) - PAGE_SHIFT))
 
 static int nr_channels;
+<<<<<<< HEAD
 static struct pci_dev *mci_pdev;
 static int ie31200_registered = 1;
+=======
+>>>>>>> FETCH_HEAD
 
 struct ie31200_priv {
 	void __iomem *window;
@@ -514,6 +517,7 @@ fail_free:
 static int ie31200_init_one(struct pci_dev *pdev,
 			    const struct pci_device_id *ent)
 {
+<<<<<<< HEAD
 	int rc;
 
 	edac_dbg(0, "MC:\n");
@@ -524,6 +528,14 @@ static int ie31200_init_one(struct pci_dev *pdev,
 		mci_pdev = pci_dev_get(pdev);
 
 	return rc;
+=======
+	edac_dbg(0, "MC:\n");
+
+	if (pci_enable_device(pdev) < 0)
+		return -EIO;
+
+	return ie31200_probe1(pdev, ent->driver_data);
+>>>>>>> FETCH_HEAD
 }
 
 static void ie31200_remove_one(struct pci_dev *pdev)
@@ -532,8 +544,11 @@ static void ie31200_remove_one(struct pci_dev *pdev)
 	struct ie31200_priv *priv;
 
 	edac_dbg(0, "\n");
+<<<<<<< HEAD
 	pci_dev_put(mci_pdev);
 	mci_pdev = NULL;
+=======
+>>>>>>> FETCH_HEAD
 	mci = edac_mc_del_mc(&pdev->dev);
 	if (!mci)
 		return;
@@ -582,12 +597,16 @@ static struct pci_driver ie31200_driver = {
 
 static int __init ie31200_init(void)
 {
+<<<<<<< HEAD
 	int pci_rc, i;
 
+=======
+>>>>>>> FETCH_HEAD
 	edac_dbg(3, "MC:\n");
 	/* Ensure that the OPSTATE is set correctly for POLL or NMI */
 	opstate_init();
 
+<<<<<<< HEAD
 	pci_rc = pci_register_driver(&ie31200_driver);
 	if (pci_rc < 0)
 		goto fail0;
@@ -621,14 +640,20 @@ fail0:
 	pci_dev_put(mci_pdev);
 
 	return pci_rc;
+=======
+	return pci_register_driver(&ie31200_driver);
+>>>>>>> FETCH_HEAD
 }
 
 static void __exit ie31200_exit(void)
 {
 	edac_dbg(3, "MC:\n");
 	pci_unregister_driver(&ie31200_driver);
+<<<<<<< HEAD
 	if (!ie31200_registered)
 		ie31200_remove_one(mci_pdev);
+=======
+>>>>>>> FETCH_HEAD
 }
 
 module_init(ie31200_init);

@@ -284,7 +284,10 @@ void scm_detach_fds_compat(struct msghdr *kmsg, struct scm_cookie *scm)
 			break;
 		}
 		/* Bump the usage count and install the file. */
+<<<<<<< HEAD
 		__receive_sock(fp[i]);
+=======
+>>>>>>> FETCH_HEAD
 		fd_install(new_fd, get_file(fp[i]));
 	}
 

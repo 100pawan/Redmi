@@ -1042,6 +1042,7 @@ static int mp_map_pin_to_irq(u32 gsi, int idx, int ioapic, int pin,
 	if (idx >= 0 && test_bit(mp_irqs[idx].srcbus, mp_bus_not_pci)) {
 		irq = mp_irqs[idx].srcbusirq;
 		legacy = mp_is_legacy_irq(irq);
+<<<<<<< HEAD
 		/*
 		 * IRQ2 is unusable for historical reasons on systems which
 		 * have a legacy PIC. See the comment vs. IRQ2 further down.
@@ -1052,6 +1053,8 @@ static int mp_map_pin_to_irq(u32 gsi, int idx, int ioapic, int pin,
 		 */
 		if (legacy && irq == PIC_CASCADE_IR)
 			return -EINVAL;
+=======
+>>>>>>> FETCH_HEAD
 	}
 
 	mutex_lock(&ioapic_mutex);

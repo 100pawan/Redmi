@@ -927,6 +927,7 @@ void __ceph_remove_cap(struct ceph_cap *cap, bool queue_release)
 {
 	struct ceph_mds_session *session = cap->session;
 	struct ceph_inode_info *ci = cap->ci;
+<<<<<<< HEAD
 	struct ceph_mds_client *mdsc;
 	int removed = 0;
 
@@ -940,6 +941,14 @@ void __ceph_remove_cap(struct ceph_cap *cap, bool queue_release)
 
 	mdsc = ceph_inode_to_client(&ci->vfs_inode)->mdsc;
 
+=======
+	struct ceph_mds_client *mdsc =
+		ceph_sb_to_client(ci->vfs_inode.i_sb)->mdsc;
+	int removed = 0;
+
+	dout("__ceph_remove_cap %p from %p\n", cap, &ci->vfs_inode);
+
+>>>>>>> FETCH_HEAD
 	/* remove from inode's cap rbtree, and clear auth cap */
 	rb_erase(&cap->ci_node, &ci->i_caps);
 	if (ci->i_auth_cap == cap)
@@ -1814,12 +1823,16 @@ ack:
 			if (mutex_trylock(&session->s_mutex) == 0) {
 				dout("inverting session/ino locks on %p\n",
 				     session);
+<<<<<<< HEAD
 				session = ceph_get_mds_session(session);
+=======
+>>>>>>> FETCH_HEAD
 				spin_unlock(&ci->i_ceph_lock);
 				if (took_snap_rwsem) {
 					up_read(&mdsc->snap_rwsem);
 					took_snap_rwsem = 0;
 				}
+<<<<<<< HEAD
 				if (session) {
 					mutex_lock(&session->s_mutex);
 					ceph_put_mds_session(session);
@@ -1832,6 +1845,9 @@ ack:
 					 */
 					WARN_ON_ONCE(true);
 				}
+=======
+				mutex_lock(&session->s_mutex);
+>>>>>>> FETCH_HEAD
 				goto retry;
 			}
 		}

@@ -108,7 +108,10 @@ bootpImage: vmlinux
 
 boot_targets += uImage uImage.bin uImage.gz
 
+<<<<<<< HEAD
 PHONY += $(boot_targets)
+=======
+>>>>>>> FETCH_HEAD
 $(boot_targets): vmlinux
 	$(Q)$(MAKE) $(build)=$(boot) $(boot)/$@
 

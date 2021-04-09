@@ -366,6 +366,10 @@ static int rockchip_pwm_probe(struct platform_device *pdev)
 
 	ret = pwmchip_add(&pc->chip);
 	if (ret < 0) {
+<<<<<<< HEAD
+=======
+		clk_unprepare(pc->clk);
+>>>>>>> FETCH_HEAD
 		dev_err(&pdev->dev, "pwmchip_add() failed: %d\n", ret);
 	}
 

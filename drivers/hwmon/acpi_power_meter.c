@@ -895,7 +895,11 @@ static int acpi_power_meter_add(struct acpi_device *device)
 
 	res = setup_attrs(resource);
 	if (res)
+<<<<<<< HEAD
 		goto exit_free_capability;
+=======
+		goto exit_free;
+>>>>>>> FETCH_HEAD
 
 	resource->hwmon_dev = hwmon_device_register(&device->dev);
 	if (IS_ERR(resource->hwmon_dev)) {
@@ -908,8 +912,11 @@ static int acpi_power_meter_add(struct acpi_device *device)
 
 exit_remove:
 	remove_attrs(resource);
+<<<<<<< HEAD
 exit_free_capability:
 	free_capabilities(resource);
+=======
+>>>>>>> FETCH_HEAD
 exit_free:
 	kfree(resource);
 exit:

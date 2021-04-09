@@ -1732,11 +1732,20 @@ static void adjust_reg_min_max_vals(struct bpf_verifier_env *env,
 		 * unsigned shift, so make the appropriate casts.
 		 */
 		if (min_val < 0 || dst_reg->min_value < 0)
+<<<<<<< HEAD
 			reset_reg_range_values(regs, insn->dst_reg);
 		else
 			dst_reg->min_value = (u64)(dst_reg->min_value) >> max_val;
 		if (dst_reg->max_value != BPF_REGISTER_MAX_RANGE)
 			dst_reg->max_value >>= min_val;
+=======
+			dst_reg->min_value = BPF_REGISTER_MIN_RANGE;
+		else
+			dst_reg->min_value =
+				(u64)(dst_reg->min_value) >> min_val;
+		if (dst_reg->max_value != BPF_REGISTER_MAX_RANGE)
+			dst_reg->max_value >>= max_val;
+>>>>>>> FETCH_HEAD
 		break;
 	default:
 		reset_reg_range_values(regs, insn->dst_reg);

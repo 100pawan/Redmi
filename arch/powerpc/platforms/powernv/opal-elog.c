@@ -183,14 +183,22 @@ static ssize_t raw_attr_read(struct file *filep, struct kobject *kobj,
 	return count;
 }
 
+<<<<<<< HEAD
 static void create_elog_obj(uint64_t id, size_t size, uint64_t type)
+=======
+static struct elog_obj *create_elog_obj(uint64_t id, size_t size, uint64_t type)
+>>>>>>> FETCH_HEAD
 {
 	struct elog_obj *elog;
 	int rc;
 
 	elog = kzalloc(sizeof(*elog), GFP_KERNEL);
 	if (!elog)
+<<<<<<< HEAD
 		return;
+=======
+		return NULL;
+>>>>>>> FETCH_HEAD
 
 	elog->kobj.kset = elog_kset;
 
@@ -223,6 +231,7 @@ static void create_elog_obj(uint64_t id, size_t size, uint64_t type)
 	rc = kobject_add(&elog->kobj, NULL, "0x%llx", id);
 	if (rc) {
 		kobject_put(&elog->kobj);
+<<<<<<< HEAD
 		return;
 	}
 
@@ -254,6 +263,20 @@ static void create_elog_obj(uint64_t id, size_t size, uint64_t type)
 	kobject_put(&elog->kobj);
 
 	return;
+=======
+		return NULL;
+	}
+
+	rc = sysfs_create_bin_file(&elog->kobj, &elog->raw_attr);
+	if (rc) {
+		kobject_put(&elog->kobj);
+		return NULL;
+	}
+
+	kobject_uevent(&elog->kobj, KOBJ_ADD);
+
+	return elog;
+>>>>>>> FETCH_HEAD
 }
 
 static irqreturn_t elog_event(int irq, void *data)

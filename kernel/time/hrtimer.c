@@ -865,9 +865,14 @@ static void __remove_hrtimer(struct hrtimer *timer,
 			     u8 newstate, int reprogram)
 {
 	struct hrtimer_cpu_base *cpu_base = base->cpu_base;
+<<<<<<< HEAD
 	u8 state = timer->state;
 
 	if (!(state & HRTIMER_STATE_ENQUEUED))
+=======
+
+	if (!(timer->state & HRTIMER_STATE_ENQUEUED))
+>>>>>>> FETCH_HEAD
 		goto out;
 
 	if (!timerqueue_del(&base->active, &timer->node))
@@ -892,7 +897,12 @@ out:
 	* migrating pinned hrtimers as well.
 	*/
 	/* Pairs with the lockless read in hrtimer_is_queued() */
+<<<<<<< HEAD
 	WRITE_ONCE(timer->state, newstate | (timer->state & HRTIMER_STATE_PINNED));
+=======
+	WRITE_ONCE(timer->state,
+		   newstate | (timer->state & HRTIMER_STATE_PINNED));
+>>>>>>> FETCH_HEAD
 }
 
 /*
@@ -921,8 +931,12 @@ remove_hrtimer(struct hrtimer *timer, struct hrtimer_clock_base *base, bool rest
 			state = HRTIMER_STATE_INACTIVE;
 
 		__remove_hrtimer(timer, base, state, reprogram);
+<<<<<<< HEAD
 		/* Pairs with the lockless read in hrtimer_is_queued() */
 		WRITE_ONCE(timer->state, timer->state & ~HRTIMER_STATE_PINNED);
+=======
+		timer->state &= ~HRTIMER_STATE_PINNED;
+>>>>>>> FETCH_HEAD
 		return 1;
 	}
 	return 0;
@@ -975,10 +989,15 @@ void hrtimer_start_range_ns(struct hrtimer *timer, ktime_t tim,
 	new_base = switch_hrtimer_base(timer, base, mode & HRTIMER_MODE_PINNED);
 
 	/* Update pinned state */
+<<<<<<< HEAD
 	/* Pairs with the lockless read in hrtimer_is_queued() */
 	WRITE_ONCE(timer->state, timer->state & ~HRTIMER_STATE_PINNED);
 	WRITE_ONCE(timer->state, timer->state |
 		   (!!(mode & HRTIMER_MODE_PINNED)) << HRTIMER_PINNED_SHIFT);
+=======
+	timer->state &= ~HRTIMER_STATE_PINNED;
+	timer->state |= (!!(mode & HRTIMER_MODE_PINNED)) << HRTIMER_PINNED_SHIFT;
+>>>>>>> FETCH_HEAD
 
 	leftmost = enqueue_hrtimer(timer, new_base);
 	if (!leftmost)
@@ -1561,10 +1580,17 @@ long hrtimer_nanosleep(struct timespec *rqtp, struct timespec __user *rmtp,
 	}
 
 	restart = &current->restart_block;
+<<<<<<< HEAD
 	restart->nanosleep.clockid = t.timer.base->clockid;
 	restart->nanosleep.rmtp = rmtp;
 	restart->nanosleep.expires = hrtimer_get_expires_tv64(&t.timer);
 	set_restart_fn(restart, hrtimer_nanosleep_restart);
+=======
+	restart->fn = hrtimer_nanosleep_restart;
+	restart->nanosleep.clockid = t.timer.base->clockid;
+	restart->nanosleep.rmtp = rmtp;
+	restart->nanosleep.expires = hrtimer_get_expires_tv64(&t.timer);
+>>>>>>> FETCH_HEAD
 
 	ret = -ERESTART_RESTARTBLOCK;
 out:

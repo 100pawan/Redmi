@@ -1762,6 +1762,10 @@ static int mod_sysfs_init(struct module *mod)
 	if (err)
 		mod_kobject_put(mod);
 
+<<<<<<< HEAD
+=======
+	/* delay uevent until full sysfs population */
+>>>>>>> FETCH_HEAD
 out:
 	return err;
 }
@@ -1795,6 +1799,10 @@ static int mod_sysfs_setup(struct module *mod,
 	add_sect_attrs(mod, info);
 	add_notes_attrs(mod, info);
 
+<<<<<<< HEAD
+=======
+	kobject_uevent(&mod->mkobj.kobj, KOBJ_ADD);
+>>>>>>> FETCH_HEAD
 	return 0;
 
 out_unreg_param:
@@ -2220,6 +2228,7 @@ static int verify_export_symbols(struct module *mod)
 	return 0;
 }
 
+<<<<<<< HEAD
 static bool ignore_undef_symbol(Elf_Half emachine, const char *name)
 {
 	/*
@@ -2235,6 +2244,8 @@ static bool ignore_undef_symbol(Elf_Half emachine, const char *name)
 	return false;
 }
 
+=======
+>>>>>>> FETCH_HEAD
 /* Change all symbols so that st_value encodes the pointer directly. */
 static int simplify_symbols(struct module *mod, const struct load_info *info)
 {
@@ -2280,10 +2291,15 @@ static int simplify_symbols(struct module *mod, const struct load_info *info)
 				break;
 			}
 
+<<<<<<< HEAD
 			/* Ok if weak or ignored.  */
 			if (!ksym &&
 			    (ELF_ST_BIND(sym[i].st_info) == STB_WEAK ||
 			     ignore_undef_symbol(info->hdr->e_machine, name)))
+=======
+			/* Ok if weak.  */
+			if (!ksym && ELF_ST_BIND(sym[i].st_info) == STB_WEAK)
+>>>>>>> FETCH_HEAD
 				break;
 
 			pr_warn("%s: Unknown symbol %s (err %li)\n",
@@ -2884,7 +2900,11 @@ static int copy_module_from_user(const void __user *umod, unsigned long len,
 
 	/* Suck in entire file: we'll want most of it. */
 	info->hdr = __vmalloc(info->len,
+<<<<<<< HEAD
 			GFP_KERNEL | __GFP_NOWARN, PAGE_KERNEL);
+=======
+			GFP_KERNEL | __GFP_HIGHMEM | __GFP_NOWARN, PAGE_KERNEL);
+>>>>>>> FETCH_HEAD
 	if (!info->hdr)
 		return -ENOMEM;
 
@@ -3458,9 +3478,12 @@ static noinline int do_init_module(struct module *mod)
 	blocking_notifier_call_chain(&module_notify_list,
 				     MODULE_STATE_LIVE, mod);
 
+<<<<<<< HEAD
 	/* Delay uevent until module has finished its init routine */
 	kobject_uevent(&mod->mkobj.kobj, KOBJ_ADD);
 
+=======
+>>>>>>> FETCH_HEAD
 	/*
 	 * We need to finish all async code before the module init sequence
 	 * is done.  This has potential to deadlock.  For example, a newly
@@ -3780,7 +3803,10 @@ static int load_module(struct load_info *info, const char __user *uargs,
 				     MODULE_STATE_GOING, mod);
 	klp_module_going(mod);
  bug_cleanup:
+<<<<<<< HEAD
 	mod->state = MODULE_STATE_GOING;
+=======
+>>>>>>> FETCH_HEAD
 	/* module_bug_cleanup needs module_mutex protection */
 	mutex_lock(&module_mutex);
 	module_bug_cleanup(mod);

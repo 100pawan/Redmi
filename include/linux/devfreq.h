@@ -167,7 +167,11 @@ struct devfreq {
 	struct list_head node;
 
 	struct mutex lock;
+<<<<<<< HEAD
 	struct mutex event_lock;
+=======
+	struct mutex sysfs_lock;
+>>>>>>> FETCH_HEAD
 	struct device dev;
 	struct devfreq_dev_profile *profile;
 	const struct devfreq_governor *governor;
@@ -182,8 +186,11 @@ struct devfreq {
 
 	unsigned long min_freq;
 	unsigned long max_freq;
+<<<<<<< HEAD
 	bool is_boost_device;
 	bool max_boost;
+=======
+>>>>>>> FETCH_HEAD
 	bool stop_polling;
 
 	/* information for device frequency transition */
@@ -314,8 +321,11 @@ struct devfreq_passive_data {
 	struct notifier_block nb;
 };
 #endif
+<<<<<<< HEAD
 /* Caution: devfreq->lock must be locked before calling update_devfreq */
 extern int update_devfreq(struct devfreq *devfreq);
+=======
+>>>>>>> FETCH_HEAD
 
 #else /* !CONFIG_PM_DEVFREQ */
 static inline struct devfreq *devfreq_add_device(struct device *dev,
@@ -422,11 +432,14 @@ static inline int devfreq_update_stats(struct devfreq *df)
 {
 	return -EINVAL;
 }
+<<<<<<< HEAD
 
 static inline int update_devfreq(struct devfreq *devfreq)
 {
 	return -EINVAL;
 }
+=======
+>>>>>>> FETCH_HEAD
 #endif /* CONFIG_PM_DEVFREQ */
 
 #endif /* __LINUX_DEVFREQ_H__ */

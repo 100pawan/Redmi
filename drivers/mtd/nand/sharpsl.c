@@ -192,7 +192,11 @@ static int sharpsl_nand_probe(struct platform_device *pdev)
 	return 0;
 
 err_add:
+<<<<<<< HEAD
 	nand_cleanup(this);
+=======
+	nand_release(mtd);
+>>>>>>> FETCH_HEAD
 
 err_scan:
 	iounmap(sharpsl->io);
@@ -210,7 +214,11 @@ static int sharpsl_nand_remove(struct platform_device *pdev)
 	struct sharpsl_nand *sharpsl = platform_get_drvdata(pdev);
 
 	/* Release resources, unregister device */
+<<<<<<< HEAD
 	nand_release(&sharpsl->chip);
+=======
+	nand_release(nand_to_mtd(&sharpsl->chip));
+>>>>>>> FETCH_HEAD
 
 	iounmap(sharpsl->io);
 

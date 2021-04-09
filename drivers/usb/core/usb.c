@@ -73,6 +73,7 @@ MODULE_PARM_DESC(autosuspend, "default autosuspend delay");
 
 
 /**
+<<<<<<< HEAD
  * usb_find_common_endpoints() -- look up common endpoint descriptors
  * @alt:	alternate setting to search
  * @bulk_in:	pointer to descriptor pointer, or NULL
@@ -156,6 +157,8 @@ int usb_find_common_endpoints(struct usb_host_interface *alt,
 EXPORT_SYMBOL_GPL(usb_find_common_endpoints);
 
 /**
+=======
+>>>>>>> FETCH_HEAD
  * usb_find_alt_setting() - Given a configuration, find the alternate setting
  * for the given interface.
  * @config: the configuration to search (not necessarily the current config).

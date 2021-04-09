@@ -20,61 +20,105 @@
 	})
 
 /* acceptable for old filesystems */
+<<<<<<< HEAD
 static __always_inline bool old_valid_dev(dev_t dev)
+=======
+static inline bool old_valid_dev(dev_t dev)
+>>>>>>> FETCH_HEAD
 {
 	return MAJOR(dev) < 256 && MINOR(dev) < 256;
 }
 
+<<<<<<< HEAD
 static __always_inline u16 old_encode_dev(dev_t dev)
+=======
+static inline u16 old_encode_dev(dev_t dev)
+>>>>>>> FETCH_HEAD
 {
 	return (MAJOR(dev) << 8) | MINOR(dev);
 }
 
+<<<<<<< HEAD
 static __always_inline dev_t old_decode_dev(u16 val)
+=======
+static inline dev_t old_decode_dev(u16 val)
+>>>>>>> FETCH_HEAD
 {
 	return MKDEV((val >> 8) & 255, val & 255);
 }
 
+<<<<<<< HEAD
 static __always_inline u32 new_encode_dev(dev_t dev)
+=======
+static inline u32 new_encode_dev(dev_t dev)
+>>>>>>> FETCH_HEAD
 {
 	unsigned major = MAJOR(dev);
 	unsigned minor = MINOR(dev);
 	return (minor & 0xff) | (major << 8) | ((minor & ~0xff) << 12);
 }
 
+<<<<<<< HEAD
 static __always_inline dev_t new_decode_dev(u32 dev)
+=======
+static inline dev_t new_decode_dev(u32 dev)
+>>>>>>> FETCH_HEAD
 {
 	unsigned major = (dev & 0xfff00) >> 8;
 	unsigned minor = (dev & 0xff) | ((dev >> 12) & 0xfff00);
 	return MKDEV(major, minor);
 }
 
+<<<<<<< HEAD
 static __always_inline u64 huge_encode_dev(dev_t dev)
+=======
+static inline u64 huge_encode_dev(dev_t dev)
+>>>>>>> FETCH_HEAD
 {
 	return new_encode_dev(dev);
 }
 
+<<<<<<< HEAD
 static __always_inline dev_t huge_decode_dev(u64 dev)
+=======
+static inline dev_t huge_decode_dev(u64 dev)
+>>>>>>> FETCH_HEAD
 {
 	return new_decode_dev(dev);
 }
 
+<<<<<<< HEAD
 static __always_inline int sysv_valid_dev(dev_t dev)
+=======
+static inline int sysv_valid_dev(dev_t dev)
+>>>>>>> FETCH_HEAD
 {
 	return MAJOR(dev) < (1<<14) && MINOR(dev) < (1<<18);
 }
 
+<<<<<<< HEAD
 static __always_inline u32 sysv_encode_dev(dev_t dev)
+=======
+static inline u32 sysv_encode_dev(dev_t dev)
+>>>>>>> FETCH_HEAD
 {
 	return MINOR(dev) | (MAJOR(dev) << 18);
 }
 
+<<<<<<< HEAD
 static __always_inline unsigned sysv_major(u32 dev)
+=======
+static inline unsigned sysv_major(u32 dev)
+>>>>>>> FETCH_HEAD
 {
 	return (dev >> 18) & 0x3fff;
 }
 
+<<<<<<< HEAD
 static __always_inline unsigned sysv_minor(u32 dev)
+=======
+static inline unsigned sysv_minor(u32 dev)
+>>>>>>> FETCH_HEAD
 {
 	return dev & 0x3ffff;
 }

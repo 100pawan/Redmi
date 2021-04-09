@@ -4571,12 +4571,18 @@ static int dwc3_msm_gadget_vbus_draw(struct dwc3_msm *mdwc, unsigned int mA)
 		goto set_prop;
 	}
 
+<<<<<<< HEAD
 	if (mdwc->max_power == mA || ((psy_type != POWER_SUPPLY_TYPE_USB) && (psy_type != POWER_SUPPLY_TYPE_USB_CDP)))
 		return 0;
 
     if((psy_type == POWER_SUPPLY_TYPE_USB_CDP) && (mA > 100))
 		mA = 1500;
 	
+=======
+	if (mdwc->max_power == mA || psy_type != POWER_SUPPLY_TYPE_USB)
+		return 0;
+
+>>>>>>> FETCH_HEAD
 	dev_info(mdwc->dev, "Avail curr from USB = %u\n", mA);
 	/* Set max current limit in uA */
 	pval.intval = 1000 * mA;
@@ -4671,6 +4677,7 @@ static void dwc3_otg_sm_work(struct work_struct *w)
 				atomic_read(&mdwc->dev->power.usage_count));
 			dwc3_otg_start_peripheral(mdwc, 1);
 			mdwc->drd_state = DRD_STATE_PERIPHERAL;
+<<<<<<< HEAD
 			if(!dwc->softconnect && get_psy_type(mdwc) == POWER_SUPPLY_TYPE_USB_CDP) {
 				u32 reg;
 				dbg_event(0xFF, "cdp pullup dp", 0);
@@ -4680,6 +4687,8 @@ static void dwc3_otg_sm_work(struct work_struct *w)
 				dwc3_writel(dwc->regs, DWC3_DCTL, reg);
 				break;
 			}
+=======
+>>>>>>> FETCH_HEAD
 			work = 1;
 		} else {
 			dwc3_msm_gadget_vbus_draw(mdwc, 0);

@@ -416,16 +416,26 @@ struct rb_event_info {
 
 /*
  * Used for which event context the event is in.
+<<<<<<< HEAD
  *  TRANSITION = 0
  *  NMI     = 1
  *  IRQ     = 2
  *  SOFTIRQ = 3
  *  NORMAL  = 4
+=======
+ *  NMI     = 0
+ *  IRQ     = 1
+ *  SOFTIRQ = 2
+ *  NORMAL  = 3
+>>>>>>> FETCH_HEAD
  *
  * See trace_recursive_lock() comment below for more details.
  */
 enum {
+<<<<<<< HEAD
 	RB_CTX_TRANSITION,
+=======
+>>>>>>> FETCH_HEAD
 	RB_CTX_NMI,
 	RB_CTX_IRQ,
 	RB_CTX_SOFTIRQ,
@@ -1652,18 +1662,30 @@ int ring_buffer_resize(struct ring_buffer *buffer, unsigned long size,
 {
 	struct ring_buffer_per_cpu *cpu_buffer;
 	unsigned long nr_pages;
+<<<<<<< HEAD
 	int cpu, err;
+=======
+	int cpu, err = 0;
+>>>>>>> FETCH_HEAD
 
 	/*
 	 * Always succeed at resizing a non-existent buffer:
 	 */
 	if (!buffer)
+<<<<<<< HEAD
 		return 0;
+=======
+		return size;
+>>>>>>> FETCH_HEAD
 
 	/* Make sure the requested buffer exists */
 	if (cpu_id != RING_BUFFER_ALL_CPUS &&
 	    !cpumask_test_cpu(cpu_id, buffer->cpumask))
+<<<<<<< HEAD
 		return 0;
+=======
+		return size;
+>>>>>>> FETCH_HEAD
 
 	nr_pages = DIV_ROUND_UP(size, BUF_PAGE_SIZE);
 
@@ -1803,7 +1825,11 @@ int ring_buffer_resize(struct ring_buffer *buffer, unsigned long size,
 	}
 
 	mutex_unlock(&buffer->mutex);
+<<<<<<< HEAD
 	return 0;
+=======
+	return size;
+>>>>>>> FETCH_HEAD
 
  out_err:
 	for_each_buffer_cpu(buffer, cpu) {
@@ -2581,10 +2607,17 @@ rb_wakeups(struct ring_buffer *buffer, struct ring_buffer_per_cpu *cpu_buffer)
  * a bit of overhead in something as critical as function tracing,
  * we use a bitmask trick.
  *
+<<<<<<< HEAD
  *  bit 1 =  NMI context
  *  bit 2 =  IRQ context
  *  bit 3 =  SoftIRQ context
  *  bit 4 =  normal context.
+=======
+ *  bit 0 =  NMI context
+ *  bit 1 =  IRQ context
+ *  bit 2 =  SoftIRQ context
+ *  bit 3 =  normal context.
+>>>>>>> FETCH_HEAD
  *
  * This works because this is the order of contexts that can
  * preempt other contexts. A SoftIRQ never preempts an IRQ
@@ -2607,6 +2640,7 @@ rb_wakeups(struct ring_buffer *buffer, struct ring_buffer_per_cpu *cpu_buffer)
  * The least significant bit can be cleared this way, and it
  * just so happens that it is the same bit corresponding to
  * the current context.
+<<<<<<< HEAD
  *
  * Now the TRANSITION bit breaks the above slightly. The TRANSITION bit
  * is set when a recursion is detected at the current context, and if
@@ -2631,6 +2665,8 @@ rb_wakeups(struct ring_buffer *buffer, struct ring_buffer_per_cpu *cpu_buffer)
  * set the TRANSITION bit and continue.
  *
  * Note: The TRANSITION bit only handles a single transition between context.
+=======
+>>>>>>> FETCH_HEAD
  */
 
 static __always_inline int
@@ -2649,6 +2685,7 @@ trace_recursive_lock(struct ring_buffer_per_cpu *cpu_buffer)
 	} else
 		bit = RB_CTX_NORMAL;
 
+<<<<<<< HEAD
 	if (unlikely(val & (1 << bit))) {
 		/*
 		 * It is possible that this was called by transitioning
@@ -2659,6 +2696,10 @@ trace_recursive_lock(struct ring_buffer_per_cpu *cpu_buffer)
 		if (val & (1 << bit))
 			return 1;
 	}
+=======
+	if (unlikely(val & (1 << bit)))
+		return 1;
+>>>>>>> FETCH_HEAD
 
 	val |= (1 << bit);
 	cpu_buffer->current_context = val;
@@ -4289,8 +4330,11 @@ void ring_buffer_reset_cpu(struct ring_buffer *buffer, int cpu)
 
 	if (!cpumask_test_cpu(cpu, buffer->cpumask))
 		return;
+<<<<<<< HEAD
 	/* prevent another thread from changing buffer sizes */
 	mutex_lock(&buffer->mutex);
+=======
+>>>>>>> FETCH_HEAD
 
 	atomic_inc(&buffer->resize_disabled);
 	atomic_inc(&cpu_buffer->record_disabled);
@@ -4314,8 +4358,11 @@ void ring_buffer_reset_cpu(struct ring_buffer *buffer, int cpu)
 
 	atomic_dec(&cpu_buffer->record_disabled);
 	atomic_dec(&buffer->resize_disabled);
+<<<<<<< HEAD
 
 	mutex_unlock(&buffer->mutex);
+=======
+>>>>>>> FETCH_HEAD
 }
 EXPORT_SYMBOL_GPL(ring_buffer_reset_cpu);
 

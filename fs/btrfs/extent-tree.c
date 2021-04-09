@@ -9435,6 +9435,11 @@ out:
 	 */
 	if (!for_reloc && root_dropped == false)
 		btrfs_add_dead_root(root);
+<<<<<<< HEAD
+=======
+	if (err && err != -EAGAIN)
+		btrfs_handle_fs_error(fs_info, err, NULL);
+>>>>>>> FETCH_HEAD
 	return err;
 }
 
@@ -10643,7 +10648,11 @@ int btrfs_remove_block_group(struct btrfs_trans_handle *trans,
 	path = btrfs_alloc_path();
 	if (!path) {
 		ret = -ENOMEM;
+<<<<<<< HEAD
 		goto out;
+=======
+		goto out_put_group;
+>>>>>>> FETCH_HEAD
 	}
 
 	/*
@@ -10682,7 +10691,11 @@ int btrfs_remove_block_group(struct btrfs_trans_handle *trans,
 		ret = btrfs_orphan_add(trans, inode);
 		if (ret) {
 			btrfs_add_delayed_iput(inode);
+<<<<<<< HEAD
 			goto out;
+=======
+			goto out_put_group;
+>>>>>>> FETCH_HEAD
 		}
 		clear_nlink(inode);
 		/* One for the block groups ref */
@@ -10705,13 +10718,21 @@ int btrfs_remove_block_group(struct btrfs_trans_handle *trans,
 
 	ret = btrfs_search_slot(trans, tree_root, &key, path, -1, 1);
 	if (ret < 0)
+<<<<<<< HEAD
 		goto out;
+=======
+		goto out_put_group;
+>>>>>>> FETCH_HEAD
 	if (ret > 0)
 		btrfs_release_path(path);
 	if (ret == 0) {
 		ret = btrfs_del_item(trans, tree_root, path);
 		if (ret)
+<<<<<<< HEAD
 			goto out;
+=======
+			goto out_put_group;
+>>>>>>> FETCH_HEAD
 		btrfs_release_path(path);
 	}
 
@@ -10720,9 +10741,12 @@ int btrfs_remove_block_group(struct btrfs_trans_handle *trans,
 		 &root->fs_info->block_group_cache_tree);
 	RB_CLEAR_NODE(&block_group->cache_node);
 
+<<<<<<< HEAD
 	/* Once for the block groups rbtree */
 	btrfs_put_block_group(block_group);
 
+=======
+>>>>>>> FETCH_HEAD
 	if (root->fs_info->first_logical_byte == block_group->key.objectid)
 		root->fs_info->first_logical_byte = (u64)-1;
 	spin_unlock(&root->fs_info->block_group_cache_lock);
@@ -10872,7 +10896,14 @@ int btrfs_remove_block_group(struct btrfs_trans_handle *trans,
 
 	ret = remove_block_group_free_space(trans, root->fs_info, block_group);
 	if (ret)
+<<<<<<< HEAD
 		goto out;
+=======
+		goto out_put_group;
+
+	/* Once for the block groups rbtree */
+	btrfs_put_block_group(block_group);
+>>>>>>> FETCH_HEAD
 
 	ret = btrfs_search_slot(trans, root, &key, path, -1, 1);
 	if (ret > 0)
@@ -10882,9 +10913,16 @@ int btrfs_remove_block_group(struct btrfs_trans_handle *trans,
 
 	ret = btrfs_del_item(trans, root, path);
 
+<<<<<<< HEAD
 out:
 	/* Once for the lookup reference */
 	btrfs_put_block_group(block_group);
+=======
+out_put_group:
+	/* Once for the lookup reference */
+	btrfs_put_block_group(block_group);
+out:
+>>>>>>> FETCH_HEAD
 	btrfs_free_path(path);
 	return ret;
 }

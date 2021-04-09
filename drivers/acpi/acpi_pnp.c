@@ -320,9 +320,12 @@ static bool matching_id(const char *idstr, const char *list_id)
 {
 	int i;
 
+<<<<<<< HEAD
 	if (strlen(idstr) != strlen(list_id))
 		return false;
 
+=======
+>>>>>>> FETCH_HEAD
 	if (memcmp(idstr, list_id, 3))
 		return false;
 

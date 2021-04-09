@@ -1995,7 +1995,11 @@ static int nfsiod_start(void)
 {
 	struct workqueue_struct *wq;
 	dprintk("RPC:       creating workqueue nfsiod\n");
+<<<<<<< HEAD
 	wq = alloc_workqueue("nfsiod", WQ_MEM_RECLAIM | WQ_UNBOUND, 0);
+=======
+	wq = alloc_workqueue("nfsiod", WQ_MEM_RECLAIM, 0);
+>>>>>>> FETCH_HEAD
 	if (wq == NULL)
 		return -ENOMEM;
 	nfsiod_workqueue = wq;

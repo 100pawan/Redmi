@@ -341,7 +341,11 @@ static int ni6527_intr_insn_config(struct comedi_device *dev,
 		case COMEDI_DIGITAL_TRIG_ENABLE_EDGES:
 			/* check shift amount */
 			shift = data[3];
+<<<<<<< HEAD
 			if (shift >= 32) {
+=======
+			if (shift >= s->n_chan) {
+>>>>>>> FETCH_HEAD
 				mask = 0;
 				rising = 0;
 				falling = 0;

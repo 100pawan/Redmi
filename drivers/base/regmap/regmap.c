@@ -1239,7 +1239,11 @@ static int dev_get_regmap_match(struct device *dev, void *res, void *data)
 
 	/* If the user didn't specify a name match any */
 	if (data)
+<<<<<<< HEAD
 		return !strcmp((*r)->name, data);
+=======
+		return (*r)->name == data;
+>>>>>>> FETCH_HEAD
 	else
 		return 1;
 }

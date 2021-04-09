@@ -678,16 +678,34 @@ static int stmmac_ethtool_op_set_eee(struct net_device *dev,
 	struct stmmac_priv *priv = netdev_priv(dev);
 	int ret;
 
+<<<<<<< HEAD
 	if (!priv->dma_cap.eee)
 		return -EOPNOTSUPP;
 
 	if (!edata->eee_enabled)
 		stmmac_disable_eee_mode(priv);
+=======
+	if (!edata->eee_enabled) {
+		stmmac_disable_eee_mode(priv);
+	} else {
+		/* We are asking for enabling the EEE but it is safe
+		 * to verify all by invoking the eee_init function.
+		 * In case of failure it will return an error.
+		 */
+		edata->eee_enabled = stmmac_eee_init(priv);
+		if (!edata->eee_enabled)
+			return -EOPNOTSUPP;
+	}
+>>>>>>> FETCH_HEAD
 
 	ret = phy_ethtool_set_eee(dev->phydev, edata);
 	if (ret)
 		return ret;
 
+<<<<<<< HEAD
+=======
+	priv->eee_enabled = edata->eee_enabled;
+>>>>>>> FETCH_HEAD
 	priv->tx_lpi_timer = edata->tx_lpi_timer;
 	return 0;
 }

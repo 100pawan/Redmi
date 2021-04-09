@@ -217,7 +217,10 @@ static struct platform_driver ls1x_cpufreq_platdrv = {
 
 module_platform_driver(ls1x_cpufreq_platdrv);
 
+<<<<<<< HEAD
 MODULE_ALIAS("platform:ls1x-cpufreq");
+=======
+>>>>>>> FETCH_HEAD
 MODULE_AUTHOR("Kelvin Cheung <keguang.zhang@gmail.com>");
 MODULE_DESCRIPTION("Loongson1 CPUFreq driver");
 MODULE_LICENSE("GPL");

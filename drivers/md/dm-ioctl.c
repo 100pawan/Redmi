@@ -1549,7 +1549,10 @@ static int target_message(struct dm_ioctl *param, size_t param_size)
 
 	if (!argc) {
 		DMWARN("Empty message received.");
+<<<<<<< HEAD
 		r = -EINVAL;
+=======
+>>>>>>> FETCH_HEAD
 		goto out_argv;
 	}
 

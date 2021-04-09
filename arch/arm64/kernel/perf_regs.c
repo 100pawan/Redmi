@@ -13,6 +13,7 @@ u64 perf_reg_value(struct pt_regs *regs, int idx)
 		return 0;
 
 	/*
+<<<<<<< HEAD
 	 * Our handling of compat tasks (PERF_SAMPLE_REGS_ABI_32) is weird, but
 	 * we're stuck with it for ABI compatability reasons.
 	 *
@@ -33,14 +34,22 @@ u64 perf_reg_value(struct pt_regs *regs, int idx)
 	 *
 	 * At the time we make a sample, we don't know whether the consumer is
 	 * 32-bit or 64-bit, so we have to cater for both possibilities.
+=======
+	 * Compat (i.e. 32 bit) mode:
+	 * - PC has been set in the pt_regs struct in kernel_entry,
+	 * - Handle SP and LR here.
+>>>>>>> FETCH_HEAD
 	 */
 	if (compat_user_mode(regs)) {
 		if ((u32)idx == PERF_REG_ARM64_SP)
 			return regs->compat_sp;
 		if ((u32)idx == PERF_REG_ARM64_LR)
 			return regs->compat_lr;
+<<<<<<< HEAD
 		if (idx == 15)
 			return regs->pc;
+=======
+>>>>>>> FETCH_HEAD
 	}
 
 	if ((u32)idx == PERF_REG_ARM64_SP)

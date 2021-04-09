@@ -987,10 +987,16 @@ done:
 	return IRQ_WAKE_THREAD;
 }
 
+<<<<<<< HEAD
 static irqreturn_t eof_irq(int irq, void *data)
 {
 	struct ipu_image_convert_chan *chan = data;
 	struct ipu_image_convert_priv *priv = chan->priv;
+=======
+static irqreturn_t norotate_irq(int irq, void *data)
+{
+	struct ipu_image_convert_chan *chan = data;
+>>>>>>> FETCH_HEAD
 	struct ipu_image_convert_ctx *ctx;
 	struct ipu_image_convert_run *run;
 	unsigned long flags;
@@ -1007,6 +1013,7 @@ static irqreturn_t eof_irq(int irq, void *data)
 
 	ctx = run->ctx;
 
+<<<<<<< HEAD
 	if (irq == chan->out_eof_irq) {
 		if (ipu_rot_mode_is_irt(ctx->rot_mode)) {
 			/* this is a rotation op, just ignore */
@@ -1023,10 +1030,50 @@ static irqreturn_t eof_irq(int irq, void *data)
 		}
 	} else {
 		dev_err(priv->ipu->dev, "Received unknown irq %d\n", irq);
+=======
+	if (ipu_rot_mode_is_irt(ctx->rot_mode)) {
+		/* this is a rotation operation, just ignore */
+		spin_unlock_irqrestore(&chan->irqlock, flags);
+		return IRQ_HANDLED;
+	}
+
+	ret = do_irq(run);
+out:
+	spin_unlock_irqrestore(&chan->irqlock, flags);
+	return ret;
+}
+
+static irqreturn_t rotate_irq(int irq, void *data)
+{
+	struct ipu_image_convert_chan *chan = data;
+	struct ipu_image_convert_priv *priv = chan->priv;
+	struct ipu_image_convert_ctx *ctx;
+	struct ipu_image_convert_run *run;
+	unsigned long flags;
+	irqreturn_t ret;
+
+	spin_lock_irqsave(&chan->irqlock, flags);
+
+	/* get current run and its context */
+	run = chan->current_run;
+	if (!run) {
+>>>>>>> FETCH_HEAD
 		ret = IRQ_NONE;
 		goto out;
 	}
 
+<<<<<<< HEAD
+=======
+	ctx = run->ctx;
+
+	if (!ipu_rot_mode_is_irt(ctx->rot_mode)) {
+		/* this was NOT a rotation operation, shouldn't happen */
+		dev_err(priv->ipu->dev, "Unexpected rotation interrupt\n");
+		spin_unlock_irqrestore(&chan->irqlock, flags);
+		return IRQ_HANDLED;
+	}
+
+>>>>>>> FETCH_HEAD
 	ret = do_irq(run);
 out:
 	spin_unlock_irqrestore(&chan->irqlock, flags);
@@ -1119,7 +1166,11 @@ static int get_ipu_resources(struct ipu_image_convert_chan *chan)
 						  chan->out_chan,
 						  IPU_IRQ_EOF);
 
+<<<<<<< HEAD
 	ret = request_threaded_irq(chan->out_eof_irq, eof_irq, do_bh,
+=======
+	ret = request_threaded_irq(chan->out_eof_irq, norotate_irq, do_bh,
+>>>>>>> FETCH_HEAD
 				   0, "ipu-ic", chan);
 	if (ret < 0) {
 		dev_err(priv->ipu->dev, "could not acquire irq %d\n",
@@ -1132,7 +1183,11 @@ static int get_ipu_resources(struct ipu_image_convert_chan *chan)
 						     chan->rotation_out_chan,
 						     IPU_IRQ_EOF);
 
+<<<<<<< HEAD
 	ret = request_threaded_irq(chan->rot_out_eof_irq, eof_irq, do_bh,
+=======
+	ret = request_threaded_irq(chan->rot_out_eof_irq, rotate_irq, do_bh,
+>>>>>>> FETCH_HEAD
 				   0, "ipu-ic", chan);
 	if (ret < 0) {
 		dev_err(priv->ipu->dev, "could not acquire irq %d\n",

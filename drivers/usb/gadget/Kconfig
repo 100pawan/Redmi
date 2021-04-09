@@ -297,7 +297,10 @@ config USB_CONFIGFS_NCM
 	depends on NET
 	select USB_U_ETHER
 	select USB_F_NCM
+<<<<<<< HEAD
 	select CRC32
+=======
+>>>>>>> FETCH_HEAD
 	help
 	  NCM is an advanced protocol for Ethernet encapsulation, allows
 	  grouping of several ethernet frames into one USB transfer and
@@ -363,7 +366,10 @@ config USB_CONFIGFS_EEM
 	depends on NET
 	select USB_U_ETHER
 	select USB_F_EEM
+<<<<<<< HEAD
 	select CRC32
+=======
+>>>>>>> FETCH_HEAD
 	help
 	  CDC EEM is a newer USB standard that is somewhat simpler than CDC ECM
 	  and therefore can be supported by more hardware.  Technically ECM and

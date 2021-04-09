@@ -213,7 +213,11 @@ static int hp_sdc_mlc_cts(hil_mlc *mlc)
 	priv->tseq[2] = 1;
 	priv->tseq[3] = 0;
 	priv->tseq[4] = 0;
+<<<<<<< HEAD
 	return __hp_sdc_enqueue_transaction(&priv->trans);
+=======
+	__hp_sdc_enqueue_transaction(&priv->trans);
+>>>>>>> FETCH_HEAD
  busy:
 	return 1;
  done:
@@ -222,7 +226,11 @@ static int hp_sdc_mlc_cts(hil_mlc *mlc)
 	return 0;
 }
 
+<<<<<<< HEAD
 static int hp_sdc_mlc_out(hil_mlc *mlc)
+=======
+static void hp_sdc_mlc_out(hil_mlc *mlc)
+>>>>>>> FETCH_HEAD
 {
 	struct hp_sdc_mlc_priv_s *priv;
 
@@ -237,7 +245,11 @@ static int hp_sdc_mlc_out(hil_mlc *mlc)
  do_data:
 	if (priv->emtestmode) {
 		up(&mlc->osem);
+<<<<<<< HEAD
 		return 0;
+=======
+		return;
+>>>>>>> FETCH_HEAD
 	}
 	/* Shouldn't be sending commands when loop may be busy */
 	BUG_ON(down_trylock(&mlc->csem));
@@ -299,7 +311,11 @@ static int hp_sdc_mlc_out(hil_mlc *mlc)
 		BUG_ON(down_trylock(&mlc->csem));
 	}
  enqueue:
+<<<<<<< HEAD
 	return hp_sdc_enqueue_transaction(&priv->trans);
+=======
+	hp_sdc_enqueue_transaction(&priv->trans);
+>>>>>>> FETCH_HEAD
 }
 
 static int __init hp_sdc_mlc_init(void)

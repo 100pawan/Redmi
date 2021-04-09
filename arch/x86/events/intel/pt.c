@@ -1117,7 +1117,11 @@ static int pt_event_addr_filters_validate(struct list_head *filters)
 		if (!filter->range || !filter->size)
 			return -EOPNOTSUPP;
 
+<<<<<<< HEAD
 		if (!filter->path.dentry) {
+=======
+		if (!filter->inode) {
+>>>>>>> FETCH_HEAD
 			if (!valid_kernel_ip(filter->offset))
 				return -EINVAL;
 
@@ -1144,7 +1148,11 @@ static void pt_event_addr_filters_sync(struct perf_event *event)
 		return;
 
 	list_for_each_entry(filter, &head->list, entry) {
+<<<<<<< HEAD
 		if (filter->path.dentry && !offs[range]) {
+=======
+		if (filter->inode && !offs[range]) {
+>>>>>>> FETCH_HEAD
 			msr_a = msr_b = 0;
 		} else {
 			/* apply the offset */

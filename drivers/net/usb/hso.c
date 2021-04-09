@@ -1404,9 +1404,14 @@ static void hso_serial_set_termios(struct tty_struct *tty, struct ktermios *old)
 	unsigned long flags;
 
 	if (old)
+<<<<<<< HEAD
 		hso_dbg(0x16, "Termios called with: cflags new[%u] - old[%u]\n",
 			(unsigned int)tty->termios.c_cflag,
 			(unsigned int)old->c_cflag);
+=======
+		hso_dbg(0x16, "Termios called with: cflags new[%d] - old[%d]\n",
+			tty->termios.c_cflag, old->c_cflag);
+>>>>>>> FETCH_HEAD
 
 	/* the actual setup */
 	spin_lock_irqsave(&serial->serial_lock, flags);
@@ -2274,14 +2279,21 @@ static int hso_serial_common_create(struct hso_serial *serial, int num_urbs,
 
 	minor = get_free_serial_index();
 	if (minor < 0)
+<<<<<<< HEAD
 		goto exit2;
+=======
+		goto exit;
+>>>>>>> FETCH_HEAD
 
 	/* register our minor number */
 	serial->parent->dev = tty_port_register_device_attr(&serial->port,
 			tty_drv, minor, &serial->parent->interface->dev,
 			serial->parent, hso_serial_dev_groups);
+<<<<<<< HEAD
 	if (IS_ERR(serial->parent->dev))
 		goto exit2;
+=======
+>>>>>>> FETCH_HEAD
 	dev = serial->parent->dev;
 
 	/* fill in specific data for later use */
@@ -2327,7 +2339,10 @@ static int hso_serial_common_create(struct hso_serial *serial, int num_urbs,
 	return 0;
 exit:
 	hso_serial_tty_unregister(serial);
+<<<<<<< HEAD
 exit2:
+=======
+>>>>>>> FETCH_HEAD
 	hso_serial_common_free(serial);
 	return -1;
 }

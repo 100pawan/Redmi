@@ -6479,8 +6479,17 @@ void cgroup_sk_alloc_disable(void)
 
 void cgroup_sk_alloc(struct sock_cgroup_data *skcd)
 {
+<<<<<<< HEAD
 	if (cgroup_sk_alloc_disabled) {
 		skcd->no_refcnt = 1;
+=======
+	if (cgroup_sk_alloc_disabled)
+		return;
+
+	/* Socket clone path */
+	if (skcd->val) {
+		cgroup_get(sock_cgroup_ptr(skcd));
+>>>>>>> FETCH_HEAD
 		return;
 	}
 
@@ -6504,6 +6513,7 @@ void cgroup_sk_alloc(struct sock_cgroup_data *skcd)
 	rcu_read_unlock();
 }
 
+<<<<<<< HEAD
 void cgroup_sk_clone(struct sock_cgroup_data *skcd)
 {
 	/* Socket clone path */
@@ -6524,6 +6534,10 @@ void cgroup_sk_free(struct sock_cgroup_data *skcd)
 	if (skcd->no_refcnt)
 		return;
 
+=======
+void cgroup_sk_free(struct sock_cgroup_data *skcd)
+{
+>>>>>>> FETCH_HEAD
 	cgroup_put(sock_cgroup_ptr(skcd));
 }
 

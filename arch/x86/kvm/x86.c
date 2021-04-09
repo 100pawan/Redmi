@@ -97,7 +97,10 @@ static u64 __read_mostly efer_reserved_bits = ~((u64)EFER_SCE);
 
 static void update_cr8_intercept(struct kvm_vcpu *vcpu);
 static void process_nmi(struct kvm_vcpu *vcpu);
+<<<<<<< HEAD
 static void process_smi(struct kvm_vcpu *vcpu);
+=======
+>>>>>>> FETCH_HEAD
 static void enter_smm(struct kvm_vcpu *vcpu);
 static void __kvm_set_rflags(struct kvm_vcpu *vcpu, unsigned long rflags);
 
@@ -2305,7 +2308,11 @@ int kvm_set_msr_common(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
 		return kvm_mtrr_set_msr(vcpu, msr, data);
 	case MSR_IA32_APICBASE:
 		return kvm_set_apic_base(vcpu, msr_info);
+<<<<<<< HEAD
 	case APIC_BASE_MSR ... APIC_BASE_MSR + 0xff:
+=======
+	case APIC_BASE_MSR ... APIC_BASE_MSR + 0x3ff:
+>>>>>>> FETCH_HEAD
 		return kvm_x2apic_msr_write(vcpu, msr, data);
 	case MSR_IA32_TSCDEADLINE:
 		kvm_set_lapic_tscdeadline_msr(vcpu, data);
@@ -2577,7 +2584,11 @@ int kvm_get_msr_common(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
 	case MSR_IA32_APICBASE:
 		msr_info->data = kvm_get_apic_base(vcpu);
 		break;
+<<<<<<< HEAD
 	case APIC_BASE_MSR ... APIC_BASE_MSR + 0xff:
+=======
+	case APIC_BASE_MSR ... APIC_BASE_MSR + 0x3ff:
+>>>>>>> FETCH_HEAD
 		return kvm_x2apic_msr_read(vcpu, msr_info->index, &msr_info->data);
 		break;
 	case MSR_IA32_TSCDEADLINE:
@@ -3200,10 +3211,13 @@ static void kvm_vcpu_ioctl_x86_get_vcpu_events(struct kvm_vcpu *vcpu,
 					       struct kvm_vcpu_events *events)
 {
 	process_nmi(vcpu);
+<<<<<<< HEAD
 
 	if (kvm_check_request(KVM_REQ_SMI, vcpu))
 		process_smi(vcpu);
 
+=======
+>>>>>>> FETCH_HEAD
 	events->exception.injected =
 		vcpu->arch.exception.pending &&
 		!kvm_exception_is_soft(vcpu->arch.exception.nr);
@@ -4268,6 +4282,7 @@ long kvm_arch_vm_ioctl(struct file *filp,
 		r = -EFAULT;
 		if (copy_from_user(&u.ps, argp, sizeof u.ps))
 			goto out;
+<<<<<<< HEAD
 		mutex_lock(&kvm->lock);
 		r = -ENXIO;
 		if (!kvm->arch.vpit)
@@ -4275,6 +4290,12 @@ long kvm_arch_vm_ioctl(struct file *filp,
 		r = kvm_vm_ioctl_set_pit(kvm, &u.ps);
 set_pit_out:
 		mutex_unlock(&kvm->lock);
+=======
+		r = -ENXIO;
+		if (!kvm->arch.vpit)
+			goto out;
+		r = kvm_vm_ioctl_set_pit(kvm, &u.ps);
+>>>>>>> FETCH_HEAD
 		break;
 	}
 	case KVM_GET_PIT2: {
@@ -4294,6 +4315,7 @@ set_pit_out:
 		r = -EFAULT;
 		if (copy_from_user(&u.ps2, argp, sizeof(u.ps2)))
 			goto out;
+<<<<<<< HEAD
 		mutex_lock(&kvm->lock);
 		r = -ENXIO;
 		if (!kvm->arch.vpit)
@@ -4301,6 +4323,12 @@ set_pit_out:
 		r = kvm_vm_ioctl_set_pit2(kvm, &u.ps2);
 set_pit2_out:
 		mutex_unlock(&kvm->lock);
+=======
+		r = -ENXIO;
+		if (!kvm->arch.vpit)
+			goto out;
+		r = kvm_vm_ioctl_set_pit2(kvm, &u.ps2);
+>>>>>>> FETCH_HEAD
 		break;
 	}
 	case KVM_REINJECT_CONTROL: {
@@ -8347,13 +8375,21 @@ int kvm_arch_create_memslot(struct kvm *kvm, struct kvm_memory_slot *slot,
 				      slot->base_gfn, level) + 1;
 
 		slot->arch.rmap[i] =
+<<<<<<< HEAD
 			kvzalloc(lpages * sizeof(*slot->arch.rmap[i]), GFP_KERNEL);
+=======
+			kvm_kvzalloc(lpages * sizeof(*slot->arch.rmap[i]));
+>>>>>>> FETCH_HEAD
 		if (!slot->arch.rmap[i])
 			goto out_free;
 		if (i == 0)
 			continue;
 
+<<<<<<< HEAD
 		linfo = kvzalloc(lpages * sizeof(*linfo), GFP_KERNEL);
+=======
+		linfo = kvm_kvzalloc(lpages * sizeof(*linfo));
+>>>>>>> FETCH_HEAD
 		if (!linfo)
 			goto out_free;
 

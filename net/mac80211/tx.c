@@ -806,6 +806,7 @@ ieee80211_tx_h_sequence(struct ieee80211_tx_data *tx)
 
 	/*
 	 * Packet injection may want to control the sequence
+<<<<<<< HEAD
 	 * number, so if an injected packet is found, skip
 	 * renumbering it. Also make the packet NO_ACK to avoid
 	 * excessive retries (ACKing and retrying should be
@@ -819,6 +820,13 @@ ieee80211_tx_h_sequence(struct ieee80211_tx_data *tx)
 			info->flags |= IEEE80211_TX_CTL_NO_ACK;
 		return TX_CONTINUE;
 	}
+=======
+	 * number, if we have no matching interface then we
+	 * neither assign one ourselves nor ask the driver to.
+	 */
+	if (unlikely(info->control.vif->type == NL80211_IFTYPE_MONITOR))
+		return TX_CONTINUE;
+>>>>>>> FETCH_HEAD
 
 	if (unlikely(ieee80211_is_ctl(hdr->frame_control)))
 		return TX_CONTINUE;
@@ -1855,6 +1863,7 @@ static bool ieee80211_tx(struct ieee80211_sub_if_data *sdata,
 
 /* device xmit handlers */
 
+<<<<<<< HEAD
 enum ieee80211_encrypt {
 	ENCRYPT_NO,
 	ENCRYPT_MGMT,
@@ -1873,6 +1882,21 @@ static int ieee80211_skb_resize(struct ieee80211_sub_if_data *sdata,
 	enc_tailroom = encrypt == ENCRYPT_MGMT ||
 		       (encrypt == ENCRYPT_DATA &&
 			sdata->crypto_tx_tailroom_needed_cnt);
+=======
+static int ieee80211_skb_resize(struct ieee80211_sub_if_data *sdata,
+				struct sk_buff *skb,
+				int head_need, bool may_encrypt)
+{
+	struct ieee80211_local *local = sdata->local;
+	struct ieee80211_hdr *hdr;
+	bool enc_tailroom;
+	int tail_need = 0;
+
+	hdr = (struct ieee80211_hdr *) skb->data;
+	enc_tailroom = may_encrypt &&
+		       (sdata->crypto_tx_tailroom_needed_cnt ||
+			ieee80211_is_mgmt(hdr->frame_control));
+>>>>>>> FETCH_HEAD
 
 	if (enc_tailroom) {
 		tail_need = IEEE80211_ENCRYPT_TAILROOM;
@@ -1905,6 +1929,7 @@ void ieee80211_xmit(struct ieee80211_sub_if_data *sdata,
 	struct ieee80211_tx_info *info = IEEE80211_SKB_CB(skb);
 	struct ieee80211_hdr *hdr = (struct ieee80211_hdr *) skb->data;
 	int headroom;
+<<<<<<< HEAD
 	enum ieee80211_encrypt encrypt;
 
 	if (info->flags & IEEE80211_TX_INTFL_DONT_ENCRYPT)
@@ -1916,16 +1941,31 @@ void ieee80211_xmit(struct ieee80211_sub_if_data *sdata,
 
 	headroom = local->tx_headroom;
 	if (encrypt != ENCRYPT_NO)
+=======
+	bool may_encrypt;
+
+	may_encrypt = !(info->flags & IEEE80211_TX_INTFL_DONT_ENCRYPT);
+
+	headroom = local->tx_headroom;
+	if (may_encrypt)
+>>>>>>> FETCH_HEAD
 		headroom += sdata->encrypt_headroom;
 	headroom -= skb_headroom(skb);
 	headroom = max_t(int, 0, headroom);
 
+<<<<<<< HEAD
 	if (ieee80211_skb_resize(sdata, skb, headroom, encrypt)) {
+=======
+	if (ieee80211_skb_resize(sdata, skb, headroom, may_encrypt)) {
+>>>>>>> FETCH_HEAD
 		ieee80211_free_txskb(&local->hw, skb);
 		return;
 	}
 
+<<<<<<< HEAD
 	/* reload after potential resize */
+=======
+>>>>>>> FETCH_HEAD
 	hdr = (struct ieee80211_hdr *) skb->data;
 	info->control.vif = &sdata->vif;
 
@@ -1939,10 +1979,14 @@ void ieee80211_xmit(struct ieee80211_sub_if_data *sdata,
 		}
 	}
 
+<<<<<<< HEAD
         // Don't overwrite QoS header in monitor mode
         if (likely(info->control.vif->type != NL80211_IFTYPE_MONITOR)) {
             ieee80211_set_qos_hdr(sdata, skb);
         }
+=======
+	ieee80211_set_qos_hdr(sdata, skb);
+>>>>>>> FETCH_HEAD
 	ieee80211_tx(sdata, sta, skb, false);
 }
 
@@ -2710,7 +2754,11 @@ static struct sk_buff *ieee80211_build_hdr(struct ieee80211_sub_if_data *sdata,
 		head_need += sdata->encrypt_headroom;
 		head_need += local->tx_headroom;
 		head_need = max_t(int, 0, head_need);
+<<<<<<< HEAD
 		if (ieee80211_skb_resize(sdata, skb, head_need, ENCRYPT_DATA)) {
+=======
+		if (ieee80211_skb_resize(sdata, skb, head_need, true)) {
+>>>>>>> FETCH_HEAD
 			ieee80211_free_txskb(&local->hw, skb);
 			skb = NULL;
 			return ERR_PTR(-ENOMEM);
@@ -3335,7 +3383,11 @@ static bool ieee80211_xmit_fast(struct ieee80211_sub_if_data *sdata,
 	if (unlikely(ieee80211_skb_resize(sdata, skb,
 					  max_t(int, extra_head + hw_headroom -
 						     skb_headroom(skb), 0),
+<<<<<<< HEAD
 					  ENCRYPT_NO))) {
+=======
+					  false))) {
+>>>>>>> FETCH_HEAD
 		kfree_skb(skb);
 		return true;
 	}

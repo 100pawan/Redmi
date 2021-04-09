@@ -28,6 +28,7 @@
 
 #include <linux/types.h>
 
+<<<<<<< HEAD
 /**
  * enum fe_caps - Frontend capabilities
  *
@@ -68,6 +69,15 @@
  *					automatically
  * @FE_CAN_MUTE_TS:			Can stop spurious TS data output
  */
+=======
+enum fe_type {
+	FE_QPSK,
+	FE_QAM,
+	FE_OFDM,
+	FE_ATSC
+};
+
+>>>>>>> FETCH_HEAD
 enum fe_caps {
 	FE_IS_STUPID			= 0,
 	FE_CAN_INVERSION_AUTO		= 0x1,
@@ -93,6 +103,7 @@ enum fe_caps {
 	FE_CAN_HIERARCHY_AUTO		= 0x100000,
 	FE_CAN_8VSB			= 0x200000,
 	FE_CAN_16VSB			= 0x400000,
+<<<<<<< HEAD
 	FE_HAS_EXTENDED_CAPS		= 0x800000,
 	FE_CAN_MULTISTREAM		= 0x4000000,
 	FE_CAN_TURBO_FEC		= 0x8000000,
@@ -142,6 +153,17 @@ enum fe_type {
  *       systems.
  *    #. The frequencies are specified in kHz for Satellite systems.
  */
+=======
+	FE_HAS_EXTENDED_CAPS		= 0x800000,   /* We need more bitspace for newer APIs, indicate this. */
+	FE_CAN_MULTISTREAM		= 0x4000000,  /* frontend supports multistream filtering */
+	FE_CAN_TURBO_FEC		= 0x8000000,  /* frontend supports "turbo fec modulation" */
+	FE_CAN_2G_MODULATION		= 0x10000000, /* frontend supports "2nd generation modulation" (DVB-S2) */
+	FE_NEEDS_BENDING		= 0x20000000, /* not supported anymore, don't use (frontend requires frequency bending) */
+	FE_CAN_RECOVER			= 0x40000000, /* frontend can recover from a cable unplug automatically */
+	FE_CAN_MUTE_TS			= 0x80000000  /* frontend can stop spurious TS data output */
+};
+
+>>>>>>> FETCH_HEAD
 struct dvb_frontend_info {
 	char       name[128];
 	enum fe_type type;	/* DEPRECATED. Use DTV_ENUM_DELSYS instead */
@@ -151,11 +173,16 @@ struct dvb_frontend_info {
 	__u32      frequency_tolerance;
 	__u32      symbol_rate_min;
 	__u32      symbol_rate_max;
+<<<<<<< HEAD
 	__u32      symbol_rate_tolerance;
+=======
+	__u32      symbol_rate_tolerance;	/* ppm */
+>>>>>>> FETCH_HEAD
 	__u32      notifier_delay;		/* DEPRECATED */
 	enum fe_caps caps;
 };
 
+<<<<<<< HEAD
 /**
  * struct dvb_diseqc_master_cmd - DiSEqC master command
  *
@@ -204,23 +231,45 @@ struct dvb_diseqc_slave_reply {
  * @SEC_VOLTAGE_18:	Output 18V to the LNBf
  * @SEC_VOLTAGE_OFF:	Don't feed the LNBf with a DC voltage
  */
+=======
+
+/**
+ *  Check out the DiSEqC bus spec available on http://www.eutelsat.org/ for
+ *  the meaning of this struct...
+ */
+struct dvb_diseqc_master_cmd {
+	__u8 msg [6];	/*  { framing, address, command, data [3] } */
+	__u8 msg_len;	/*  valid values are 3...6  */
+};
+
+struct dvb_diseqc_slave_reply {
+	__u8 msg [4];	/*  { framing, data [3] } */
+	__u8 msg_len;	/*  valid values are 0...4, 0 means no msg  */
+	int  timeout;	/*  return from ioctl after timeout ms with */
+};			/*  errorcode when no message was received  */
+
+>>>>>>> FETCH_HEAD
 enum fe_sec_voltage {
 	SEC_VOLTAGE_13,
 	SEC_VOLTAGE_18,
 	SEC_VOLTAGE_OFF
 };
 
+<<<<<<< HEAD
 /**
  * enum fe_sec_tone_mode - Type of tone to be send to the LNBf.
  * @SEC_TONE_ON:	Sends a 22kHz tone burst to the antenna.
  * @SEC_TONE_OFF:	Don't send a 22kHz tone to the antenna (except
  *			if the ``FE_DISEQC_*`` ioctls are called).
  */
+=======
+>>>>>>> FETCH_HEAD
 enum fe_sec_tone_mode {
 	SEC_TONE_ON,
 	SEC_TONE_OFF
 };
 
+<<<<<<< HEAD
 /**
  * enum fe_sec_mini_cmd - Type of mini burst to be sent
  *
@@ -229,12 +278,15 @@ enum fe_sec_tone_mode {
  * @SEC_MINI_B:		Sends a mini-DiSEqC 22kHz '1' Data Burst to select
  *			satellite-B
  */
+=======
+>>>>>>> FETCH_HEAD
 enum fe_sec_mini_cmd {
 	SEC_MINI_A,
 	SEC_MINI_B
 };
 
 /**
+<<<<<<< HEAD
  * enum fe_status - Enumerates the possible frontend status.
  * @FE_NONE:		The frontend doesn't have any kind of lock.
  *			That's the initial frontend status
@@ -250,6 +302,19 @@ enum fe_sec_mini_cmd {
  */
 enum fe_status {
 	FE_NONE			= 0x00,
+=======
+ * enum fe_status - enumerates the possible frontend status
+ * @FE_HAS_SIGNAL:	found something above the noise level
+ * @FE_HAS_CARRIER:	found a DVB signal
+ * @FE_HAS_VITERBI:	FEC is stable
+ * @FE_HAS_SYNC:	found sync bytes
+ * @FE_HAS_LOCK:	everything's working
+ * @FE_TIMEDOUT:	no lock within the last ~2 seconds
+ * @FE_REINIT:		frontend was reinitialized, application is recommended
+ *			to reset DiSEqC, tone and parameters
+ */
+enum fe_status {
+>>>>>>> FETCH_HEAD
 	FE_HAS_SIGNAL		= 0x01,
 	FE_HAS_CARRIER		= 0x02,
 	FE_HAS_VITERBI		= 0x04,
@@ -259,6 +324,7 @@ enum fe_status {
 	FE_REINIT		= 0x40,
 };
 
+<<<<<<< HEAD
 /**
  * enum fe_spectral_inversion - Type of inversion band
  *
@@ -272,12 +338,15 @@ enum fe_status {
  * support, the DVB core will try to lock at the carrier first with
  * inversion off. If it fails, it will try to enable inversion.
  */
+=======
+>>>>>>> FETCH_HEAD
 enum fe_spectral_inversion {
 	INVERSION_OFF,
 	INVERSION_ON,
 	INVERSION_AUTO
 };
 
+<<<<<<< HEAD
 /**
  * enum fe_code_rate - Type of Forward Error Correction (FEC)
  *
@@ -298,6 +367,8 @@ enum fe_spectral_inversion {
  *
  * Please note that not all FEC types are supported by a given standard.
  */
+=======
+>>>>>>> FETCH_HEAD
 enum fe_code_rate {
 	FEC_NONE = 0,
 	FEC_1_2,
@@ -314,6 +385,7 @@ enum fe_code_rate {
 	FEC_2_5,
 };
 
+<<<<<<< HEAD
 /**
  * enum fe_modulation - Type of modulation/constellation
  * @QPSK:	QPSK modulation
@@ -334,6 +406,8 @@ enum fe_code_rate {
  * Please note that not all modulations are supported by a given standard.
  *
  */
+=======
+>>>>>>> FETCH_HEAD
 enum fe_modulation {
 	QPSK,
 	QAM_16,
@@ -351,6 +425,7 @@ enum fe_modulation {
 	QAM_4_NR,
 };
 
+<<<<<<< HEAD
 /**
  * enum fe_transmit_mode - Transmission mode
  *
@@ -377,6 +452,8 @@ enum fe_modulation {
  * Please note that not all transmission modes are supported by a given
  * standard.
  */
+=======
+>>>>>>> FETCH_HEAD
 enum fe_transmit_mode {
 	TRANSMISSION_MODE_2K,
 	TRANSMISSION_MODE_8K,
@@ -389,6 +466,7 @@ enum fe_transmit_mode {
 	TRANSMISSION_MODE_C3780,
 };
 
+<<<<<<< HEAD
 /**
  * enum fe_guard_interval - Guard interval
  *
@@ -406,6 +484,8 @@ enum fe_transmit_mode {
  *
  * Please note that not all guard intervals are supported by a given standard.
  */
+=======
+>>>>>>> FETCH_HEAD
 enum fe_guard_interval {
 	GUARD_INTERVAL_1_32,
 	GUARD_INTERVAL_1_16,
@@ -420,6 +500,7 @@ enum fe_guard_interval {
 	GUARD_INTERVAL_PN945,
 };
 
+<<<<<<< HEAD
 /**
  * enum fe_hierarchy - Hierarchy
  * @HIERARCHY_NONE:	No hierarchy
@@ -430,6 +511,8 @@ enum fe_guard_interval {
  *
  * Please note that not all hierarchy types are supported by a given standard.
  */
+=======
+>>>>>>> FETCH_HEAD
 enum fe_hierarchy {
 	HIERARCHY_NONE,
 	HIERARCHY_1,
@@ -438,6 +521,7 @@ enum fe_hierarchy {
 	HIERARCHY_AUTO
 };
 
+<<<<<<< HEAD
 /**
  * enum fe_interleaving - Interleaving
  * @INTERLEAVING_NONE:	No interleaving.
@@ -447,6 +531,8 @@ enum fe_hierarchy {
  *
  * Please note that, currently, only DTMB uses it.
  */
+=======
+>>>>>>> FETCH_HEAD
 enum fe_interleaving {
 	INTERLEAVING_NONE,
 	INTERLEAVING_AUTO,
@@ -454,8 +540,12 @@ enum fe_interleaving {
 	INTERLEAVING_720,
 };
 
+<<<<<<< HEAD
 /* DVBv5 property Commands */
 
+=======
+/* S2API Commands */
+>>>>>>> FETCH_HEAD
 #define DTV_UNDEFINED		0
 #define DTV_TUNE		1
 #define DTV_CLEAR		2
@@ -548,6 +638,7 @@ enum fe_interleaving {
 
 #define DTV_MAX_COMMAND		DTV_STAT_TOTAL_BLOCK_COUNT
 
+<<<<<<< HEAD
 /**
  * enum fe_pilot - Type of pilot tone
  *
@@ -555,12 +646,15 @@ enum fe_interleaving {
  * @PILOT_OFF:	Pilot tones disabled
  * @PILOT_AUTO:	Autodetect pilot tones
  */
+=======
+>>>>>>> FETCH_HEAD
 enum fe_pilot {
 	PILOT_ON,
 	PILOT_OFF,
 	PILOT_AUTO,
 };
 
+<<<<<<< HEAD
 /**
  * enum fe_rolloff - Rolloff factor (also known as alpha)
  * @ROLLOFF_35:		Roloff factor: 35%
@@ -574,11 +668,16 @@ enum fe_pilot {
  */
 enum fe_rolloff {
 	ROLLOFF_35,
+=======
+enum fe_rolloff {
+	ROLLOFF_35, /* Implied value in DVB-S, default for DVB-S2 */
+>>>>>>> FETCH_HEAD
 	ROLLOFF_20,
 	ROLLOFF_25,
 	ROLLOFF_AUTO,
 };
 
+<<<<<<< HEAD
 /**
  * enum fe_delivery_system - Type of the delivery system
  *
@@ -621,6 +720,8 @@ enum fe_rolloff {
  * @SYS_DVBH:
  *	Terrestrial TV (mobile): DVB-H (standard deprecated)
  */
+=======
+>>>>>>> FETCH_HEAD
 enum fe_delivery_system {
 	SYS_UNDEFINED,
 	SYS_DVBC_ANNEX_A,
@@ -643,6 +744,7 @@ enum fe_delivery_system {
 	SYS_DVBC_ANNEX_C,
 };
 
+<<<<<<< HEAD
 /* backward compatibility definitions for delivery systems */
 #define SYS_DVBC_ANNEX_AC	SYS_DVBC_ANNEX_A
 #define SYS_DMBTH		SYS_DTMB /* DMB-TH is legacy name, use DTMB */
@@ -662,12 +764,21 @@ enum fe_delivery_system {
  * @ATSCMH_SCCC_BLK_RES:
  *	Reserved. Shouldn't be used.
  */
+=======
+/* backward compatibility */
+#define SYS_DVBC_ANNEX_AC	SYS_DVBC_ANNEX_A
+#define SYS_DMBTH SYS_DTMB /* DMB-TH is legacy name, use DTMB instead */
+
+/* ATSC-MH */
+
+>>>>>>> FETCH_HEAD
 enum atscmh_sccc_block_mode {
 	ATSCMH_SCCC_BLK_SEP      = 0,
 	ATSCMH_SCCC_BLK_COMB     = 1,
 	ATSCMH_SCCC_BLK_RES      = 2,
 };
 
+<<<<<<< HEAD
 /**
  * enum atscmh_sccc_code_mode - Type of Series Concatenated Convolutional
  *				Code Rate.
@@ -679,23 +790,29 @@ enum atscmh_sccc_block_mode {
  * @ATSCMH_SCCC_CODE_RES:
  *	Reserved. Should not be used.
  */
+=======
+>>>>>>> FETCH_HEAD
 enum atscmh_sccc_code_mode {
 	ATSCMH_SCCC_CODE_HLF     = 0,
 	ATSCMH_SCCC_CODE_QTR     = 1,
 	ATSCMH_SCCC_CODE_RES     = 2,
 };
 
+<<<<<<< HEAD
 /**
  * enum atscmh_rs_frame_ensemble - Reed Solomon(RS) frame ensemble.
  *
  * @ATSCMH_RSFRAME_ENS_PRI:	Primary Ensemble.
  * @ATSCMH_RSFRAME_ENS_SEC:	Secondary Ensemble.
  */
+=======
+>>>>>>> FETCH_HEAD
 enum atscmh_rs_frame_ensemble {
 	ATSCMH_RSFRAME_ENS_PRI   = 0,
 	ATSCMH_RSFRAME_ENS_SEC   = 1,
 };
 
+<<<<<<< HEAD
 /**
  * enum atscmh_rs_frame_mode - Reed Solomon (RS) frame mode.
  *
@@ -709,12 +826,15 @@ enum atscmh_rs_frame_ensemble {
  * @ATSCMH_RSFRAME_RES:
  *	Reserved. Shouldn't be used.
  */
+=======
+>>>>>>> FETCH_HEAD
 enum atscmh_rs_frame_mode {
 	ATSCMH_RSFRAME_PRI_ONLY  = 0,
 	ATSCMH_RSFRAME_PRI_SEC   = 1,
 	ATSCMH_RSFRAME_RES       = 2,
 };
 
+<<<<<<< HEAD
 /**
  * enum atscmh_rs_code_mode
  * @ATSCMH_RSCODE_211_187:	Reed Solomon code (211,187).
@@ -722,6 +842,8 @@ enum atscmh_rs_frame_mode {
  * @ATSCMH_RSCODE_235_187:	Reed Solomon code (235,187).
  * @ATSCMH_RSCODE_RES:		Reserved. Shouldn't be used.
  */
+=======
+>>>>>>> FETCH_HEAD
 enum atscmh_rs_code_mode {
 	ATSCMH_RSCODE_211_187    = 0,
 	ATSCMH_RSCODE_223_187    = 1,
@@ -732,18 +854,42 @@ enum atscmh_rs_code_mode {
 #define NO_STREAM_ID_FILTER	(~0U)
 #define LNA_AUTO                (~0U)
 
+<<<<<<< HEAD
 /**
  * enum fecap_scale_params - scale types for the quality parameters.
  *
+=======
+struct dtv_cmds_h {
+	char	*name;		/* A display name for debugging purposes */
+
+	__u32	cmd;		/* A unique ID */
+
+	/* Flags */
+	__u32	set:1;		/* Either a set or get property */
+	__u32	buffer:1;	/* Does this property use the buffer? */
+	__u32	reserved:30;	/* Align */
+};
+
+/**
+ * Scale types for the quality parameters.
+>>>>>>> FETCH_HEAD
  * @FE_SCALE_NOT_AVAILABLE: That QoS measure is not available. That
  *			    could indicate a temporary or a permanent
  *			    condition.
  * @FE_SCALE_DECIBEL: The scale is measured in 0.001 dB steps, typically
+<<<<<<< HEAD
  *		      used on signal measures.
  * @FE_SCALE_RELATIVE: The scale is a relative percentual measure,
  *		       ranging from 0 (0%) to 0xffff (100%).
  * @FE_SCALE_COUNTER: The scale counts the occurrence of an event, like
  *		      bit error, block error, lapsed time.
+=======
+ *		  used on signal measures.
+ * @FE_SCALE_RELATIVE: The scale is a relative percentual measure,
+ *			ranging from 0 (0%) to 0xffff (100%).
+ * @FE_SCALE_COUNTER: The scale counts the occurrence of an event, like
+ *			bit error, block error, lapsed time.
+>>>>>>> FETCH_HEAD
  */
 enum fecap_scale_params {
 	FE_SCALE_NOT_AVAILABLE = 0,
@@ -755,6 +901,7 @@ enum fecap_scale_params {
 /**
  * struct dtv_stats - Used for reading a DTV status property
  *
+<<<<<<< HEAD
  * @scale:	Filled with enum fecap_scale_params - the scale
  *		in usage for that parameter
  *
@@ -771,10 +918,19 @@ enum fecap_scale_params {
  * For most delivery systems, this will return a single value for each
  * parameter.
  *
+=======
+ * @value:	value of the measure. Should range from 0 to 0xffff;
+ * @scale:	Filled with enum fecap_scale_params - the scale
+ *		in usage for that parameter
+ *
+ * For most delivery systems, this will return a single value for each
+ * parameter.
+>>>>>>> FETCH_HEAD
  * It should be noticed, however, that new OFDM delivery systems like
  * ISDB can use different modulation types for each group of carriers.
  * On such standards, up to 8 groups of statistics can be provided, one
  * for each carrier group (called "layer" on ISDB).
+<<<<<<< HEAD
  *
  * In order to be consistent with other delivery systems, the first
  * value refers to the entire set of carriers ("global").
@@ -787,6 +943,16 @@ enum fecap_scale_params {
  *
  * In other words, for ISDB, those values should be filled like::
  *
+=======
+ * In order to be consistent with other delivery systems, the first
+ * value refers to the entire set of carriers ("global").
+ * dtv_status:scale should use the value FE_SCALE_NOT_AVAILABLE when
+ * the value for the entire group of carriers or from one specific layer
+ * is not provided by the hardware.
+ * st.len should be filled with the latest filled status + 1.
+ *
+ * In other words, for ISDB, those values should be filled like:
+>>>>>>> FETCH_HEAD
  *	u.st.stat.svalue[0] = global statistics;
  *	u.st.stat.scale[0] = FE_SCALE_DECIBEL;
  *	u.st.stat.value[1] = layer A statistics;
@@ -808,6 +974,7 @@ struct dtv_stats {
 
 #define MAX_DTV_STATS   4
 
+<<<<<<< HEAD
 /**
  * struct dtv_fe_stats - store Digital TV frontend statistics
  *
@@ -819,11 +986,14 @@ struct dtv_stats {
  * of statistics. If so, stat[0] carries on a global value for the property.
  * Indexes 1 to 3 means layer A to B.
  */
+=======
+>>>>>>> FETCH_HEAD
 struct dtv_fe_stats {
 	__u8 len;
 	struct dtv_stats stat[MAX_DTV_STATS];
 } __attribute__ ((packed));
 
+<<<<<<< HEAD
 /**
  * struct dtv_property - store one of frontend command and its value
  *
@@ -841,6 +1011,8 @@ struct dtv_fe_stats {
  * %buffer
  *	a buffer of up to 32 characters (currently unused).
  */
+=======
+>>>>>>> FETCH_HEAD
 struct dtv_property {
 	__u32 cmd;
 	__u32 reserved[3];
@@ -860,17 +1032,21 @@ struct dtv_property {
 /* num of properties cannot exceed DTV_IOCTL_MAX_MSGS per ioctl */
 #define DTV_IOCTL_MAX_MSGS 64
 
+<<<<<<< HEAD
 /**
  * struct dtv_properties - a set of command/value pairs.
  *
  * @num:	amount of commands stored at the struct.
  * @props:	a pointer to &struct dtv_property.
  */
+=======
+>>>>>>> FETCH_HEAD
 struct dtv_properties {
 	__u32 num;
 	struct dtv_property *props;
 };
 
+<<<<<<< HEAD
 /*
  * When set, this flag will disable any zigzagging or other "normal" tuning
  * behavior. Additionally, there will be no automatic monitoring of the lock
@@ -924,6 +1100,14 @@ struct dtv_properties {
  */
 
 /*
+=======
+#if defined(__DVB_CORE__) || !defined (__KERNEL__)
+
+/*
+ * DEPRECATED: The DVBv3 ioctls, structs and enums should not be used on
+ * newer programs, as it doesn't support the second generation of digital
+ * TV standards, nor supports newer delivery systems.
+>>>>>>> FETCH_HEAD
  */
 
 enum fe_bandwidth {
@@ -936,7 +1120,11 @@ enum fe_bandwidth {
 	BANDWIDTH_1_712_MHZ,
 };
 
+<<<<<<< HEAD
 /* This is kept for legacy userspace support */
+=======
+/* This is needed for legacy userspace support */
+>>>>>>> FETCH_HEAD
 typedef enum fe_sec_voltage fe_sec_voltage_t;
 typedef enum fe_caps fe_caps_t;
 typedef enum fe_type fe_type_t;
@@ -954,8 +1142,11 @@ typedef enum fe_pilot fe_pilot_t;
 typedef enum fe_rolloff fe_rolloff_t;
 typedef enum fe_delivery_system fe_delivery_system_t;
 
+<<<<<<< HEAD
 /* DVBv3 structs */
 
+=======
+>>>>>>> FETCH_HEAD
 struct dvb_qpsk_parameters {
 	__u32		symbol_rate;  /* symbol rate in Symbols per second */
 	fe_code_rate_t	fec_inner;    /* forward error correction (see above) */
@@ -997,6 +1188,7 @@ struct dvb_frontend_event {
 	fe_status_t status;
 	struct dvb_frontend_parameters parameters;
 };
+<<<<<<< HEAD
 
 /* DVBv3 API calls */
 
@@ -1004,5 +1196,44 @@ struct dvb_frontend_event {
 #define FE_GET_FRONTEND		   _IOR('o', 77, struct dvb_frontend_parameters)
 
 #endif
+=======
+#endif
+
+#define FE_SET_PROPERTY		   _IOW('o', 82, struct dtv_properties)
+#define FE_GET_PROPERTY		   _IOR('o', 83, struct dtv_properties)
+
+/**
+ * When set, this flag will disable any zigzagging or other "normal" tuning
+ * behaviour. Additionally, there will be no automatic monitoring of the lock
+ * status, and hence no frontend events will be generated. If a frontend device
+ * is closed, this flag will be automatically turned off when the device is
+ * reopened read-write.
+ */
+#define FE_TUNE_MODE_ONESHOT 0x01
+
+#define FE_GET_INFO		   _IOR('o', 61, struct dvb_frontend_info)
+
+#define FE_DISEQC_RESET_OVERLOAD   _IO('o', 62)
+#define FE_DISEQC_SEND_MASTER_CMD  _IOW('o', 63, struct dvb_diseqc_master_cmd)
+#define FE_DISEQC_RECV_SLAVE_REPLY _IOR('o', 64, struct dvb_diseqc_slave_reply)
+#define FE_DISEQC_SEND_BURST       _IO('o', 65)  /* fe_sec_mini_cmd_t */
+
+#define FE_SET_TONE		   _IO('o', 66)  /* fe_sec_tone_mode_t */
+#define FE_SET_VOLTAGE		   _IO('o', 67)  /* fe_sec_voltage_t */
+#define FE_ENABLE_HIGH_LNB_VOLTAGE _IO('o', 68)  /* int */
+
+#define FE_READ_STATUS		   _IOR('o', 69, fe_status_t)
+#define FE_READ_BER		   _IOR('o', 70, __u32)
+#define FE_READ_SIGNAL_STRENGTH    _IOR('o', 71, __u16)
+#define FE_READ_SNR		   _IOR('o', 72, __u16)
+#define FE_READ_UNCORRECTED_BLOCKS _IOR('o', 73, __u32)
+
+#define FE_SET_FRONTEND		   _IOW('o', 76, struct dvb_frontend_parameters)
+#define FE_GET_FRONTEND		   _IOR('o', 77, struct dvb_frontend_parameters)
+#define FE_SET_FRONTEND_TUNE_MODE  _IO('o', 81) /* unsigned int */
+#define FE_GET_EVENT		   _IOR('o', 78, struct dvb_frontend_event)
+
+#define FE_DISHNETWORK_SEND_LEGACY_CMD _IO('o', 80) /* unsigned int */
+>>>>>>> FETCH_HEAD
 
 #endif /*_DVBFRONTEND_H_*/

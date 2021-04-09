@@ -412,7 +412,11 @@ static void emac_timeout(struct net_device *dev)
 /* Hardware start transmission.
  * Send a packet to media from the upper layer.
  */
+<<<<<<< HEAD
 static netdev_tx_t emac_start_xmit(struct sk_buff *skb, struct net_device *dev)
+=======
+static int emac_start_xmit(struct sk_buff *skb, struct net_device *dev)
+>>>>>>> FETCH_HEAD
 {
 	struct emac_board_info *db = netdev_priv(dev);
 	unsigned long channel;
@@ -420,7 +424,11 @@ static netdev_tx_t emac_start_xmit(struct sk_buff *skb, struct net_device *dev)
 
 	channel = db->tx_fifo_stat & 3;
 	if (channel == 3)
+<<<<<<< HEAD
 		return NETDEV_TX_BUSY;
+=======
+		return 1;
+>>>>>>> FETCH_HEAD
 
 	channel = (channel == 1 ? 1 : 0);
 
@@ -827,13 +835,21 @@ static int emac_probe(struct platform_device *pdev)
 	db->clk = devm_clk_get(&pdev->dev, NULL);
 	if (IS_ERR(db->clk)) {
 		ret = PTR_ERR(db->clk);
+<<<<<<< HEAD
 		goto out_dispose_mapping;
+=======
+		goto out_iounmap;
+>>>>>>> FETCH_HEAD
 	}
 
 	ret = clk_prepare_enable(db->clk);
 	if (ret) {
 		dev_err(&pdev->dev, "Error couldn't enable clock (%d)\n", ret);
+<<<<<<< HEAD
 		goto out_dispose_mapping;
+=======
+		goto out_iounmap;
+>>>>>>> FETCH_HEAD
 	}
 
 	ret = sunxi_sram_claim(&pdev->dev);
@@ -890,8 +906,11 @@ out_release_sram:
 	sunxi_sram_release(&pdev->dev);
 out_clk_disable_unprepare:
 	clk_disable_unprepare(db->clk);
+<<<<<<< HEAD
 out_dispose_mapping:
 	irq_dispose_mapping(ndev->irq);
+=======
+>>>>>>> FETCH_HEAD
 out_iounmap:
 	iounmap(db->membase);
 out:
@@ -910,7 +929,10 @@ static int emac_remove(struct platform_device *pdev)
 	unregister_netdev(ndev);
 	sunxi_sram_release(&pdev->dev);
 	clk_disable_unprepare(db->clk);
+<<<<<<< HEAD
 	irq_dispose_mapping(ndev->irq);
+=======
+>>>>>>> FETCH_HEAD
 	iounmap(db->membase);
 	free_netdev(ndev);
 

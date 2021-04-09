@@ -74,7 +74,11 @@ static struct spi_test spi_tests[] = {
 	{
 		.description	= "tx/rx-transfer - crossing PAGE_SIZE",
 		.fill_option	= FILL_COUNT_8,
+<<<<<<< HEAD
 		.iterate_len    = { ITERATE_LEN },
+=======
+		.iterate_len    = { ITERATE_MAX_LEN },
+>>>>>>> FETCH_HEAD
 		.iterate_tx_align = ITERATE_ALIGN,
 		.iterate_rx_align = ITERATE_ALIGN,
 		.transfers		= {

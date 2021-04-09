@@ -1218,7 +1218,11 @@ static void mntput_no_expire(struct mount *mnt)
 				return;
 		}
 		if (llist_add(&mnt->mnt_llist, &delayed_mntput_list))
+<<<<<<< HEAD
 			queue_delayed_work(system_power_efficient_wq, &delayed_mntput_work, 1);
+=======
+			schedule_delayed_work(&delayed_mntput_work, 1);
+>>>>>>> FETCH_HEAD
 		return;
 	}
 	cleanup_mnt(mnt);
@@ -2827,8 +2831,13 @@ long do_mount(const char *dev_name, const char __user *dir_name,
 		goto dput_out;
 
 	/* Default to relatime unless overriden */
+<<<<<<< HEAD
 	//if (!(flags & MS_NOATIME))
 	//	mnt_flags |= MNT_RELATIME;
+=======
+	if (!(flags & MS_NOATIME))
+		mnt_flags |= MNT_RELATIME;
+>>>>>>> FETCH_HEAD
 
 	/* Separate the per-mountpoint flags */
 	if (flags & MS_NOSUID)
@@ -2837,9 +2846,15 @@ long do_mount(const char *dev_name, const char __user *dir_name,
 		mnt_flags |= MNT_NODEV;
 	if (flags & MS_NOEXEC)
 		mnt_flags |= MNT_NOEXEC;
+<<<<<<< HEAD
 	//if (flags & MS_NOATIME)
 		mnt_flags |= MNT_NOATIME;
 	//if (flags & MS_NODIRATIME)
+=======
+	if (flags & MS_NOATIME)
+		mnt_flags |= MNT_NOATIME;
+	if (flags & MS_NODIRATIME)
+>>>>>>> FETCH_HEAD
 		mnt_flags |= MNT_NODIRATIME;
 	if (flags & MS_STRICTATIME)
 		mnt_flags &= ~(MNT_RELATIME | MNT_NOATIME);
@@ -3542,6 +3557,9 @@ const struct proc_ns_operations mntns_operations = {
 	.install	= mntns_install,
 	.owner		= mntns_owner,
 };
+<<<<<<< HEAD
 
 
 
+=======
+>>>>>>> FETCH_HEAD

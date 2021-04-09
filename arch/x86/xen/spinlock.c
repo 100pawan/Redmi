@@ -98,6 +98,7 @@ void xen_init_lock_cpu(int cpu)
 
 void xen_uninit_lock_cpu(int cpu)
 {
+<<<<<<< HEAD
 	int irq;
 
 	if (!xen_pvspin)
@@ -112,6 +113,12 @@ void xen_uninit_lock_cpu(int cpu)
 		return;
 
 	unbind_from_irqhandler(irq, NULL);
+=======
+	if (!xen_pvspin)
+		return;
+
+	unbind_from_irqhandler(per_cpu(lock_kicker_irq, cpu), NULL);
+>>>>>>> FETCH_HEAD
 	per_cpu(lock_kicker_irq, cpu) = -1;
 	kfree(per_cpu(irq_name, cpu));
 	per_cpu(irq_name, cpu) = NULL;

@@ -737,7 +737,11 @@ static int bcm2835_spi_probe(struct platform_device *pdev)
 	struct resource *res;
 	int err;
 
+<<<<<<< HEAD
 	master = devm_spi_alloc_master(&pdev->dev, sizeof(*bs));
+=======
+	master = spi_alloc_master(&pdev->dev, sizeof(*bs));
+>>>>>>> FETCH_HEAD
 	if (!master) {
 		dev_err(&pdev->dev, "spi_alloc_master() failed\n");
 		return -ENOMEM;
@@ -759,20 +763,36 @@ static int bcm2835_spi_probe(struct platform_device *pdev)
 
 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
 	bs->regs = devm_ioremap_resource(&pdev->dev, res);
+<<<<<<< HEAD
 	if (IS_ERR(bs->regs))
 		return PTR_ERR(bs->regs);
+=======
+	if (IS_ERR(bs->regs)) {
+		err = PTR_ERR(bs->regs);
+		goto out_master_put;
+	}
+>>>>>>> FETCH_HEAD
 
 	bs->clk = devm_clk_get(&pdev->dev, NULL);
 	if (IS_ERR(bs->clk)) {
 		err = PTR_ERR(bs->clk);
 		dev_err(&pdev->dev, "could not get clk: %d\n", err);
+<<<<<<< HEAD
 		return err;
+=======
+		goto out_master_put;
+>>>>>>> FETCH_HEAD
 	}
 
 	bs->irq = platform_get_irq(pdev, 0);
 	if (bs->irq <= 0) {
 		dev_err(&pdev->dev, "could not get IRQ: %d\n", bs->irq);
+<<<<<<< HEAD
 		return bs->irq ? bs->irq : -ENODEV;
+=======
+		err = bs->irq ? bs->irq : -ENODEV;
+		goto out_master_put;
+>>>>>>> FETCH_HEAD
 	}
 
 	clk_prepare_enable(bs->clk);
@@ -787,6 +807,7 @@ static int bcm2835_spi_probe(struct platform_device *pdev)
 			       dev_name(&pdev->dev), master);
 	if (err) {
 		dev_err(&pdev->dev, "could not request IRQ: %d\n", err);
+<<<<<<< HEAD
 		goto out_dma_release;
 	}
 
@@ -794,13 +815,29 @@ static int bcm2835_spi_probe(struct platform_device *pdev)
 	if (err) {
 		dev_err(&pdev->dev, "could not register SPI master: %d\n", err);
 		goto out_dma_release;
+=======
+		goto out_clk_disable;
+	}
+
+	err = devm_spi_register_master(&pdev->dev, master);
+	if (err) {
+		dev_err(&pdev->dev, "could not register SPI master: %d\n", err);
+		goto out_clk_disable;
+>>>>>>> FETCH_HEAD
 	}
 
 	return 0;
 
+<<<<<<< HEAD
 out_dma_release:
 	bcm2835_dma_release(master);
 	clk_disable_unprepare(bs->clk);
+=======
+out_clk_disable:
+	clk_disable_unprepare(bs->clk);
+out_master_put:
+	spi_master_put(master);
+>>>>>>> FETCH_HEAD
 	return err;
 }
 
@@ -809,8 +846,11 @@ static int bcm2835_spi_remove(struct platform_device *pdev)
 	struct spi_master *master = platform_get_drvdata(pdev);
 	struct bcm2835_spi *bs = spi_master_get_devdata(master);
 
+<<<<<<< HEAD
 	spi_unregister_master(master);
 
+=======
+>>>>>>> FETCH_HEAD
 	/* Clear FIFOs, and disable the HW block */
 	bcm2835_wr(bs, BCM2835_SPI_CS,
 		   BCM2835_SPI_CS_CLEAR_RX | BCM2835_SPI_CS_CLEAR_TX);

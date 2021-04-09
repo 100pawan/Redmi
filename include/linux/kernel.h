@@ -612,9 +612,12 @@ do {									\
  * let gcc optimize the rest.
  */
 
+<<<<<<< HEAD
 #ifdef CONFIG_DISABLE_TRACE_PRINTK
 #define trace_printk pr_debug
 #else
+=======
+>>>>>>> FETCH_HEAD
 #define trace_printk(fmt, ...)				\
 do {							\
 	char _______STR[] = __stringify((__VA_ARGS__));	\
@@ -637,7 +640,10 @@ do {									\
 	else								\
 		__trace_printk(_THIS_IP_, fmt, ##args);			\
 } while (0)
+<<<<<<< HEAD
 #endif
+=======
+>>>>>>> FETCH_HEAD
 
 extern __printf(2, 3)
 int __trace_bprintk(unsigned long ip, const char *fmt, ...);

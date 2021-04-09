@@ -373,6 +373,29 @@ struct rxe_port {
 	u32			qp_gsi_index;
 };
 
+<<<<<<< HEAD
+=======
+/* callbacks from rdma_rxe to network interface layer */
+struct rxe_ifc_ops {
+	void (*release)(struct rxe_dev *rxe);
+	__be64 (*node_guid)(struct rxe_dev *rxe);
+	__be64 (*port_guid)(struct rxe_dev *rxe);
+	struct device *(*dma_device)(struct rxe_dev *rxe);
+	int (*mcast_add)(struct rxe_dev *rxe, union ib_gid *mgid);
+	int (*mcast_delete)(struct rxe_dev *rxe, union ib_gid *mgid);
+	int (*prepare)(struct rxe_dev *rxe, struct rxe_pkt_info *pkt,
+		       struct sk_buff *skb, u32 *crc);
+	int (*send)(struct rxe_dev *rxe, struct rxe_pkt_info *pkt,
+		    struct sk_buff *skb);
+	int (*loopback)(struct sk_buff *skb);
+	struct sk_buff *(*init_packet)(struct rxe_dev *rxe, struct rxe_av *av,
+				       int paylen, struct rxe_pkt_info *pkt);
+	char *(*parent_name)(struct rxe_dev *rxe, unsigned int port_num);
+	enum rdma_link_layer (*link_layer)(struct rxe_dev *rxe,
+					   unsigned int port_num);
+};
+
+>>>>>>> FETCH_HEAD
 struct rxe_dev {
 	struct ib_device	ib_dev;
 	struct ib_device_attr	attr;
@@ -381,6 +404,11 @@ struct rxe_dev {
 	struct kref		ref_cnt;
 	struct mutex	usdev_lock;
 
+<<<<<<< HEAD
+=======
+	struct rxe_ifc_ops	*ifc_ops;
+
+>>>>>>> FETCH_HEAD
 	struct net_device	*ndev;
 
 	int			xmit_errors;

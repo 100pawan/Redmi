@@ -8,6 +8,24 @@
  * right "bytes left to zero" value (and that it is updated only _after_
  * a successful copy).  There is also some rather minor exception setup
  * stuff.
+<<<<<<< HEAD
+=======
+ *
+ * NOTE! This is not directly C-callable, because the calling semantics
+ * are different:
+ *
+ * Inputs:
+ *	length in $0
+ *	destination address in $6
+ *	exception pointer in $7
+ *	return address in $28 (exceptions expect it there)
+ *
+ * Outputs:
+ *	bytes left to copy in $0
+ *
+ * Clobbers:
+ *	$1,$2,$3,$4,$5,$6
+>>>>>>> FETCH_HEAD
  */
 #include <asm/export.h>
 
@@ -23,25 +41,39 @@
 	.set noreorder
 	.align 4
 
+<<<<<<< HEAD
 	.globl __clear_user
 	.ent __clear_user
 	.frame	$30, 0, $26
+=======
+	.globl __do_clear_user
+	.ent __do_clear_user
+	.frame	$30, 0, $28
+>>>>>>> FETCH_HEAD
 	.prologue 0
 
 $loop:
 	and	$1, 3, $4	# e0    :
 	beq	$4, 1f		# .. e1 :
 
+<<<<<<< HEAD
 0:	EX( stq_u $31, 0($16) )	# e0    : zero one word
 	subq	$0, 8, $0	# .. e1 :
 	subq	$4, 1, $4	# e0    :
 	addq	$16, 8, $16	# .. e1 :
+=======
+0:	EX( stq_u $31, 0($6) )	# e0    : zero one word
+	subq	$0, 8, $0	# .. e1 :
+	subq	$4, 1, $4	# e0    :
+	addq	$6, 8, $6	# .. e1 :
+>>>>>>> FETCH_HEAD
 	bne	$4, 0b		# e1    :
 	unop			#       :
 
 1:	bic	$1, 3, $1	# e0    :
 	beq	$1, $tail	# .. e1 :
 
+<<<<<<< HEAD
 2:	EX( stq_u $31, 0($16) )	# e0    : zero four words
 	subq	$0, 8, $0	# .. e1 :
 	EX( stq_u $31, 8($16) )	# e0    :
@@ -52,10 +84,23 @@ $loop:
 	subq	$0, 8, $0	# .. e1 :
 	subq	$1, 4, $1	# e0    :
 	addq	$16, 32, $16	# .. e1 :
+=======
+2:	EX( stq_u $31, 0($6) )	# e0    : zero four words
+	subq	$0, 8, $0	# .. e1 :
+	EX( stq_u $31, 8($6) )	# e0    :
+	subq	$0, 8, $0	# .. e1 :
+	EX( stq_u $31, 16($6) )	# e0    :
+	subq	$0, 8, $0	# .. e1 :
+	EX( stq_u $31, 24($6) )	# e0    :
+	subq	$0, 8, $0	# .. e1 :
+	subq	$1, 4, $1	# e0    :
+	addq	$6, 32, $6	# .. e1 :
+>>>>>>> FETCH_HEAD
 	bne	$1, 2b		# e1    :
 
 $tail:
 	bne	$2, 1f		# e1    : is there a tail to do?
+<<<<<<< HEAD
 	ret	$31, ($26), 1	# .. e1 :
 
 1:	EX( ldq_u $5, 0($16) )	# e0    :
@@ -68,18 +113,40 @@ $tail:
 __clear_user:
 	and	$17, $17, $0
 	and	$16, 7, $4	# e0    : find dest misalignment
+=======
+	ret	$31, ($28), 1	# .. e1 :
+
+1:	EX( ldq_u $5, 0($6) )	# e0    :
+	clr	$0		# .. e1 :
+	nop			# e1    :
+	mskqh	$5, $0, $5	# e0    :
+	EX( stq_u $5, 0($6) )	# e0    :
+	ret	$31, ($28), 1	# .. e1 :
+
+__do_clear_user:
+	and	$6, 7, $4	# e0    : find dest misalignment
+>>>>>>> FETCH_HEAD
 	beq	$0, $zerolength # .. e1 :
 	addq	$0, $4, $1	# e0    : bias counter
 	and	$1, 7, $2	# e1    : number of bytes in tail
 	srl	$1, 3, $1	# e0    :
 	beq	$4, $loop	# .. e1 :
 
+<<<<<<< HEAD
 	EX( ldq_u $5, 0($16) )	# e0    : load dst word to mask back in
 	beq	$1, $oneword	# .. e1 : sub-word store?
 
 	mskql	$5, $16, $5	# e0    : take care of misaligned head
 	addq	$16, 8, $16	# .. e1 :
 	EX( stq_u $5, -8($16) )	# e0    :
+=======
+	EX( ldq_u $5, 0($6) )	# e0    : load dst word to mask back in
+	beq	$1, $oneword	# .. e1 : sub-word store?
+
+	mskql	$5, $6, $5	# e0    : take care of misaligned head
+	addq	$6, 8, $6	# .. e1 :
+	EX( stq_u $5, -8($6) )	# e0    :
+>>>>>>> FETCH_HEAD
 	addq	$0, $4, $0	# .. e1 : bytes left -= 8 - misalignment
 	subq	$1, 1, $1	# e0    :
 	subq	$0, 8, $0	# .. e1 :
@@ -87,15 +154,29 @@ __clear_user:
 	unop			#       :
 
 $oneword:
+<<<<<<< HEAD
 	mskql	$5, $16, $4	# e0    :
 	mskqh	$5, $2, $5	# e0    :
 	or	$5, $4, $5	# e1    :
 	EX( stq_u $5, 0($16) )	# e0    :
+=======
+	mskql	$5, $6, $4	# e0    :
+	mskqh	$5, $2, $5	# e0    :
+	or	$5, $4, $5	# e1    :
+	EX( stq_u $5, 0($6) )	# e0    :
+>>>>>>> FETCH_HEAD
 	clr	$0		# .. e1 :
 
 $zerolength:
 $exception:
+<<<<<<< HEAD
 	ret	$31, ($26), 1	# .. e1 :
 
 	.end __clear_user
 	EXPORT_SYMBOL(__clear_user)
+=======
+	ret	$31, ($28), 1	# .. e1 :
+
+	.end __do_clear_user
+	EXPORT_SYMBOL(__do_clear_user)
+>>>>>>> FETCH_HEAD

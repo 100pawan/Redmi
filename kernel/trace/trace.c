@@ -2137,7 +2137,11 @@ trace_event_buffer_lock_reserve(struct ring_buffer **current_rb,
 	    (entry = this_cpu_read(trace_buffered_event))) {
 		/* Try to use the per cpu buffer first */
 		val = this_cpu_inc_return(trace_buffered_event_cnt);
+<<<<<<< HEAD
 		if ((len < (PAGE_SIZE - sizeof(*entry))) && val == 1) {
+=======
+		if (val == 1) {
+>>>>>>> FETCH_HEAD
 			trace_event_setup(entry, type, flags, pc);
 			entry->array[0] = len;
 			return entry;
@@ -2181,7 +2185,11 @@ void trace_buffer_unlock_commit_regs(struct trace_array *tr,
 	 * two. They are that meaningful.
 	 */
 	ftrace_trace_stack(tr, buffer, flags, regs ? 0 : 4, pc, regs);
+<<<<<<< HEAD
 	ftrace_trace_userstack(tr, buffer, flags, pc);
+=======
+	ftrace_trace_userstack(buffer, flags, pc);
+>>>>>>> FETCH_HEAD
 }
 
 void
@@ -2272,8 +2280,12 @@ static void __ftrace_trace_stack(struct ring_buffer *buffer,
 	size *= sizeof(unsigned long);
 
 	event = trace_buffer_lock_reserve(buffer, TRACE_STACK,
+<<<<<<< HEAD
 				    (sizeof(*entry) - sizeof(entry->caller)) + size,
 				    flags, pc);
+=======
+					  sizeof(*entry) + size, flags, pc);
+>>>>>>> FETCH_HEAD
 	if (!event)
 		goto out;
 	entry = ring_buffer_event_data(event);
@@ -2347,15 +2359,23 @@ void trace_dump_stack(int skip)
 static DEFINE_PER_CPU(int, user_stack_count);
 
 void
+<<<<<<< HEAD
 ftrace_trace_userstack(struct trace_array *tr,
 		       struct ring_buffer *buffer, unsigned long flags, int pc)
+=======
+ftrace_trace_userstack(struct ring_buffer *buffer, unsigned long flags, int pc)
+>>>>>>> FETCH_HEAD
 {
 	struct trace_event_call *call = &event_user_stack;
 	struct ring_buffer_event *event;
 	struct userstack_entry *entry;
 	struct stack_trace trace;
 
+<<<<<<< HEAD
 	if (!(tr->trace_flags & TRACE_ITER_USERSTACKTRACE))
+=======
+	if (!(global_trace.trace_flags & TRACE_ITER_USERSTACKTRACE))
+>>>>>>> FETCH_HEAD
 		return;
 
 	/*
@@ -2431,7 +2451,11 @@ static char *get_trace_buf(void)
 
 	/* Interrupts must see nesting incremented before we use the buffer */
 	barrier();
+<<<<<<< HEAD
 	return &buffer->buffer[buffer->nesting - 1][0];
+=======
+	return &buffer->buffer[buffer->nesting][0];
+>>>>>>> FETCH_HEAD
 }
 
 static void put_trace_buf(void)
@@ -2650,9 +2674,12 @@ int trace_array_printk(struct trace_array *tr,
 	if (!(global_trace.trace_flags & TRACE_ITER_PRINTK))
 		return 0;
 
+<<<<<<< HEAD
 	if (!tr)
 		return -ENOENT;
 
+=======
+>>>>>>> FETCH_HEAD
 	va_start(ap, fmt);
 	ret = trace_array_vprintk(tr, ip, fmt, ap);
 	va_end(ap);
@@ -7857,7 +7884,11 @@ __init static int tracer_alloc_buffers(void)
 		goto out_free_buffer_mask;
 
 	/* Only allocate trace_printk buffers if a trace_printk exists */
+<<<<<<< HEAD
 	if (&__stop___trace_bprintk_fmt != &__start___trace_bprintk_fmt)
+=======
+	if (__stop___trace_bprintk_fmt != __start___trace_bprintk_fmt)
+>>>>>>> FETCH_HEAD
 		/* Must be called before global_trace.buffer is allocated */
 		trace_printk_init_buffers();
 

@@ -141,7 +141,11 @@ static int bcm6358_led(struct device *dev, struct device_node *nc, u32 reg,
 
 	led->cdev.brightness_set = bcm6358_led_set;
 
+<<<<<<< HEAD
 	rc = devm_led_classdev_register(dev, &led->cdev);
+=======
+	rc = led_classdev_register(dev, &led->cdev);
+>>>>>>> FETCH_HEAD
 	if (rc < 0)
 		return rc;
 

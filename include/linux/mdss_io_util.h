@@ -1,5 +1,8 @@
 /* Copyright (c) 2012, 2017-2018, The Linux Foundation. All rights reserved.
+<<<<<<< HEAD
  * Copyright (C) 2018 XiaoMi, Inc.
+=======
+>>>>>>> FETCH_HEAD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -119,7 +122,10 @@ int mdss_i2c_byte_read(struct i2c_client *client, uint8_t slave_addr,
 		       uint8_t reg_offset, uint8_t *read_buf);
 int mdss_i2c_byte_write(struct i2c_client *client, uint8_t slave_addr,
 			uint8_t reg_offset, uint8_t *value);
+<<<<<<< HEAD
 			
 			int mdss_prim_panel_fb_unblank(int timeout);
+=======
+>>>>>>> FETCH_HEAD
 
 #endif /* __MDSS_IO_UTIL_H__ */

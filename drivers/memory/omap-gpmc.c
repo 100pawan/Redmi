@@ -951,7 +951,11 @@ static int gpmc_cs_remap(int cs, u32 base)
 	int ret;
 	u32 old_base, size;
 
+<<<<<<< HEAD
 	if (cs >= gpmc_cs_num) {
+=======
+	if (cs > gpmc_cs_num) {
+>>>>>>> FETCH_HEAD
 		pr_err("%s: requested chip-select is disabled\n", __func__);
 		return -ENODEV;
 	}
@@ -986,7 +990,11 @@ int gpmc_cs_request(int cs, unsigned long size, unsigned long *base)
 	struct resource *res = &gpmc->mem;
 	int r = -1;
 
+<<<<<<< HEAD
 	if (cs >= gpmc_cs_num) {
+=======
+	if (cs > gpmc_cs_num) {
+>>>>>>> FETCH_HEAD
 		pr_err("%s: requested chip-select is disabled\n", __func__);
 		return -ENODEV;
 	}

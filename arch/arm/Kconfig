@@ -633,9 +633,13 @@ config ARCH_S3C24XX
 	select HAVE_S3C_RTC if RTC_CLASS
 	select MULTI_IRQ_HANDLER
 	select NEED_MACH_IO_H
+<<<<<<< HEAD
 	select S3C2410_WATCHDOG
 	select SAMSUNG_ATAGS
 	select WATCHDOG
+=======
+	select SAMSUNG_ATAGS
+>>>>>>> FETCH_HEAD
 	help
 	  Samsung S3C2410, S3C2412, S3C2413, S3C2416, S3C2440, S3C2442, S3C2443
 	  and S3C2450 SoCs based systems, such as the Simtec Electronics BAST
@@ -1977,12 +1981,15 @@ config BUILD_ARM_APPENDED_DTB_IMAGE_NAMES
 	  Space separated list of names of dtbs to append when
 	  building a concatenated zImage-dtb.
 
+<<<<<<< HEAD
 config BUILD_ARM64_DT_OVERLAY
 	bool "enable DT overlay compilation support"
 	depends on OF
 	help
 	  This option enables support for DT overlay compilation.
 
+=======
+>>>>>>> FETCH_HEAD
 # Compressed boot loader in ROM.  Yes, we really want to ask about
 # TEXT and BSS so we preserve their values in the config files.
 config ZBOOT_ROM_TEXT

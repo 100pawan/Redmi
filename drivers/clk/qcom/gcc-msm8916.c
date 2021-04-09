@@ -270,7 +270,11 @@ static struct clk_pll gpll0 = {
 	.l_reg = 0x21004,
 	.m_reg = 0x21008,
 	.n_reg = 0x2100c,
+<<<<<<< HEAD
 	.config_reg = 0x21010,
+=======
+	.config_reg = 0x21014,
+>>>>>>> FETCH_HEAD
 	.mode_reg = 0x21000,
 	.status_reg = 0x2101c,
 	.status_bit = 17,
@@ -297,7 +301,11 @@ static struct clk_pll gpll1 = {
 	.l_reg = 0x20004,
 	.m_reg = 0x20008,
 	.n_reg = 0x2000c,
+<<<<<<< HEAD
 	.config_reg = 0x20010,
+=======
+	.config_reg = 0x20014,
+>>>>>>> FETCH_HEAD
 	.mode_reg = 0x20000,
 	.status_reg = 0x2001c,
 	.status_bit = 17,
@@ -324,7 +332,11 @@ static struct clk_pll gpll2 = {
 	.l_reg = 0x4a004,
 	.m_reg = 0x4a008,
 	.n_reg = 0x4a00c,
+<<<<<<< HEAD
 	.config_reg = 0x4a010,
+=======
+	.config_reg = 0x4a014,
+>>>>>>> FETCH_HEAD
 	.mode_reg = 0x4a000,
 	.status_reg = 0x4a01c,
 	.status_bit = 17,
@@ -351,7 +363,11 @@ static struct clk_pll bimc_pll = {
 	.l_reg = 0x23004,
 	.m_reg = 0x23008,
 	.n_reg = 0x2300c,
+<<<<<<< HEAD
 	.config_reg = 0x23010,
+=======
+	.config_reg = 0x23014,
+>>>>>>> FETCH_HEAD
 	.mode_reg = 0x23000,
 	.status_reg = 0x2301c,
 	.status_bit = 17,

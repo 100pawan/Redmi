@@ -25,7 +25,10 @@ DEFINE_MSM_MUTEX(msm_eeprom_mutex);
 #ifdef CONFIG_COMPAT
 static struct v4l2_file_operations msm_eeprom_v4l2_subdev_fops;
 #endif
+<<<<<<< HEAD
 struct vendor_eeprom s_vendor_eeprom[CAMERA_VENDOR_EEPROM_COUNT_MAX];
+=======
+>>>>>>> FETCH_HEAD
 
 /*
  * msm_get_read_mem_size - Get the total size for allocation
@@ -694,12 +697,20 @@ static int msm_eeprom_config(struct msm_eeprom_ctrl_t *e_ctrl,
 		rc = msm_eeprom_get_cmm_data(e_ctrl, cdata);
 		break;
 	case CFG_EEPROM_INIT:
+<<<<<<< HEAD
 		/*if (e_ctrl->userspace_probe == 0) {
+=======
+		if (e_ctrl->userspace_probe == 0) {
+>>>>>>> FETCH_HEAD
 			pr_err("%s:%d Eeprom already probed at kernel boot",
 				__func__, __LINE__);
 			rc = -EINVAL;
 			break;
+<<<<<<< HEAD
 		}*/
+=======
+		}
+>>>>>>> FETCH_HEAD
 		if (e_ctrl->cal_data.num_data == 0) {
 			rc = eeprom_init_config(e_ctrl, argp);
 			if (rc < 0) {
@@ -1057,7 +1068,11 @@ static int msm_eeprom_i2c_probe(struct i2c_client *client,
 	snprintf(e_ctrl->msm_sd.sd.name,
 		ARRAY_SIZE(e_ctrl->msm_sd.sd.name), "msm_eeprom");
 	media_entity_pads_init(&e_ctrl->msm_sd.sd.entity, 0, NULL);
+<<<<<<< HEAD
 	e_ctrl->msm_sd.sd.entity.group_id = MSM_CAMERA_SUBDEV_EEPROM;
+=======
+	e_ctrl->msm_sd.sd.entity.function = MSM_CAMERA_SUBDEV_EEPROM;
+>>>>>>> FETCH_HEAD
 	msm_sd_register(&e_ctrl->msm_sd);
 	e_ctrl->is_supported = (e_ctrl->is_supported << 1) | 1;
 	pr_err("%s success result=%d X\n", __func__, rc);
@@ -1349,7 +1364,11 @@ static int msm_eeprom_spi_setup(struct spi_device *spi)
 	e_ctrl->msm_sd.sd.internal_ops = &msm_eeprom_internal_ops;
 	e_ctrl->msm_sd.sd.flags |= V4L2_SUBDEV_FL_HAS_DEVNODE;
 	media_entity_pads_init(&e_ctrl->msm_sd.sd.entity, 0, NULL);
+<<<<<<< HEAD
 	e_ctrl->msm_sd.sd.entity.group_id = MSM_CAMERA_SUBDEV_EEPROM;
+=======
+	e_ctrl->msm_sd.sd.entity.function = MSM_CAMERA_SUBDEV_EEPROM;
+>>>>>>> FETCH_HEAD
 	msm_sd_register(&e_ctrl->msm_sd);
 	e_ctrl->is_supported = (e_ctrl->is_supported << 1) | 1;
 	CDBG("%s success result=%d supported=%x X\n", __func__, rc,
@@ -1663,12 +1682,20 @@ static int msm_eeprom_config32(struct msm_eeprom_ctrl_t *e_ctrl,
 		rc = eeprom_config_read_cal_data32(e_ctrl, argp);
 		break;
 	case CFG_EEPROM_INIT:
+<<<<<<< HEAD
 		/*if (e_ctrl->userspace_probe == 0) {
+=======
+		if (e_ctrl->userspace_probe == 0) {
+>>>>>>> FETCH_HEAD
 			pr_err("%s:%d Eeprom already probed at kernel boot",
 				__func__, __LINE__);
 			rc = -EINVAL;
 			break;
+<<<<<<< HEAD
 		}*/
+=======
+		}
+>>>>>>> FETCH_HEAD
 		if (e_ctrl->cal_data.num_data == 0) {
 			rc = eeprom_init_config32(e_ctrl, argp);
 			if (rc < 0)
@@ -1724,6 +1751,7 @@ static long msm_eeprom_subdev_fops_ioctl32(struct file *file, unsigned int cmd,
 
 #endif
 
+<<<<<<< HEAD
 static camera_vendor_module_id ysl_s5k3p8sp_ofilm_i_get_otp_vendor_module_id
 	(struct msm_eeprom_ctrl_t *e_ctrl)
 {
@@ -1875,6 +1903,8 @@ static uint8_t get_otp_vendor_module_id(struct msm_eeprom_ctrl_t *e_ctrl, const 
 	return ((uint8_t)module_id);
 }
 
+=======
+>>>>>>> FETCH_HEAD
 static int msm_eeprom_platform_probe(struct platform_device *pdev)
 {
 	int rc = 0;
@@ -2020,11 +2050,14 @@ static int msm_eeprom_platform_probe(struct platform_device *pdev)
 			CDBG("memory_data[%d] = 0x%X\n", j,
 				e_ctrl->cal_data.mapdata[j]);
 
+<<<<<<< HEAD
         if(eb_info->eeprom_name != NULL){
 			s_vendor_eeprom[pdev->id].module_id = get_otp_vendor_module_id(e_ctrl, eb_info->eeprom_name);
 			strcpy(s_vendor_eeprom[pdev->id].eeprom_name, eb_info->eeprom_name);
 		}
 
+=======
+>>>>>>> FETCH_HEAD
 		e_ctrl->is_supported |= msm_eeprom_match_crc(&e_ctrl->cal_data);
 
 		rc = msm_camera_power_down(power_info,
@@ -2045,7 +2078,11 @@ static int msm_eeprom_platform_probe(struct platform_device *pdev)
 	snprintf(e_ctrl->msm_sd.sd.name,
 		ARRAY_SIZE(e_ctrl->msm_sd.sd.name), "msm_eeprom");
 	media_entity_pads_init(&e_ctrl->msm_sd.sd.entity, 0, NULL);
+<<<<<<< HEAD
 	e_ctrl->msm_sd.sd.entity.group_id = MSM_CAMERA_SUBDEV_EEPROM;
+=======
+	e_ctrl->msm_sd.sd.entity.function = MSM_CAMERA_SUBDEV_EEPROM;
+>>>>>>> FETCH_HEAD
 	msm_sd_register(&e_ctrl->msm_sd);
 
 #ifdef CONFIG_COMPAT

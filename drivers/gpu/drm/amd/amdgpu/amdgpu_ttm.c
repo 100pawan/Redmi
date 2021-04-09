@@ -637,7 +637,10 @@ static int amdgpu_ttm_tt_pin_userptr(struct ttm_tt *ttm)
 
 release_sg:
 	kfree(ttm->sg);
+<<<<<<< HEAD
 	ttm->sg = NULL;
+=======
+>>>>>>> FETCH_HEAD
 	return r;
 }
 

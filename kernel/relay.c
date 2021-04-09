@@ -196,7 +196,10 @@ free_buf:
 static void relay_destroy_channel(struct kref *kref)
 {
 	struct rchan *chan = container_of(kref, struct rchan, kref);
+<<<<<<< HEAD
 	free_percpu(chan->buf);
+=======
+>>>>>>> FETCH_HEAD
 	kfree(chan);
 }
 

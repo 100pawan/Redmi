@@ -16,9 +16,12 @@ Required properties:
   Documentation/devicetree/bindings/graph.txt. This port should be connected
   to the input port of an attached HDMI or LVDS encoder chip.
 
+<<<<<<< HEAD
 Optional properties:
 - pinctrl-names: Contain "default" and "sleep".
 
+=======
+>>>>>>> FETCH_HEAD
 Example:
 
 dpi0: dpi@1401d000 {
@@ -29,9 +32,12 @@ dpi0: dpi@1401d000 {
 		 <&mmsys CLK_MM_DPI_ENGINE>,
 		 <&apmixedsys CLK_APMIXED_TVDPLL>;
 	clock-names = "pixel", "engine", "pll";
+<<<<<<< HEAD
 	pinctrl-names = "default", "sleep";
 	pinctrl-0 = <&dpi_pin_func>;
 	pinctrl-1 = <&dpi_pin_idle>;
+=======
+>>>>>>> FETCH_HEAD
 
 	port {
 		dpi0_out: endpoint {

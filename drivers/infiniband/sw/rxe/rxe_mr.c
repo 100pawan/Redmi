@@ -205,7 +205,10 @@ int rxe_mem_init_user(struct rxe_dev *rxe, struct rxe_pd *pd, u64 start,
 			vaddr = page_address(sg_page(sg));
 			if (!vaddr) {
 				pr_warn("null vaddr\n");
+<<<<<<< HEAD
 				ib_umem_release(umem);
+=======
+>>>>>>> FETCH_HEAD
 				err = -ENOMEM;
 				goto err1;
 			}

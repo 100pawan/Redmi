@@ -758,8 +758,12 @@ again:
 	}
 	kfree(gl->gl_lksb.sb_lvbptr);
 	kmem_cache_free(cachep, gl);
+<<<<<<< HEAD
 	if (atomic_dec_and_test(&sdp->sd_glock_disposal))
 		wake_up(&sdp->sd_glock_wait);
+=======
+	atomic_dec(&sdp->sd_glock_disposal);
+>>>>>>> FETCH_HEAD
 	*glp = tmp;
 
 	return ret;

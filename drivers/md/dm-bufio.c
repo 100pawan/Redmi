@@ -421,13 +421,22 @@ static void *alloc_buffer_data(struct dm_bufio_client *c, gfp_t gfp_mask,
 	 */
 	if (gfp_mask & __GFP_NORETRY) {
 		unsigned noio_flag = memalloc_noio_save();
+<<<<<<< HEAD
 		void *ptr = __vmalloc(c->block_size, gfp_mask, PAGE_KERNEL);
+=======
+		void *ptr = __vmalloc(c->block_size, gfp_mask | __GFP_HIGHMEM,
+				      PAGE_KERNEL);
+>>>>>>> FETCH_HEAD
 
 		memalloc_noio_restore(noio_flag);
 		return ptr;
 	}
 
+<<<<<<< HEAD
 	return __vmalloc(c->block_size, gfp_mask, PAGE_KERNEL);
+=======
+	return __vmalloc(c->block_size, gfp_mask | __GFP_HIGHMEM, PAGE_KERNEL);
+>>>>>>> FETCH_HEAD
 }
 
 /*
@@ -1906,7 +1915,11 @@ static int __init dm_bufio_init(void)
 	memset(&dm_bufio_caches, 0, sizeof dm_bufio_caches);
 	memset(&dm_bufio_cache_names, 0, sizeof dm_bufio_cache_names);
 
+<<<<<<< HEAD
 	mem = (__u64)mult_frac(totalram_pages() - totalhigh_pages(),
+=======
+	mem = (__u64)mult_frac(totalram_pages - totalhigh_pages,
+>>>>>>> FETCH_HEAD
 			       DM_BUFIO_MEMORY_PERCENT, 100) << PAGE_SHIFT;
 
 	if (mem > ULONG_MAX)

@@ -7,6 +7,10 @@
 
 #include <linux/kernel.h>
 #include <linux/export.h>
+<<<<<<< HEAD
+=======
+#include <linux/bitops.h>
+>>>>>>> FETCH_HEAD
 
 /**
  * int_sqrt - rough approximation to sqrt
@@ -21,10 +25,14 @@ unsigned long int_sqrt(unsigned long x)
 	if (x <= 1)
 		return x;
 
+<<<<<<< HEAD
 	m = 1UL << (BITS_PER_LONG - 2);
 	while (m > x)
 		m >>= 2;
 
+=======
+	m = 1UL << (__fls(x) & ~1UL);
+>>>>>>> FETCH_HEAD
 	while (m != 0) {
 		b = y + m;
 		y >>= 1;

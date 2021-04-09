@@ -299,6 +299,7 @@ void via_debug_dump(void)
  * the system into 24-bit mode for an instant.
  */
 
+<<<<<<< HEAD
 void via_l2_flush(int writeback)
 {
 	unsigned long flags;
@@ -307,6 +308,12 @@ void via_l2_flush(int writeback)
 	via2[gBufB] &= ~VIA2B_vMode32;
 	via2[gBufB] |= VIA2B_vMode32;
 	local_irq_restore(flags);
+=======
+void via_flush_cache(void)
+{
+	via2[gBufB] &= ~VIA2B_vMode32;
+	via2[gBufB] |= VIA2B_vMode32;
+>>>>>>> FETCH_HEAD
 }
 
 /*

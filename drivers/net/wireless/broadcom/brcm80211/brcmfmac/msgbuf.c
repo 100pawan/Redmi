@@ -1540,8 +1540,11 @@ fail:
 					  BRCMF_TX_IOCTL_MAX_MSG_SIZE,
 					  msgbuf->ioctbuf,
 					  msgbuf->ioctbuf_handle);
+<<<<<<< HEAD
 		if (msgbuf->txflow_wq)
 			destroy_workqueue(msgbuf->txflow_wq);
+=======
+>>>>>>> FETCH_HEAD
 		kfree(msgbuf);
 	}
 	return -ENOMEM;

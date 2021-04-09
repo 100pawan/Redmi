@@ -733,17 +733,23 @@ static pci_ers_result_t common_process(struct pcistub_device *psdev,
 	wmb();
 	notify_remote_via_irq(pdev->evtchn_irq);
 
+<<<<<<< HEAD
 	/* Enable IRQ to signal "request done". */
 	xen_pcibk_lateeoi(pdev, 0);
 
+=======
+>>>>>>> FETCH_HEAD
 	ret = wait_event_timeout(xen_pcibk_aer_wait_queue,
 				 !(test_bit(_XEN_PCIB_active, (unsigned long *)
 				 &sh_info->flags)), 300*HZ);
 
+<<<<<<< HEAD
 	/* Enable IRQ for pcifront request if not already active. */
 	if (!test_bit(_PDEVF_op_active, &pdev->flags))
 		xen_pcibk_lateeoi(pdev, 0);
 
+=======
+>>>>>>> FETCH_HEAD
 	if (!ret) {
 		if (test_bit(_XEN_PCIB_active,
 			(unsigned long *)&sh_info->flags)) {
@@ -757,6 +763,16 @@ static pci_ers_result_t common_process(struct pcistub_device *psdev,
 	}
 	clear_bit(_PCIB_op_pending, (unsigned long *)&pdev->flags);
 
+<<<<<<< HEAD
+=======
+	if (test_bit(_XEN_PCIF_active,
+		(unsigned long *)&sh_info->flags)) {
+		dev_dbg(&psdev->dev->dev,
+			"schedule pci_conf service in " DRV_NAME "\n");
+		xen_pcibk_test_and_schedule_op(psdev->pdev);
+	}
+
+>>>>>>> FETCH_HEAD
 	res = (pci_ers_result_t)aer_op->err;
 	return res;
 }

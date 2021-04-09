@@ -20,8 +20,17 @@ lib-y =	__divqu.o __remqu.o __divlu.o __remlu.o \
 	checksum.o \
 	csum_partial_copy.o \
 	$(ev67-y)strlen.o \
+<<<<<<< HEAD
 	stycpy.o \
 	styncpy.o \
+=======
+	$(ev67-y)strcat.o \
+	strcpy.o \
+	$(ev67-y)strncat.o \
+	strncpy.o \
+	$(ev6-y)stxcpy.o \
+	$(ev6-y)stxncpy.o \
+>>>>>>> FETCH_HEAD
 	$(ev67-y)strchr.o \
 	$(ev67-y)strrchr.o \
 	$(ev6-y)memchr.o \
@@ -42,6 +51,7 @@ AFLAGS___remqu.o =       -DREM
 AFLAGS___divlu.o = -DDIV       -DINTSIZE
 AFLAGS___remlu.o =       -DREM -DINTSIZE
 
+<<<<<<< HEAD
 $(addprefix $(obj)/,__divqu.o __remqu.o __divlu.o __remlu.o): \
 						$(src)/$(ev6-y)divide.S FORCE
 	$(call if_changed_rule,as_o_S)
@@ -59,3 +69,13 @@ $(obj)/stycpy.o: $(obj)/strcpy.o $(obj)/$(ev67-y)strcat.o \
 $(obj)/styncpy.o: $(obj)/strncpy.o $(obj)/$(ev67-y)strncat.o \
 		 $(obj)/$(ev6-y)stxncpy.o FORCE
 	$(call if_changed,ld)
+=======
+$(obj)/__divqu.o: $(obj)/$(ev6-y)divide.S
+	$(cmd_as_o_S)
+$(obj)/__remqu.o: $(obj)/$(ev6-y)divide.S
+	$(cmd_as_o_S)
+$(obj)/__divlu.o: $(obj)/$(ev6-y)divide.S
+	$(cmd_as_o_S)
+$(obj)/__remlu.o: $(obj)/$(ev6-y)divide.S
+	$(cmd_as_o_S)
+>>>>>>> FETCH_HEAD

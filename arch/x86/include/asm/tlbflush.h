@@ -245,6 +245,7 @@ static inline void __native_flush_tlb_single(unsigned long addr)
 	 * ASID.  But, userspace flushes are probably much more
 	 * important performance-wise.
 	 *
+<<<<<<< HEAD
 	 * In the KAISER disabled case, do an INVLPG to make sure
 	 * the mapping is flushed in case it is a global one.
 	 */
@@ -254,6 +255,14 @@ static inline void __native_flush_tlb_single(unsigned long addr)
 	} else {
 		asm volatile("invlpg (%0)" ::"r" (addr) : "memory");
 	}
+=======
+	 * Make sure to do only a single invpcid when KAISER is
+	 * disabled and we have only a single ASID.
+	 */
+	if (kaiser_enabled)
+		invpcid_flush_one(X86_CR3_PCID_ASID_USER, addr);
+	invpcid_flush_one(X86_CR3_PCID_ASID_KERN, addr);
+>>>>>>> FETCH_HEAD
 }
 
 static inline void __flush_tlb_all(void)

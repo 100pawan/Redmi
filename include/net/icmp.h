@@ -47,6 +47,7 @@ static inline void icmp_send(struct sk_buff *skb_in, int type, int code, __be32 
 	__icmp_send(skb_in, type, code, info, &IPCB(skb_in)->opt);
 }
 
+<<<<<<< HEAD
 #if IS_ENABLED(CONFIG_NF_NAT)
 void icmp_ndo_send(struct sk_buff *skb_in, int type, int code, __be32 info);
 #else
@@ -57,6 +58,8 @@ static inline void icmp_ndo_send(struct sk_buff *skb_in, int type, int code, __b
 }
 #endif
 
+=======
+>>>>>>> FETCH_HEAD
 int icmp_rcv(struct sk_buff *skb);
 void icmp_err(struct sk_buff *skb, u32 info);
 int icmp_init(void);

@@ -2424,10 +2424,13 @@ do_ip_vs_set_ctl(struct sock *sk, int cmd, void __user *user, unsigned int len)
 		/* Set timeout values for (tcp tcpfin udp) */
 		ret = ip_vs_set_timeout(ipvs, (struct ip_vs_timeout_user *)arg);
 		goto out_unlock;
+<<<<<<< HEAD
 	} else if (!len) {
 		/* No more commands with len == 0 below */
 		ret = -EINVAL;
 		goto out_unlock;
+=======
+>>>>>>> FETCH_HEAD
 	}
 
 	usvc_compat = (struct ip_vs_service_user *)arg;
@@ -2504,6 +2507,12 @@ do_ip_vs_set_ctl(struct sock *sk, int cmd, void __user *user, unsigned int len)
 		break;
 	case IP_VS_SO_SET_DELDEST:
 		ret = ip_vs_del_dest(svc, &udest);
+<<<<<<< HEAD
+=======
+		break;
+	default:
+		ret = -EINVAL;
+>>>>>>> FETCH_HEAD
 	}
 
   out_unlock:

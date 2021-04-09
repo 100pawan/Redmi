@@ -1896,9 +1896,12 @@ static void __jbd2_journal_temp_unlink_buffer(struct journal_head *jh)
  */
 static void __jbd2_journal_unfile_buffer(struct journal_head *jh)
 {
+<<<<<<< HEAD
 	J_ASSERT_JH(jh, jh->b_transaction != NULL);
 	J_ASSERT_JH(jh, jh->b_next_transaction == NULL);
 
+=======
+>>>>>>> FETCH_HEAD
 	__jbd2_journal_temp_unlink_buffer(jh);
 	jh->b_transaction = NULL;
 	jbd2_journal_put_journal_head(jh);
@@ -1990,7 +1993,10 @@ int jbd2_journal_try_to_free_buffers(journal_t *journal,
 {
 	struct buffer_head *head;
 	struct buffer_head *bh;
+<<<<<<< HEAD
 	bool has_write_io_error = false;
+=======
+>>>>>>> FETCH_HEAD
 	int ret = 0;
 
 	J_ASSERT(PageLocked(page));
@@ -2015,6 +2021,7 @@ int jbd2_journal_try_to_free_buffers(journal_t *journal,
 		jbd_unlock_bh_state(bh);
 		if (buffer_jbd(bh))
 			goto busy;
+<<<<<<< HEAD
 
 		/*
 		 * If we free a metadata buffer which has been failed to
@@ -2027,14 +2034,19 @@ int jbd2_journal_try_to_free_buffers(journal_t *journal,
 			       (unsigned long long)bh->b_blocknr);
 			has_write_io_error = true;
 		}
+=======
+>>>>>>> FETCH_HEAD
 	} while ((bh = bh->b_this_page) != head);
 
 	ret = try_to_free_buffers(page);
 
 busy:
+<<<<<<< HEAD
 	if (has_write_io_error)
 		jbd2_journal_abort(journal, -EIO);
 
+=======
+>>>>>>> FETCH_HEAD
 	return ret;
 }
 
@@ -2462,6 +2474,7 @@ void __jbd2_journal_refile_buffer(struct journal_head *jh)
 
 	was_dirty = test_clear_buffer_jbddirty(bh);
 	__jbd2_journal_temp_unlink_buffer(jh);
+<<<<<<< HEAD
 
 	/*
 	 * b_transaction must be set, otherwise the new b_transaction won't
@@ -2469,6 +2482,8 @@ void __jbd2_journal_refile_buffer(struct journal_head *jh)
 	 */
 	J_ASSERT_JH(jh, jh->b_transaction != NULL);
 
+=======
+>>>>>>> FETCH_HEAD
 	/*
 	 * We set b_transaction here because b_next_transaction will inherit
 	 * our jh reference and thus __jbd2_journal_file_buffer() must not

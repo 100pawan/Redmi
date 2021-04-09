@@ -297,13 +297,17 @@ static ssize_t kone_sysfs_write_settings(struct file *fp, struct kobject *kobj,
 	struct kone_device *kone = hid_get_drvdata(dev_get_drvdata(dev));
 	struct usb_device *usb_dev = interface_to_usbdev(to_usb_interface(dev));
 	int retval = 0, difference, old_profile;
+<<<<<<< HEAD
 	struct kone_settings *settings = (struct kone_settings *)buf;
+=======
+>>>>>>> FETCH_HEAD
 
 	/* I need to get my data in one piece */
 	if (off != 0 || count != sizeof(struct kone_settings))
 		return -EINVAL;
 
 	mutex_lock(&kone->kone_lock);
+<<<<<<< HEAD
 	difference = memcmp(settings, &kone->settings,
 			    sizeof(struct kone_settings));
 	if (difference) {
@@ -319,18 +323,36 @@ static ssize_t kone_sysfs_write_settings(struct file *fp, struct kobject *kobj,
 
 		old_profile = kone->settings.startup_profile;
 		memcpy(&kone->settings, settings, sizeof(struct kone_settings));
+=======
+	difference = memcmp(buf, &kone->settings, sizeof(struct kone_settings));
+	if (difference) {
+		retval = kone_set_settings(usb_dev,
+				(struct kone_settings const *)buf);
+		if (retval) {
+			mutex_unlock(&kone->kone_lock);
+			return retval;
+		}
+
+		old_profile = kone->settings.startup_profile;
+		memcpy(&kone->settings, buf, sizeof(struct kone_settings));
+>>>>>>> FETCH_HEAD
 
 		kone_profile_activated(kone, kone->settings.startup_profile);
 
 		if (kone->settings.startup_profile != old_profile)
 			kone_profile_report(kone, kone->settings.startup_profile);
 	}
+<<<<<<< HEAD
 unlock:
 	mutex_unlock(&kone->kone_lock);
 
 	if (retval)
 		return retval;
 
+=======
+	mutex_unlock(&kone->kone_lock);
+
+>>>>>>> FETCH_HEAD
 	return sizeof(struct kone_settings);
 }
 static BIN_ATTR(settings, 0660, kone_sysfs_read_settings,

@@ -16,7 +16,10 @@
 #include <asm/shmparam.h>
 #include <asm/cachetype.h>
 #include <asm/outercache.h>
+<<<<<<< HEAD
 #include <asm/set_memory.h>
+=======
+>>>>>>> FETCH_HEAD
 
 #define CACHE_COLOUR(vaddr)	((vaddr & (SHMLBA - 1)) >> PAGE_SHIFT)
 

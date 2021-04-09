@@ -155,6 +155,7 @@ static int minix_remount (struct super_block * sb, int * flags, char * data)
 	return 0;
 }
 
+<<<<<<< HEAD
 static bool minix_check_superblock(struct minix_sb_info *sbi)
 {
 	if (sbi->s_imap_blocks == 0 || sbi->s_zmap_blocks == 0)
@@ -172,6 +173,8 @@ static bool minix_check_superblock(struct minix_sb_info *sbi)
 	return true;
 }
 
+=======
+>>>>>>> FETCH_HEAD
 static int minix_fill_super(struct super_block *s, void *data, int silent)
 {
 	struct buffer_head *bh;
@@ -250,12 +253,20 @@ static int minix_fill_super(struct super_block *s, void *data, int silent)
 	} else
 		goto out_no_fs;
 
+<<<<<<< HEAD
 	if (!minix_check_superblock(sbi))
 		goto out_illegal_sb;
 
 	/*
 	 * Allocate the buffer map to keep the superblock small.
 	 */
+=======
+	/*
+	 * Allocate the buffer map to keep the superblock small.
+	 */
+	if (sbi->s_imap_blocks == 0 || sbi->s_zmap_blocks == 0)
+		goto out_illegal_sb;
+>>>>>>> FETCH_HEAD
 	i = (sbi->s_imap_blocks + sbi->s_zmap_blocks) * sizeof(bh);
 	map = kzalloc(i, GFP_KERNEL);
 	if (!map)
@@ -490,6 +501,7 @@ static struct inode *V1_minix_iget(struct inode *inode)
 		iget_failed(inode);
 		return ERR_PTR(-EIO);
 	}
+<<<<<<< HEAD
 	if (raw_inode->i_nlinks == 0) {
 		printk("MINIX-fs: deleted inode referenced: %lu\n",
 		       inode->i_ino);
@@ -497,6 +509,8 @@ static struct inode *V1_minix_iget(struct inode *inode)
 		iget_failed(inode);
 		return ERR_PTR(-ESTALE);
 	}
+=======
+>>>>>>> FETCH_HEAD
 	inode->i_mode = raw_inode->i_mode;
 	i_uid_write(inode, raw_inode->i_uid);
 	i_gid_write(inode, raw_inode->i_gid);
@@ -530,6 +544,7 @@ static struct inode *V2_minix_iget(struct inode *inode)
 		iget_failed(inode);
 		return ERR_PTR(-EIO);
 	}
+<<<<<<< HEAD
 	if (raw_inode->i_nlinks == 0) {
 		printk("MINIX-fs: deleted inode referenced: %lu\n",
 		       inode->i_ino);
@@ -537,6 +552,8 @@ static struct inode *V2_minix_iget(struct inode *inode)
 		iget_failed(inode);
 		return ERR_PTR(-ESTALE);
 	}
+=======
+>>>>>>> FETCH_HEAD
 	inode->i_mode = raw_inode->i_mode;
 	i_uid_write(inode, raw_inode->i_uid);
 	i_gid_write(inode, raw_inode->i_gid);

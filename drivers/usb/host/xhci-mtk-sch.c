@@ -284,10 +284,13 @@ static bool need_bw_sch(struct usb_host_endpoint *ep,
 	if (is_fs_or_ls(speed) && !has_tt)
 		return false;
 
+<<<<<<< HEAD
 	/* skip endpoint with zero maxpkt */
 	if (usb_endpoint_maxp(&ep->desc) == 0)
 		return false;
 
+=======
+>>>>>>> FETCH_HEAD
 	return true;
 }
 

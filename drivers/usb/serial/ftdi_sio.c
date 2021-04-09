@@ -708,7 +708,10 @@ static const struct usb_device_id id_table_combined[] = {
 	{ USB_DEVICE(XSENS_VID, XSENS_AWINDA_STATION_PID) },
 	{ USB_DEVICE(XSENS_VID, XSENS_CONVERTER_PID) },
 	{ USB_DEVICE(XSENS_VID, XSENS_MTDEVBOARD_PID) },
+<<<<<<< HEAD
 	{ USB_DEVICE(XSENS_VID, XSENS_MTIUSBCONVERTER_PID) },
+=======
+>>>>>>> FETCH_HEAD
 	{ USB_DEVICE(XSENS_VID, XSENS_MTW_PID) },
 	{ USB_DEVICE(FTDI_VID, FTDI_OMNI1509) },
 	{ USB_DEVICE(MOBILITY_VID, MOBILITY_USB_SERIAL_PID) },
@@ -1032,11 +1035,14 @@ static const struct usb_device_id id_table_combined[] = {
 	/* U-Blox devices */
 	{ USB_DEVICE(UBLOX_VID, UBLOX_C099F9P_ZED_PID) },
 	{ USB_DEVICE(UBLOX_VID, UBLOX_C099F9P_ODIN_PID) },
+<<<<<<< HEAD
 	/* FreeCalypso USB adapters */
 	{ USB_DEVICE(FTDI_VID, FTDI_FALCONIA_JTAG_BUF_PID),
 		.driver_info = (kernel_ulong_t)&ftdi_jtag_quirk },
 	{ USB_DEVICE(FTDI_VID, FTDI_FALCONIA_JTAG_UNBUF_PID),
 		.driver_info = (kernel_ulong_t)&ftdi_jtag_quirk },
+=======
+>>>>>>> FETCH_HEAD
 	{ }					/* Terminating entry */
 };
 
@@ -2057,11 +2063,20 @@ static int ftdi_prepare_write_buffer(struct usb_serial_port *port,
 #define FTDI_RS_ERR_MASK (FTDI_RS_BI | FTDI_RS_PE | FTDI_RS_FE | FTDI_RS_OE)
 
 static int ftdi_process_packet(struct usb_serial_port *port,
+<<<<<<< HEAD
 		struct ftdi_private *priv, unsigned char *buf, int len)
 {
 	unsigned char status;
 	int i;
 	char flag;
+=======
+		struct ftdi_private *priv, char *packet, int len)
+{
+	int i;
+	char status;
+	char flag;
+	char *ch;
+>>>>>>> FETCH_HEAD
 
 	if (len < 2) {
 		dev_dbg(&port->dev, "malformed packet\n");
@@ -2071,7 +2086,11 @@ static int ftdi_process_packet(struct usb_serial_port *port,
 	/* Compare new line status to the old one, signal if different/
 	   N.B. packet may be processed more than once, but differences
 	   are only processed once.  */
+<<<<<<< HEAD
 	status = buf[0] & FTDI_STATUS_B0_MASK;
+=======
+	status = packet[0] & FTDI_STATUS_B0_MASK;
+>>>>>>> FETCH_HEAD
 	if (status != priv->prev_status) {
 		char diff_status = status ^ priv->prev_status;
 
@@ -2097,12 +2116,21 @@ static int ftdi_process_packet(struct usb_serial_port *port,
 	}
 
 	/* save if the transmitter is empty or not */
+<<<<<<< HEAD
 	if (buf[1] & FTDI_RS_TEMT)
+=======
+	if (packet[1] & FTDI_RS_TEMT)
+>>>>>>> FETCH_HEAD
 		priv->transmit_empty = 1;
 	else
 		priv->transmit_empty = 0;
 
+<<<<<<< HEAD
 	if (len == 2)
+=======
+	len -= 2;
+	if (!len)
+>>>>>>> FETCH_HEAD
 		return 0;	/* status only */
 
 	/*
@@ -2110,6 +2138,7 @@ static int ftdi_process_packet(struct usb_serial_port *port,
 	 * data payload to avoid over-reporting.
 	 */
 	flag = TTY_NORMAL;
+<<<<<<< HEAD
 	if (buf[1] & FTDI_RS_ERR_MASK) {
 		/* Break takes precedence over parity, which takes precedence
 		 * over framing errors */
@@ -2121,16 +2150,34 @@ static int ftdi_process_packet(struct usb_serial_port *port,
 			flag = TTY_PARITY;
 			port->icount.parity++;
 		} else if (buf[1] & FTDI_RS_FE) {
+=======
+	if (packet[1] & FTDI_RS_ERR_MASK) {
+		/* Break takes precedence over parity, which takes precedence
+		 * over framing errors */
+		if (packet[1] & FTDI_RS_BI) {
+			flag = TTY_BREAK;
+			port->icount.brk++;
+			usb_serial_handle_break(port);
+		} else if (packet[1] & FTDI_RS_PE) {
+			flag = TTY_PARITY;
+			port->icount.parity++;
+		} else if (packet[1] & FTDI_RS_FE) {
+>>>>>>> FETCH_HEAD
 			flag = TTY_FRAME;
 			port->icount.frame++;
 		}
 		/* Overrun is special, not associated with a char */
+<<<<<<< HEAD
 		if (buf[1] & FTDI_RS_OE) {
+=======
+		if (packet[1] & FTDI_RS_OE) {
+>>>>>>> FETCH_HEAD
 			port->icount.overrun++;
 			tty_insert_flip_char(&port->port, 0, TTY_OVERRUN);
 		}
 	}
 
+<<<<<<< HEAD
 	port->icount.rx += len - 2;
 
 	if (port->port.console && port->sysrq) {
@@ -2145,6 +2192,21 @@ static int ftdi_process_packet(struct usb_serial_port *port,
 	}
 
 	return len - 2;
+=======
+	port->icount.rx += len;
+	ch = packet + 2;
+
+	if (port->port.console && port->sysrq) {
+		for (i = 0; i < len; i++, ch++) {
+			if (!usb_serial_handle_sysrq_char(port, *ch))
+				tty_insert_flip_char(&port->port, *ch, flag);
+		}
+	} else {
+		tty_insert_flip_string_fixed_flag(&port->port, ch, flag, len);
+	}
+
+	return len;
+>>>>>>> FETCH_HEAD
 }
 
 static void ftdi_process_read_urb(struct urb *urb)

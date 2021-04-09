@@ -560,6 +560,11 @@ __u32 cookie_v6_init_sequence(const struct sk_buff *skb, __u16 *mss);
 #endif
 /* tcp_output.c */
 
+<<<<<<< HEAD
+=======
+u32 tcp_tso_autosize(const struct sock *sk, unsigned int mss_now,
+		     int min_tso_segs);
+>>>>>>> FETCH_HEAD
 void __tcp_push_pending_frames(struct sock *sk, unsigned int cur_mss,
 			       int nonagle);
 bool tcp_may_send_now(struct sock *sk);
@@ -598,7 +603,10 @@ void tcp_fin(struct sock *sk);
 void tcp_init_xmit_timers(struct sock *);
 static inline void tcp_clear_xmit_timers(struct sock *sk)
 {
+<<<<<<< HEAD
 	hrtimer_cancel(&tcp_sk(sk)->pacing_timer);
+=======
+>>>>>>> FETCH_HEAD
 	inet_csk_clear_xmit_timers(sk);
 }
 
@@ -925,7 +933,10 @@ struct rate_sample {
 	u32  prior_in_flight;	/* in flight before this ACK */
 	bool is_app_limited;	/* is sample from packet with bubble in pipe? */
 	bool is_retrans;	/* is sample from retransmission? */
+<<<<<<< HEAD
 	bool is_ack_delayed;	/* is this (likely) a delayed ACK? */
+=======
+>>>>>>> FETCH_HEAD
 };
 
 struct tcp_congestion_ops {
@@ -952,8 +963,13 @@ struct tcp_congestion_ops {
 	u32  (*undo_cwnd)(struct sock *sk);
 	/* hook for packet ack accounting (optional) */
 	void (*pkts_acked)(struct sock *sk, const struct ack_sample *sample);
+<<<<<<< HEAD
 	/* override sysctl_tcp_min_tso_segs */
 	u32 (*min_tso_segs)(struct sock *sk);
+=======
+	/* suggest number of segments for each skb to transmit (optional) */
+	u32 (*tso_segs_goal)(struct sock *sk);
+>>>>>>> FETCH_HEAD
 	/* returns the multiplier used in tcp_sndbuf_expand (optional) */
 	u32 (*sndbuf_expand)(struct sock *sk);
 	/* call when packets are delivered to update cwnd and pacing rate,
@@ -1177,6 +1193,7 @@ static inline bool tcp_is_cwnd_limited(const struct sock *sk)
 	return tp->is_cwnd_limited;
 }
 
+<<<<<<< HEAD
 /* BBR congestion control needs pacing.
  * Same remark for SO_MAX_PACING_RATE.
  * sch_fq packet scheduler is efficiently handling pacing,
@@ -1188,6 +1205,8 @@ static inline bool tcp_needs_internal_pacing(const struct sock *sk)
 	return smp_load_acquire(&sk->sk_pacing_status) == SK_PACING_NEEDED;
 }
 
+=======
+>>>>>>> FETCH_HEAD
 /* Something is really bad, we could not queue an additional packet,
  * because qdisc is full or receiver sent a 0 window.
  * We do not want to add fuel to the fire, or abort too early,
@@ -2000,6 +2019,9 @@ static inline void tcp_listendrop(const struct sock *sk)
 	__NET_INC_STATS(sock_net(sk), LINUX_MIB_LISTENDROPS);
 }
 
+<<<<<<< HEAD
 enum hrtimer_restart tcp_pace_kick(struct hrtimer *timer);
 
+=======
+>>>>>>> FETCH_HEAD
 #endif	/* _TCP_H */

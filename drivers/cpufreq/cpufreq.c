@@ -30,7 +30,10 @@
 #include <linux/suspend.h>
 #include <linux/syscore_ops.h>
 #include <linux/tick.h>
+<<<<<<< HEAD
 #include <linux/sched/sysctl.h>
+=======
+>>>>>>> FETCH_HEAD
 #ifdef CONFIG_SMP
 #include <linux/sched.h>
 #endif
@@ -744,10 +747,15 @@ static ssize_t show_##file_name				\
 }
 
 show_one(cpuinfo_min_freq, cpuinfo.min_freq);
+<<<<<<< HEAD
+=======
+show_one(cpuinfo_max_freq, cpuinfo.max_freq);
+>>>>>>> FETCH_HEAD
 show_one(cpuinfo_transition_latency, cpuinfo.transition_latency);
 show_one(scaling_min_freq, min);
 show_one(scaling_max_freq, max);
 
+<<<<<<< HEAD
 unsigned int cpuinfo_max_freq_cached;
 
 static bool should_use_cached_freq(int cpu)
@@ -778,6 +786,8 @@ static ssize_t show_cpuinfo_max_freq(struct cpufreq_policy *policy, char *buf)
 	return scnprintf(buf, PAGE_SIZE, "%u\n", freq);
 }
 
+=======
+>>>>>>> FETCH_HEAD
 static ssize_t show_scaling_cur_freq(struct cpufreq_policy *policy, char *buf)
 {
 	ssize_t ret;
@@ -1990,10 +2000,16 @@ EXPORT_SYMBOL(cpufreq_unregister_notifier);
  * twice in parallel for the same policy and that it will never be called in
  * parallel with either ->target() or ->target_index() for the same policy.
  *
+<<<<<<< HEAD
  * Returns the actual frequency set for the CPU.
  *
  * If 0 is returned by the driver's ->fast_switch() callback to indicate an
  * error condition, the hardware configuration must be preserved.
+=======
+ * If CPUFREQ_ENTRY_INVALID is returned by the driver's ->fast_switch()
+ * callback to indicate an error condition, the hardware configuration must be
+ * preserved.
+>>>>>>> FETCH_HEAD
  */
 unsigned int cpufreq_driver_fast_switch(struct cpufreq_policy *policy,
 					unsigned int target_freq)
@@ -2002,10 +2018,15 @@ unsigned int cpufreq_driver_fast_switch(struct cpufreq_policy *policy,
 	target_freq = clamp_val(target_freq, policy->min, policy->max);
 
         ret = cpufreq_driver->fast_switch(policy, target_freq);
+<<<<<<< HEAD
 	if (ret) {
 		cpufreq_times_record_transition(policy, ret);
 		cpufreq_stats_record_transition(policy, ret);
 	}
+=======
+	if (ret)
+		cpufreq_times_record_transition(policy, ret);
+>>>>>>> FETCH_HEAD
 
 	return ret;
 }

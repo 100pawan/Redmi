@@ -74,7 +74,10 @@ struct cpuidle_driver_kobj;
 struct cpuidle_device {
 	unsigned int		registered:1;
 	unsigned int		enabled:1;
+<<<<<<< HEAD
 	unsigned int		use_deepest_state:1;
+=======
+>>>>>>> FETCH_HEAD
 	unsigned int		cpu;
 
 	int			last_residency;
@@ -193,12 +196,19 @@ static inline struct cpuidle_driver *cpuidle_get_cpu_driver(
 static inline struct cpuidle_device *cpuidle_get_device(void) {return NULL; }
 #endif
 
+<<<<<<< HEAD
 #ifdef CONFIG_CPU_IDLE
+=======
+#if defined(CONFIG_CPU_IDLE) && defined(CONFIG_SUSPEND)
+>>>>>>> FETCH_HEAD
 extern int cpuidle_find_deepest_state(struct cpuidle_driver *drv,
 				      struct cpuidle_device *dev);
 extern int cpuidle_enter_freeze(struct cpuidle_driver *drv,
 				struct cpuidle_device *dev);
+<<<<<<< HEAD
 extern void cpuidle_use_deepest_state(bool enable);
+=======
+>>>>>>> FETCH_HEAD
 #else
 static inline int cpuidle_find_deepest_state(struct cpuidle_driver *drv,
 					     struct cpuidle_device *dev)
@@ -206,9 +216,12 @@ static inline int cpuidle_find_deepest_state(struct cpuidle_driver *drv,
 static inline int cpuidle_enter_freeze(struct cpuidle_driver *drv,
 				       struct cpuidle_device *dev)
 {return -ENODEV; }
+<<<<<<< HEAD
 static inline void cpuidle_use_deepest_state(bool enable)
 {
 }
+=======
+>>>>>>> FETCH_HEAD
 #endif
 
 /* kernel/sched/idle.c */

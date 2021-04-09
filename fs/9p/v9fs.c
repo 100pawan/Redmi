@@ -457,9 +457,16 @@ void v9fs_session_close(struct v9fs_session_info *v9ses)
 	}
 
 #ifdef CONFIG_9P_FSCACHE
+<<<<<<< HEAD
 	if (v9ses->fscache)
 		v9fs_cache_session_put_cookie(v9ses);
 	kfree(v9ses->cachetag);
+=======
+	if (v9ses->fscache) {
+		v9fs_cache_session_put_cookie(v9ses);
+		kfree(v9ses->cachetag);
+	}
+>>>>>>> FETCH_HEAD
 #endif
 	kfree(v9ses->uname);
 	kfree(v9ses->aname);

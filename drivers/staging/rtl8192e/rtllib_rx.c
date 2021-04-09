@@ -1986,7 +1986,11 @@ static void rtllib_parse_mife_generic(struct rtllib_device *ieee,
 	    info_element->data[2] == 0x96 &&
 	    info_element->data[3] == 0x01) {
 		if (info_element->len == 6) {
+<<<<<<< HEAD
 			memcpy(network->CcxRmState, &info_element->data[4], 2);
+=======
+			memcpy(network->CcxRmState, &info_element[4], 2);
+>>>>>>> FETCH_HEAD
 			if (network->CcxRmState[0] != 0)
 				network->bCcxRmEnable = true;
 			else

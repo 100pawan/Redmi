@@ -428,6 +428,7 @@ static void arch_timer_evtstrm_enable(int divider)
 
 static void arch_timer_configure_evtstream(void)
 {
+<<<<<<< HEAD
 	int evt_stream_div, lsb;
 
 	/*
@@ -446,6 +447,17 @@ static void arch_timer_configure_evtstream(void)
 
 	/* enable event stream */
 	arch_timer_evtstrm_enable(max(0, min(lsb, 15)));
+=======
+	int evt_stream_div, pos;
+
+	/* Find the closest power of two to the divisor */
+	evt_stream_div = arch_timer_rate / ARCH_TIMER_EVT_STREAM_FREQ;
+	pos = fls(evt_stream_div);
+	if (pos > 1 && !(evt_stream_div & (1 << (pos - 2))))
+		pos--;
+	/* enable event stream */
+	arch_timer_evtstrm_enable(min(pos, 15));
+>>>>>>> FETCH_HEAD
 }
 
 static void arch_counter_set_user_access(void)

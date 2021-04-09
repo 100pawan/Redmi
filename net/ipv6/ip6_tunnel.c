@@ -871,6 +871,7 @@ int ip6_tnl_rcv(struct ip6_tnl *t, struct sk_buff *skb,
 		struct metadata_dst *tun_dst,
 		bool log_ecn_err)
 {
+<<<<<<< HEAD
 	int (*dscp_ecn_decapsulate)(const struct ip6_tnl *t,
 				    const struct ipv6hdr *ipv6h,
 				    struct sk_buff *skb);
@@ -880,6 +881,9 @@ int ip6_tnl_rcv(struct ip6_tnl *t, struct sk_buff *skb,
 		dscp_ecn_decapsulate = ip4ip6_dscp_ecn_decapsulate;
 
 	return __ip6_tnl_rcv(t, skb, tpi, NULL, dscp_ecn_decapsulate,
+=======
+	return __ip6_tnl_rcv(t, skb, tpi, NULL, ip6ip6_dscp_ecn_decapsulate,
+>>>>>>> FETCH_HEAD
 			     log_ecn_err);
 }
 EXPORT_SYMBOL(ip6_tnl_rcv);

@@ -12,8 +12,11 @@
  */
 
 #include <dt-bindings/msm/power-on.h>
+<<<<<<< HEAD
 #include <dt-bindings/spmi/spmi.h>
 #include <dt-bindings/interrupt-controller/arm-gic.h>
+=======
+>>>>>>> FETCH_HEAD
 
 &spmi_bus {
 	qcom,pmi8940@2 {
@@ -511,10 +514,17 @@
 				qcom,led-name = "led:flash_0";
 				qcom,default-led-trigger =
 						"flash0_trigger";
+<<<<<<< HEAD
 				qcom,max-current = <1200>;
 				qcom,duration = <1280>;
 				qcom,id = <0>;
 				qcom,current = <1200>;
+=======
+				qcom,max-current = <1000>;
+				qcom,duration = <1280>;
+				qcom,id = <0>;
+				qcom,current = <625>;
+>>>>>>> FETCH_HEAD
 			};
 
 			pmi8940_flash1: qcom,flash_1 {
@@ -522,10 +532,17 @@
 				qcom,led-name = "led:flash_1";
 				qcom,default-led-trigger =
 						"flash1_trigger";
+<<<<<<< HEAD
 				qcom,max-current = <1200>;
 				qcom,duration = <1280>;
 				qcom,id = <1>;
 				qcom,current = <90>;
+=======
+				qcom,max-current = <1000>;
+				qcom,duration = <1280>;
+				qcom,id = <1>;
+				qcom,current = <625>;
+>>>>>>> FETCH_HEAD
 			};
 
 			pmi8940_torch0: qcom,torch_0 {
@@ -545,12 +562,20 @@
 						"torch1_trigger";
 				qcom,max-current = <200>;
 				qcom,id = <1>;
+<<<<<<< HEAD
 				qcom,current = <90>;
+=======
+				qcom,current = <120>;
+>>>>>>> FETCH_HEAD
 			};
 
 			pmi8940_switch: qcom,switch {
 				label = "switch";
+<<<<<<< HEAD
 				qcom,led-name = "flashlight";
+=======
+				qcom,led-name = "led:switch";
+>>>>>>> FETCH_HEAD
 				qcom,default-led-trigger =
 						"switch_trigger";
 				qcom,max-current = <1000>;
@@ -563,6 +588,7 @@
 			};
 		};
 
+<<<<<<< HEAD
 		pmi_haptic: qcom,haptics@c000 {
 			compatible = "qcom,qpnp-haptics";
 			reg = <0xc000 0x100>;
@@ -590,6 +616,34 @@
 			//qcom,lra-auto-res-mode="qwd";
 			//qcom,lra-high-z="opt1";
 			//qcom,lra-res-cal-period = <4>;
+=======
+		pmi_haptic: qcom,haptic@c000 {
+			compatible = "qcom,qpnp-haptic";
+			reg = <0xc000 0x100>;
+			interrupts = <0x3 0xc0 0x0 IRQ_TYPE_EDGE_BOTH>,
+				     <0x3 0xc0 0x1 IRQ_TYPE_EDGE_BOTH>;
+			interrupt-names = "sc-irq", "play-irq";
+			qcom,pmic-revid = <&pmi8940_revid>;
+			vcc_pon-supply = <&pon_perph_reg>;
+			qcom,play-mode = "direct";
+			qcom,wave-play-rate-us = <5263>;
+			qcom,actuator-type = <0>;
+			qcom,wave-shape = "square";
+			qcom,vmax-mv = <2000>;
+			qcom,ilim-ma = <800>;
+			qcom,sc-deb-cycles = <8>;
+			qcom,int-pwm-freq-khz = <505>;
+			qcom,en-brake;
+			qcom,brake-pattern = [03 03 00 00];
+			qcom,use-play-irq;
+			qcom,use-sc-irq;
+			qcom,wave-samples = [3e 3e 3e 3e 3e 3e 3e 3e];
+			qcom,wave-rep-cnt = <1>;
+			qcom,wave-samp-rep-cnt = <1>;
+			qcom,lra-auto-res-mode="qwd";
+			qcom,lra-high-z="opt1";
+			qcom,lra-res-cal-period = <4>;
+>>>>>>> FETCH_HEAD
 			qcom,correct-lra-drive-freq;
 			qcom,misc-trim-error-rc19p2-clk-reg-present;
 		};

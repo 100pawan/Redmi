@@ -300,7 +300,11 @@ schedtune_accept_deltas(int nrg_delta, int cap_delta,
  *    implementation especially for the computation of the per-CPU boost
  *    value
  */
+<<<<<<< HEAD
 #define BOOSTGROUPS_COUNT 7
+=======
+#define BOOSTGROUPS_COUNT 5
+>>>>>>> FETCH_HEAD
 
 /* Array of configured boostgroups */
 static struct schedtune *allocated_group[BOOSTGROUPS_COUNT] = {
@@ -344,11 +348,14 @@ static inline void init_sched_boost(struct schedtune *st)
 	st->colocate_update_disabled = false;
 }
 
+<<<<<<< HEAD
 bool same_schedtune(struct task_struct *tsk1, struct task_struct *tsk2)
 {
 	return task_schedtune(tsk1) == task_schedtune(tsk2);
 }
 
+=======
+>>>>>>> FETCH_HEAD
 void update_cgroup_boost_settings(void)
 {
 	int i;
@@ -658,6 +665,26 @@ static int sched_colocate_write(struct cgroup_subsys_state *css,
 	return 0;
 }
 
+<<<<<<< HEAD
+=======
+bool schedtune_task_colocated(struct task_struct *p)
+{
+	struct schedtune *st;
+	bool colocated;
+
+	if (unlikely(!schedtune_initialized))
+		return false;
+
+	/* Get task boost value */
+	rcu_read_lock();
+	st = task_schedtune(p);
+	colocated = st->colocate;
+	rcu_read_unlock();
+
+	return colocated;
+}
+
+>>>>>>> FETCH_HEAD
 #else /* CONFIG_SCHED_WALT */
 
 static inline void init_sched_boost(struct schedtune *st) { }
@@ -744,6 +771,7 @@ int schedtune_cpu_boost(int cpu)
 	return bg->boost_max;
 }
 
+<<<<<<< HEAD
 static inline bool schedtune_adj_ta(struct schedtune *st, struct task_struct *p)
 {
 	char name_buf[NAME_MAX + 1];
@@ -760,6 +788,8 @@ static inline bool schedtune_adj_ta(struct schedtune *st, struct task_struct *p)
 	return false;
 }
 
+=======
+>>>>>>> FETCH_HEAD
 int schedtune_task_boost(struct task_struct *p)
 {
 	struct schedtune *st;
@@ -771,12 +801,17 @@ int schedtune_task_boost(struct task_struct *p)
 	/* Get task boost value */
 	rcu_read_lock();
 	st = task_schedtune(p);
+<<<<<<< HEAD
 	task_boost = st->boost || schedtune_adj_ta(st, p);
+=======
+	task_boost = st->boost;
+>>>>>>> FETCH_HEAD
 	rcu_read_unlock();
 
 	return task_boost;
 }
 
+<<<<<<< HEAD
  /*  The same as schedtune_task_boost except assuming the caller has the rcu read
  *  lock.
  */
@@ -795,6 +830,8 @@ int schedtune_task_boost_rcu_locked(struct task_struct *p)
 	return task_boost;
 }
 
+=======
+>>>>>>> FETCH_HEAD
 int schedtune_prefer_idle(struct task_struct *p)
 {
 	struct schedtune *st;

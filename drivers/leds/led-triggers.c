@@ -284,15 +284,25 @@ void led_trigger_event(struct led_trigger *trig,
 			enum led_brightness brightness)
 {
 	struct led_classdev *led_cdev;
+<<<<<<< HEAD
 	unsigned long flags;
+=======
+>>>>>>> FETCH_HEAD
 
 	if (!trig)
 		return;
 
+<<<<<<< HEAD
 	read_lock_irqsave(&trig->leddev_list_lock, flags);
 	list_for_each_entry(led_cdev, &trig->led_cdevs, trig_list)
 		led_set_brightness(led_cdev, brightness);
 	read_unlock_irqrestore(&trig->leddev_list_lock, flags);
+=======
+	read_lock(&trig->leddev_list_lock);
+	list_for_each_entry(led_cdev, &trig->led_cdevs, trig_list)
+		led_set_brightness(led_cdev, brightness);
+	read_unlock(&trig->leddev_list_lock);
+>>>>>>> FETCH_HEAD
 }
 EXPORT_SYMBOL_GPL(led_trigger_event);
 
@@ -303,12 +313,19 @@ static void led_trigger_blink_setup(struct led_trigger *trig,
 			     int invert)
 {
 	struct led_classdev *led_cdev;
+<<<<<<< HEAD
 	unsigned long flags;
+=======
+>>>>>>> FETCH_HEAD
 
 	if (!trig)
 		return;
 
+<<<<<<< HEAD
 	read_lock_irqsave(&trig->leddev_list_lock, flags);
+=======
+	read_lock(&trig->leddev_list_lock);
+>>>>>>> FETCH_HEAD
 	list_for_each_entry(led_cdev, &trig->led_cdevs, trig_list) {
 		if (oneshot)
 			led_blink_set_oneshot(led_cdev, delay_on, delay_off,
@@ -316,7 +333,11 @@ static void led_trigger_blink_setup(struct led_trigger *trig,
 		else
 			led_blink_set(led_cdev, delay_on, delay_off);
 	}
+<<<<<<< HEAD
 	read_unlock_irqrestore(&trig->leddev_list_lock, flags);
+=======
+	read_unlock(&trig->leddev_list_lock);
+>>>>>>> FETCH_HEAD
 }
 
 void led_trigger_blink(struct led_trigger *trig,
@@ -335,6 +356,7 @@ void led_trigger_blink_oneshot(struct led_trigger *trig,
 	led_trigger_blink_setup(trig, delay_on, delay_off, 1, invert);
 }
 EXPORT_SYMBOL_GPL(led_trigger_blink_oneshot);
+<<<<<<< HEAD
 struct led_trigger *led_trigger_get(const char *name)
 {
 	struct led_trigger *_trig;
@@ -350,6 +372,8 @@ struct led_trigger *led_trigger_get(const char *name)
 	up_write(&triggers_list_lock);
 	return NULL;
 }
+=======
+>>>>>>> FETCH_HEAD
 
 void led_trigger_register_simple(const char *name, struct led_trigger **tp)
 {
@@ -371,9 +395,12 @@ void led_trigger_register_simple(const char *name, struct led_trigger **tp)
 		pr_warn("LED trigger %s failed to register (no memory)\n",
 			name);
 	}
+<<<<<<< HEAD
 	if (!strcmp("switch_trigger", name) && trig == NULL) {
 		 trig = led_trigger_get(name);
 	}
+=======
+>>>>>>> FETCH_HEAD
 	*tp = trig;
 }
 EXPORT_SYMBOL_GPL(led_trigger_register_simple);

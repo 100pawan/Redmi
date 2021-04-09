@@ -20,6 +20,7 @@
 #include <linux/of_device.h>
 #include <linux/of.h>
 
+<<<<<<< HEAD
 enum __camera_vendor_module_id{
 	MID_NULL = 0,
 	MID_SUNNY,
@@ -55,6 +56,8 @@ struct vendor_eeprom{
 };
 
 #define CAMERA_VENDOR_EEPROM_COUNT_MAX 12
+=======
+>>>>>>> FETCH_HEAD
 #define MAX_SPECIAL_SUPPORT_SIZE 10
 
 enum msm_camera_device_type_t {

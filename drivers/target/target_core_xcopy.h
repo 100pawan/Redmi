@@ -19,7 +19,10 @@ struct xcopy_op {
 	struct se_device *dst_dev;
 	unsigned char dst_tid_wwn[XCOPY_NAA_IEEE_REGEX_LEN];
 	unsigned char local_dev_wwn[XCOPY_NAA_IEEE_REGEX_LEN];
+<<<<<<< HEAD
 	struct percpu_ref *remote_lun_ref;
+=======
+>>>>>>> FETCH_HEAD
 
 	sector_t src_lba;
 	sector_t dst_lba;

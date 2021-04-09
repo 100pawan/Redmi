@@ -152,7 +152,10 @@ int arc_mdio_probe(struct arc_emac_priv *priv)
 	if (IS_ERR(data->reset_gpio)) {
 		error = PTR_ERR(data->reset_gpio);
 		dev_err(priv->dev, "Failed to request gpio: %d\n", error);
+<<<<<<< HEAD
 		mdiobus_free(bus);
+=======
+>>>>>>> FETCH_HEAD
 		return error;
 	}
 

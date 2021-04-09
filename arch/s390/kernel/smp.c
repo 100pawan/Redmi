@@ -727,7 +727,11 @@ static int smp_add_core(struct sclp_core_entry *core, cpumask_t *avail,
 static int __smp_rescan_cpus(struct sclp_core_info *info, bool early)
 {
 	struct sclp_core_entry *core;
+<<<<<<< HEAD
 	static cpumask_t avail;
+=======
+	cpumask_t avail;
+>>>>>>> FETCH_HEAD
 	bool configured;
 	u16 core_id;
 	int nr, i;

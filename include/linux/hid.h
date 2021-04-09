@@ -877,6 +877,7 @@ static inline void hid_device_io_stop(struct hid_device *hid) {
  * @max: maximal valid usage->code to consider later (out parameter)
  * @type: input event type (EV_KEY, EV_REL, ...)
  * @c: code which corresponds to this usage and type
+<<<<<<< HEAD
  *
  * The value pointed to by @bit will be set to NULL if either @type is
  * an unhandled event type, or if @c is out of range for @type. This
@@ -920,6 +921,36 @@ static inline void hid_map_usage(struct hid_input *hidinput,
 	usage->code = c;
 	*max = limit;
 	*bit = bmap;
+=======
+ */
+static inline void hid_map_usage(struct hid_input *hidinput,
+		struct hid_usage *usage, unsigned long **bit, int *max,
+		__u8 type, __u16 c)
+{
+	struct input_dev *input = hidinput->input;
+
+	usage->type = type;
+	usage->code = c;
+
+	switch (type) {
+	case EV_ABS:
+		*bit = input->absbit;
+		*max = ABS_MAX;
+		break;
+	case EV_REL:
+		*bit = input->relbit;
+		*max = REL_MAX;
+		break;
+	case EV_KEY:
+		*bit = input->keybit;
+		*max = KEY_MAX;
+		break;
+	case EV_LED:
+		*bit = input->ledbit;
+		*max = LED_MAX;
+		break;
+	}
+>>>>>>> FETCH_HEAD
 }
 
 /**
@@ -933,8 +964,12 @@ static inline void hid_map_usage_clear(struct hid_input *hidinput,
 		__u8 type, __u16 c)
 {
 	hid_map_usage(hidinput, usage, bit, max, type, c);
+<<<<<<< HEAD
 	if (*bit)
 		clear_bit(usage->code, *bit);
+=======
+	clear_bit(c, *bit);
+>>>>>>> FETCH_HEAD
 }
 
 /**

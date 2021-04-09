@@ -291,7 +291,11 @@ module_param_named(disable_numa, wq_disable_numa, bool, 0444);
 
 /* see the comment above the definition of WQ_POWER_EFFICIENT */
 static bool wq_power_efficient = IS_ENABLED(CONFIG_WQ_POWER_EFFICIENT_DEFAULT);
+<<<<<<< HEAD
 module_param_named(power_efficient, wq_power_efficient, bool, 0644);
+=======
+module_param_named(power_efficient, wq_power_efficient, bool, 0444);
+>>>>>>> FETCH_HEAD
 
 bool wq_online;				/* can kworkers be created yet? */
 
@@ -3494,6 +3498,7 @@ static void pwq_adjust_max_active(struct pool_workqueue *pwq)
 	 * is updated and visible.
 	 */
 	if (!freezable || !workqueue_freezing) {
+<<<<<<< HEAD
 		bool kick = false;
 
 		pwq->max_active = wq->saved_max_active;
@@ -3512,6 +3517,19 @@ static void pwq_adjust_max_active(struct pool_workqueue *pwq)
 		 */
 		if (kick)
 			wake_up_worker(pwq->pool);
+=======
+		pwq->max_active = wq->saved_max_active;
+
+		while (!list_empty(&pwq->delayed_works) &&
+		       pwq->nr_active < pwq->max_active)
+			pwq_activate_first_delayed(pwq);
+
+		/*
+		 * Need to kick a worker after thawed or an unbound wq's
+		 * max_active is bumped.  It's a slow path.  Do it always.
+		 */
+		wake_up_worker(pwq->pool);
+>>>>>>> FETCH_HEAD
 	} else {
 		pwq->max_active = 0;
 	}

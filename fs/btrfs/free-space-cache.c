@@ -753,10 +753,15 @@ static int __load_free_space_cache(struct btrfs_root *root, struct inode *inode,
 	while (num_entries) {
 		e = kmem_cache_zalloc(btrfs_free_space_cachep,
 				      GFP_NOFS);
+<<<<<<< HEAD
 		if (!e) {
 			ret = -ENOMEM;
 			goto free_cache;
 		}
+=======
+		if (!e)
+			goto free_cache;
+>>>>>>> FETCH_HEAD
 
 		ret = io_ctl_read_entry(&io_ctl, e, &type);
 		if (ret) {
@@ -765,7 +770,10 @@ static int __load_free_space_cache(struct btrfs_root *root, struct inode *inode,
 		}
 
 		if (!e->bytes) {
+<<<<<<< HEAD
 			ret = -1;
+=======
+>>>>>>> FETCH_HEAD
 			kmem_cache_free(btrfs_free_space_cachep, e);
 			goto free_cache;
 		}
@@ -785,7 +793,10 @@ static int __load_free_space_cache(struct btrfs_root *root, struct inode *inode,
 			num_bitmaps--;
 			e->bitmap = kzalloc(PAGE_SIZE, GFP_NOFS);
 			if (!e->bitmap) {
+<<<<<<< HEAD
 				ret = -ENOMEM;
+=======
+>>>>>>> FETCH_HEAD
 				kmem_cache_free(
 					btrfs_free_space_cachep, e);
 				goto free_cache;
@@ -1169,6 +1180,10 @@ int btrfs_wait_cache_io(struct btrfs_root *root,
 	ret = update_cache_item(trans, root, inode, path, offset,
 				io_ctl->entries, io_ctl->bitmaps);
 out:
+<<<<<<< HEAD
+=======
+	io_ctl_free(io_ctl);
+>>>>>>> FETCH_HEAD
 	if (ret) {
 		invalidate_inode_pages2(inode->i_mapping);
 		BTRFS_I(inode)->generation = 0;
@@ -1317,7 +1332,10 @@ static int __btrfs_write_out_cache(struct btrfs_root *root, struct inode *inode,
 	 * them out later
 	 */
 	io_ctl_drop_pages(io_ctl);
+<<<<<<< HEAD
 	io_ctl_free(io_ctl);
+=======
+>>>>>>> FETCH_HEAD
 
 	unlock_extent_cached(&BTRFS_I(inode)->io_tree, 0,
 			     i_size_read(inode) - 1, &cached_state, GFP_NOFS);
@@ -2156,7 +2174,11 @@ out:
 static bool try_merge_free_space(struct btrfs_free_space_ctl *ctl,
 			  struct btrfs_free_space *info, bool update_stat)
 {
+<<<<<<< HEAD
 	struct btrfs_free_space *left_info = NULL;
+=======
+	struct btrfs_free_space *left_info;
+>>>>>>> FETCH_HEAD
 	struct btrfs_free_space *right_info;
 	bool merged = false;
 	u64 offset = info->offset;
@@ -2171,7 +2193,11 @@ static bool try_merge_free_space(struct btrfs_free_space_ctl *ctl,
 	if (right_info && rb_prev(&right_info->offset_index))
 		left_info = rb_entry(rb_prev(&right_info->offset_index),
 				     struct btrfs_free_space, offset_index);
+<<<<<<< HEAD
 	else if (!right_info)
+=======
+	else
+>>>>>>> FETCH_HEAD
 		left_info = tree_search_offset(ctl, offset - 1, 0, 0);
 
 	if (right_info && !right_info->bitmap) {

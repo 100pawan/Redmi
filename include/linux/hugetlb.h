@@ -502,9 +502,12 @@ static inline void hugetlb_count_sub(long l, struct mm_struct *mm)
 {
 	atomic_long_sub(l, &mm->hugetlb_usage);
 }
+<<<<<<< HEAD
 
 void set_page_huge_active(struct page *page);
 
+=======
+>>>>>>> FETCH_HEAD
 #else	/* CONFIG_HUGETLB_PAGE */
 struct hstate {};
 #define alloc_huge_page(v, a, r) NULL

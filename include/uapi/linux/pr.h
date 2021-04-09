@@ -1,8 +1,11 @@
 #ifndef _UAPI_PR_H
 #define _UAPI_PR_H
 
+<<<<<<< HEAD
 #include <linux/types.h>
 
+=======
+>>>>>>> FETCH_HEAD
 enum pr_type {
 	PR_WRITE_EXCLUSIVE		= 1,
 	PR_EXCLUSIVE_ACCESS		= 2,

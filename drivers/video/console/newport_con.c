@@ -31,6 +31,7 @@
 #include <linux/linux_logo.h>
 #include <linux/font.h>
 
+<<<<<<< HEAD
 #define NEWPORT_LEN	0x10000
 
 #define FONT_DATA ((unsigned char *)font_vga_8x16.data)
@@ -39,6 +40,19 @@ static unsigned char *font_data[MAX_NR_CONSOLES];
 
 static struct newport_regs *npregs;
 static unsigned long newport_addr;
+=======
+#define FONT_DATA ((unsigned char *)font_vga_8x16.data)
+
+/* borrowed from fbcon.c */
+#define REFCOUNT(fd)	(((int *)(fd))[-1])
+#define FNTSIZE(fd)	(((int *)(fd))[-2])
+#define FNTCHARCNT(fd)	(((int *)(fd))[-3])
+#define FONT_EXTRA_WORDS 3
+
+static unsigned char *font_data[MAX_NR_CONSOLES];
+
+static struct newport_regs *npregs;
+>>>>>>> FETCH_HEAD
 
 static int logo_active;
 static int topscan;
@@ -516,7 +530,10 @@ static int newport_set_font(int unit, struct console_font *op)
 	FNTSIZE(new_data) = size;
 	FNTCHARCNT(new_data) = op->charcount;
 	REFCOUNT(new_data) = 0;	/* usage counter */
+<<<<<<< HEAD
 	FNTSUM(new_data) = 0;
+=======
+>>>>>>> FETCH_HEAD
 
 	p = new_data;
 	for (i = 0; i < op->charcount; i++) {
@@ -699,6 +716,10 @@ const struct consw newport_con = {
 static int newport_probe(struct gio_device *dev,
 			 const struct gio_device_id *id)
 {
+<<<<<<< HEAD
+=======
+	unsigned long newport_addr;
+>>>>>>> FETCH_HEAD
 	int err;
 
 	if (!dev->resource.start)
@@ -708,7 +729,11 @@ static int newport_probe(struct gio_device *dev,
 		return -EBUSY; /* we only support one Newport as console */
 
 	newport_addr = dev->resource.start + 0xF0000;
+<<<<<<< HEAD
 	if (!request_mem_region(newport_addr, NEWPORT_LEN, "Newport"))
+=======
+	if (!request_mem_region(newport_addr, 0x10000, "Newport"))
+>>>>>>> FETCH_HEAD
 		return -ENODEV;
 
 	npregs = (struct newport_regs *)/* ioremap cannot fail */
@@ -716,11 +741,14 @@ static int newport_probe(struct gio_device *dev,
 	console_lock();
 	err = do_take_over_console(&newport_con, 0, MAX_NR_CONSOLES - 1, 1);
 	console_unlock();
+<<<<<<< HEAD
 
 	if (err) {
 		iounmap((void *)npregs);
 		release_mem_region(newport_addr, NEWPORT_LEN);
 	}
+=======
+>>>>>>> FETCH_HEAD
 	return err;
 }
 
@@ -728,7 +756,10 @@ static void newport_remove(struct gio_device *dev)
 {
 	give_up_console(&newport_con);
 	iounmap((void *)npregs);
+<<<<<<< HEAD
 	release_mem_region(newport_addr, NEWPORT_LEN);
+=======
+>>>>>>> FETCH_HEAD
 }
 
 static struct gio_device_id newport_ids[] = {

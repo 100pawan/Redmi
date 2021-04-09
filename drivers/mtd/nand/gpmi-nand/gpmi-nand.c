@@ -1930,7 +1930,11 @@ static int gpmi_set_geometry(struct gpmi_nand_data *this)
 
 static void gpmi_nand_exit(struct gpmi_nand_data *this)
 {
+<<<<<<< HEAD
 	nand_release(&this->nand);
+=======
+	nand_release(nand_to_mtd(&this->nand));
+>>>>>>> FETCH_HEAD
 	gpmi_free_dma_buffer(this);
 }
 

@@ -621,6 +621,10 @@ int bdc_ep_enable(struct bdc_ep *ep)
 	}
 	bdc_dbg_bd_list(bdc, ep);
 	/* only for ep0: config ep is called for ep0 from connect event */
+<<<<<<< HEAD
+=======
+	ep->flags |= BDC_EP_ENABLED;
+>>>>>>> FETCH_HEAD
 	if (ep->ep_num == 1)
 		return ret;
 
@@ -764,6 +768,7 @@ static int ep_dequeue(struct bdc_ep *ep, struct bdc_req *req)
 					__func__, ep->name, start_bdi, end_bdi);
 	dev_dbg(bdc->dev, "ep_dequeue ep=%p ep->desc=%p\n",
 						ep, (void *)ep->usb_ep.desc);
+<<<<<<< HEAD
 	/* if still connected, stop the ep to see where the HW is ? */
 	if (!(bdc_readl(bdc->regs, BDC_USPC) & BDC_PST_MASK)) {
 		ret = bdc_stop_ep(bdc, ep->ep_num);
@@ -771,6 +776,12 @@ static int ep_dequeue(struct bdc_ep *ep, struct bdc_req *req)
 		if (ret)
 			return 0;
 	} else
+=======
+	/* Stop the ep to see where the HW is ? */
+	ret = bdc_stop_ep(bdc, ep->ep_num);
+	/* if there is an issue with stopping ep, then no need to go further */
+	if (ret)
+>>>>>>> FETCH_HEAD
 		return 0;
 
 	/*
@@ -1919,9 +1930,13 @@ static int bdc_gadget_ep_disable(struct usb_ep *_ep)
 		__func__, ep->name, ep->flags);
 
 	if (!(ep->flags & BDC_EP_ENABLED)) {
+<<<<<<< HEAD
 		if (bdc->gadget.speed != USB_SPEED_UNKNOWN)
 			dev_warn(bdc->dev, "%s is already disabled\n",
 				 ep->name);
+=======
+		dev_warn(bdc->dev, "%s is already disabled\n", ep->name);
+>>>>>>> FETCH_HEAD
 		return 0;
 	}
 	spin_lock_irqsave(&bdc->lock, flags);

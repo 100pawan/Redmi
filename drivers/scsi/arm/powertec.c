@@ -382,7 +382,11 @@ static int powertecscsi_probe(struct expansion_card *ec,
 
 	if (info->info.scsi.dma != NO_DMA)
 		free_dma(info->info.scsi.dma);
+<<<<<<< HEAD
 	free_irq(ec->irq, info);
+=======
+	free_irq(ec->irq, host);
+>>>>>>> FETCH_HEAD
 
  out_release:
 	fas216_release(host);

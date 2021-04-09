@@ -277,6 +277,7 @@ fail:
 	return ERR_PTR(err);
 }
 
+<<<<<<< HEAD
 static void drop_cma_dev(struct config_group *cgroup, struct config_item *item)
 {
 	struct config_group *group =
@@ -292,6 +293,10 @@ static void drop_cma_dev(struct config_group *cgroup, struct config_item *item)
 static struct configfs_group_operations cma_subsys_group_ops = {
 	.make_group	= make_cma_dev,
 	.drop_item	= drop_cma_dev,
+=======
+static struct configfs_group_operations cma_subsys_group_ops = {
+	.make_group	= make_cma_dev,
+>>>>>>> FETCH_HEAD
 };
 
 static struct config_item_type cma_subsys_type = {

@@ -245,7 +245,11 @@ struct audit_netlink_list {
 	struct sk_buff_head q;
 };
 
+<<<<<<< HEAD
 int audit_send_list_thread(void *);
+=======
+int audit_send_list(void *);
+>>>>>>> FETCH_HEAD
 
 struct audit_net {
 	struct sock *nlsk;

@@ -775,7 +775,10 @@ endif # SPI_MASTER
 
 # (slave support would go here)
 
+<<<<<<< HEAD
 config SPI_DYNAMIC
 	def_bool ACPI || OF_DYNAMIC || SPI_SLAVE
 
+=======
+>>>>>>> FETCH_HEAD
 endif # SPI

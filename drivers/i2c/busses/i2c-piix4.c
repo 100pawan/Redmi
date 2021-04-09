@@ -840,8 +840,12 @@ static int piix4_probe(struct pci_dev *dev, const struct pci_device_id *id)
 	}
 
 	if (dev->vendor == PCI_VENDOR_ID_AMD &&
+<<<<<<< HEAD
 	    (dev->device == PCI_DEVICE_ID_AMD_HUDSON2_SMBUS ||
 	     dev->device == PCI_DEVICE_ID_AMD_KERNCZ_SMBUS)) {
+=======
+	    dev->device == PCI_DEVICE_ID_AMD_HUDSON2_SMBUS) {
+>>>>>>> FETCH_HEAD
 		retval = piix4_setup_sb800(dev, id, 1);
 	}
 

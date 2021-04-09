@@ -253,9 +253,15 @@ static int htable_create(struct net *net, struct hashlimit_cfg2 *cfg,
 	if (cfg->size) {
 		size = cfg->size;
 	} else {
+<<<<<<< HEAD
 		size = (totalram_pages() << PAGE_SHIFT) / 16384 /
 		       sizeof(struct list_head);
 		if (totalram_pages() > 1024 * 1024 * 1024 / PAGE_SIZE)
+=======
+		size = (totalram_pages << PAGE_SHIFT) / 16384 /
+		       sizeof(struct list_head);
+		if (totalram_pages > 1024 * 1024 * 1024 / PAGE_SIZE)
+>>>>>>> FETCH_HEAD
 			size = 8192;
 		if (size < 16)
 			size = 16;

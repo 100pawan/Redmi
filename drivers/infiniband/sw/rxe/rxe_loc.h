@@ -141,6 +141,7 @@ void rxe_mem_cleanup(void *arg);
 
 int advance_dma_data(struct rxe_dma_info *dma, unsigned int length);
 
+<<<<<<< HEAD
 /* rxe_net.c */
 int rxe_loopback(struct sk_buff *skb);
 int rxe_send(struct rxe_dev *rxe, struct rxe_pkt_info *pkt,
@@ -157,6 +158,8 @@ __be64 rxe_node_guid(struct rxe_dev *rxe);
 int rxe_mcast_add(struct rxe_dev *rxe, union ib_gid *mgid);
 int rxe_mcast_delete(struct rxe_dev *rxe, union ib_gid *mgid);
 
+=======
+>>>>>>> FETCH_HEAD
 /* rxe_qp.c */
 int rxe_qp_chk_init(struct rxe_dev *rxe, struct ib_qp_init_attr *init);
 
@@ -272,9 +275,15 @@ static inline int rxe_xmit_packet(struct rxe_dev *rxe, struct rxe_qp *qp,
 
 	if (pkt->mask & RXE_LOOPBACK_MASK) {
 		memcpy(SKB_TO_PKT(skb), pkt, sizeof(*pkt));
+<<<<<<< HEAD
 		err = rxe_loopback(skb);
 	} else {
 		err = rxe_send(rxe, pkt, skb);
+=======
+		err = rxe->ifc_ops->loopback(skb);
+	} else {
+		err = rxe->ifc_ops->send(rxe, pkt, skb);
+>>>>>>> FETCH_HEAD
 	}
 
 	if (err) {

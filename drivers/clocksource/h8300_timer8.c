@@ -176,7 +176,11 @@ static int __init h8300_8timer_init(struct device_node *node)
 		return PTR_ERR(clk);
 	}
 
+<<<<<<< HEAD
 	ret = -ENXIO;
+=======
+	ret = ENXIO;
+>>>>>>> FETCH_HEAD
 	base = of_iomap(node, 0);
 	if (!base) {
 		pr_err("failed to map registers for clockevent\n");

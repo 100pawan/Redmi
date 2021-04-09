@@ -1271,7 +1271,11 @@ ccio_ioc_init(struct ioc *ioc)
 	** Hot-Plug/Removal of PCI cards. (aka PCI OLARD).
 	*/
 
+<<<<<<< HEAD
 	iova_space_size = (u32) (totalram_pages() / count_parisc_driver(&ccio_driver));
+=======
+	iova_space_size = (u32) (totalram_pages / count_parisc_driver(&ccio_driver));
+>>>>>>> FETCH_HEAD
 
 	/* limit IOVA space size to 1MB-1GB */
 
@@ -1310,7 +1314,11 @@ ccio_ioc_init(struct ioc *ioc)
 
 	DBG_INIT("%s() hpa 0x%p mem %luMB IOV %dMB (%d bits)\n",
 			__func__, ioc->ioc_regs,
+<<<<<<< HEAD
 			(unsigned long) totalram_pages() >> (20 - PAGE_SHIFT),
+=======
+			(unsigned long) totalram_pages >> (20 - PAGE_SHIFT),
+>>>>>>> FETCH_HEAD
 			iova_space_size>>20,
 			iov_order + PAGE_SHIFT);
 

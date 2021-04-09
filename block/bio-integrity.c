@@ -517,7 +517,11 @@ void __init bio_integrity_init(void)
 	 * Make it highpri CPU intensive wq with max concurrency of 1.
 	 */
 	kintegrityd_wq = alloc_workqueue("kintegrityd", WQ_MEM_RECLAIM |
+<<<<<<< HEAD
 					 WQ_HIGHPRI | WQ_POWER_EFFICIENT |  WQ_CPU_INTENSIVE, 1);
+=======
+					 WQ_HIGHPRI | WQ_CPU_INTENSIVE, 1);
+>>>>>>> FETCH_HEAD
 	if (!kintegrityd_wq)
 		panic("Failed to create kintegrityd\n");
 

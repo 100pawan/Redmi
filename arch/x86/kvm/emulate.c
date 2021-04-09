@@ -3536,7 +3536,11 @@ static int em_rdpid(struct x86_emulate_ctxt *ctxt)
 	u64 tsc_aux = 0;
 
 	if (ctxt->ops->get_msr(ctxt, MSR_TSC_AUX, &tsc_aux))
+<<<<<<< HEAD
 		return emulate_ud(ctxt);
+=======
+		return emulate_gp(ctxt, 0);
+>>>>>>> FETCH_HEAD
 	ctxt->dst.val = tsc_aux;
 	return X86EMUL_CONTINUE;
 }
@@ -3934,12 +3938,15 @@ static int em_clflush(struct x86_emulate_ctxt *ctxt)
 	return X86EMUL_CONTINUE;
 }
 
+<<<<<<< HEAD
 static int em_clflushopt(struct x86_emulate_ctxt *ctxt)
 {
 	/* emulating clflushopt regardless of cpuid */
 	return X86EMUL_CONTINUE;
 }
 
+=======
+>>>>>>> FETCH_HEAD
 static int em_movsxd(struct x86_emulate_ctxt *ctxt)
 {
 	ctxt->dst.val = (s32) ctxt->src.val;
@@ -4429,7 +4436,11 @@ static const struct opcode group11[] = {
 };
 
 static const struct gprefix pfx_0f_ae_7 = {
+<<<<<<< HEAD
 	I(SrcMem | ByteOp, em_clflush), I(SrcMem | ByteOp, em_clflushopt), N, N,
+=======
+	I(SrcMem | ByteOp, em_clflush), N, N, N,
+>>>>>>> FETCH_HEAD
 };
 
 static const struct group_dual group15 = { {

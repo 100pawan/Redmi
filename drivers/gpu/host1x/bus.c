@@ -542,6 +542,7 @@ EXPORT_SYMBOL(host1x_driver_register_full);
 
 void host1x_driver_unregister(struct host1x_driver *driver)
 {
+<<<<<<< HEAD
 	struct host1x *host1x;
 
 	driver_unregister(&driver->driver);
@@ -553,6 +554,10 @@ void host1x_driver_unregister(struct host1x_driver *driver)
 
 	mutex_unlock(&devices_lock);
 
+=======
+	driver_unregister(&driver->driver);
+
+>>>>>>> FETCH_HEAD
 	mutex_lock(&drivers_lock);
 	list_del_init(&driver->list);
 	mutex_unlock(&drivers_lock);

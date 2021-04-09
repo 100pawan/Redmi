@@ -10,6 +10,20 @@
 
 #ifndef ASMINF
 
+<<<<<<< HEAD
+=======
+/* Allow machine dependent optimization for post-increment or pre-increment.
+   Based on testing to date,
+   Pre-increment preferred for:
+   - PowerPC G3 (Adler)
+   - MIPS R5000 (Randers-Pehrson)
+   Post-increment preferred for:
+   - none
+   No measurable difference:
+   - Pentium III (Anderson)
+   - M68060 (Nikl)
+ */
+>>>>>>> FETCH_HEAD
 union uu {
 	unsigned short us;
 	unsigned char b[2];
@@ -27,6 +41,19 @@ get_unaligned16(const unsigned short *p)
 	return mm.us;
 }
 
+<<<<<<< HEAD
+=======
+#ifdef POSTINC
+#  define OFF 0
+#  define PUP(a) *(a)++
+#  define UP_UNALIGNED(a) get_unaligned16((a)++)
+#else
+#  define OFF 1
+#  define PUP(a) *++(a)
+#  define UP_UNALIGNED(a) get_unaligned16(++(a))
+#endif
+
+>>>>>>> FETCH_HEAD
 /*
    Decode literal, length, and distance codes and write out the resulting
    literal and match bytes until either not enough input or output is
@@ -94,9 +121,15 @@ void inflate_fast(z_streamp strm, unsigned start)
 
     /* copy state to local variables */
     state = (struct inflate_state *)strm->state;
+<<<<<<< HEAD
     in = strm->next_in;
     last = in + (strm->avail_in - 5);
     out = strm->next_out;
+=======
+    in = strm->next_in - OFF;
+    last = in + (strm->avail_in - 5);
+    out = strm->next_out - OFF;
+>>>>>>> FETCH_HEAD
     beg = out - (start - strm->avail_out);
     end = out + (strm->avail_out - 257);
 #ifdef INFLATE_STRICT
@@ -117,9 +150,15 @@ void inflate_fast(z_streamp strm, unsigned start)
        input data or output space */
     do {
         if (bits < 15) {
+<<<<<<< HEAD
             hold += (unsigned long)(*in++) << bits;
             bits += 8;
             hold += (unsigned long)(*in++) << bits;
+=======
+            hold += (unsigned long)(PUP(in)) << bits;
+            bits += 8;
+            hold += (unsigned long)(PUP(in)) << bits;
+>>>>>>> FETCH_HEAD
             bits += 8;
         }
         this = lcode[hold & lmask];
@@ -129,14 +168,22 @@ void inflate_fast(z_streamp strm, unsigned start)
         bits -= op;
         op = (unsigned)(this.op);
         if (op == 0) {                          /* literal */
+<<<<<<< HEAD
             *out++ = (unsigned char)(this.val);
+=======
+            PUP(out) = (unsigned char)(this.val);
+>>>>>>> FETCH_HEAD
         }
         else if (op & 16) {                     /* length base */
             len = (unsigned)(this.val);
             op &= 15;                           /* number of extra bits */
             if (op) {
                 if (bits < op) {
+<<<<<<< HEAD
                     hold += (unsigned long)(*in++) << bits;
+=======
+                    hold += (unsigned long)(PUP(in)) << bits;
+>>>>>>> FETCH_HEAD
                     bits += 8;
                 }
                 len += (unsigned)hold & ((1U << op) - 1);
@@ -144,9 +191,15 @@ void inflate_fast(z_streamp strm, unsigned start)
                 bits -= op;
             }
             if (bits < 15) {
+<<<<<<< HEAD
                 hold += (unsigned long)(*in++) << bits;
                 bits += 8;
                 hold += (unsigned long)(*in++) << bits;
+=======
+                hold += (unsigned long)(PUP(in)) << bits;
+                bits += 8;
+                hold += (unsigned long)(PUP(in)) << bits;
+>>>>>>> FETCH_HEAD
                 bits += 8;
             }
             this = dcode[hold & dmask];
@@ -159,10 +212,17 @@ void inflate_fast(z_streamp strm, unsigned start)
                 dist = (unsigned)(this.val);
                 op &= 15;                       /* number of extra bits */
                 if (bits < op) {
+<<<<<<< HEAD
                     hold += (unsigned long)(*in++) << bits;
                     bits += 8;
                     if (bits < op) {
                         hold += (unsigned long)(*in++) << bits;
+=======
+                    hold += (unsigned long)(PUP(in)) << bits;
+                    bits += 8;
+                    if (bits < op) {
+                        hold += (unsigned long)(PUP(in)) << bits;
+>>>>>>> FETCH_HEAD
                         bits += 8;
                     }
                 }
@@ -184,13 +244,21 @@ void inflate_fast(z_streamp strm, unsigned start)
                         state->mode = BAD;
                         break;
                     }
+<<<<<<< HEAD
                     from = window;
+=======
+                    from = window - OFF;
+>>>>>>> FETCH_HEAD
                     if (write == 0) {           /* very common case */
                         from += wsize - op;
                         if (op < len) {         /* some from window */
                             len -= op;
                             do {
+<<<<<<< HEAD
                                 *out++ = *from++;
+=======
+                                PUP(out) = PUP(from);
+>>>>>>> FETCH_HEAD
                             } while (--op);
                             from = out - dist;  /* rest from output */
                         }
@@ -201,14 +269,24 @@ void inflate_fast(z_streamp strm, unsigned start)
                         if (op < len) {         /* some from end of window */
                             len -= op;
                             do {
+<<<<<<< HEAD
                                 *out++ = *from++;
                             } while (--op);
                             from = window;
+=======
+                                PUP(out) = PUP(from);
+                            } while (--op);
+                            from = window - OFF;
+>>>>>>> FETCH_HEAD
                             if (write < len) {  /* some from start of window */
                                 op = write;
                                 len -= op;
                                 do {
+<<<<<<< HEAD
                                     *out++ = *from++;
+=======
+                                    PUP(out) = PUP(from);
+>>>>>>> FETCH_HEAD
                                 } while (--op);
                                 from = out - dist;      /* rest from output */
                             }
@@ -219,12 +297,17 @@ void inflate_fast(z_streamp strm, unsigned start)
                         if (op < len) {         /* some from window */
                             len -= op;
                             do {
+<<<<<<< HEAD
                                 *out++ = *from++;
+=======
+                                PUP(out) = PUP(from);
+>>>>>>> FETCH_HEAD
                             } while (--op);
                             from = out - dist;  /* rest from output */
                         }
                     }
                     while (len > 2) {
+<<<<<<< HEAD
                         *out++ = *from++;
                         *out++ = *from++;
                         *out++ = *from++;
@@ -234,6 +317,17 @@ void inflate_fast(z_streamp strm, unsigned start)
                         *out++ = *from++;
                         if (len > 1)
                             *out++ = *from++;
+=======
+                        PUP(out) = PUP(from);
+                        PUP(out) = PUP(from);
+                        PUP(out) = PUP(from);
+                        len -= 3;
+                    }
+                    if (len) {
+                        PUP(out) = PUP(from);
+                        if (len > 1)
+                            PUP(out) = PUP(from);
+>>>>>>> FETCH_HEAD
                     }
                 }
                 else {
@@ -243,6 +337,7 @@ void inflate_fast(z_streamp strm, unsigned start)
                     from = out - dist;          /* copy direct from output */
 		    /* minimum length is three */
 		    /* Align out addr */
+<<<<<<< HEAD
 		    if (!((long)(out - 1) & 1)) {
 			*out++ = *from++;
 			len--;
@@ -266,6 +361,31 @@ void inflate_fast(z_streamp strm, unsigned start)
 			unsigned short pat16;
 
 			pat16 = *(sout-1);
+=======
+		    if (!((long)(out - 1 + OFF) & 1)) {
+			PUP(out) = PUP(from);
+			len--;
+		    }
+		    sout = (unsigned short *)(out - OFF);
+		    if (dist > 2) {
+			unsigned short *sfrom;
+
+			sfrom = (unsigned short *)(from - OFF);
+			loops = len >> 1;
+			do
+#ifdef CONFIG_HAVE_EFFICIENT_UNALIGNED_ACCESS
+			    PUP(sout) = PUP(sfrom);
+#else
+			    PUP(sout) = UP_UNALIGNED(sfrom);
+#endif
+			while (--loops);
+			out = (unsigned char *)sout + OFF;
+			from = (unsigned char *)sfrom + OFF;
+		    } else { /* dist == 1 or dist == 2 */
+			unsigned short pat16;
+
+			pat16 = *(sout-1+OFF);
+>>>>>>> FETCH_HEAD
 			if (dist == 1) {
 				union uu mm;
 				/* copy one char pattern to both bytes */
@@ -275,12 +395,21 @@ void inflate_fast(z_streamp strm, unsigned start)
 			}
 			loops = len >> 1;
 			do
+<<<<<<< HEAD
 			    *sout++ = pat16;
 			while (--loops);
 			out = (unsigned char *)sout;
 		    }
 		    if (len & 1)
 			*out++ = *from++;
+=======
+			    PUP(sout) = pat16;
+			while (--loops);
+			out = (unsigned char *)sout + OFF;
+		    }
+		    if (len & 1)
+			PUP(out) = PUP(from);
+>>>>>>> FETCH_HEAD
                 }
             }
             else if ((op & 64) == 0) {          /* 2nd level distance code */
@@ -315,8 +444,13 @@ void inflate_fast(z_streamp strm, unsigned start)
     hold &= (1U << bits) - 1;
 
     /* update state and return */
+<<<<<<< HEAD
     strm->next_in = in;
     strm->next_out = out;
+=======
+    strm->next_in = in + OFF;
+    strm->next_out = out + OFF;
+>>>>>>> FETCH_HEAD
     strm->avail_in = (unsigned)(in < last ? 5 + (last - in) : 5 - (in - last));
     strm->avail_out = (unsigned)(out < end ?
                                  257 + (end - out) : 257 - (out - end));

@@ -319,14 +319,23 @@ static ssize_t dump_attr_read(struct file *filep, struct kobject *kobj,
 	return count;
 }
 
+<<<<<<< HEAD
 static void create_dump_obj(uint32_t id, size_t size, uint32_t type)
+=======
+static struct dump_obj *create_dump_obj(uint32_t id, size_t size,
+					uint32_t type)
+>>>>>>> FETCH_HEAD
 {
 	struct dump_obj *dump;
 	int rc;
 
 	dump = kzalloc(sizeof(*dump), GFP_KERNEL);
 	if (!dump)
+<<<<<<< HEAD
 		return;
+=======
+		return NULL;
+>>>>>>> FETCH_HEAD
 
 	dump->kobj.kset = dump_kset;
 
@@ -346,6 +355,7 @@ static void create_dump_obj(uint32_t id, size_t size, uint32_t type)
 	rc = kobject_add(&dump->kobj, NULL, "0x%x-0x%x", type, id);
 	if (rc) {
 		kobject_put(&dump->kobj);
+<<<<<<< HEAD
 		return;
 	}
 
@@ -379,18 +389,43 @@ static void create_dump_obj(uint32_t id, size_t size, uint32_t type)
 	/* Drop our reference */
 	kobject_put(&dump->kobj);
 	return;
+=======
+		return NULL;
+	}
+
+	rc = sysfs_create_bin_file(&dump->kobj, &dump->dump_attr);
+	if (rc) {
+		kobject_put(&dump->kobj);
+		return NULL;
+	}
+
+	pr_info("%s: New platform dump. ID = 0x%x Size %u\n",
+		__func__, dump->id, dump->size);
+
+	kobject_uevent(&dump->kobj, KOBJ_ADD);
+
+	return dump;
+>>>>>>> FETCH_HEAD
 }
 
 static irqreturn_t process_dump(int irq, void *data)
 {
 	int rc;
 	uint32_t dump_id, dump_size, dump_type;
+<<<<<<< HEAD
+=======
+	struct dump_obj *dump;
+>>>>>>> FETCH_HEAD
 	char name[22];
 	struct kobject *kobj;
 
 	rc = dump_read_info(&dump_id, &dump_size, &dump_type);
 	if (rc != OPAL_SUCCESS)
+<<<<<<< HEAD
 		return IRQ_HANDLED;
+=======
+		return rc;
+>>>>>>> FETCH_HEAD
 
 	sprintf(name, "0x%x-0x%x", dump_type, dump_id);
 
@@ -402,10 +437,19 @@ static irqreturn_t process_dump(int irq, void *data)
 	if (kobj) {
 		/* Drop reference added by kset_find_obj() */
 		kobject_put(kobj);
+<<<<<<< HEAD
 		return IRQ_HANDLED;
 	}
 
 	create_dump_obj(dump_id, dump_size, dump_type);
+=======
+		return 0;
+	}
+
+	dump = create_dump_obj(dump_id, dump_size, dump_type);
+	if (!dump)
+		return -1;
+>>>>>>> FETCH_HEAD
 
 	return IRQ_HANDLED;
 }

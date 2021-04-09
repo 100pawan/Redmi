@@ -1311,10 +1311,15 @@ static void mlx4_en_tx_timeout(struct net_device *dev)
 	}
 
 	priv->port_stats.tx_timeout++;
+<<<<<<< HEAD
 	if (!test_and_set_bit(MLX4_EN_STATE_FLAG_RESTARTING, &priv->state)) {
 		en_dbg(DRV, priv, "Scheduling port restart\n");
 		queue_work(mdev->workqueue, &priv->restart_task);
 	}
+=======
+	en_dbg(DRV, priv, "Scheduling watchdog\n");
+	queue_work(mdev->workqueue, &priv->watchdog_task);
+>>>>>>> FETCH_HEAD
 }
 
 
@@ -1748,7 +1753,10 @@ int mlx4_en_start_port(struct net_device *dev)
 		local_bh_enable();
 	}
 
+<<<<<<< HEAD
 	clear_bit(MLX4_EN_STATE_FLAG_RESTARTING, &priv->state);
+=======
+>>>>>>> FETCH_HEAD
 	netif_tx_start_all_queues(dev);
 	netif_device_attach(dev);
 
@@ -1903,7 +1911,11 @@ void mlx4_en_stop_port(struct net_device *dev, int detach)
 static void mlx4_en_restart(struct work_struct *work)
 {
 	struct mlx4_en_priv *priv = container_of(work, struct mlx4_en_priv,
+<<<<<<< HEAD
 						 restart_task);
+=======
+						 watchdog_task);
+>>>>>>> FETCH_HEAD
 	struct mlx4_en_dev *mdev = priv->mdev;
 	struct net_device *dev = priv->dev;
 
@@ -2223,7 +2235,11 @@ static int mlx4_en_change_mtu(struct net_device *dev, int new_mtu)
 	if (netif_running(dev)) {
 		mutex_lock(&mdev->state_lock);
 		if (!mdev->device_up) {
+<<<<<<< HEAD
 			/* NIC is probably restarting - let restart task reset
+=======
+			/* NIC is probably restarting - let watchdog task reset
+>>>>>>> FETCH_HEAD
 			 * the port */
 			en_dbg(DRV, priv, "Change MTU called with card down!?\n");
 		} else {
@@ -2232,9 +2248,13 @@ static int mlx4_en_change_mtu(struct net_device *dev, int new_mtu)
 			if (err) {
 				en_err(priv, "Failed restarting port:%d\n",
 					 priv->port);
+<<<<<<< HEAD
 				if (!test_and_set_bit(MLX4_EN_STATE_FLAG_RESTARTING,
 						      &priv->state))
 					queue_work(mdev->workqueue, &priv->restart_task);
+=======
+				queue_work(mdev->workqueue, &priv->watchdog_task);
+>>>>>>> FETCH_HEAD
 			}
 		}
 		mutex_unlock(&mdev->state_lock);
@@ -2706,8 +2726,12 @@ static int mlx4_xdp_set(struct net_device *dev, struct bpf_prog *prog)
 		if (err) {
 			en_err(priv, "Failed starting port %d for XDP change\n",
 			       priv->port);
+<<<<<<< HEAD
 			if (!test_and_set_bit(MLX4_EN_STATE_FLAG_RESTARTING, &priv->state))
 				queue_work(mdev->workqueue, &priv->restart_task);
+=======
+			queue_work(mdev->workqueue, &priv->watchdog_task);
+>>>>>>> FETCH_HEAD
 		}
 	}
 
@@ -3086,7 +3110,11 @@ int mlx4_en_init_netdev(struct mlx4_en_dev *mdev, int port,
 	priv->counter_index = MLX4_SINK_COUNTER_INDEX(mdev->dev);
 	spin_lock_init(&priv->stats_lock);
 	INIT_WORK(&priv->rx_mode_task, mlx4_en_do_set_rx_mode);
+<<<<<<< HEAD
 	INIT_WORK(&priv->restart_task, mlx4_en_restart);
+=======
+	INIT_WORK(&priv->watchdog_task, mlx4_en_restart);
+>>>>>>> FETCH_HEAD
 	INIT_WORK(&priv->linkstate_task, mlx4_en_linkstate);
 	INIT_DELAYED_WORK(&priv->stats_task, mlx4_en_do_get_stats);
 	INIT_DELAYED_WORK(&priv->service_task, mlx4_en_service_task);
@@ -3459,8 +3487,11 @@ int mlx4_en_reset_config(struct net_device *dev,
 			en_err(priv, "Failed starting port\n");
 	}
 
+<<<<<<< HEAD
 	if (!err)
 		err = mlx4_en_moderation_update(priv);
+=======
+>>>>>>> FETCH_HEAD
 out:
 	mutex_unlock(&mdev->state_lock);
 	kfree(tmp);

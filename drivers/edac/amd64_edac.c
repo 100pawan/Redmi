@@ -243,8 +243,11 @@ static int get_scrub_rate(struct mem_ctl_info *mci)
 
 		if (pvt->model == 0x60)
 			amd64_read_pci_cfg(pvt->F2, F15H_M60H_SCRCTRL, &scrubval);
+<<<<<<< HEAD
 		else
 			amd64_read_pci_cfg(pvt->F3, SCRCTRL, &scrubval);
+=======
+>>>>>>> FETCH_HEAD
 	} else
 		amd64_read_pci_cfg(pvt->F3, SCRCTRL, &scrubval);
 

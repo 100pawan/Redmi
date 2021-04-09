@@ -3191,6 +3191,7 @@ fail:
 	btrfs_free_path(path);
 out_unlock:
 	mutex_unlock(&BTRFS_I(dir)->log_mutex);
+<<<<<<< HEAD
 	if (err == -ENOSPC) {
 		btrfs_set_log_full_commit(root->fs_info, trans);
 		err = 0;
@@ -3198,6 +3199,13 @@ out_unlock:
 		/* ENOENT can be returned if the entry hasn't been fsynced yet */
 		btrfs_abort_transaction(trans, err);
 	}
+=======
+	if (ret == -ENOSPC) {
+		btrfs_set_log_full_commit(root->fs_info, trans);
+		ret = 0;
+	} else if (ret < 0)
+		btrfs_abort_transaction(trans, ret);
+>>>>>>> FETCH_HEAD
 
 	btrfs_end_log_trans(root);
 
@@ -3357,7 +3365,10 @@ static noinline int log_dir_items(struct btrfs_trans_handle *trans,
 	 * search and this search we'll not find the key again and can just
 	 * bail.
 	 */
+<<<<<<< HEAD
 search:
+=======
+>>>>>>> FETCH_HEAD
 	ret = btrfs_search_slot(NULL, root, &min_key, path, 0, 0);
 	if (ret != 0)
 		goto done;
@@ -3377,6 +3388,7 @@ search:
 
 			if (min_key.objectid != ino || min_key.type != key_type)
 				goto done;
+<<<<<<< HEAD
 
 			if (need_resched()) {
 				btrfs_release_path(path);
@@ -3384,6 +3396,8 @@ search:
 				goto search;
 			}
 
+=======
+>>>>>>> FETCH_HEAD
 			ret = overwrite_item(trans, log, dst_path, src, i,
 					     &min_key);
 			if (ret) {
@@ -3765,8 +3779,16 @@ static noinline int copy_items(struct btrfs_trans_handle *trans,
 						log->fs_info->csum_root,
 						ds + cs, ds + cs + cl - 1,
 						&ordered_sums, 0);
+<<<<<<< HEAD
 				if (ret)
 					break;
+=======
+				if (ret) {
+					btrfs_release_path(dst_path);
+					kfree(ins_data);
+					return ret;
+				}
+>>>>>>> FETCH_HEAD
 			}
 		}
 	}
@@ -3779,6 +3801,10 @@ static noinline int copy_items(struct btrfs_trans_handle *trans,
 	 * we have to do this after the loop above to avoid changing the
 	 * log tree while trying to change the log tree.
 	 */
+<<<<<<< HEAD
+=======
+	ret = 0;
+>>>>>>> FETCH_HEAD
 	while (!list_empty(&ordered_sums)) {
 		struct btrfs_ordered_sum *sums = list_entry(ordered_sums.next,
 						   struct btrfs_ordered_sum,

@@ -9,7 +9,10 @@ config ARM64
 	select ARCH_HAS_DEVMEM_IS_ALLOWED
 	select ARCH_HAS_ACPI_TABLE_UPGRADE if ACPI
 	select ARCH_HAS_ELF_RANDOMIZE
+<<<<<<< HEAD
 	select ARCH_HAS_FAST_MULTIPLIER
+=======
+>>>>>>> FETCH_HEAD
 	select ARCH_HAS_FORTIFY_SOURCE
 	select ARCH_HAS_GCOV_PROFILE_ALL
 	select ARCH_HAS_GIGANTIC_PAGE
@@ -40,7 +43,10 @@ config ARM64
 	select ARCH_WANT_COMPAT_IPC_PARSE_VERSION
 	select ARCH_WANT_FRAME_POINTERS
 	select ARCH_HAS_UBSAN_SANITIZE_ALL
+<<<<<<< HEAD
 	select ARCH_HAS_SET_MEMORY
+=======
+>>>>>>> FETCH_HEAD
 	select ARM_AMBA
 	select ARM_ARCH_TIMER
 	select ARM_GIC
@@ -212,12 +218,15 @@ config RWSEM_XCHGADD_ALGORITHM
 config GENERIC_BUG
 	def_bool y
 	depends on BUG
+<<<<<<< HEAD
 	
 config THERMAL_SWITCH
     default n
 	bool "Support themral config switch"
 	help
       Support themral config switch.	
+=======
+>>>>>>> FETCH_HEAD
 
 config GENERIC_BUG_RELATIVE_POINTERS
 	def_bool y
@@ -810,10 +819,13 @@ config XEN
 	help
 	  Say Y if you want to run Linux in a Virtual Machine on Xen on ARM64.
 
+<<<<<<< HEAD
 config YSL
 	bool "Based on Platform msm8917"
 	def_bool ARCH_MSM8917
 
+=======
+>>>>>>> FETCH_HEAD
 config OKL4_GUEST
 	bool "OKL4 Hypervisor guest support"
 	depends on ARM64 && OF

@@ -22,7 +22,11 @@ EXPORT_SYMBOL_GPL(kcrypto_wq);
 static int __init crypto_wq_init(void)
 {
 	kcrypto_wq = alloc_workqueue("crypto",
+<<<<<<< HEAD
 				     WQ_MEM_RECLAIM | WQ_CPU_INTENSIVE | WQ_POWER_EFFICIENT, 1);
+=======
+				     WQ_MEM_RECLAIM | WQ_CPU_INTENSIVE, 1);
+>>>>>>> FETCH_HEAD
 	if (unlikely(!kcrypto_wq))
 		return -ENOMEM;
 	return 0;

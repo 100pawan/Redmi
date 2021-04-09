@@ -439,7 +439,11 @@ try_again:
 	    list_empty(&rx->recvmsg_q) &&
 	    rx->sk.sk_state != RXRPC_SERVER_LISTENING) {
 		release_sock(&rx->sk);
+<<<<<<< HEAD
 		return -EAGAIN;
+=======
+		return -ENODATA;
+>>>>>>> FETCH_HEAD
 	}
 
 	if (list_empty(&rx->recvmsg_q)) {

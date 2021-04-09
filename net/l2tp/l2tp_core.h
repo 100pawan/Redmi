@@ -190,6 +190,12 @@ struct l2tp_tunnel {
 	struct sock		*sock;		/* Parent socket */
 	int			fd;		/* Parent fd, if tunnel socket
 						 * was created by userspace */
+<<<<<<< HEAD
+=======
+#if IS_ENABLED(CONFIG_IPV6)
+	bool			v4mapped;
+#endif
+>>>>>>> FETCH_HEAD
 
 	struct work_struct	del_work;
 

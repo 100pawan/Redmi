@@ -1936,6 +1936,7 @@ call_connect_status(struct rpc_task *task)
 	task->tk_status = 0;
 	switch (status) {
 	case -ECONNREFUSED:
+<<<<<<< HEAD
 		/* A positive refusal suggests a rebind is needed. */
 		if (RPC_IS_SOFTCONN(task))
 			break;
@@ -1944,6 +1945,8 @@ call_connect_status(struct rpc_task *task)
 			task->tk_action = call_bind;
 			return;
 		}
+=======
+>>>>>>> FETCH_HEAD
 	case -ECONNRESET:
 	case -ECONNABORTED:
 	case -ENETUNREACH:

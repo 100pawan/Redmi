@@ -409,7 +409,11 @@ static int __init hugepage_init(void)
 	 * where the extra memory used could hurt more than TLB overhead
 	 * is likely to save.  The admin can still enable it through /sys.
 	 */
+<<<<<<< HEAD
 	if (totalram_pages() < (512 << (20 - PAGE_SHIFT))) {
+=======
+	if (totalram_pages < (512 << (20 - PAGE_SHIFT))) {
+>>>>>>> FETCH_HEAD
 		transparent_hugepage_flags = 0;
 		return 0;
 	}
@@ -661,6 +665,10 @@ int do_huge_pmd_anonymous_page(struct fault_env *fe)
 			transparent_hugepage_use_zero_page()) {
 		pgtable_t pgtable;
 		struct page *zero_page;
+<<<<<<< HEAD
+=======
+		bool set;
+>>>>>>> FETCH_HEAD
 		int ret;
 		pgtable = pte_alloc_one(vma->vm_mm, haddr);
 		if (unlikely(!pgtable))
@@ -673,21 +681,37 @@ int do_huge_pmd_anonymous_page(struct fault_env *fe)
 		}
 		fe->ptl = pmd_lock(vma->vm_mm, fe->pmd);
 		ret = 0;
+<<<<<<< HEAD
 		if (pmd_none(*fe->pmd)) {
 			if (userfaultfd_missing(vma)) {
 				spin_unlock(fe->ptl);
 				pte_free(vma->vm_mm, pgtable);
+=======
+		set = false;
+		if (pmd_none(*fe->pmd)) {
+			if (userfaultfd_missing(vma)) {
+				spin_unlock(fe->ptl);
+>>>>>>> FETCH_HEAD
 				ret = handle_userfault(fe, VM_UFFD_MISSING);
 				VM_BUG_ON(ret & VM_FAULT_FALLBACK);
 			} else {
 				set_huge_zero_page(pgtable, vma->vm_mm, vma,
 						   haddr, fe->pmd, zero_page);
 				spin_unlock(fe->ptl);
+<<<<<<< HEAD
 			}
 		} else {
 			spin_unlock(fe->ptl);
 			pte_free(vma->vm_mm, pgtable);
 		}
+=======
+				set = true;
+			}
+		} else
+			spin_unlock(fe->ptl);
+		if (!set)
+			pte_free(vma->vm_mm, pgtable);
+>>>>>>> FETCH_HEAD
 		return ret;
 	}
 	gfp = alloc_hugepage_direct_gfpmask(vma);
@@ -1022,6 +1046,7 @@ int do_huge_pmd_wp_page(struct fault_env *fe, pmd_t orig_pmd)
 	 * We can only reuse the page if nobody else maps the huge page or it's
 	 * part.
 	 */
+<<<<<<< HEAD
 	if (!trylock_page(page)) {
 		get_page(page);
 		spin_unlock(fe->ptl);
@@ -1035,6 +1060,8 @@ int do_huge_pmd_wp_page(struct fault_env *fe, pmd_t orig_pmd)
 		put_page(page);
 	}
 
+=======
+>>>>>>> FETCH_HEAD
 	if (page_trans_huge_mapcount(page, NULL) == 1) {
 		pmd_t entry;
 		entry = pmd_mkyoung(orig_pmd);
@@ -1042,10 +1069,15 @@ int do_huge_pmd_wp_page(struct fault_env *fe, pmd_t orig_pmd)
 		if (pmdp_set_access_flags(vma, haddr, fe->pmd, entry,  1))
 			update_mmu_cache_pmd(vma, fe->address, fe->pmd);
 		ret |= VM_FAULT_WRITE;
+<<<<<<< HEAD
 		unlock_page(page);
 		goto out_unlock;
 	}
 	unlock_page(page);
+=======
+		goto out_unlock;
+	}
+>>>>>>> FETCH_HEAD
 	get_page(page);
 	spin_unlock(fe->ptl);
 alloc:
@@ -1768,8 +1800,11 @@ void __split_huge_pmd(struct vm_area_struct *vma, pmd_t *pmd,
 	spinlock_t *ptl;
 	struct mm_struct *mm = vma->vm_mm;
 	unsigned long haddr = address & HPAGE_PMD_MASK;
+<<<<<<< HEAD
 	bool do_unlock_page = false;
 	pmd_t _pmd;
+=======
+>>>>>>> FETCH_HEAD
 
 	mmu_notifier_invalidate_range_start(mm, haddr, haddr + HPAGE_PMD_SIZE);
 	ptl = pmd_lock(mm, pmd);
@@ -1779,6 +1814,7 @@ void __split_huge_pmd(struct vm_area_struct *vma, pmd_t *pmd,
 	 * pmd against. Otherwise we can end up replacing wrong page.
 	 */
 	VM_BUG_ON(freeze && !page);
+<<<<<<< HEAD
 	if (page) {
 		VM_WARN_ON_ONCE(!PageLocked(page));
 		if (page != pmd_page(*pmd))
@@ -1814,6 +1850,13 @@ repeat:
 				do_unlock_page = true;
 			}
 		}
+=======
+	if (page && page != pmd_page(*pmd))
+	        goto out;
+
+	if (pmd_trans_huge(*pmd)) {
+		page = pmd_page(*pmd);
+>>>>>>> FETCH_HEAD
 		if (PageMlocked(page))
 			clear_page_mlock(page);
 	} else if (!pmd_devmap(*pmd))
@@ -1821,8 +1864,11 @@ repeat:
 	__split_huge_pmd_locked(vma, pmd, haddr, freeze);
 out:
 	spin_unlock(ptl);
+<<<<<<< HEAD
 	if (do_unlock_page)
 		unlock_page(page);
+=======
+>>>>>>> FETCH_HEAD
 	mmu_notifier_invalidate_range_end(mm, haddr, haddr + HPAGE_PMD_SIZE);
 }
 

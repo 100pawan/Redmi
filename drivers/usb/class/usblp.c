@@ -289,6 +289,7 @@ static int usblp_ctrl_msg(struct usblp *usblp, int request, int type, int dir, i
 #define usblp_reset(usblp)\
 	usblp_ctrl_msg(usblp, USBLP_REQ_RESET, USB_TYPE_CLASS, USB_DIR_OUT, USB_RECIP_OTHER, 0, NULL, 0)
 
+<<<<<<< HEAD
 static int usblp_hp_channel_change_request(struct usblp *usblp, int channel, u8 *new_channel)
 {
 	u8 *buf;
@@ -308,6 +309,10 @@ static int usblp_hp_channel_change_request(struct usblp *usblp, int channel, u8 
 
 	return ret;
 }
+=======
+#define usblp_hp_channel_change_request(usblp, channel, buffer) \
+	usblp_ctrl_msg(usblp, USBLP_REQ_HP_CHANNEL_CHANGE_REQUEST, USB_TYPE_VENDOR, USB_DIR_IN, USB_RECIP_INTERFACE, channel, buffer, 1)
+>>>>>>> FETCH_HEAD
 
 /*
  * See the description for usblp_select_alts() below for the usage
@@ -498,8 +503,12 @@ static int usblp_release(struct inode *inode, struct file *file)
 	usb_autopm_put_interface(usblp->intf);
 
 	if (!usblp->present)		/* finish cleanup from disconnect */
+<<<<<<< HEAD
 		usblp_cleanup(usblp);	/* any URBs must be dead */
 
+=======
+		usblp_cleanup(usblp);
+>>>>>>> FETCH_HEAD
 	mutex_unlock(&usblp_mutex);
 	return 0;
 }
@@ -857,11 +866,14 @@ static ssize_t usblp_read(struct file *file, char __user *buffer, size_t len, lo
 	if (rv < 0)
 		return rv;
 
+<<<<<<< HEAD
 	if (!usblp->present) {
 		count = -ENODEV;
 		goto done;
 	}
 
+=======
+>>>>>>> FETCH_HEAD
 	if ((avail = usblp->rstatus) < 0) {
 		printk(KERN_ERR "usblp%d: error %d reading from printer\n",
 		    usblp->minor, (int)avail);
@@ -1349,6 +1361,7 @@ static int usblp_set_protocol(struct usblp *usblp, int protocol)
 	if (protocol < USBLP_FIRST_PROTOCOL || protocol > USBLP_LAST_PROTOCOL)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	/* Don't unnecessarily set the interface if there's a single alt. */
 	if (usblp->intf->num_altsetting > 1) {
 		alts = usblp->protocol[protocol].alt_setting;
@@ -1360,6 +1373,16 @@ static int usblp_set_protocol(struct usblp *usblp, int protocol)
 				alts, usblp->ifnum);
 			return r;
 		}
+=======
+	alts = usblp->protocol[protocol].alt_setting;
+	if (alts < 0)
+		return -EINVAL;
+	r = usb_set_interface(usblp->dev, usblp->ifnum, alts);
+	if (r < 0) {
+		printk(KERN_ERR "usblp: can't set desired altsetting %d on interface %d\n",
+			alts, usblp->ifnum);
+		return r;
+>>>>>>> FETCH_HEAD
 	}
 
 	usblp->bidir = (usblp->protocol[protocol].epread != NULL);
@@ -1423,11 +1446,17 @@ static void usblp_disconnect(struct usb_interface *intf)
 
 	usblp_unlink_urbs(usblp);
 	mutex_unlock(&usblp->mut);
+<<<<<<< HEAD
 	usb_poison_anchored_urbs(&usblp->urbs);
 
 	if (!usblp->used)
 		usblp_cleanup(usblp);
 
+=======
+
+	if (!usblp->used)
+		usblp_cleanup(usblp);
+>>>>>>> FETCH_HEAD
 	mutex_unlock(&usblp_mutex);
 }
 

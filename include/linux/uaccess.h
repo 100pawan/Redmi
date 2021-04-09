@@ -91,6 +91,7 @@ extern long probe_kernel_read(void *dst, const void *src, size_t size);
 extern long __probe_kernel_read(void *dst, const void *src, size_t size);
 
 /*
+<<<<<<< HEAD
  * probe_user_read(): safely attempt to read from a location in user space
  * @dst: pointer to the buffer that shall take the data
  * @src: address to read from
@@ -102,6 +103,8 @@ extern long __probe_kernel_read(void *dst, const void *src, size_t size);
 extern long probe_user_read(void *dst, const void __user *src, size_t size);
 
 /*
+=======
+>>>>>>> FETCH_HEAD
  * probe_kernel_write(): safely attempt to write to a location
  * @dst: address to write to
  * @src: pointer to the data that shall be written
@@ -113,6 +116,7 @@ extern long probe_user_read(void *dst, const void __user *src, size_t size);
 extern long notrace probe_kernel_write(void *dst, const void *src, size_t size);
 extern long notrace __probe_kernel_write(void *dst, const void *src, size_t size);
 
+<<<<<<< HEAD
 /*
  * probe_user_write(): safely attempt to write to a location in user space
  * @dst: address to write to
@@ -129,6 +133,9 @@ extern long strncpy_from_unsafe(char *dst, const void *unsafe_addr, long count);
 extern long strncpy_from_unsafe_user(char *dst, const void __user *unsafe_addr,
 				     long count);
 extern long strnlen_unsafe_user(const void __user *unsafe_addr, long count);
+=======
+extern long strncpy_from_unsafe(char *dst, const void *unsafe_addr, long count);
+>>>>>>> FETCH_HEAD
 
 /**
  * probe_kernel_address(): safely attempt to read from a location

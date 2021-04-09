@@ -847,6 +847,7 @@ static void __init arch_mem_init(char **cmdline_p)
 				BOOTMEM_DEFAULT);
 #endif
 	device_tree_init();
+<<<<<<< HEAD
 
 	/*
 	 * In order to reduce the possibility of kernel panic when failed to
@@ -858,6 +859,9 @@ static void __init arch_mem_init(char **cmdline_p)
 	sparse_init();
 	memblock_set_bottom_up(true);
 
+=======
+	sparse_init();
+>>>>>>> FETCH_HEAD
 	plat_swiotlb_setup();
 
 	dma_contiguous_reserve(PFN_PHYS(max_low_pfn));

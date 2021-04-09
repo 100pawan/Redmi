@@ -17,7 +17,10 @@
 
 #include <linux/linkage.h>
 
+<<<<<<< HEAD
 #include <asm/alternative.h>
+=======
+>>>>>>> FETCH_HEAD
 #include <asm/asm-offsets.h>
 #include <asm/assembler.h>
 #include <asm/fpsimdmacros.h>
@@ -63,6 +66,7 @@ ENTRY(__guest_enter)
 	// Store the host regs
 	save_callee_saved_regs x1
 
+<<<<<<< HEAD
 	// Now the host state is stored if we have a pending RAS SError it must
 	// affect the host. If any asynchronous exception is pending we defer
 	// the guest entry.
@@ -72,6 +76,8 @@ ENTRY(__guest_enter)
 	ret
 
 1:
+=======
+>>>>>>> FETCH_HEAD
 	add	x18, x0, #VCPU_CONTEXT
 
 	// Restore guest regs x0-x17
@@ -145,10 +151,15 @@ ENTRY(__guest_exit)
 	// This is our single instruction exception window. A pending
 	// SError is guaranteed to occur at the earliest when we unmask
 	// it, and at the latest just after the ISB.
+<<<<<<< HEAD
+=======
+	.global	abort_guest_exit_start
+>>>>>>> FETCH_HEAD
 abort_guest_exit_start:
 
 	isb
 
+<<<<<<< HEAD
 abort_guest_exit_end:
 	msr	daifset, #4	// Mask aborts
 	ret
@@ -161,6 +172,15 @@ abort_guest_exit_end:
 
 	// restore the EL1 exception context so that we can report some
 	// information. Merge the exception code with the SError pending bit.
+=======
+	.global	abort_guest_exit_end
+abort_guest_exit_end:
+
+	// If the exception took place, restore the EL1 exception
+	// context so that we can report some information.
+	// Merge the exception code with the SError pending bit.
+	tbz	x0, #ARM_EXIT_WITH_SERROR_BIT, 1f
+>>>>>>> FETCH_HEAD
 	msr	elr_el2, x2
 	msr	esr_el2, x3
 	msr	spsr_el2, x4

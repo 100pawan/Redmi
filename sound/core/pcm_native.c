@@ -1864,11 +1864,14 @@ static int snd_pcm_link(struct snd_pcm_substream *substream, int fd)
 	}
 	pcm_file = f.file->private_data;
 	substream1 = pcm_file->substream;
+<<<<<<< HEAD
 	if (substream == substream1) {
 		res = -EINVAL;
 		goto _badf;
 	}
 
+=======
+>>>>>>> FETCH_HEAD
 	group = kmalloc(sizeof(*group), GFP_KERNEL);
 	if (!group) {
 		res = -ENOMEM;

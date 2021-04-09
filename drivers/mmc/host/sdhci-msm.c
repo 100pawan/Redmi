@@ -4793,6 +4793,7 @@ static bool sdhci_msm_is_bootdevice(struct device *dev)
 	return true;
 }
 
+<<<<<<< HEAD
 static struct kobject *card_slot_device = NULL;
 static struct sdhci_msm_host *host_with_slot_detect = NULL;
 
@@ -4830,6 +4831,8 @@ int32_t card_slot_init_device_name(void)
 	return 0 ;
 }
 
+=======
+>>>>>>> FETCH_HEAD
 static int sdhci_msm_probe(struct platform_device *pdev)
 {
 	const struct sdhci_msm_offset *msm_host_offset;
@@ -5276,9 +5279,12 @@ static int sdhci_msm_probe(struct platform_device *pdev)
 			dev_err(&pdev->dev, "%s: Failed to request card detection IRQ %d\n",
 					__func__, ret);
 			goto vreg_deinit;
+<<<<<<< HEAD
 			} else{
 			host_with_slot_detect = msm_host;
 			card_slot_init_device_name();
+=======
+>>>>>>> FETCH_HEAD
 		}
 	}
 

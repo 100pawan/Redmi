@@ -102,17 +102,29 @@ static __be64 rxe_mac_to_eui64(struct net_device *ndev)
 	return eui64;
 }
 
+<<<<<<< HEAD
 __be64 rxe_node_guid(struct rxe_dev *rxe)
+=======
+static __be64 node_guid(struct rxe_dev *rxe)
+>>>>>>> FETCH_HEAD
 {
 	return rxe_mac_to_eui64(rxe->ndev);
 }
 
+<<<<<<< HEAD
 __be64 rxe_port_guid(struct rxe_dev *rxe)
+=======
+static __be64 port_guid(struct rxe_dev *rxe)
+>>>>>>> FETCH_HEAD
 {
 	return rxe_mac_to_eui64(rxe->ndev);
 }
 
+<<<<<<< HEAD
 struct device *rxe_dma_device(struct rxe_dev *rxe)
+=======
+static struct device *dma_device(struct rxe_dev *rxe)
+>>>>>>> FETCH_HEAD
 {
 	struct net_device *ndev;
 
@@ -124,7 +136,11 @@ struct device *rxe_dma_device(struct rxe_dev *rxe)
 	return ndev->dev.parent;
 }
 
+<<<<<<< HEAD
 int rxe_mcast_add(struct rxe_dev *rxe, union ib_gid *mgid)
+=======
+static int mcast_add(struct rxe_dev *rxe, union ib_gid *mgid)
+>>>>>>> FETCH_HEAD
 {
 	int err;
 	unsigned char ll_addr[ETH_ALEN];
@@ -135,7 +151,11 @@ int rxe_mcast_add(struct rxe_dev *rxe, union ib_gid *mgid)
 	return err;
 }
 
+<<<<<<< HEAD
 int rxe_mcast_delete(struct rxe_dev *rxe, union ib_gid *mgid)
+=======
+static int mcast_delete(struct rxe_dev *rxe, union ib_gid *mgid)
+>>>>>>> FETCH_HEAD
 {
 	int err;
 	unsigned char ll_addr[ETH_ALEN];
@@ -399,8 +419,13 @@ static int prepare6(struct rxe_dev *rxe, struct rxe_pkt_info *pkt,
 	return 0;
 }
 
+<<<<<<< HEAD
 int rxe_prepare(struct rxe_dev *rxe, struct rxe_pkt_info *pkt,
 		struct sk_buff *skb, u32 *crc)
+=======
+static int prepare(struct rxe_dev *rxe, struct rxe_pkt_info *pkt,
+		   struct sk_buff *skb, u32 *crc)
+>>>>>>> FETCH_HEAD
 {
 	int err = 0;
 	struct rxe_av *av = rxe_get_av(pkt);
@@ -426,7 +451,12 @@ static void rxe_skb_tx_dtor(struct sk_buff *skb)
 		rxe_run_task(&qp->req.task, 1);
 }
 
+<<<<<<< HEAD
 int rxe_send(struct rxe_dev *rxe, struct rxe_pkt_info *pkt, struct sk_buff *skb)
+=======
+static int send(struct rxe_dev *rxe, struct rxe_pkt_info *pkt,
+		struct sk_buff *skb)
+>>>>>>> FETCH_HEAD
 {
 	struct sk_buff *nskb;
 	struct rxe_av *av;
@@ -461,7 +491,11 @@ int rxe_send(struct rxe_dev *rxe, struct rxe_pkt_info *pkt, struct sk_buff *skb)
 	return 0;
 }
 
+<<<<<<< HEAD
 int rxe_loopback(struct sk_buff *skb)
+=======
+static int loopback(struct sk_buff *skb)
+>>>>>>> FETCH_HEAD
 {
 	return rxe_rcv(skb);
 }
@@ -471,8 +505,13 @@ static inline int addr_same(struct rxe_dev *rxe, struct rxe_av *av)
 	return rxe->port.port_guid == av->grh.dgid.global.interface_id;
 }
 
+<<<<<<< HEAD
 struct sk_buff *rxe_init_packet(struct rxe_dev *rxe, struct rxe_av *av,
 				int paylen, struct rxe_pkt_info *pkt)
+=======
+static struct sk_buff *init_packet(struct rxe_dev *rxe, struct rxe_av *av,
+				   int paylen, struct rxe_pkt_info *pkt)
+>>>>>>> FETCH_HEAD
 {
 	unsigned int hdr_len;
 	struct sk_buff *skb;
@@ -511,16 +550,42 @@ struct sk_buff *rxe_init_packet(struct rxe_dev *rxe, struct rxe_av *av,
  * this is required by rxe_cfg to match rxe devices in
  * /sys/class/infiniband up with their underlying ethernet devices
  */
+<<<<<<< HEAD
 const char *rxe_parent_name(struct rxe_dev *rxe, unsigned int port_num)
+=======
+static char *parent_name(struct rxe_dev *rxe, unsigned int port_num)
+>>>>>>> FETCH_HEAD
 {
 	return rxe->ndev->name;
 }
 
+<<<<<<< HEAD
 enum rdma_link_layer rxe_link_layer(struct rxe_dev *rxe, unsigned int port_num)
+=======
+static enum rdma_link_layer link_layer(struct rxe_dev *rxe,
+				       unsigned int port_num)
+>>>>>>> FETCH_HEAD
 {
 	return IB_LINK_LAYER_ETHERNET;
 }
 
+<<<<<<< HEAD
+=======
+static struct rxe_ifc_ops ifc_ops = {
+	.node_guid	= node_guid,
+	.port_guid	= port_guid,
+	.dma_device	= dma_device,
+	.mcast_add	= mcast_add,
+	.mcast_delete	= mcast_delete,
+	.prepare	= prepare,
+	.send		= send,
+	.loopback	= loopback,
+	.init_packet	= init_packet,
+	.parent_name	= parent_name,
+	.link_layer	= link_layer,
+};
+
+>>>>>>> FETCH_HEAD
 struct rxe_dev *rxe_net_add(struct net_device *ndev)
 {
 	int err;
@@ -530,6 +595,10 @@ struct rxe_dev *rxe_net_add(struct net_device *ndev)
 	if (!rxe)
 		return NULL;
 
+<<<<<<< HEAD
+=======
+	rxe->ifc_ops = &ifc_ops;
+>>>>>>> FETCH_HEAD
 	rxe->ndev = ndev;
 
 	err = rxe_add(rxe, ndev->mtu);

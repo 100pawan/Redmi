@@ -648,10 +648,17 @@ static int rocker_dma_rings_init(struct rocker *rocker)
 err_dma_event_ring_bufs_alloc:
 	rocker_dma_ring_destroy(rocker, &rocker->event_ring);
 err_dma_event_ring_create:
+<<<<<<< HEAD
 	rocker_dma_cmd_ring_waits_free(rocker);
 err_dma_cmd_ring_waits_alloc:
 	rocker_dma_ring_bufs_free(rocker, &rocker->cmd_ring,
 				  PCI_DMA_BIDIRECTIONAL);
+=======
+	rocker_dma_ring_bufs_free(rocker, &rocker->cmd_ring,
+				  PCI_DMA_BIDIRECTIONAL);
+err_dma_cmd_ring_waits_alloc:
+	rocker_dma_cmd_ring_waits_free(rocker);
+>>>>>>> FETCH_HEAD
 err_dma_cmd_ring_bufs_alloc:
 	rocker_dma_ring_destroy(rocker, &rocker->cmd_ring);
 	return err;

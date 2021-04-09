@@ -84,7 +84,11 @@ static int wl1251_event_ps_report(struct wl1251 *wl,
 		break;
 	}
 
+<<<<<<< HEAD
 	return ret;
+=======
+	return 0;
+>>>>>>> FETCH_HEAD
 }
 
 static void wl1251_event_mbox_dump(struct event_mailbox *mbox)

@@ -942,6 +942,10 @@ static void dwc2_hsotg_complete_oursetup(struct usb_ep *ep,
 static struct dwc2_hsotg_ep *ep_from_windex(struct dwc2_hsotg *hsotg,
 					   u32 windex)
 {
+<<<<<<< HEAD
+=======
+	struct dwc2_hsotg_ep *ep;
+>>>>>>> FETCH_HEAD
 	int dir = (windex & USB_DIR_IN) ? 1 : 0;
 	int idx = windex & 0x7F;
 
@@ -951,7 +955,16 @@ static struct dwc2_hsotg_ep *ep_from_windex(struct dwc2_hsotg *hsotg,
 	if (idx > hsotg->num_of_eps)
 		return NULL;
 
+<<<<<<< HEAD
 	return index_to_ep(hsotg, idx, dir);
+=======
+	ep = index_to_ep(hsotg, idx, dir);
+
+	if (idx && ep->dir_in != dir)
+		return NULL;
+
+	return ep;
+>>>>>>> FETCH_HEAD
 }
 
 /**
@@ -3941,6 +3954,15 @@ int dwc2_gadget_init(struct dwc2_hsotg *hsotg, int irq)
 								epnum, 0);
 	}
 
+<<<<<<< HEAD
+=======
+	ret = usb_add_gadget_udc(dev, &hsotg->gadget);
+	if (ret) {
+		dwc2_hsotg_ep_free_request(&hsotg->eps_out[0]->ep,
+					   hsotg->ctrl_req);
+		return ret;
+	}
+>>>>>>> FETCH_HEAD
 	dwc2_hsotg_dump(hsotg);
 
 	return 0;

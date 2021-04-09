@@ -231,6 +231,7 @@ static int uinput_dev_erase_effect(struct input_dev *dev, int effect_id)
 	return uinput_request_submit(udev, &request);
 }
 
+<<<<<<< HEAD
 static int uinput_dev_flush(struct input_dev *dev, struct file *file)
 {
 	/*
@@ -243,6 +244,8 @@ static int uinput_dev_flush(struct input_dev *dev, struct file *file)
 	return file ? input_ff_flush(dev, file) : 0;
 }
 
+=======
+>>>>>>> FETCH_HEAD
 static void uinput_destroy_device(struct uinput_device *udev)
 {
 	const char *name, *phys;
@@ -310,12 +313,15 @@ static int uinput_create_device(struct uinput_device *udev)
 		dev->ff->playback = uinput_dev_playback;
 		dev->ff->set_gain = uinput_dev_set_gain;
 		dev->ff->set_autocenter = uinput_dev_set_autocenter;
+<<<<<<< HEAD
 		/*
 		 * The standard input_ff_flush() implementation does
 		 * not quite work for uinput as we can't reasonably
 		 * handle FF requests during device teardown.
 		 */
 		dev->flush = uinput_dev_flush;
+=======
+>>>>>>> FETCH_HEAD
 	}
 
 	error = input_register_device(udev->dev);

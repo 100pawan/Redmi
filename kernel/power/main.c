@@ -78,6 +78,7 @@ static ssize_t pm_async_store(struct kobject *kobj, struct kobj_attribute *attr,
 
 power_attr(pm_async);
 
+<<<<<<< HEAD
 #ifdef CONFIG_SUSPEND
 static ssize_t mem_sleep_show(struct kobject *kobj, struct kobj_attribute *attr,
 			      char *buf)
@@ -150,6 +151,8 @@ static ssize_t mem_sleep_store(struct kobject *kobj, struct kobj_attribute *attr
 power_attr(mem_sleep);
 #endif /* CONFIG_SUSPEND */
 
+=======
+>>>>>>> FETCH_HEAD
 #ifdef CONFIG_PM_DEBUG
 int pm_test_level = TEST_NONE;
 
@@ -440,6 +443,7 @@ static ssize_t state_store(struct kobject *kobj, struct kobj_attribute *attr,
 	}
 
 	state = decode_state(buf, n);
+<<<<<<< HEAD
 	if (state < PM_SUSPEND_MAX) {
 		if (state == PM_SUSPEND_MEM)
 			state = mem_sleep_current;
@@ -450,6 +454,14 @@ static ssize_t state_store(struct kobject *kobj, struct kobj_attribute *attr,
 	} else {
 		error = -EINVAL;
 	}
+=======
+	if (state < PM_SUSPEND_MAX)
+		error = pm_suspend(state);
+	else if (state == PM_SUSPEND_MAX)
+		error = hibernate();
+	else
+		error = -EINVAL;
+>>>>>>> FETCH_HEAD
 
  out:
 	pm_autosleep_unlock();
@@ -561,9 +573,12 @@ static ssize_t autosleep_store(struct kobject *kobj,
 	    && strcmp(buf, "off") && strcmp(buf, "off\n"))
 		return -EINVAL;
 
+<<<<<<< HEAD
 	if (state == PM_SUSPEND_MEM)
 		state = mem_sleep_current;
 
+=======
+>>>>>>> FETCH_HEAD
 	error = pm_autosleep_set_state(state);
 	return error ? error : n;
 }
@@ -681,9 +696,12 @@ static struct attribute * g[] = {
 #ifdef CONFIG_PM_SLEEP
 	&pm_async_attr.attr,
 	&wakeup_count_attr.attr,
+<<<<<<< HEAD
 #ifdef CONFIG_SUSPEND
 	&mem_sleep_attr.attr,
 #endif
+=======
+>>>>>>> FETCH_HEAD
 #ifdef CONFIG_PM_AUTOSLEEP
 	&autosleep_attr.attr,
 #endif

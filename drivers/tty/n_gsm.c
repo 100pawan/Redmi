@@ -681,10 +681,18 @@ static struct gsm_msg *gsm_data_alloc(struct gsm_mux *gsm, u8 addr, int len,
  *	FIXME: lock against link layer control transmissions
  */
 
+<<<<<<< HEAD
 static void gsm_data_kick(struct gsm_mux *gsm, struct gsm_dlci *dlci)
 {
 	struct gsm_msg *msg, *nmsg;
 	int len;
+=======
+static void gsm_data_kick(struct gsm_mux *gsm)
+{
+	struct gsm_msg *msg, *nmsg;
+	int len;
+	int skip_sof = 0;
+>>>>>>> FETCH_HEAD
 
 	list_for_each_entry_safe(msg, nmsg, &gsm->tx_list, list) {
 		if (gsm->constipated && msg->addr)
@@ -706,6 +714,7 @@ static void gsm_data_kick(struct gsm_mux *gsm, struct gsm_dlci *dlci)
 			print_hex_dump_bytes("gsm_data_kick: ",
 					     DUMP_PREFIX_OFFSET,
 					     gsm->txframe, len);
+<<<<<<< HEAD
 		if (gsm->output(gsm, gsm->txframe, len) < 0)
 			break;
 		/* FIXME: Can eliminate one SOF in many more cases */
@@ -723,6 +732,20 @@ static void gsm_data_kick(struct gsm_mux *gsm, struct gsm_dlci *dlci)
 				if (gsm->dlci[i])
 					tty_port_tty_wakeup(&gsm->dlci[i]->port);
 		}
+=======
+
+		if (gsm->output(gsm, gsm->txframe + skip_sof,
+						len - skip_sof) < 0)
+			break;
+		/* FIXME: Can eliminate one SOF in many more cases */
+		gsm->tx_bytes -= msg->len;
+		/* For a burst of frames skip the extra SOF within the
+		   burst */
+		skip_sof = 1;
+
+		list_del(&msg->list);
+		kfree(msg);
+>>>>>>> FETCH_HEAD
 	}
 }
 
@@ -774,7 +797,11 @@ static void __gsm_data_queue(struct gsm_dlci *dlci, struct gsm_msg *msg)
 	/* Add to the actual output queue */
 	list_add_tail(&msg->list, &gsm->tx_list);
 	gsm->tx_bytes += msg->len;
+<<<<<<< HEAD
 	gsm_data_kick(gsm, dlci);
+=======
+	gsm_data_kick(gsm);
+>>>>>>> FETCH_HEAD
 }
 
 /**
@@ -1235,7 +1262,11 @@ static void gsm_control_message(struct gsm_mux *gsm, unsigned int command,
 		gsm_control_reply(gsm, CMD_FCON, NULL, 0);
 		/* Kick the link in case it is idling */
 		spin_lock_irqsave(&gsm->tx_lock, flags);
+<<<<<<< HEAD
 		gsm_data_kick(gsm, NULL);
+=======
+		gsm_data_kick(gsm);
+>>>>>>> FETCH_HEAD
 		spin_unlock_irqrestore(&gsm->tx_lock, flags);
 		break;
 	case CMD_FCOFF:
@@ -2418,7 +2449,11 @@ static void gsmld_write_wakeup(struct tty_struct *tty)
 	/* Queue poll */
 	clear_bit(TTY_DO_WRITE_WAKEUP, &tty->flags);
 	spin_lock_irqsave(&gsm->tx_lock, flags);
+<<<<<<< HEAD
 	gsm_data_kick(gsm, NULL);
+=======
+	gsm_data_kick(gsm);
+>>>>>>> FETCH_HEAD
 	if (gsm->tx_bytes < TX_THRESH_LO) {
 		gsm_dlci_data_sweep(gsm);
 	}

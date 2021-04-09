@@ -512,6 +512,7 @@ static int __init reboot_setup(char *str)
 			break;
 
 		case 's':
+<<<<<<< HEAD
 			if (isdigit(*(str+1)))
 				reboot_cpu = simple_strtoul(str+1, NULL, 0);
 			else if (str[1] == 'm' && str[2] == 'p' &&
@@ -528,6 +529,24 @@ static int __init reboot_setup(char *str)
 			}
 			break;
 
+=======
+		{
+			int rc;
+
+			if (isdigit(*(str+1))) {
+				rc = kstrtoint(str+1, 0, &reboot_cpu);
+				if (rc)
+					return rc;
+			} else if (str[1] == 'm' && str[2] == 'p' &&
+				   isdigit(*(str+3))) {
+				rc = kstrtoint(str+3, 0, &reboot_cpu);
+				if (rc)
+					return rc;
+			} else
+				reboot_mode = REBOOT_SOFT;
+			break;
+		}
+>>>>>>> FETCH_HEAD
 		case 'g':
 			reboot_mode = REBOOT_GPIO;
 			break;

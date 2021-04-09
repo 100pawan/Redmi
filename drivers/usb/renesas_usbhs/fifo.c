@@ -140,8 +140,11 @@ struct usbhs_pkt *usbhs_pkt_pop(struct usbhs_pipe *pipe, struct usbhs_pkt *pkt)
 			usbhsf_dma_unmap(pkt);
 		}
 
+<<<<<<< HEAD
 		usbhs_pipe_running(pipe, 0);
 
+=======
+>>>>>>> FETCH_HEAD
 		__usbhsf_pkt_del(pkt);
 	}
 

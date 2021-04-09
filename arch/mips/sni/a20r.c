@@ -143,10 +143,14 @@ static struct platform_device sc26xx_pdev = {
 	},
 };
 
+<<<<<<< HEAD
 /*
  * Trigger chipset to update CPU's CAUSE IP field
  */
 static u32 a20r_update_cause_ip(void)
+=======
+static u32 a20r_ack_hwint(void)
+>>>>>>> FETCH_HEAD
 {
 	u32 status = read_c0_status();
 
@@ -208,14 +212,21 @@ static void a20r_hwint(void)
 	int irq;
 
 	clear_c0_status(IE_IRQ0);
+<<<<<<< HEAD
 	status = a20r_update_cause_ip();
+=======
+	status = a20r_ack_hwint();
+>>>>>>> FETCH_HEAD
 	cause = read_c0_cause();
 
 	irq = ffs(((cause & status) >> 8) & 0xf8);
 	if (likely(irq > 0))
 		do_IRQ(SNI_A20R_IRQ_BASE + irq - 1);
+<<<<<<< HEAD
 
 	a20r_update_cause_ip();
+=======
+>>>>>>> FETCH_HEAD
 	set_c0_status(IE_IRQ0);
 }
 

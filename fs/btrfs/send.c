@@ -35,7 +35,10 @@
 #include "btrfs_inode.h"
 #include "transaction.h"
 #include "compression.h"
+<<<<<<< HEAD
 #include "xattr.h"
+=======
+>>>>>>> FETCH_HEAD
 
 /*
  * Maximum number of references an extent can have in order for us to attempt to
@@ -4369,10 +4372,13 @@ static int __process_new_xattr(int num, struct btrfs_key *di_key,
 	struct fs_path *p;
 	struct posix_acl_xattr_header dummy_acl;
 
+<<<<<<< HEAD
 	/* Capabilities are emitted by finish_inode_if_needed */
 	if (!strncmp(name, XATTR_NAME_CAPS, name_len))
 		return 0;
 
+=======
+>>>>>>> FETCH_HEAD
 	p = fs_path_alloc();
 	if (!p)
 		return -ENOMEM;
@@ -4909,6 +4915,7 @@ static int send_extent_data(struct send_ctx *sctx,
 	return 0;
 }
 
+<<<<<<< HEAD
 /*
  * Search for a capability xattr related to sctx->cur_ino. If the capability is
  * found, call send_set_xattr function to emit it.
@@ -4967,6 +4974,8 @@ out:
 	return ret;
 }
 
+=======
+>>>>>>> FETCH_HEAD
 static int clone_range(struct send_ctx *sctx,
 		       struct clone_root *clone_root,
 		       const u64 disk_byte,
@@ -5678,10 +5687,13 @@ static int finish_inode_if_needed(struct send_ctx *sctx, int at_end)
 			goto out;
 	}
 
+<<<<<<< HEAD
 	ret = send_capabilities(sctx);
 	if (ret < 0)
 		goto out;
 
+=======
+>>>>>>> FETCH_HEAD
 	/*
 	 * If other directory inodes depended on our current directory
 	 * inode's move/rename, now do their move/rename operations.

@@ -222,6 +222,7 @@ static int event_trigger_regex_open(struct inode *inode, struct file *file)
 
 static int trigger_process_regex(struct trace_event_file *file, char *buff)
 {
+<<<<<<< HEAD
 	char *command, *next;
 	struct event_command *p;
 	int ret = -EINVAL;
@@ -233,6 +234,13 @@ static int trigger_process_regex(struct trace_event_file *file, char *buff)
 		if (!*next)
 			next = NULL;
 	}
+=======
+	char *command, *next = buff;
+	struct event_command *p;
+	int ret = -EINVAL;
+
+	command = strsep(&next, ": \t");
+>>>>>>> FETCH_HEAD
 	command = (command[0] != '!') ? command : command + 1;
 
 	mutex_lock(&trigger_cmd_mutex);
@@ -635,6 +643,7 @@ event_trigger_callback(struct event_command *cmd_ops,
 	int ret;
 
 	/* separate the trigger from the filter (t:n [if filter]) */
+<<<<<<< HEAD
 	if (param && isdigit(param[0])) {
 		trigger = strsep(&param, " \t");
 		if (param) {
@@ -643,6 +652,10 @@ event_trigger_callback(struct event_command *cmd_ops,
 				param = NULL;
 		}
 	}
+=======
+	if (param && isdigit(param[0]))
+		trigger = strsep(&param, " \t");
+>>>>>>> FETCH_HEAD
 
 	trigger_ops = cmd_ops->get_trigger_ops(cmd, trigger);
 
@@ -1347,11 +1360,14 @@ int event_enable_trigger_func(struct event_command *cmd_ops,
 	trigger = strsep(&param, " \t");
 	if (!trigger)
 		return -EINVAL;
+<<<<<<< HEAD
 	if (param) {
 		param = skip_spaces(param);
 		if (!*param)
 			param = NULL;
 	}
+=======
+>>>>>>> FETCH_HEAD
 
 	system = strsep(&trigger, ":");
 	if (!trigger)

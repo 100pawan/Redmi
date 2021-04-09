@@ -2,7 +2,10 @@
 #define _IPV6_H
 
 #include <uapi/linux/ipv6.h>
+<<<<<<< HEAD
 #include <uapi/linux/icmpv6.h>
+=======
+>>>>>>> FETCH_HEAD
 
 #define ipv6_optlen(p)  (((p)->hdrlen+1) << 3)
 #define ipv6_authlen(p) (((p)->hdrlen+2) << 2)
@@ -67,8 +70,13 @@ struct ipv6_devconf {
 	} stable_secret;
 	__s32		use_oif_addrs_only;
 	__s32		keep_addr_on_down;
+<<<<<<< HEAD
 	__u32		addr_gen_mode;
 	__s32		accept_ra_prefix_route;
+=======
+	__s32		accept_ra_prefix_route;
+	__u32		addr_gen_mode;
+>>>>>>> FETCH_HEAD
 
 	struct ctl_table_header *sysctl_header;
 };
@@ -78,6 +86,10 @@ struct ipv6_params {
 	__s32 autoconf;
 };
 extern struct ipv6_params ipv6_defaults;
+<<<<<<< HEAD
+=======
+#include <linux/icmpv6.h>
+>>>>>>> FETCH_HEAD
 #include <linux/tcp.h>
 #include <linux/udp.h>
 

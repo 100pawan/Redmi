@@ -24,7 +24,10 @@
 #include <linux/usb/ch9.h>
 #include <linux/sysfs.h>
 #include <linux/kthread.h>
+<<<<<<< HEAD
 #include <linux/file.h>
+=======
+>>>>>>> FETCH_HEAD
 #include <linux/byteorder/generic.h>
 
 #include "usbip_common.h"
@@ -151,6 +154,7 @@ static ssize_t store_sockfd(struct device *dev, struct device_attribute *attr,
 			goto unlock_ud;
 		}
 
+<<<<<<< HEAD
 		if (socket->type != SOCK_STREAM) {
 			dev_err(dev, "Expecting SOCK_STREAM - found %d",
 				socket->type);
@@ -158,6 +162,8 @@ static ssize_t store_sockfd(struct device *dev, struct device_attribute *attr,
 			goto sock_err;
 		}
 
+=======
+>>>>>>> FETCH_HEAD
 		udc->ud.tcp_socket = socket;
 
 		spin_unlock_irq(&udc->ud.lock);
@@ -197,8 +203,11 @@ static ssize_t store_sockfd(struct device *dev, struct device_attribute *attr,
 
 	return count;
 
+<<<<<<< HEAD
 sock_err:
 	sockfd_put(socket);
+=======
+>>>>>>> FETCH_HEAD
 unlock_ud:
 	spin_unlock_irq(&udc->ud.lock);
 unlock:

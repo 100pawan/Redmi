@@ -172,7 +172,10 @@ struct si1145_part_info {
  * @part_info:	Part information
  * @trig:	Pointer to iio trigger
  * @meas_rate:	Value of MEAS_RATE register. Only set in HW in auto mode
+<<<<<<< HEAD
  * @buffer:	Used to pack data read from sensor.
+=======
+>>>>>>> FETCH_HEAD
  */
 struct si1145_data {
 	struct i2c_client *client;
@@ -184,6 +187,7 @@ struct si1145_data {
 	bool autonomous;
 	struct iio_trigger *trig;
 	int meas_rate;
+<<<<<<< HEAD
 	/*
 	 * Ensure timestamp will be naturally aligned if present.
 	 * Maximum buffer size (may be only partly used if not all
@@ -192,6 +196,8 @@ struct si1145_data {
 	 *   8 bytes timestamp
 	 */
 	u8 buffer[24] __aligned(8);
+=======
+>>>>>>> FETCH_HEAD
 };
 
 /**
@@ -453,6 +459,15 @@ static irqreturn_t si1145_trigger_handler(int irq, void *private)
 	struct iio_poll_func *pf = private;
 	struct iio_dev *indio_dev = pf->indio_dev;
 	struct si1145_data *data = iio_priv(indio_dev);
+<<<<<<< HEAD
+=======
+	/*
+	 * Maximum buffer size:
+	 *   6*2 bytes channels data + 4 bytes alignment +
+	 *   8 bytes timestamp
+	 */
+	u8 buffer[24];
+>>>>>>> FETCH_HEAD
 	int i, j = 0;
 	int ret;
 	u8 irq_status = 0;
@@ -485,7 +500,11 @@ static irqreturn_t si1145_trigger_handler(int irq, void *private)
 
 		ret = i2c_smbus_read_i2c_block_data_or_emulated(
 				data->client, indio_dev->channels[i].address,
+<<<<<<< HEAD
 				sizeof(u16) * run, &data->buffer[j]);
+=======
+				sizeof(u16) * run, &buffer[j]);
+>>>>>>> FETCH_HEAD
 		if (ret < 0)
 			goto done;
 		j += run * sizeof(u16);
@@ -500,7 +519,11 @@ static irqreturn_t si1145_trigger_handler(int irq, void *private)
 			goto done;
 	}
 
+<<<<<<< HEAD
 	iio_push_to_buffers_with_timestamp(indio_dev, data->buffer,
+=======
+	iio_push_to_buffers_with_timestamp(indio_dev, buffer,
+>>>>>>> FETCH_HEAD
 		iio_get_time_ns(indio_dev));
 
 done:

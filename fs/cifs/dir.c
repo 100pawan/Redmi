@@ -830,7 +830,10 @@ static int
 cifs_d_revalidate(struct dentry *direntry, unsigned int flags)
 {
 	struct inode *inode;
+<<<<<<< HEAD
 	int rc;
+=======
+>>>>>>> FETCH_HEAD
 
 	if (flags & LOOKUP_RCU)
 		return -ECHILD;
@@ -840,6 +843,7 @@ cifs_d_revalidate(struct dentry *direntry, unsigned int flags)
 		if ((flags & LOOKUP_REVAL) && !CIFS_CACHE_READ(CIFS_I(inode)))
 			CIFS_I(inode)->time = 0; /* force reval */
 
+<<<<<<< HEAD
 		rc = cifs_revalidate_dentry(direntry);
 		if (rc) {
 			cifs_dbg(FYI, "cifs_revalidate_dentry failed with rc=%d", rc);
@@ -859,6 +863,10 @@ cifs_d_revalidate(struct dentry *direntry, unsigned int flags)
 				return rc;
 			}
 		}
+=======
+		if (cifs_revalidate_dentry(direntry))
+			return 0;
+>>>>>>> FETCH_HEAD
 		else {
 			/*
 			 * If the inode wasn't known to be a dfs entry when

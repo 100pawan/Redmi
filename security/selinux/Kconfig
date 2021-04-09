@@ -1,6 +1,10 @@
 config SECURITY_SELINUX
 	bool "NSA SELinux Support"
+<<<<<<< HEAD
 	depends on SECURITY_NETWORK && NET && INET
+=======
+	depends on SECURITY_NETWORK && AUDIT && NET && INET
+>>>>>>> FETCH_HEAD
 	select NETWORK_SECMARK
 	default n
 	help

@@ -2144,12 +2144,17 @@ static void syscall_get_set_args_cb(struct unw_frame_info *info, void *data)
 {
 	struct syscall_get_set_args *args = data;
 	struct pt_regs *pt = args->regs;
+<<<<<<< HEAD
 	unsigned long *krbs, cfm, ndirty, nlocals, nouts;
+=======
+	unsigned long *krbs, cfm, ndirty;
+>>>>>>> FETCH_HEAD
 	int i, count;
 
 	if (unw_unwind_to_user(info) < 0)
 		return;
 
+<<<<<<< HEAD
 	/*
 	 * We get here via a few paths:
 	 * - break instruction: cfm is shared with caller.
@@ -2163,11 +2168,15 @@ static void syscall_get_set_args_cb(struct unw_frame_info *info, void *data)
 	cfm = pt->cr_ifs;
 	nlocals = (cfm >> 7) & 0x7f; /* aka sol */
 	nouts = (cfm & 0x7f) - nlocals; /* aka sof - sol */
+=======
+	cfm = pt->cr_ifs;
+>>>>>>> FETCH_HEAD
 	krbs = (unsigned long *)info->task + IA64_RBS_OFFSET/8;
 	ndirty = ia64_rse_num_regs(krbs, krbs + (pt->loadrs >> 19));
 
 	count = 0;
 	if (in_syscall(pt))
+<<<<<<< HEAD
 		count = min_t(int, args->n, nouts);
 
 	/* Iterate over outs. */
@@ -2177,6 +2186,17 @@ static void syscall_get_set_args_cb(struct unw_frame_info *info, void *data)
 			*ia64_rse_skip_regs(krbs, j) = args->args[i];
 		else
 			args->args[i] = *ia64_rse_skip_regs(krbs, j);
+=======
+		count = min_t(int, args->n, cfm & 0x7f);
+
+	for (i = 0; i < count; i++) {
+		if (args->rw)
+			*ia64_rse_skip_regs(krbs, ndirty + i + args->i) =
+				args->args[i];
+		else
+			args->args[i] = *ia64_rse_skip_regs(krbs,
+				ndirty + i + args->i);
+>>>>>>> FETCH_HEAD
 	}
 
 	if (!args->rw) {

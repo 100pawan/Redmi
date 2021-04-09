@@ -7201,8 +7201,13 @@ static inline void tg3_reset_task_schedule(struct tg3 *tp)
 
 static inline void tg3_reset_task_cancel(struct tg3 *tp)
 {
+<<<<<<< HEAD
 	if (test_and_clear_bit(TG3_FLAG_RESET_TASK_PENDING, tp->tg3_flags))
 		cancel_work_sync(&tp->reset_task);
+=======
+	cancel_work_sync(&tp->reset_task);
+	tg3_flag_clear(tp, RESET_TASK_PENDING);
+>>>>>>> FETCH_HEAD
 	tg3_flag_clear(tp, TX_RECOVERY_PENDING);
 }
 
@@ -11174,6 +11179,7 @@ static void tg3_reset_task(struct work_struct *work)
 
 	tg3_halt(tp, RESET_KIND_SHUTDOWN, 0);
 	err = tg3_init_hw(tp, true);
+<<<<<<< HEAD
 	if (err) {
 		tg3_full_unlock(tp);
 		tp->irq_sync = 0;
@@ -11188,13 +11194,24 @@ static void tg3_reset_task(struct work_struct *work)
 
 	tg3_netif_start(tp);
 
+=======
+	if (err)
+		goto out;
+
+	tg3_netif_start(tp);
+
+out:
+>>>>>>> FETCH_HEAD
 	tg3_full_unlock(tp);
 
 	if (!err)
 		tg3_phy_start(tp);
 
 	tg3_flag_clear(tp, RESET_TASK_PENDING);
+<<<<<<< HEAD
 out:
+=======
+>>>>>>> FETCH_HEAD
 	rtnl_unlock();
 }
 
@@ -18183,8 +18200,13 @@ static pci_ers_result_t tg3_io_error_detected(struct pci_dev *pdev,
 
 	rtnl_lock();
 
+<<<<<<< HEAD
 	/* Could be second call or maybe we don't have netdev yet */
 	if (!netdev || tp->pcierr_recovery || !netif_running(netdev))
+=======
+	/* We probably don't have netdev yet */
+	if (!netdev || !netif_running(netdev))
+>>>>>>> FETCH_HEAD
 		goto done;
 
 	/* We needn't recover from permanent error */

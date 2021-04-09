@@ -462,6 +462,7 @@ static int gbcodec_mixer_dapm_ctl_put(struct snd_kcontrol *kcontrol,
 	val = ucontrol->value.integer.value[0] & mask;
 	connect = !!val;
 
+<<<<<<< HEAD
 	ret = gb_pm_runtime_get_sync(bundle);
 	if (ret)
 		return ret;
@@ -471,6 +472,8 @@ static int gbcodec_mixer_dapm_ctl_put(struct snd_kcontrol *kcontrol,
 	if (ret)
 		goto exit;
 
+=======
+>>>>>>> FETCH_HEAD
 	/* update ucontrol */
 	if (gbvalue.value.integer_value[0] != val) {
 		for (wi = 0; wi < wlist->num_widgets; wi++) {
@@ -484,6 +487,7 @@ static int gbcodec_mixer_dapm_ctl_put(struct snd_kcontrol *kcontrol,
 		gbvalue.value.integer_value[0] =
 			ucontrol->value.integer.value[0];
 
+<<<<<<< HEAD
 		ret = gb_audio_gb_set_control(module->mgmt_connection,
 					      data->ctl_id,
 					      GB_AUDIO_INVALID_INDEX, &gbvalue);
@@ -495,6 +499,27 @@ exit:
 		dev_err_ratelimited(codec_dev, "%d:Error in %s for %s\n", ret,
 				    __func__, kcontrol->id.name);
 	return ret;
+=======
+		ret = gb_pm_runtime_get_sync(bundle);
+		if (ret)
+			return ret;
+
+		ret = gb_audio_gb_set_control(module->mgmt_connection,
+					      data->ctl_id,
+					      GB_AUDIO_INVALID_INDEX, &gbvalue);
+
+		gb_pm_runtime_put_autosuspend(bundle);
+
+		if (ret) {
+			dev_err_ratelimited(codec->dev,
+					    "%d:Error in %s for %s\n", ret,
+					    __func__, kcontrol->id.name);
+			return ret;
+		}
+	}
+
+	return 0;
+>>>>>>> FETCH_HEAD
 }
 
 #define SOC_DAPM_MIXER_GB(xname, kcount, data) \

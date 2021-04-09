@@ -91,7 +91,11 @@ EXPORT_SYMBOL_GPL(hid_register_report);
  * Register a new field for this report.
  */
 
+<<<<<<< HEAD
 static struct hid_field *hid_register_field(struct hid_report *report, unsigned usages)
+=======
+static struct hid_field *hid_register_field(struct hid_report *report, unsigned usages, unsigned values)
+>>>>>>> FETCH_HEAD
 {
 	struct hid_field *field;
 
@@ -102,7 +106,11 @@ static struct hid_field *hid_register_field(struct hid_report *report, unsigned 
 
 	field = kzalloc((sizeof(struct hid_field) +
 			 usages * sizeof(struct hid_usage) +
+<<<<<<< HEAD
 			 usages * sizeof(unsigned)), GFP_KERNEL);
+=======
+			 values * sizeof(unsigned)), GFP_KERNEL);
+>>>>>>> FETCH_HEAD
 	if (!field)
 		return NULL;
 
@@ -281,7 +289,11 @@ static int hid_add_field(struct hid_parser *parser, unsigned report_type, unsign
 	usages = max_t(unsigned, parser->local.usage_index,
 				 parser->global.report_count);
 
+<<<<<<< HEAD
 	field = hid_register_field(report, usages);
+=======
+	field = hid_register_field(report, usages, parser->global.report_count);
+>>>>>>> FETCH_HEAD
 	if (!field)
 		return 0;
 
@@ -1109,9 +1121,12 @@ EXPORT_SYMBOL_GPL(hid_open_report);
 
 static s32 snto32(__u32 value, unsigned n)
 {
+<<<<<<< HEAD
 	if (!value || !n)
 		return 0;
 
+=======
+>>>>>>> FETCH_HEAD
 	switch (n) {
 	case 8:  return ((__s8)value);
 	case 16: return ((__s16)value);
@@ -1410,6 +1425,7 @@ static void hid_output_field(const struct hid_device *hid,
 }
 
 /*
+<<<<<<< HEAD
  * Compute the size of a report.
  */
 static size_t hid_compute_report_size(struct hid_report *report)
@@ -1421,6 +1437,8 @@ static size_t hid_compute_report_size(struct hid_report *report)
 }
 
 /*
+=======
+>>>>>>> FETCH_HEAD
  * Create a report. 'data' has to be allocated using
  * hid_alloc_report_buf() so that it has proper size.
  */
@@ -1432,7 +1450,11 @@ void hid_output_report(struct hid_report *report, __u8 *data)
 	if (report->id > 0)
 		*data++ = report->id;
 
+<<<<<<< HEAD
 	memset(data, 0, hid_compute_report_size(report));
+=======
+	memset(data, 0, ((report->size - 1) >> 3) + 1);
+>>>>>>> FETCH_HEAD
 	for (n = 0; n < report->maxfield; n++)
 		hid_output_field(report->device, report->field[n], data);
 }
@@ -1559,7 +1581,11 @@ int hid_report_raw_event(struct hid_device *hid, int type, u8 *data, u32 size,
 		csize--;
 	}
 
+<<<<<<< HEAD
 	rsize = hid_compute_report_size(report);
+=======
+	rsize = ((report->size - 1) >> 3) + 1;
+>>>>>>> FETCH_HEAD
 
 	if (report_enum->numbered && rsize >= HID_MAX_BUFFER_SIZE)
 		rsize = HID_MAX_BUFFER_SIZE - 1;

@@ -2097,12 +2097,16 @@ int musb_queue_resume_work(struct musb *musb,
 {
 	struct musb_pending_work *w;
 	unsigned long flags;
+<<<<<<< HEAD
 	bool is_suspended;
+=======
+>>>>>>> FETCH_HEAD
 	int error;
 
 	if (WARN_ON(!callback))
 		return -EINVAL;
 
+<<<<<<< HEAD
 	spin_lock_irqsave(&musb->list_lock, flags);
 	is_suspended = musb->is_runtime_suspended;
 
@@ -2126,6 +2130,29 @@ out_unlock:
 	if (!is_suspended)
 		error = callback(musb, data);
 
+=======
+	if (pm_runtime_active(musb->controller))
+		return callback(musb, data);
+
+	w = devm_kzalloc(musb->controller, sizeof(*w), GFP_ATOMIC);
+	if (!w)
+		return -ENOMEM;
+
+	w->callback = callback;
+	w->data = data;
+	spin_lock_irqsave(&musb->list_lock, flags);
+	if (musb->is_runtime_suspended) {
+		list_add_tail(&w->node, &musb->pending_list);
+		error = 0;
+	} else {
+		dev_err(musb->controller, "could not add resume work %p\n",
+			callback);
+		devm_kfree(musb->controller, w);
+		error = -EINPROGRESS;
+	}
+	spin_unlock_irqrestore(&musb->list_lock, flags);
+
+>>>>>>> FETCH_HEAD
 	return error;
 }
 EXPORT_SYMBOL_GPL(musb_queue_resume_work);

@@ -91,10 +91,15 @@ static inline struct f_ncm *func_to_ncm(struct usb_function *f)
 /* peak (theoretical) bulk transfer rate in bits-per-second */
 static inline unsigned ncm_bitrate(struct usb_gadget *g)
 {
+<<<<<<< HEAD
 	if (gadget_is_superspeed(g) && g->speed >= USB_SPEED_SUPER_PLUS)
 		return 4250000000U;
 	else if (gadget_is_superspeed(g) && g->speed == USB_SPEED_SUPER)
 		return 3750000000U;
+=======
+	if (gadget_is_superspeed(g) && g->speed == USB_SPEED_SUPER)
+		return 13 * 1024 * 8 * 1000 * 8;
+>>>>>>> FETCH_HEAD
 	else if (gadget_is_dualspeed(g) && g->speed == USB_SPEED_HIGH)
 		return 13 * 512 * 8 * 1000 * 8;
 	else
@@ -1210,11 +1215,17 @@ static int ncm_unwrap_ntb(struct gether *port,
 	int		ndp_index;
 	unsigned	dg_len, dg_len2;
 	unsigned	ndp_len;
+<<<<<<< HEAD
 	unsigned	block_len;
 	struct sk_buff	*skb2;
 	int		ret = -EINVAL;
 	unsigned	ntb_max = le32_to_cpu(ntb_parameters.dwNtbOutMaxSize);
 	unsigned	frame_max = le16_to_cpu(ecm_desc.wMaxSegmentSize);
+=======
+	struct sk_buff	*skb2;
+	int		ret = -EINVAL;
+	unsigned	max_size = le32_to_cpu(ntb_parameters.dwNtbOutMaxSize);
+>>>>>>> FETCH_HEAD
 	const struct ndp_parser_opts *opts = ncm->parser_opts;
 	unsigned	crc_len = ncm->is_crc ? sizeof(uint32_t) : 0;
 	int		dgram_counter;
@@ -1236,9 +1247,14 @@ static int ncm_unwrap_ntb(struct gether *port,
 	}
 	tmp++; /* skip wSequence */
 
+<<<<<<< HEAD
 	block_len = get_ncm(&tmp, opts->block_length);
 	/* (d)wBlockLength */
 	if (block_len > ntb_max) {
+=======
+	/* (d)wBlockLength */
+	if (get_ncm(&tmp, opts->block_length) > max_size) {
+>>>>>>> FETCH_HEAD
 		INFO(port->func.config->cdev, "OUT size exceeded\n");
 		goto err;
 	}
@@ -1247,6 +1263,7 @@ static int ncm_unwrap_ntb(struct gether *port,
 
 	/* Run through all the NDP's in the NTB */
 	do {
+<<<<<<< HEAD
 		/*
 		 * NCM 3.2
 		 * dwNdpIndex
@@ -1255,15 +1272,24 @@ static int ncm_unwrap_ntb(struct gether *port,
 				(ndp_index < opts->nth_size) ||
 				(ndp_index > (block_len -
 					      opts->ndp_size))) {
+=======
+		/* NCM 3.2 */
+		if (((ndp_index % 4) != 0) &&
+				(ndp_index < opts->nth_size)) {
+>>>>>>> FETCH_HEAD
 			INFO(port->func.config->cdev, "Bad index: %#X\n",
 			     ndp_index);
 			goto err;
 		}
 
+<<<<<<< HEAD
 		/*
 		 * walk through NDP
 		 * dwSignature
 		 */
+=======
+		/* walk through NDP */
+>>>>>>> FETCH_HEAD
 		tmp = (void *)(skb->data + ndp_index);
 		if (get_unaligned_le32(tmp) != ncm->ndp_sign) {
 			INFO(port->func.config->cdev, "Wrong NDP SIGN\n");
@@ -1274,15 +1300,23 @@ static int ncm_unwrap_ntb(struct gether *port,
 		ndp_len = get_unaligned_le16(tmp++);
 		/*
 		 * NCM 3.3.1
+<<<<<<< HEAD
 		 * wLength
+=======
+>>>>>>> FETCH_HEAD
 		 * entry is 2 items
 		 * item size is 16/32 bits, opts->dgram_item_len * 2 bytes
 		 * minimal: struct usb_cdc_ncm_ndpX + normal entry + zero entry
 		 * Each entry is a dgram index and a dgram length.
 		 */
 		if ((ndp_len < opts->ndp_size
+<<<<<<< HEAD
 				+ 2 * 2 * (opts->dgram_item_len * 2)) ||
 				(ndp_len % opts->ndplen_align != 0)) {
+=======
+				+ 2 * 2 * (opts->dgram_item_len * 2))
+				|| (ndp_len % opts->ndplen_align != 0)) {
+>>>>>>> FETCH_HEAD
 			INFO(port->func.config->cdev, "Bad NDP length: %#X\n",
 			     ndp_len);
 			goto err;
@@ -1299,6 +1333,7 @@ static int ncm_unwrap_ntb(struct gether *port,
 
 		do {
 			index = index2;
+<<<<<<< HEAD
 			/* wDatagramIndex[0] */
 			if ((index < opts->nth_size) ||
 					(index > block_len - opts->dpe_size)) {
@@ -1314,6 +1349,10 @@ static int ncm_unwrap_ntb(struct gether *port,
 			 */
 			if ((dg_len < 14 + crc_len) ||
 					(dg_len > frame_max)) {
+=======
+			dg_len = dg_len2;
+			if (dg_len < 14 + crc_len) { /* ethernet hdr + crc */
+>>>>>>> FETCH_HEAD
 				INFO(port->func.config->cdev,
 				     "Bad dgram length: %#X\n", dg_len);
 				goto err;
@@ -1337,6 +1376,7 @@ static int ncm_unwrap_ntb(struct gether *port,
 			index2 = get_ncm(&tmp, opts->dgram_item_len);
 			dg_len2 = get_ncm(&tmp, opts->dgram_item_len);
 
+<<<<<<< HEAD
 			/* wDatagramIndex[1] */
 			if (index2 > block_len - opts->dpe_size) {
 				INFO(port->func.config->cdev,
@@ -1344,6 +1384,8 @@ static int ncm_unwrap_ntb(struct gether *port,
 				goto err;
 			}
 
+=======
+>>>>>>> FETCH_HEAD
 			/*
 			 * Copy the data into a new skb.
 			 * This ensures the truesize is correct
@@ -1360,6 +1402,10 @@ static int ncm_unwrap_ntb(struct gether *port,
 			ndp_len -= 2 * (opts->dgram_item_len * 2);
 
 			dgram_counter++;
+<<<<<<< HEAD
+=======
+
+>>>>>>> FETCH_HEAD
 			if (index2 == 0 || dg_len2 == 0)
 				break;
 		} while (ndp_len > 2 * (opts->dgram_item_len * 2));
@@ -1570,7 +1616,11 @@ static int ncm_bind(struct usb_configuration *c, struct usb_function *f)
 		fs_ncm_notify_desc.bEndpointAddress;
 
 	status = usb_assign_descriptors(f, ncm_fs_function, ncm_hs_function,
+<<<<<<< HEAD
 			ncm_ss_function, ncm_ss_function);
+=======
+			ncm_ss_function, NULL);
+>>>>>>> FETCH_HEAD
 	if (status)
 		goto fail;
 

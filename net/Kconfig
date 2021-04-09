@@ -83,7 +83,10 @@ config INET
 	  Short answer: say Y.
 
 if INET
+<<<<<<< HEAD
 source "net/wireguard/Kconfig"
+=======
+>>>>>>> FETCH_HEAD
 source "net/ipv4/Kconfig"
 source "net/ipv6/Kconfig"
 source "net/netlabel/Kconfig"

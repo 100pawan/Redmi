@@ -690,13 +690,20 @@ static void pix_proc_config(struct cal_ctx *ctx)
 }
 
 static void cal_wr_dma_config(struct cal_ctx *ctx,
+<<<<<<< HEAD
 			      unsigned int width, unsigned int height)
+=======
+			      unsigned int width)
+>>>>>>> FETCH_HEAD
 {
 	u32 val;
 
 	val = reg_read(ctx->dev, CAL_WR_DMA_CTRL(ctx->csi2_port));
 	set_field(&val, ctx->csi2_port, CAL_WR_DMA_CTRL_CPORT_MASK);
+<<<<<<< HEAD
 	set_field(&val, height, CAL_WR_DMA_CTRL_YSIZE_MASK);
+=======
+>>>>>>> FETCH_HEAD
 	set_field(&val, CAL_WR_DMA_CTRL_DTAG_PIX_DAT,
 		  CAL_WR_DMA_CTRL_DTAG_MASK);
 	set_field(&val, CAL_WR_DMA_CTRL_MODE_CONST,
@@ -1322,8 +1329,12 @@ static int cal_start_streaming(struct vb2_queue *vq, unsigned int count)
 	csi2_lane_config(ctx);
 	csi2_ctx_config(ctx);
 	pix_proc_config(ctx);
+<<<<<<< HEAD
 	cal_wr_dma_config(ctx, ctx->v_fmt.fmt.pix.bytesperline,
 			  ctx->v_fmt.fmt.pix.height);
+=======
+	cal_wr_dma_config(ctx, ctx->v_fmt.fmt.pix.bytesperline);
+>>>>>>> FETCH_HEAD
 	cal_wr_dma_addr(ctx, addr);
 	csi2_ppi_enable(ctx);
 

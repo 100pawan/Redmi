@@ -491,7 +491,11 @@ smb2_tcon_has_lease(struct cifs_tcon *tcon, struct smb2_lease_break *rsp,
 
 		cifs_dbg(FYI, "found in the open list\n");
 		cifs_dbg(FYI, "lease key match, lease break 0x%x\n",
+<<<<<<< HEAD
 			 lease_state);
+=======
+			 le32_to_cpu(rsp->NewLeaseState));
+>>>>>>> FETCH_HEAD
 
 		if (ack_req)
 			cfile->oplock_break_cancelled = false;
@@ -500,8 +504,22 @@ smb2_tcon_has_lease(struct cifs_tcon *tcon, struct smb2_lease_break *rsp,
 
 		set_bit(CIFS_INODE_PENDING_OPLOCK_BREAK, &cinode->flags);
 
+<<<<<<< HEAD
 		cfile->oplock_epoch = le16_to_cpu(rsp->Epoch);
 		cfile->oplock_level = lease_state;
+=======
+		/*
+		 * Set or clear flags depending on the lease state being READ.
+		 * HANDLE caching flag should be added when the client starts
+		 * to defer closing remote file handles with HANDLE leases.
+		 */
+		if (lease_state & SMB2_LEASE_READ_CACHING_HE)
+			set_bit(CIFS_INODE_DOWNGRADE_OPLOCK_TO_L2,
+				&cinode->flags);
+		else
+			clear_bit(CIFS_INODE_DOWNGRADE_OPLOCK_TO_L2,
+				  &cinode->flags);
+>>>>>>> FETCH_HEAD
 
 		cifs_queue_oplock_break(cfile);
 		kfree(lw);
@@ -524,7 +542,11 @@ smb2_tcon_has_lease(struct cifs_tcon *tcon, struct smb2_lease_break *rsp,
 
 		cifs_dbg(FYI, "found in the pending open list\n");
 		cifs_dbg(FYI, "lease key match, lease break 0x%x\n",
+<<<<<<< HEAD
 			 lease_state);
+=======
+			 le32_to_cpu(rsp->NewLeaseState));
+>>>>>>> FETCH_HEAD
 
 		open->oplock = lease_state;
 	}
@@ -636,9 +658,24 @@ smb2_is_valid_oplock_break(char *buffer, struct TCP_Server_Info *server)
 				set_bit(CIFS_INODE_PENDING_OPLOCK_BREAK,
 					&cinode->flags);
 
+<<<<<<< HEAD
 				cfile->oplock_epoch = 0;
 				cfile->oplock_level = rsp->OplockLevel;
 
+=======
+				/*
+				 * Set flag if the server downgrades the oplock
+				 * to L2 else clear.
+				 */
+				if (rsp->OplockLevel)
+					set_bit(
+					   CIFS_INODE_DOWNGRADE_OPLOCK_TO_L2,
+					   &cinode->flags);
+				else
+					clear_bit(
+					   CIFS_INODE_DOWNGRADE_OPLOCK_TO_L2,
+					   &cinode->flags);
+>>>>>>> FETCH_HEAD
 				spin_unlock(&cfile->file_info_lock);
 
 				cifs_queue_oplock_break(cfile);

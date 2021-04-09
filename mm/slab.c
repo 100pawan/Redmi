@@ -1256,7 +1256,11 @@ void __init kmem_cache_init(void)
 	 * page orders on machines with more than 32MB of memory if
 	 * not overridden on the command line.
 	 */
+<<<<<<< HEAD
 	if (!slab_max_order_set && totalram_pages() > (32 << 20) >> PAGE_SHIFT)
+=======
+	if (!slab_max_order_set && totalram_pages > (32 << 20) >> PAGE_SHIFT)
+>>>>>>> FETCH_HEAD
 		slab_max_order = SLAB_MAX_ORDER_HI;
 
 	/* Bootstrap is tricky, because several objects are allocated

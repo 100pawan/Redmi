@@ -1219,7 +1219,11 @@ static ssize_t format1_show(struct device *dev,
 					le16_to_cpu(nfit_dcr->dcr->code));
 			break;
 		}
+<<<<<<< HEAD
 		if (rc != -ENXIO)
+=======
+		if (rc != ENXIO)
+>>>>>>> FETCH_HEAD
 			break;
 	}
 	mutex_unlock(&acpi_desc->init_mutex);

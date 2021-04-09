@@ -975,7 +975,11 @@ int ncsi_rcv_rsp(struct sk_buff *skb, struct net_device *dev,
 	int payload, i, ret;
 
 	/* Find the NCSI device */
+<<<<<<< HEAD
 	nd = ncsi_find_dev(orig_dev);
+=======
+	nd = ncsi_find_dev(dev);
+>>>>>>> FETCH_HEAD
 	ndp = nd ? TO_NCSI_DEV_PRIV(nd) : NULL;
 	if (!ndp)
 		return -ENODEV;

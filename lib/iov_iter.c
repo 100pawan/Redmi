@@ -587,6 +587,7 @@ size_t copy_from_iter_nocache(void *addr, size_t bytes, struct iov_iter *i)
 }
 EXPORT_SYMBOL(copy_from_iter_nocache);
 
+<<<<<<< HEAD
 #ifdef CONFIG_ARCH_HAS_UACCESS_FLUSHCACHE
 /**
  * _copy_from_iter_flushcache - write destination through cpu cache
@@ -671,6 +672,8 @@ static inline bool page_copy_sane(struct page *page, size_t offset, size_t n)
 	return false;
 }
 
+=======
+>>>>>>> FETCH_HEAD
 size_t copy_page_to_iter(struct page *page, size_t offset, size_t bytes,
 			 struct iov_iter *i)
 {

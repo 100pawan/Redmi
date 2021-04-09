@@ -228,6 +228,7 @@ static int mtdpart_setup_real(char *s)
 		struct cmdline_mtd_partition *this_mtd;
 		struct mtd_partition *parts;
 		int mtd_id_len, num_parts;
+<<<<<<< HEAD
 		char *p, *mtd_id, *semicol, *open_parenth;
 
 		/*
@@ -263,6 +264,14 @@ static int mtdpart_setup_real(char *s)
 		if (semicol)
 			*semicol = ';';
 
+=======
+		char *p, *mtd_id;
+
+		mtd_id = s;
+
+		/* fetch <mtd-id> */
+		p = strchr(s, ':');
+>>>>>>> FETCH_HEAD
 		if (!p) {
 			pr_err("no mtd-id\n");
 			return -EINVAL;

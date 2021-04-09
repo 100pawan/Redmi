@@ -381,12 +381,15 @@ struct ak8975_data {
 	struct iio_mount_matrix orientation;
 	struct regulator	*vdd;
 	struct regulator	*vid;
+<<<<<<< HEAD
 
 	/* Ensure natural alignment of timestamp */
 	struct {
 		s16 channels[3];
 		s64 ts __aligned(8);
 	} scan;
+=======
+>>>>>>> FETCH_HEAD
 };
 
 /* Enable attached power regulator if any. */
@@ -696,7 +699,10 @@ static int ak8975_read_axis(struct iio_dev *indio_dev, int index, int *val)
 	struct ak8975_data *data = iio_priv(indio_dev);
 	const struct i2c_client *client = data->client;
 	const struct ak_def *def = data->def;
+<<<<<<< HEAD
 	__le16 rval;
+=======
+>>>>>>> FETCH_HEAD
 	u16 buff;
 	int ret;
 
@@ -710,7 +716,11 @@ static int ak8975_read_axis(struct iio_dev *indio_dev, int index, int *val)
 
 	ret = i2c_smbus_read_i2c_block_data_or_emulated(
 			client, def->data_regs[index],
+<<<<<<< HEAD
 			sizeof(rval), (u8*)&rval);
+=======
+			sizeof(buff), (u8*)&buff);
+>>>>>>> FETCH_HEAD
 	if (ret < 0)
 		goto exit;
 
@@ -720,7 +730,11 @@ static int ak8975_read_axis(struct iio_dev *indio_dev, int index, int *val)
 	pm_runtime_put_autosuspend(&data->client->dev);
 
 	/* Swap bytes and convert to valid range. */
+<<<<<<< HEAD
 	buff = le16_to_cpu(rval);
+=======
+	buff = le16_to_cpu(buff);
+>>>>>>> FETCH_HEAD
 	*val = clamp_t(s16, buff, -def->range, def->range);
 	return IIO_VAL_INT;
 
@@ -819,7 +833,11 @@ static void ak8975_fill_buffer(struct iio_dev *indio_dev)
 	const struct i2c_client *client = data->client;
 	const struct ak_def *def = data->def;
 	int ret;
+<<<<<<< HEAD
 	__le16 fval[3];
+=======
+	s16 buff[8]; /* 3 x 16 bits axis values + 1 aligned 64 bits timestamp */
+>>>>>>> FETCH_HEAD
 
 	mutex_lock(&data->lock);
 
@@ -833,14 +851,20 @@ static void ak8975_fill_buffer(struct iio_dev *indio_dev)
 	 */
 	ret = i2c_smbus_read_i2c_block_data_or_emulated(client,
 							def->data_regs[0],
+<<<<<<< HEAD
 							3 * sizeof(fval[0]),
 							(u8 *)fval);
+=======
+							3 * sizeof(buff[0]),
+							(u8 *)buff);
+>>>>>>> FETCH_HEAD
 	if (ret < 0)
 		goto unlock;
 
 	mutex_unlock(&data->lock);
 
 	/* Clamp to valid range. */
+<<<<<<< HEAD
 	data->scan.channels[0] = clamp_t(s16, le16_to_cpu(fval[0]), -def->range, def->range);
 	data->scan.channels[1] = clamp_t(s16, le16_to_cpu(fval[1]), -def->range, def->range);
 	data->scan.channels[2] = clamp_t(s16, le16_to_cpu(fval[2]), -def->range, def->range);
@@ -848,6 +872,14 @@ static void ak8975_fill_buffer(struct iio_dev *indio_dev)
 	iio_push_to_buffers_with_timestamp(indio_dev, &data->scan,
 					   iio_get_time_ns(indio_dev));
 
+=======
+	buff[0] = clamp_t(s16, le16_to_cpu(buff[0]), -def->range, def->range);
+	buff[1] = clamp_t(s16, le16_to_cpu(buff[1]), -def->range, def->range);
+	buff[2] = clamp_t(s16, le16_to_cpu(buff[2]), -def->range, def->range);
+
+	iio_push_to_buffers_with_timestamp(indio_dev, buff,
+					   iio_get_time_ns(indio_dev));
+>>>>>>> FETCH_HEAD
 	return;
 
 unlock:

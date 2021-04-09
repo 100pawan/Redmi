@@ -889,7 +889,10 @@ static int vxlan_fdb_dump(struct sk_buff *skb, struct netlink_callback *cb,
 	for (h = 0; h < FDB_HASH_SIZE; ++h) {
 		struct vxlan_fdb *f;
 
+<<<<<<< HEAD
 		rcu_read_lock();
+=======
+>>>>>>> FETCH_HEAD
 		hlist_for_each_entry_rcu(f, &vxlan->fdb_head[h], hlist) {
 			struct vxlan_rdst *rd;
 
@@ -902,15 +905,23 @@ static int vxlan_fdb_dump(struct sk_buff *skb, struct netlink_callback *cb,
 						     cb->nlh->nlmsg_seq,
 						     RTM_NEWNEIGH,
 						     NLM_F_MULTI, rd);
+<<<<<<< HEAD
 				if (err < 0) {
 					rcu_read_unlock();
 					goto out;
 				}
+=======
+				if (err < 0)
+					goto out;
+>>>>>>> FETCH_HEAD
 skip:
 				*idx += 1;
 			}
 		}
+<<<<<<< HEAD
 		rcu_read_unlock();
+=======
+>>>>>>> FETCH_HEAD
 	}
 out:
 	return err;
@@ -1525,10 +1536,13 @@ static struct sk_buff *vxlan_na_create(struct sk_buff *request,
 	daddr = eth_hdr(request)->h_source;
 	ns_olen = request->len - skb_transport_offset(request) - sizeof(*ns);
 	for (i = 0; i < ns_olen-1; i += (ns->opt[i+1]<<3)) {
+<<<<<<< HEAD
 		if (!ns->opt[i + 1]) {
 			kfree_skb(reply);
 			return NULL;
 		}
+=======
+>>>>>>> FETCH_HEAD
 		if (ns->opt[i] == ND_OPT_SOURCE_LL_ADDR) {
 			daddr = ns->opt + i + sizeof(struct nd_opt_hdr);
 			break;
@@ -2110,7 +2124,11 @@ static void vxlan_xmit_one(struct sk_buff *skb, struct net_device *dev,
 		else if (info->key.tun_flags & TUNNEL_DONT_FRAGMENT)
 			df = htons(IP_DF);
 
+<<<<<<< HEAD
 		tos = ip_tunnel_ecn_encap(tos, old_iph, skb);
+=======
+		tos = ip_tunnel_ecn_encap(RT_TOS(tos), old_iph, skb);
+>>>>>>> FETCH_HEAD
 		ttl = ttl ? : ip4_dst_hoplimit(&rt->dst);
 		err = vxlan_build_skb(skb, &rt->dst, sizeof(struct iphdr),
 				      vni, md, flags, udp_sum);
@@ -2169,7 +2187,11 @@ static void vxlan_xmit_one(struct sk_buff *skb, struct net_device *dev,
 		if (!info)
 			udp_sum = !(flags & VXLAN_F_UDP_ZERO_CSUM6_TX);
 
+<<<<<<< HEAD
 		tos = ip_tunnel_ecn_encap(tos, old_iph, skb);
+=======
+		tos = ip_tunnel_ecn_encap(RT_TOS(tos), old_iph, skb);
+>>>>>>> FETCH_HEAD
 		ttl = ttl ? : ip6_dst_hoplimit(ndst);
 		skb_scrub_packet(skb, xnet);
 		err = vxlan_build_skb(skb, ndst, sizeof(struct ipv6hdr),

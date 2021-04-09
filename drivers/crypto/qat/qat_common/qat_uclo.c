@@ -332,6 +332,7 @@ static int qat_uclo_create_batch_init_list(struct icp_qat_fw_loader_handle
 	}
 	return 0;
 out_err:
+<<<<<<< HEAD
 	/* Do not free the list head unless we allocated it. */
 	tail_old = tail_old->next;
 	if (flag) {
@@ -339,11 +340,18 @@ out_err:
 		*init_tab_base = NULL;
 	}
 
+=======
+>>>>>>> FETCH_HEAD
 	while (tail_old) {
 		mem_init = tail_old->next;
 		kfree(tail_old);
 		tail_old = mem_init;
 	}
+<<<<<<< HEAD
+=======
+	if (flag)
+		kfree(*init_tab_base);
+>>>>>>> FETCH_HEAD
 	return -ENOMEM;
 }
 

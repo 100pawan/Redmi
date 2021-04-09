@@ -224,11 +224,14 @@ static int bcm_sf2_port_setup(struct dsa_switch *ds, int port,
 	reg &= ~P_TXQ_PSM_VDD(port);
 	core_writel(priv, reg, CORE_MEM_PSM_VDD_CTRL);
 
+<<<<<<< HEAD
 	/* Disable learning */
 	reg = core_readl(priv, CORE_DIS_LEARN);
 	reg |= BIT(port);
 	core_writel(priv, reg, CORE_DIS_LEARN);
 
+=======
+>>>>>>> FETCH_HEAD
 	/* Clear the Rx and Tx disable bits and set to no spanning tree */
 	core_writel(priv, 0, CORE_G_PCTL_PORT(port));
 
@@ -520,19 +523,29 @@ static int bcm_sf2_mdio_register(struct dsa_switch *ds)
 	/* Find our integrated MDIO bus node */
 	dn = of_find_compatible_node(NULL, NULL, "brcm,unimac-mdio");
 	priv->master_mii_bus = of_mdio_find_bus(dn);
+<<<<<<< HEAD
 	if (!priv->master_mii_bus) {
 		of_node_put(dn);
 		return -EPROBE_DEFER;
 	}
+=======
+	if (!priv->master_mii_bus)
+		return -EPROBE_DEFER;
+>>>>>>> FETCH_HEAD
 
 	get_device(&priv->master_mii_bus->dev);
 	priv->master_mii_dn = dn;
 
 	priv->slave_mii_bus = devm_mdiobus_alloc(ds->dev);
+<<<<<<< HEAD
 	if (!priv->slave_mii_bus) {
 		of_node_put(dn);
 		return -ENOMEM;
 	}
+=======
+	if (!priv->slave_mii_bus)
+		return -ENOMEM;
+>>>>>>> FETCH_HEAD
 
 	priv->slave_mii_bus->priv = priv;
 	priv->slave_mii_bus->name = "sf2 slave mii";
@@ -588,10 +601,15 @@ static u32 bcm_sf2_sw_get_phy_flags(struct dsa_switch *ds, int port)
 	 * in bits 15:8 and the patch level in bits 7:0 which is exactly what
 	 * the REG_PHY_REVISION register layout is.
 	 */
+<<<<<<< HEAD
 	if (priv->int_phy_mask & BIT(port))
 		return priv->hw_params.gphy_rev;
 	else
 		return 0;
+=======
+
+	return priv->hw_params.gphy_rev;
+>>>>>>> FETCH_HEAD
 }
 
 static void bcm_sf2_sw_adjust_link(struct dsa_switch *ds, int port,
@@ -1050,8 +1068,11 @@ static int bcm_sf2_sw_probe(struct platform_device *pdev)
 	spin_lock_init(&priv->indir_lock);
 	mutex_init(&priv->stats_mutex);
 
+<<<<<<< HEAD
 	/* Balance of_node_put() done by of_find_node_by_name() */
 	of_node_get(dn);
+=======
+>>>>>>> FETCH_HEAD
 	ports = of_find_node_by_name(dn, "ports");
 	if (ports) {
 		bcm_sf2_identify_ports(priv, ports);

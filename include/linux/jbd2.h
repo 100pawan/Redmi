@@ -47,7 +47,11 @@
 /*
  * The default maximum commit age, in seconds.
  */
+<<<<<<< HEAD
 #define JBD2_DEFAULT_MAX_COMMIT_AGE 120
+=======
+#define JBD2_DEFAULT_MAX_COMMIT_AGE 5
+>>>>>>> FETCH_HEAD
 
 #ifdef CONFIG_JBD2_DEBUG
 /*

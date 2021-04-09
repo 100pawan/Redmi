@@ -3,7 +3,10 @@
 
 #include <linux/ip.h>
 #include <linux/skbuff.h>
+<<<<<<< HEAD
 #include <linux/if_vlan.h>
+=======
+>>>>>>> FETCH_HEAD
 
 #include <net/inet_sock.h>
 #include <net/dsfield.h>

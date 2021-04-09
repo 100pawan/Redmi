@@ -28,7 +28,10 @@
 #include <linux/slab.h>
 #include <linux/export.h>
 #include <linux/if_vlan.h>
+<<<<<<< HEAD
 #include <net/dsa.h>
+=======
+>>>>>>> FETCH_HEAD
 #include <net/tcp.h>
 #include <net/udp.h>
 #include <net/addrconf.h>
@@ -128,7 +131,11 @@ static void queue_process(struct work_struct *work)
 			HARD_TX_UNLOCK(dev, txq);
 			local_irq_restore(flags);
 
+<<<<<<< HEAD
 			queue_delayed_work(system_power_efficient_wq, &npinfo->tx_work, HZ/10);
+=======
+			schedule_delayed_work(&npinfo->tx_work, HZ/10);
+>>>>>>> FETCH_HEAD
 			return;
 		}
 		HARD_TX_UNLOCK(dev, txq);
@@ -179,7 +186,11 @@ static void poll_napi(struct net_device *dev)
 {
 	struct napi_struct *napi;
 
+<<<<<<< HEAD
 	list_for_each_entry_rcu(napi, &dev->napi_list, dev_list) {
+=======
+	list_for_each_entry(napi, &dev->napi_list, dev_list) {
+>>>>>>> FETCH_HEAD
 		if (napi->poll_owner != smp_processor_id() &&
 		    spin_trylock(&napi->poll_lock)) {
 			poll_one_napi(napi);
@@ -377,7 +388,11 @@ void netpoll_send_skb_on_dev(struct netpoll *np, struct sk_buff *skb,
 
 	if (!dev_xmit_complete(status)) {
 		skb_queue_tail(&npinfo->txq, skb);
+<<<<<<< HEAD
 		queue_delayed_work(system_power_efficient_wq, &npinfo->tx_work,0);
+=======
+		schedule_delayed_work(&npinfo->tx_work,0);
+>>>>>>> FETCH_HEAD
 	}
 }
 EXPORT_SYMBOL(netpoll_send_skb_on_dev);
@@ -662,15 +677,26 @@ EXPORT_SYMBOL_GPL(__netpoll_setup);
 
 int netpoll_setup(struct netpoll *np)
 {
+<<<<<<< HEAD
 	struct net_device *ndev = NULL, *dev = NULL;
 	struct net *net = current->nsproxy->net_ns;
+=======
+	struct net_device *ndev = NULL;
+>>>>>>> FETCH_HEAD
 	struct in_device *in_dev;
 	int err;
 
 	rtnl_lock();
+<<<<<<< HEAD
 	if (np->dev_name[0])
 		ndev = __dev_get_by_name(net, np->dev_name);
 
+=======
+	if (np->dev_name[0]) {
+		struct net *net = current->nsproxy->net_ns;
+		ndev = __dev_get_by_name(net, np->dev_name);
+	}
+>>>>>>> FETCH_HEAD
 	if (!ndev) {
 		np_err(np, "%s doesn't exist, aborting\n", np->dev_name);
 		err = -ENODEV;
@@ -678,6 +704,7 @@ int netpoll_setup(struct netpoll *np)
 	}
 	dev_hold(ndev);
 
+<<<<<<< HEAD
 	/* bring up DSA management network devices up first */
 	for_each_netdev(net, dev) {
 		if (!netdev_uses_dsa(dev))
@@ -691,6 +718,8 @@ int netpoll_setup(struct netpoll *np)
 		}
 	}
 
+=======
+>>>>>>> FETCH_HEAD
 	if (netdev_master_upper_dev_get(ndev)) {
 		np_err(np, "%s is a slave device, aborting\n", np->dev_name);
 		err = -EBUSY;

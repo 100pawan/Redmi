@@ -1655,7 +1655,11 @@ void denali_remove(struct denali_nand_info *denali)
 	 */
 	int bufsize = mtd->writesize + mtd->oobsize;
 
+<<<<<<< HEAD
 	nand_release(&denali->nand);
+=======
+	nand_release(mtd);
+>>>>>>> FETCH_HEAD
 	denali_irq_cleanup(denali->irq, denali);
 	dma_unmap_single(denali->dev, denali->buf.dma_buf, bufsize,
 			 DMA_BIDIRECTIONAL);

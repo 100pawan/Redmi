@@ -477,7 +477,11 @@ struct pmu {
  */
 struct perf_addr_filter {
 	struct list_head	entry;
+<<<<<<< HEAD
 	struct path		path;
+=======
+	struct inode		*inode;
+>>>>>>> FETCH_HEAD
 	unsigned long		offset;
 	unsigned long		size;
 	unsigned int		range	: 1,

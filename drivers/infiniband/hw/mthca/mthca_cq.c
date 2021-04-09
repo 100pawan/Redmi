@@ -609,7 +609,11 @@ static inline int mthca_poll_one(struct mthca_dev *dev,
 			entry->byte_len  = MTHCA_ATOMIC_BYTE_LEN;
 			break;
 		default:
+<<<<<<< HEAD
 			entry->opcode = 0xFF;
+=======
+			entry->opcode    = MTHCA_OPCODE_INVALID;
+>>>>>>> FETCH_HEAD
 			break;
 		}
 	} else {
@@ -808,10 +812,15 @@ int mthca_init_cq(struct mthca_dev *dev, int nent,
 	}
 
 	mailbox = mthca_alloc_mailbox(dev, GFP_KERNEL);
+<<<<<<< HEAD
 	if (IS_ERR(mailbox)) {
 		err = PTR_ERR(mailbox);
 		goto err_out_arm;
 	}
+=======
+	if (IS_ERR(mailbox))
+		goto err_out_arm;
+>>>>>>> FETCH_HEAD
 
 	cq_context = mailbox->buf;
 
@@ -853,9 +862,15 @@ int mthca_init_cq(struct mthca_dev *dev, int nent,
 	}
 
 	spin_lock_irq(&dev->cq_table.lock);
+<<<<<<< HEAD
 	err = mthca_array_set(&dev->cq_table.cq,
 			      cq->cqn & (dev->limits.num_cqs - 1), cq);
 	if (err) {
+=======
+	if (mthca_array_set(&dev->cq_table.cq,
+			    cq->cqn & (dev->limits.num_cqs - 1),
+			    cq)) {
+>>>>>>> FETCH_HEAD
 		spin_unlock_irq(&dev->cq_table.lock);
 		goto err_out_free_mr;
 	}

@@ -1052,6 +1052,19 @@ fail:
 	return ret;
 }
 
+<<<<<<< HEAD
+=======
+static int lg216x_get_property(struct dvb_frontend *fe,
+			       struct dtv_property *tvp)
+{
+	struct dtv_frontend_properties *c = &fe->dtv_property_cache;
+
+	return (DTV_ATSCMH_FIC_VER == tvp->cmd) ?
+		lg216x_get_frontend(fe, c) : 0;
+}
+
+
+>>>>>>> FETCH_HEAD
 static int lg2160_set_frontend(struct dvb_frontend *fe)
 {
 	struct lg216x_state *state = fe->demodulator_priv;
@@ -1362,6 +1375,11 @@ static struct dvb_frontend_ops lg2160_ops = {
 	.init                 = lg216x_init,
 	.sleep                = lg216x_sleep,
 #endif
+<<<<<<< HEAD
+=======
+	.get_property         = lg216x_get_property,
+
+>>>>>>> FETCH_HEAD
 	.set_frontend         = lg2160_set_frontend,
 	.get_frontend         = lg216x_get_frontend,
 	.get_tune_settings    = lg216x_get_tune_settings,
@@ -1388,6 +1406,11 @@ static struct dvb_frontend_ops lg2161_ops = {
 	.init                 = lg216x_init,
 	.sleep                = lg216x_sleep,
 #endif
+<<<<<<< HEAD
+=======
+	.get_property         = lg216x_get_property,
+
+>>>>>>> FETCH_HEAD
 	.set_frontend         = lg2160_set_frontend,
 	.get_frontend         = lg216x_get_frontend,
 	.get_tune_settings    = lg216x_get_tune_settings,

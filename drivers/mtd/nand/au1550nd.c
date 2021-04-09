@@ -496,7 +496,11 @@ static int au1550nd_remove(struct platform_device *pdev)
 	struct au1550nd_ctx *ctx = platform_get_drvdata(pdev);
 	struct resource *r = platform_get_resource(pdev, IORESOURCE_MEM, 0);
 
+<<<<<<< HEAD
 	nand_release(&ctx->chip);
+=======
+	nand_release(nand_to_mtd(&ctx->chip));
+>>>>>>> FETCH_HEAD
 	iounmap(ctx->base);
 	release_mem_region(r->start, 0x1000);
 	kfree(ctx);

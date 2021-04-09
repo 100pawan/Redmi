@@ -487,7 +487,11 @@ EXC_COMMON_BEGIN(unrecover_mce)
 	b	1b
 
 
+<<<<<<< HEAD
 EXC_REAL_OOL(data_access, 0x300, 0x380)
+=======
+EXC_REAL(data_access, 0x300, 0x380)
+>>>>>>> FETCH_HEAD
 EXC_VIRT(data_access, 0x4300, 0x4380, 0x300)
 TRAMP_KVM_SKIP(PACA_EXGEN, 0x300)
 
@@ -519,10 +523,13 @@ ALT_MMU_FTR_SECTION_END_IFCLR(MMU_FTR_TYPE_RADIX)
 EXC_REAL_BEGIN(data_access_slb, 0x380, 0x400)
 	SET_SCRATCH0(r13)
 	EXCEPTION_PROLOG_0(PACA_EXSLB)
+<<<<<<< HEAD
 	b tramp_data_access_slb
 EXC_REAL_END(data_access_slb, 0x380, 0x400)
 
 TRAMP_REAL_BEGIN(tramp_data_access_slb)
+=======
+>>>>>>> FETCH_HEAD
 	EXCEPTION_PROLOG_1(PACA_EXSLB, KVMTEST_PR, 0x380)
 	std	r3,PACA_EXSLB+EX_R3(r13)
 	mfspr	r3,SPRN_DAR
@@ -541,6 +548,10 @@ TRAMP_REAL_BEGIN(tramp_data_access_slb)
 	mtctr	r10
 	bctr
 #endif
+<<<<<<< HEAD
+=======
+EXC_REAL_END(data_access_slb, 0x380, 0x400)
+>>>>>>> FETCH_HEAD
 
 EXC_VIRT_BEGIN(data_access_slb, 0x4380, 0x4400)
 	SET_SCRATCH0(r13)
@@ -567,7 +578,11 @@ EXC_VIRT_END(data_access_slb, 0x4380, 0x4400)
 TRAMP_KVM_SKIP(PACA_EXSLB, 0x380)
 
 
+<<<<<<< HEAD
 EXC_REAL_OOL(instruction_access, 0x400, 0x480)
+=======
+EXC_REAL(instruction_access, 0x400, 0x480)
+>>>>>>> FETCH_HEAD
 EXC_VIRT(instruction_access, 0x4400, 0x4480, 0x400)
 TRAMP_KVM(PACA_EXGEN, 0x400)
 
@@ -590,10 +605,13 @@ ALT_MMU_FTR_SECTION_END_IFCLR(MMU_FTR_TYPE_RADIX)
 EXC_REAL_BEGIN(instruction_access_slb, 0x480, 0x500)
 	SET_SCRATCH0(r13)
 	EXCEPTION_PROLOG_0(PACA_EXSLB)
+<<<<<<< HEAD
 	b tramp_instruction_access_slb
 EXC_REAL_END(instruction_access_slb, 0x480, 0x500)
 
 TRAMP_REAL_BEGIN(tramp_instruction_access_slb)
+=======
+>>>>>>> FETCH_HEAD
 	EXCEPTION_PROLOG_1(PACA_EXSLB, KVMTEST_PR, 0x480)
 	std	r3,PACA_EXSLB+EX_R3(r13)
 	mfspr	r3,SPRN_SRR0		/* SRR0 is faulting address */
@@ -607,6 +625,10 @@ TRAMP_REAL_BEGIN(tramp_instruction_access_slb)
 	mtctr	r10
 	bctr
 #endif
+<<<<<<< HEAD
+=======
+EXC_REAL_END(instruction_access_slb, 0x480, 0x500)
+>>>>>>> FETCH_HEAD
 
 EXC_VIRT_BEGIN(instruction_access_slb, 0x4480, 0x4500)
 	SET_SCRATCH0(r13)
@@ -857,13 +879,22 @@ END_FTR_SECTION_IFSET(CPU_FTR_TM)
 
 
 EXC_REAL_OOL_MASKABLE(decrementer, 0x900, 0x980)
+<<<<<<< HEAD
 EXC_VIRT_OOL_MASKABLE(decrementer, 0x4900, 0x4980, 0x900)
+=======
+EXC_VIRT_MASKABLE(decrementer, 0x4900, 0x4980, 0x900)
+>>>>>>> FETCH_HEAD
 TRAMP_KVM(PACA_EXGEN, 0x900)
 EXC_COMMON_ASYNC(decrementer_common, 0x900, timer_interrupt)
 
 
+<<<<<<< HEAD
 EXC_REAL_OOL_HV(hdecrementer, 0x980, 0xa00)
 EXC_VIRT_OOL_HV(hdecrementer, 0x4980, 0x4a00, 0x980)
+=======
+EXC_REAL_HV(hdecrementer, 0x980, 0xa00)
+EXC_VIRT_HV(hdecrementer, 0x4980, 0x4a00, 0x980)
+>>>>>>> FETCH_HEAD
 TRAMP_KVM_HV(PACA_EXGEN, 0x980)
 EXC_COMMON(hdecrementer_common, 0x980, hdec_interrupt)
 
@@ -1377,6 +1408,7 @@ TRAMP_REAL_BEGIN(stf_barrier_fallback)
 	.endr
 	blr
 
+<<<<<<< HEAD
 /* Clobbers r10, r11, ctr */
 .macro L1D_DISPLACEMENT_FLUSH
 	ld	r10,PACA_RFI_FLUSH_FALLBACK_AREA(r13)
@@ -1419,6 +1451,8 @@ _GLOBAL(do_uaccess_flush)
 _ASM_NOKPROBE_SYMBOL(do_uaccess_flush)
 EXPORT_SYMBOL(do_uaccess_flush)
 
+=======
+>>>>>>> FETCH_HEAD
 /*
  * Real mode exceptions actually use this too, but alternate
  * instruction code patches (which end up in the common .text area)
@@ -1674,7 +1708,36 @@ rfi_flush_fallback:
 	std	r10,PACA_EXRFI+EX_R10(r13)
 	std	r11,PACA_EXRFI+EX_R11(r13)
 	mfctr	r9
+<<<<<<< HEAD
 	L1D_DISPLACEMENT_FLUSH
+=======
+	ld	r10,PACA_RFI_FLUSH_FALLBACK_AREA(r13)
+	ld	r11,PACA_L1D_FLUSH_SIZE(r13)
+	srdi	r11,r11,(7 + 3) /* 128 byte lines, unrolled 8x */
+	mtctr	r11
+	DCBT_STOP_ALL_STREAM_IDS(r11) /* Stop prefetch streams */
+
+	/* order ld/st prior to dcbt stop all streams with flushing */
+	sync
+
+	/*
+	 * The load adresses are at staggered offsets within cachelines,
+	 * which suits some pipelines better (on others it should not
+	 * hurt).
+	 */
+1:
+	ld	r11,(0x80 + 8)*0(r10)
+	ld	r11,(0x80 + 8)*1(r10)
+	ld	r11,(0x80 + 8)*2(r10)
+	ld	r11,(0x80 + 8)*3(r10)
+	ld	r11,(0x80 + 8)*4(r10)
+	ld	r11,(0x80 + 8)*5(r10)
+	ld	r11,(0x80 + 8)*6(r10)
+	ld	r11,(0x80 + 8)*7(r10)
+	addi	r10,r10,0x80*8
+	bdnz	1b
+
+>>>>>>> FETCH_HEAD
 	mtctr	r9
 	ld	r9,PACA_EXRFI+EX_R9(r13)
 	ld	r10,PACA_EXRFI+EX_R10(r13)
@@ -1690,7 +1753,36 @@ hrfi_flush_fallback:
 	std	r10,PACA_EXRFI+EX_R10(r13)
 	std	r11,PACA_EXRFI+EX_R11(r13)
 	mfctr	r9
+<<<<<<< HEAD
 	L1D_DISPLACEMENT_FLUSH
+=======
+	ld	r10,PACA_RFI_FLUSH_FALLBACK_AREA(r13)
+	ld	r11,PACA_L1D_FLUSH_SIZE(r13)
+	srdi	r11,r11,(7 + 3) /* 128 byte lines, unrolled 8x */
+	mtctr	r11
+	DCBT_STOP_ALL_STREAM_IDS(r11) /* Stop prefetch streams */
+
+	/* order ld/st prior to dcbt stop all streams with flushing */
+	sync
+
+	/*
+	 * The load adresses are at staggered offsets within cachelines,
+	 * which suits some pipelines better (on others it should not
+	 * hurt).
+	 */
+1:
+	ld	r11,(0x80 + 8)*0(r10)
+	ld	r11,(0x80 + 8)*1(r10)
+	ld	r11,(0x80 + 8)*2(r10)
+	ld	r11,(0x80 + 8)*3(r10)
+	ld	r11,(0x80 + 8)*4(r10)
+	ld	r11,(0x80 + 8)*5(r10)
+	ld	r11,(0x80 + 8)*6(r10)
+	ld	r11,(0x80 + 8)*7(r10)
+	addi	r10,r10,0x80*8
+	bdnz	1b
+
+>>>>>>> FETCH_HEAD
 	mtctr	r9
 	ld	r9,PACA_EXRFI+EX_R9(r13)
 	ld	r10,PACA_EXRFI+EX_R10(r13)
@@ -1698,6 +1790,7 @@ hrfi_flush_fallback:
 	GET_SCRATCH0(r13);
 	hrfid
 
+<<<<<<< HEAD
 	.globl entry_flush_fallback
 entry_flush_fallback:
 	std	r9,PACA_EXRFI+EX_R9(r13)
@@ -1712,6 +1805,8 @@ entry_flush_fallback:
 	blr
 
 
+=======
+>>>>>>> FETCH_HEAD
 /*
  * Called from arch_local_irq_enable when an interrupt needs
  * to be resent. r3 contains 0x500, 0x900, 0xa00 or 0xe80 to indicate

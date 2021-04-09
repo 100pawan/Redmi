@@ -91,6 +91,7 @@ int set_foreign_p2m_mapping(struct gnttab_map_grant_ref *map_ops,
 	int i;
 
 	for (i = 0; i < count; i++) {
+<<<<<<< HEAD
 		struct gnttab_unmap_grant_ref unmap;
 		int rc;
 
@@ -124,6 +125,12 @@ int set_foreign_p2m_mapping(struct gnttab_map_grant_ref *map_ops,
 		if (rc || unmap.status != GNTST_okay)
 			pr_err_once("gnttab unmap failed: rc=%d st=%d\n",
 				    rc, unmap.status);
+=======
+		if (map_ops[i].status)
+			continue;
+		set_phys_to_machine(map_ops[i].host_addr >> XEN_PAGE_SHIFT,
+				    map_ops[i].dev_bus_addr >> XEN_PAGE_SHIFT);
+>>>>>>> FETCH_HEAD
 	}
 
 	return 0;

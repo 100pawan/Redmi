@@ -220,7 +220,10 @@ static const struct iio_chan_spec ads1115_channels[] = {
 	IIO_CHAN_SOFT_TIMESTAMP(ADS1015_TIMESTAMP),
 };
 
+<<<<<<< HEAD
 #ifdef CONFIG_PM
+=======
+>>>>>>> FETCH_HEAD
 static int ads1015_set_power_state(struct ads1015_data *data, bool on)
 {
 	int ret;
@@ -238,6 +241,7 @@ static int ads1015_set_power_state(struct ads1015_data *data, bool on)
 	return ret < 0 ? ret : 0;
 }
 
+<<<<<<< HEAD
 #else /* !CONFIG_PM */
 
 static int ads1015_set_power_state(struct ads1015_data *data, bool on)
@@ -247,6 +251,8 @@ static int ads1015_set_power_state(struct ads1015_data *data, bool on)
 
 #endif /* !CONFIG_PM */
 
+=======
+>>>>>>> FETCH_HEAD
 static
 int ads1015_get_adc_result(struct ads1015_data *data, int chan, int *val)
 {

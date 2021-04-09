@@ -232,6 +232,7 @@ void do_stf_barrier_fixups(enum stf_barrier_type types)
 	do_stf_exit_barrier_fixups(types);
 }
 
+<<<<<<< HEAD
 void do_uaccess_flush_fixups(enum l1d_flush_type types)
 {
 	unsigned int instrs[4], *dest;
@@ -336,6 +337,8 @@ void do_entry_flush_fixups(enum l1d_flush_type types)
 						: "unknown");
 }
 
+=======
+>>>>>>> FETCH_HEAD
 void do_rfi_flush_fixups(enum l1d_flush_type types)
 {
 	unsigned int instrs[3], *dest;

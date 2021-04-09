@@ -168,6 +168,12 @@ static int rxe_init_ports(struct rxe_dev *rxe)
 
 	rxe_init_port_param(port);
 
+<<<<<<< HEAD
+=======
+	if (!port->attr.pkey_tbl_len || !port->attr.gid_tbl_len)
+		return -EINVAL;
+
+>>>>>>> FETCH_HEAD
 	port->pkey_tbl = kcalloc(port->attr.pkey_tbl_len,
 			sizeof(*port->pkey_tbl), GFP_KERNEL);
 
@@ -175,7 +181,11 @@ static int rxe_init_ports(struct rxe_dev *rxe)
 		return -ENOMEM;
 
 	port->pkey_tbl[0] = 0xffff;
+<<<<<<< HEAD
 	port->port_guid = rxe_port_guid(rxe);
+=======
+	port->port_guid = rxe->ifc_ops->port_guid(rxe);
+>>>>>>> FETCH_HEAD
 
 	spin_lock_init(&port->port_lock);
 

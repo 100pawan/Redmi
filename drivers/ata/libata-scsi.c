@@ -2314,7 +2314,10 @@ static unsigned int ata_scsiop_inq_89(struct ata_scsi_args *args, u8 *rbuf)
 
 static unsigned int ata_scsiop_inq_b0(struct ata_scsi_args *args, u8 *rbuf)
 {
+<<<<<<< HEAD
 	struct ata_device *dev = args->dev;
+=======
+>>>>>>> FETCH_HEAD
 	u16 min_io_sectors;
 
 	rbuf[1] = 0xb0;
@@ -2340,12 +2343,16 @@ static unsigned int ata_scsiop_inq_b0(struct ata_scsi_args *args, u8 *rbuf)
 	 * with the unmap bit set.
 	 */
 	if (ata_id_has_trim(args->id)) {
+<<<<<<< HEAD
 		u64 max_blocks = 65535 * ATA_MAX_TRIM_RNUM;
 
 		if (dev->horkage & ATA_HORKAGE_MAX_TRIM_128M)
 			max_blocks = 128 << (20 - SECTOR_SHIFT);
 
 		put_unaligned_be64(max_blocks, &rbuf[36]);
+=======
+		put_unaligned_be64(65535 * ATA_MAX_TRIM_RNUM, &rbuf[36]);
+>>>>>>> FETCH_HEAD
 		put_unaligned_be32(1, &rbuf[28]);
 	}
 
@@ -3973,13 +3980,20 @@ static unsigned int ata_scsi_mode_select_xlat(struct ata_queued_cmd *qc)
 {
 	struct scsi_cmnd *scmd = qc->scsicmd;
 	const u8 *cdb = scmd->cmnd;
+<<<<<<< HEAD
+=======
+	const u8 *p;
+>>>>>>> FETCH_HEAD
 	u8 pg, spg;
 	unsigned six_byte, pg_len, hdr_len, bd_len;
 	int len;
 	u16 fp = (u16)-1;
 	u8 bp = 0xff;
+<<<<<<< HEAD
 	u8 buffer[64];
 	const u8 *p = buffer;
+=======
+>>>>>>> FETCH_HEAD
 
 	VPRINTK("ENTER\n");
 
@@ -4013,14 +4027,22 @@ static unsigned int ata_scsi_mode_select_xlat(struct ata_queued_cmd *qc)
 	if (!scsi_sg_count(scmd) || scsi_sglist(scmd)->length < len)
 		goto invalid_param_len;
 
+<<<<<<< HEAD
+=======
+	p = page_address(sg_page(scsi_sglist(scmd)));
+
+>>>>>>> FETCH_HEAD
 	/* Move past header and block descriptors.  */
 	if (len < hdr_len)
 		goto invalid_param_len;
 
+<<<<<<< HEAD
 	if (!sg_copy_to_buffer(scsi_sglist(scmd), scsi_sg_count(scmd),
 			       buffer, sizeof(buffer)))
 		goto invalid_param_len;
 
+=======
+>>>>>>> FETCH_HEAD
 	if (six_byte)
 		bd_len = p[3];
 	else

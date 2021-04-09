@@ -42,7 +42,11 @@
 #if BITS_PER_LONG == 32
 /* limit to lowmem on 32-bit systems */
 #define NUM_CACHEPAGES \
+<<<<<<< HEAD
 	min(totalram_pages(), 1UL << (30 - PAGE_SHIFT) * 3 / 4)
+=======
+	min(totalram_pages, 1UL << (30 - PAGE_SHIFT) * 3 / 4)
+>>>>>>> FETCH_HEAD
 #else
 #define NUM_CACHEPAGES totalram_pages
 #endif

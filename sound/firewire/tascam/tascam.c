@@ -225,6 +225,7 @@ static void snd_tscm_remove(struct fw_unit *unit)
 }
 
 static const struct ieee1394_device_id snd_tscm_id_table[] = {
+<<<<<<< HEAD
 	// Tascam, FW-1884.
 	{
 		.match_flags = IEEE1394_MATCH_VENDOR_ID |
@@ -258,6 +259,13 @@ static const struct ieee1394_device_id snd_tscm_id_table[] = {
 		.vendor_id = 0x00022e,
 		.specifier_id = 0x00022e,
 		.version = 0x800004,
+=======
+	{
+		.match_flags = IEEE1394_MATCH_VENDOR_ID |
+			       IEEE1394_MATCH_SPECIFIER_ID,
+		.vendor_id = 0x00022e,
+		.specifier_id = 0x00022e,
+>>>>>>> FETCH_HEAD
 	},
 	/* FE-08 requires reverse-engineering because it just has faders. */
 	{}

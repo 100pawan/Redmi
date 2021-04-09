@@ -1234,7 +1234,10 @@ static void unlock_all_bitmaps(struct mddev *mddev)
 			}
 		}
 		kfree(cinfo->other_bitmap_lockres);
+<<<<<<< HEAD
 		cinfo->other_bitmap_lockres = NULL;
+=======
+>>>>>>> FETCH_HEAD
 	}
 }
 

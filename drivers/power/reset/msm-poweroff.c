@@ -69,6 +69,7 @@ static int download_mode = 1;
 static const int download_mode;
 #endif
 
+<<<<<<< HEAD
 static int in_panic;
 
 static int panic_prep_restart(struct notifier_block *this,
@@ -82,6 +83,8 @@ static struct notifier_block panic_blk = {
 	.notifier_call	= panic_prep_restart,
 };
 
+=======
+>>>>>>> FETCH_HEAD
 #ifdef CONFIG_QCOM_DLOAD_MODE
 #define EDL_MODE_PROP "qcom,msm-imem-emergency_download_mode"
 #define DL_MODE_PROP "qcom,msm-imem-download_mode"
@@ -89,6 +92,10 @@ static struct notifier_block panic_blk = {
 #define KASLR_OFFSET_PROP "qcom,msm-imem-kaslr_offset"
 #endif
 
+<<<<<<< HEAD
+=======
+static int in_panic;
+>>>>>>> FETCH_HEAD
 static int dload_type = SCM_DLOAD_FULLDUMP;
 static void *dload_mode_addr;
 static bool dload_mode_enabled;
@@ -118,6 +125,20 @@ struct reset_attribute {
 module_param_call(download_mode, dload_set, param_get_int,
 			&download_mode, 0644);
 
+<<<<<<< HEAD
+=======
+static int panic_prep_restart(struct notifier_block *this,
+			      unsigned long event, void *ptr)
+{
+	in_panic = 1;
+	return NOTIFY_DONE;
+}
+
+static struct notifier_block panic_blk = {
+	.notifier_call	= panic_prep_restart,
+};
+
+>>>>>>> FETCH_HEAD
 static int scm_set_dload_mode(int arg1, int arg2)
 {
 	struct scm_desc desc = {
@@ -219,6 +240,14 @@ static void set_dload_mode(int on)
 	return;
 }
 
+<<<<<<< HEAD
+=======
+static void enable_emergency_dload_mode(void)
+{
+	pr_err("dload mode is not enabled on target\n");
+}
+
+>>>>>>> FETCH_HEAD
 static bool get_dload_mode(void)
 {
 	return false;
@@ -576,12 +605,19 @@ static int msm_restart_probe(struct platform_device *pdev)
 	struct device_node *np;
 	int ret = 0;
 
+<<<<<<< HEAD
 	atomic_notifier_chain_register(&panic_notifier_list, &panic_blk);
 
+=======
+>>>>>>> FETCH_HEAD
 #ifdef CONFIG_QCOM_DLOAD_MODE
 	if (scm_is_call_available(SCM_SVC_BOOT, SCM_DLOAD_CMD) > 0)
 		scm_dload_supported = true;
 
+<<<<<<< HEAD
+=======
+	atomic_notifier_chain_register(&panic_notifier_list, &panic_blk);
+>>>>>>> FETCH_HEAD
 	np = of_find_compatible_node(NULL, NULL, DL_MODE_PROP);
 	if (!np) {
 		pr_err("unable to find DT imem DLOAD mode node\n");

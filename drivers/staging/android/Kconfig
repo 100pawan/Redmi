@@ -24,6 +24,7 @@ config ANDROID_LOW_MEMORY_KILLER
 	  scripts (/init.rc), and it defines priority values with minimum free memory size
 	  for each priority.
 
+<<<<<<< HEAD
 config ANDROID_LOW_MEMORY_KILLER_TNG
 	bool "Android Low Memory Killer TNG"
 	depends on ANDROID_LOW_MEMORY_KILLER
@@ -48,6 +49,8 @@ config ANDROID_LOW_MEMORY_KILLER_STATS
 	  will be different depending on lmk implementation used
 	  in TNG lowmemorykiller.
 
+=======
+>>>>>>> FETCH_HEAD
 config ANDROID_LOW_MEMORY_KILLER_AUTODETECT_OOM_ADJ_VALUES
 	bool "Android Low Memory Killer: detect oom_adj values"
 	depends on ANDROID_LOW_MEMORY_KILLER

@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 /* Copyright (c) 2008-2018, The Linux Foundation. All rights reserved.
+=======
+/* Copyright (c) 2008-2018,2020, The Linux Foundation. All rights reserved.
+>>>>>>> FETCH_HEAD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -277,8 +281,13 @@ enum adreno_preempt_states {
 /**
  * struct adreno_preemption
  * @state: The current state of preemption
+<<<<<<< HEAD
  * @counters: Memory descriptor for the memory where the GPU writes the
  * preemption counters on switch
+=======
+ * @scratch: Memory descriptor for the memory where the GPU writes the
+ * current ctxt record address and preemption counters on switch
+>>>>>>> FETCH_HEAD
  * @timer: A timer to make sure preemption doesn't stall
  * @work: A work struct for the preemption worker (for 5XX)
  * @token_submit: Indicates if a preempt token has been submitted in
@@ -290,7 +299,11 @@ enum adreno_preempt_states {
  */
 struct adreno_preemption {
 	atomic_t state;
+<<<<<<< HEAD
 	struct kgsl_memdesc counters;
+=======
+	struct kgsl_memdesc scratch;
+>>>>>>> FETCH_HEAD
 	struct timer_list timer;
 	struct work_struct work;
 	bool token_submit;
@@ -1088,6 +1101,11 @@ extern unsigned int *adreno_ft_regs;
 extern unsigned int adreno_ft_regs_num;
 extern unsigned int *adreno_ft_regs_val;
 
+<<<<<<< HEAD
+=======
+extern struct adreno_gpudev adreno_a3xx_gpudev;
+extern struct adreno_gpudev adreno_a4xx_gpudev;
+>>>>>>> FETCH_HEAD
 extern struct adreno_gpudev adreno_a5xx_gpudev;
 extern struct adreno_gpudev adreno_a6xx_gpudev;
 
@@ -1176,6 +1194,10 @@ void adreno_cx_misc_regrmw(struct adreno_device *adreno_dev,
 		unsigned int offsetwords,
 		unsigned int mask, unsigned int bits);
 
+<<<<<<< HEAD
+=======
+u32 adreno_get_ucode_version(const u32 *data);
+>>>>>>> FETCH_HEAD
 
 #define ADRENO_TARGET(_name, _id) \
 static inline int adreno_is_##_name(struct adreno_device *adreno_dev) \

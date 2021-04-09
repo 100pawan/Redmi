@@ -1901,6 +1901,12 @@ static int stmmac_release(struct net_device *dev)
 {
 	struct stmmac_priv *priv = netdev_priv(dev);
 
+<<<<<<< HEAD
+=======
+	if (priv->eee_enabled)
+		del_timer_sync(&priv->eee_ctrl_timer);
+
+>>>>>>> FETCH_HEAD
 	/* Stop and disconnect the PHY */
 	if (priv->phydev) {
 		phy_stop(priv->phydev);
@@ -1921,11 +1927,14 @@ static int stmmac_release(struct net_device *dev)
 	if (priv->lpi_irq > 0)
 		free_irq(priv->lpi_irq, dev);
 
+<<<<<<< HEAD
 	if (priv->eee_enabled) {
 		priv->tx_path_in_lpi_mode = false;
 		del_timer_sync(&priv->eee_ctrl_timer);
 	}
 
+=======
+>>>>>>> FETCH_HEAD
 	/* Stop TX/RX DMA and clear the descriptors */
 	priv->hw->dma->stop_tx(priv->ioaddr);
 	priv->hw->dma->stop_rx(priv->ioaddr);
@@ -3505,11 +3514,14 @@ int stmmac_suspend(struct device *dev)
 
 	napi_disable(&priv->napi);
 
+<<<<<<< HEAD
 	if (priv->eee_enabled) {
 		priv->tx_path_in_lpi_mode = false;
 		del_timer_sync(&priv->eee_ctrl_timer);
 	}
 
+=======
+>>>>>>> FETCH_HEAD
 	/* Stop TX/RX DMA */
 	priv->hw->dma->stop_tx(priv->ioaddr);
 	priv->hw->dma->stop_rx(priv->ioaddr);

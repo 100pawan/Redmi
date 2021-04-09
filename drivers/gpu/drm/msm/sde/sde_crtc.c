@@ -83,10 +83,14 @@ static struct sde_crtc_custom_events custom_events[] = {
  * Time period for fps calculation in micro seconds.
  * Default value is set to 1 sec.
  */
+<<<<<<< HEAD
 #define DEFAULT_FPS_PERIOD_1_SEC	1000000
 #define MAX_FPS_PERIOD_5_SECONDS	5000000
 #define MAX_FRAME_COUNT			1000
 #define MILI_TO_MICRO			1000
+=======
+#define CRTC_TIME_PERIOD_CALC_FPS_US	1000000
+>>>>>>> FETCH_HEAD
 
 static inline struct sde_kms *_sde_crtc_get_kms(struct drm_crtc *crtc)
 {
@@ -153,11 +157,16 @@ static void sde_crtc_calc_fps(struct sde_crtc *sde_crtc)
 			sde_crtc->fps_info.last_sampled_time_us);
 	sde_crtc->fps_info.frame_count++;
 
+<<<<<<< HEAD
 	if (diff_us >= DEFAULT_FPS_PERIOD_1_SEC) {
 
 		 /* Multiplying with 10 to get fps in floating point */
 		fps = ((u64)sde_crtc->fps_info.frame_count)
 						* DEFAULT_FPS_PERIOD_1_SEC * 10;
+=======
+	if (diff_us >= CRTC_TIME_PERIOD_CALC_FPS_US) {
+		fps = ((u64)sde_crtc->fps_info.frame_count) * 10000000;
+>>>>>>> FETCH_HEAD
 		do_div(fps, diff_us);
 		sde_crtc->fps_info.measured_fps = (unsigned int)fps;
 		SDE_DEBUG(" FPS for crtc%d is %d.%d\n",
@@ -166,6 +175,7 @@ static void sde_crtc_calc_fps(struct sde_crtc *sde_crtc)
 		sde_crtc->fps_info.last_sampled_time_us = current_time_us;
 		sde_crtc->fps_info.frame_count = 0;
 	}
+<<<<<<< HEAD
 
 	if (!sde_crtc->fps_info.time_buf)
 		return;
@@ -180,6 +190,8 @@ static void sde_crtc_calc_fps(struct sde_crtc *sde_crtc)
 	sde_crtc->fps_info.time_buf[sde_crtc->fps_info.next_time_index++] =
 								ktime_get();
 	sde_crtc->fps_info.next_time_index %= MAX_FRAME_COUNT;
+=======
+>>>>>>> FETCH_HEAD
 }
 
 /**
@@ -676,11 +688,16 @@ static int _sde_debugfs_fps_status_show(struct seq_file *s, void *data)
 	diff_us = (u64)ktime_us_delta(current_time_us,
 			sde_crtc->fps_info.last_sampled_time_us);
 
+<<<<<<< HEAD
 	if (diff_us >= DEFAULT_FPS_PERIOD_1_SEC) {
 
 		 /* Multiplying with 10 to get fps in floating point */
 		fps = ((u64)sde_crtc->fps_info.frame_count)
 						* DEFAULT_FPS_PERIOD_1_SEC * 10;
+=======
+	if (diff_us >= CRTC_TIME_PERIOD_CALC_FPS_US) {
+		fps = ((u64)sde_crtc->fps_info.frame_count) * 10000000;
+>>>>>>> FETCH_HEAD
 		do_div(fps, diff_us);
 		sde_crtc->fps_info.measured_fps = (unsigned int)fps;
 		sde_crtc->fps_info.last_sampled_time_us = current_time_us;
@@ -705,6 +722,7 @@ static int _sde_debugfs_fps_status(struct inode *inode, struct file *file)
 			inode->i_private);
 }
 
+<<<<<<< HEAD
 static ssize_t set_fps_periodicity(struct device *device,
 		struct device_attribute *attr, const char *buf, size_t count)
 {
@@ -853,6 +871,8 @@ static ssize_t measured_fps_show(struct device *device,
 			sde_crtc->fps_info.fps_periodic_duration, frame_count);
 }
 
+=======
+>>>>>>> FETCH_HEAD
 static ssize_t vsync_event_show(struct device *device,
 	struct device_attribute *attr, char *buf)
 {
@@ -871,6 +891,7 @@ static ssize_t vsync_event_show(struct device *device,
 }
 
 static DEVICE_ATTR_RO(vsync_event);
+<<<<<<< HEAD
 static DEVICE_ATTR(measured_fps, 0444, measured_fps_show, NULL);
 static DEVICE_ATTR(fps_periodicity_ms, 0644, fps_periodicity_show,
 							set_fps_periodicity);
@@ -878,6 +899,10 @@ static struct attribute *sde_crtc_dev_attrs[] = {
 	&dev_attr_vsync_event.attr,
 	&dev_attr_measured_fps.attr,
 	&dev_attr_fps_periodicity_ms.attr,
+=======
+static struct attribute *sde_crtc_dev_attrs[] = {
+	&dev_attr_vsync_event.attr,
+>>>>>>> FETCH_HEAD
 	NULL
 };
 
@@ -6318,6 +6343,7 @@ struct drm_crtc *sde_crtc_init(struct drm_device *dev, struct drm_plane *plane)
 
 	sde_crtc->enabled = false;
 
+<<<<<<< HEAD
 	/* Below parameters are for fps calculation for sysfs node */
 	sde_crtc->fps_info.fps_periodic_duration = DEFAULT_FPS_PERIOD_1_SEC;
 	sde_crtc->fps_info.time_buf = kmalloc_array(MAX_FRAME_COUNT,
@@ -6329,6 +6355,8 @@ struct drm_crtc *sde_crtc_init(struct drm_device *dev, struct drm_plane *plane)
 		memset(sde_crtc->fps_info.time_buf, 0,
 			sizeof(*(sde_crtc->fps_info.time_buf)));
 
+=======
+>>>>>>> FETCH_HEAD
 	INIT_LIST_HEAD(&sde_crtc->frame_event_list);
 	INIT_LIST_HEAD(&sde_crtc->user_event_list);
 	for (i = 0; i < ARRAY_SIZE(sde_crtc->frame_events); i++) {

@@ -1606,7 +1606,11 @@ static int pxa2xx_spi_probe(struct platform_device *pdev)
 		return -ENODEV;
 	}
 
+<<<<<<< HEAD
 	master = devm_spi_alloc_master(dev, sizeof(*drv_data));
+=======
+	master = spi_alloc_master(dev, sizeof(struct driver_data));
+>>>>>>> FETCH_HEAD
 	if (!master) {
 		dev_err(&pdev->dev, "cannot alloc spi_master\n");
 		pxa_ssp_free(ssp);
@@ -1774,7 +1778,11 @@ static int pxa2xx_spi_probe(struct platform_device *pdev)
 
 	/* Register with the SPI framework */
 	platform_set_drvdata(pdev, drv_data);
+<<<<<<< HEAD
 	status = spi_register_master(master);
+=======
+	status = devm_spi_register_master(&pdev->dev, master);
+>>>>>>> FETCH_HEAD
 	if (status != 0) {
 		dev_err(&pdev->dev, "problem registering spi master\n");
 		goto out_error_clock_enabled;
@@ -1788,6 +1796,10 @@ out_error_clock_enabled:
 	free_irq(ssp->irq, drv_data);
 
 out_error_master_alloc:
+<<<<<<< HEAD
+=======
+	spi_master_put(master);
+>>>>>>> FETCH_HEAD
 	pxa_ssp_free(ssp);
 	return status;
 }
@@ -1803,8 +1815,11 @@ static int pxa2xx_spi_remove(struct platform_device *pdev)
 
 	pm_runtime_get_sync(&pdev->dev);
 
+<<<<<<< HEAD
 	spi_unregister_master(drv_data->master);
 
+=======
+>>>>>>> FETCH_HEAD
 	/* Disable the SSP at the peripheral and SOC level */
 	pxa2xx_spi_write(drv_data, SSCR0, 0);
 	clk_disable_unprepare(ssp->clk);

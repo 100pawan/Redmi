@@ -44,7 +44,11 @@ SCHED_FEAT(WAKEUP_PREEMPTION, true)
 
 SCHED_FEAT(HRTICK, false)
 SCHED_FEAT(DOUBLE_TICK, false)
+<<<<<<< HEAD
 SCHED_FEAT(LB_BIAS, false)
+=======
+SCHED_FEAT(LB_BIAS, true)
+>>>>>>> FETCH_HEAD
 
 /*
  * Decrement CPU capacity based on time not spent running tasks

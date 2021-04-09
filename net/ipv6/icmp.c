@@ -299,9 +299,16 @@ static int icmpv6_getfrag(void *from, char *to, int offset, int len, int odd, st
 }
 
 #if IS_ENABLED(CONFIG_IPV6_MIP6)
+<<<<<<< HEAD
 static void mip6_addr_swap(struct sk_buff *skb, const struct inet6_skb_parm *opt)
 {
 	struct ipv6hdr *iph = ipv6_hdr(skb);
+=======
+static void mip6_addr_swap(struct sk_buff *skb)
+{
+	struct ipv6hdr *iph = ipv6_hdr(skb);
+	struct inet6_skb_parm *opt = IP6CB(skb);
+>>>>>>> FETCH_HEAD
 	struct ipv6_destopt_hao *hao;
 	struct in6_addr tmp;
 	int off;
@@ -318,7 +325,11 @@ static void mip6_addr_swap(struct sk_buff *skb, const struct inet6_skb_parm *opt
 	}
 }
 #else
+<<<<<<< HEAD
 static inline void mip6_addr_swap(struct sk_buff *skb, const struct inet6_skb_parm *opt) {}
+=======
+static inline void mip6_addr_swap(struct sk_buff *skb) {}
+>>>>>>> FETCH_HEAD
 #endif
 
 static struct dst_entry *icmpv6_route_lookup(struct net *net,
@@ -388,9 +399,14 @@ relookup_failed:
 /*
  *	Send an ICMP message in response to a packet in error
  */
+<<<<<<< HEAD
 void icmp6_send(struct sk_buff *skb, u8 type, u8 code, __u32 info,
 		const struct in6_addr *force_saddr,
 		const struct inet6_skb_parm *parm)
+=======
+static void icmp6_send(struct sk_buff *skb, u8 type, u8 code, __u32 info,
+		       const struct in6_addr *force_saddr)
+>>>>>>> FETCH_HEAD
 {
 	struct net *net = dev_net(skb->dev);
 	struct inet6_dev *idev = NULL;
@@ -474,7 +490,11 @@ void icmp6_send(struct sk_buff *skb, u8 type, u8 code, __u32 info,
 		return;
 	}
 
+<<<<<<< HEAD
 	mip6_addr_swap(skb, parm);
+=======
+	mip6_addr_swap(skb);
+>>>>>>> FETCH_HEAD
 
 	memset(&fl6, 0, sizeof(fl6));
 	fl6.flowi6_proto = IPPROTO_ICMPV6;
@@ -558,10 +578,16 @@ out:
  */
 void icmpv6_param_prob(struct sk_buff *skb, u8 code, int pos)
 {
+<<<<<<< HEAD
 	icmp6_send(skb, ICMPV6_PARAMPROB, code, pos, NULL, IP6CB(skb));
 	kfree_skb(skb);
 }
 EXPORT_SYMBOL(icmp6_send);
+=======
+	icmp6_send(skb, ICMPV6_PARAMPROB, code, pos, NULL);
+	kfree_skb(skb);
+}
+>>>>>>> FETCH_HEAD
 
 /* Generate icmpv6 with type/code ICMPV6_DEST_UNREACH/ICMPV6_ADDR_UNREACH
  * if sufficient data bytes are available
@@ -615,10 +641,17 @@ int ip6_err_gen_icmpv6_unreach(struct sk_buff *skb, int nhs, int type,
 	}
 	if (type == ICMP_TIME_EXCEEDED)
 		icmp6_send(skb2, ICMPV6_TIME_EXCEED, ICMPV6_EXC_HOPLIMIT,
+<<<<<<< HEAD
 			   info, &temp_saddr, IP6CB(skb2));
 	else
 		icmp6_send(skb2, ICMPV6_DEST_UNREACH, ICMPV6_ADDR_UNREACH,
 			   info, &temp_saddr, IP6CB(skb2));
+=======
+			   info, &temp_saddr);
+	else
+		icmp6_send(skb2, ICMPV6_DEST_UNREACH, ICMPV6_ADDR_UNREACH,
+			   info, &temp_saddr);
+>>>>>>> FETCH_HEAD
 	if (rt)
 		ip6_rt_put(rt);
 

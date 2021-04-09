@@ -942,8 +942,12 @@ nf_conntrack_tuple_taken(const struct nf_conntrack_tuple *tuple,
 			 * Let nf_ct_resolve_clash() deal with this later.
 			 */
 			if (nf_ct_tuple_equal(&ignored_conntrack->tuplehash[IP_CT_DIR_ORIGINAL].tuple,
+<<<<<<< HEAD
 					      &ct->tuplehash[IP_CT_DIR_ORIGINAL].tuple) &&
 					      nf_ct_zone_equal(ct, zone, IP_CT_DIR_ORIGINAL))
+=======
+					      &ct->tuplehash[IP_CT_DIR_ORIGINAL].tuple))
+>>>>>>> FETCH_HEAD
 				continue;
 
 			NF_CT_STAT_INC_ATOMIC(net, found);
@@ -1999,11 +2003,19 @@ int nf_conntrack_init_start(void)
 		 * >= 4GB machines have 65536 buckets.
 		 */
 		nf_conntrack_htable_size
+<<<<<<< HEAD
 			= (((totalram_pages() << PAGE_SHIFT) / 16384)
 			   / sizeof(struct hlist_head));
 		if (totalram_pages() > (4 * (1024 * 1024 * 1024 / PAGE_SIZE)))
 			nf_conntrack_htable_size = 65536;
 		else if (totalram_pages() > (1024 * 1024 * 1024 / PAGE_SIZE))
+=======
+			= (((totalram_pages << PAGE_SHIFT) / 16384)
+			   / sizeof(struct hlist_head));
+		if (totalram_pages > (4 * (1024 * 1024 * 1024 / PAGE_SIZE)))
+			nf_conntrack_htable_size = 65536;
+		else if (totalram_pages > (1024 * 1024 * 1024 / PAGE_SIZE))
+>>>>>>> FETCH_HEAD
 			nf_conntrack_htable_size = 16384;
 		if (nf_conntrack_htable_size < 32)
 			nf_conntrack_htable_size = 32;

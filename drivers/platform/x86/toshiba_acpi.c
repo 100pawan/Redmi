@@ -1497,7 +1497,11 @@ static ssize_t video_proc_write(struct file *file, const char __user *buf,
 	struct toshiba_acpi_dev *dev = PDE_DATA(file_inode(file));
 	char *buffer;
 	char *cmd;
+<<<<<<< HEAD
 	int lcd_out = -1, crt_out = -1, tv_out = -1;
+=======
+	int lcd_out, crt_out, tv_out;
+>>>>>>> FETCH_HEAD
 	int remain = count;
 	int value;
 	int ret;
@@ -1534,6 +1538,10 @@ static ssize_t video_proc_write(struct file *file, const char __user *buf,
 
 	kfree(cmd);
 
+<<<<<<< HEAD
+=======
+	lcd_out = crt_out = tv_out = -1;
+>>>>>>> FETCH_HEAD
 	ret = get_video_status(dev, &video_out);
 	if (!ret) {
 		unsigned int new_video_out = video_out;

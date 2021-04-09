@@ -242,6 +242,7 @@ void zd_mac_clear(struct zd_mac *mac)
 static int set_rx_filter(struct zd_mac *mac)
 {
 	unsigned long flags;
+<<<<<<< HEAD
 	struct zd_ioreq32 ioreqs[] = {
 		{CR_RX_FILTER, STA_RX_FILTER},
 		{ CR_SNIFFER_ON, 0U },
@@ -255,6 +256,16 @@ static int set_rx_filter(struct zd_mac *mac)
 	spin_unlock_irqrestore(&mac->lock, flags);
 
 	return zd_iowrite32a(&mac->chip, ioreqs, ARRAY_SIZE(ioreqs));
+=======
+	u32 filter = STA_RX_FILTER;
+
+	spin_lock_irqsave(&mac->lock, flags);
+	if (mac->pass_ctrl)
+		filter |= RX_FILTER_CTRL;
+	spin_unlock_irqrestore(&mac->lock, flags);
+
+	return zd_iowrite32(&mac->chip, CR_RX_FILTER, filter);
+>>>>>>> FETCH_HEAD
 }
 
 static int set_mac_and_bssid(struct zd_mac *mac)
@@ -1062,8 +1073,12 @@ int zd_mac_rx(struct ieee80211_hw *hw, const u8 *buffer, unsigned int length)
 	/* Caller has to ensure that length >= sizeof(struct rx_status). */
 	status = (struct rx_status *)
 		(buffer + (length - sizeof(struct rx_status)));
+<<<<<<< HEAD
 	if ((status->frame_status & ZD_RX_ERROR) || 
 		(status->frame_status & ~0x21)) {
+=======
+	if (status->frame_status & ZD_RX_ERROR) {
+>>>>>>> FETCH_HEAD
 		if (mac->pass_failed_fcs &&
 				(status->frame_status & ZD_RX_CRC32_ERROR)) {
 			stats.flag |= RX_FLAG_FAILED_FCS_CRC;
@@ -1406,7 +1421,11 @@ struct ieee80211_hw *zd_mac_alloc_hw(struct usb_interface *intf)
 	ieee80211_hw_set(hw, MFP_CAPABLE);
 	ieee80211_hw_set(hw, HOST_BROADCAST_PS_BUFFERING);
 	ieee80211_hw_set(hw, RX_INCLUDES_FCS);
+<<<<<<< HEAD
 	ieee80211_hw_set(hw, SIGNAL_DBM);
+=======
+	ieee80211_hw_set(hw, SIGNAL_UNSPEC);
+>>>>>>> FETCH_HEAD
 
 	hw->wiphy->interface_modes =
 		BIT(NL80211_IFTYPE_MESH_POINT) |

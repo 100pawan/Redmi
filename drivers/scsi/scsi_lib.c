@@ -1033,10 +1033,17 @@ int scsi_init_io(struct scsi_cmnd *cmd)
 	struct scsi_device *sdev = cmd->device;
 	struct request *rq = cmd->request;
 	bool is_mq = (rq->mq_ctx != NULL);
+<<<<<<< HEAD
 	int error = BLKPREP_KILL;
 
 	if (WARN_ON_ONCE(!rq->nr_phys_segments))
 		goto err_exit;
+=======
+	int error;
+
+	if (WARN_ON_ONCE(!rq->nr_phys_segments))
+		return -EINVAL;
+>>>>>>> FETCH_HEAD
 
 	error = scsi_init_sgtable(rq, &cmd->sdb);
 	if (error)

@@ -54,17 +54,24 @@ static long long squashfs_inode_lookup(struct super_block *sb, int ino_num)
 	struct squashfs_sb_info *msblk = sb->s_fs_info;
 	int blk = SQUASHFS_LOOKUP_BLOCK(ino_num - 1);
 	int offset = SQUASHFS_LOOKUP_BLOCK_OFFSET(ino_num - 1);
+<<<<<<< HEAD
 	u64 start;
+=======
+	u64 start = le64_to_cpu(msblk->inode_lookup_table[blk]);
+>>>>>>> FETCH_HEAD
 	__le64 ino;
 	int err;
 
 	TRACE("Entered squashfs_inode_lookup, inode_number = %d\n", ino_num);
 
+<<<<<<< HEAD
 	if (ino_num == 0 || (ino_num - 1) >= msblk->inodes)
 		return -EINVAL;
 
 	start = le64_to_cpu(msblk->inode_lookup_table[blk]);
 
+=======
+>>>>>>> FETCH_HEAD
 	err = squashfs_read_metadata(sb, &ino, &start, &offset, sizeof(ino));
 	if (err < 0)
 		return err;
@@ -129,10 +136,14 @@ __le64 *squashfs_read_inode_lookup_table(struct super_block *sb,
 		u64 lookup_table_start, u64 next_table, unsigned int inodes)
 {
 	unsigned int length = SQUASHFS_LOOKUP_BLOCK_BYTES(inodes);
+<<<<<<< HEAD
 	unsigned int indexes = SQUASHFS_LOOKUP_BLOCKS(inodes);
 	int n;
 	__le64 *table;
 	u64 start, end;
+=======
+	__le64 *table;
+>>>>>>> FETCH_HEAD
 
 	TRACE("In read_inode_lookup_table, length %d\n", length);
 
@@ -142,6 +153,7 @@ __le64 *squashfs_read_inode_lookup_table(struct super_block *sb,
 	if (inodes == 0)
 		return ERR_PTR(-EINVAL);
 
+<<<<<<< HEAD
 	/*
 	 * The computed size of the lookup table (length bytes) should exactly
 	 * match the table start and end points
@@ -177,6 +189,22 @@ __le64 *squashfs_read_inode_lookup_table(struct super_block *sb,
 	if (start >= lookup_table_start ||
 	    (lookup_table_start - start) >
 	    (SQUASHFS_METADATA_SIZE + SQUASHFS_BLOCK_OFFSET)) {
+=======
+	/* length bytes should not extend into the next table - this check
+	 * also traps instances where lookup_table_start is incorrectly larger
+	 * than the next table start
+	 */
+	if (lookup_table_start + length > next_table)
+		return ERR_PTR(-EINVAL);
+
+	table = squashfs_read_table(sb, lookup_table_start, length);
+
+	/*
+	 * table[0] points to the first inode lookup table metadata block,
+	 * this should be less than lookup_table_start
+	 */
+	if (!IS_ERR(table) && le64_to_cpu(table[0]) >= lookup_table_start) {
+>>>>>>> FETCH_HEAD
 		kfree(table);
 		return ERR_PTR(-EINVAL);
 	}

@@ -337,7 +337,10 @@ static inline int find_next_bit_le(const void *p, int size, int offset)
 
 #endif
 
+<<<<<<< HEAD
 #include <asm-generic/bitops/find.h>
+=======
+>>>>>>> FETCH_HEAD
 #include <asm-generic/bitops/le.h>
 
 /*

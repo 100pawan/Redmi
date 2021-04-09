@@ -15,7 +15,11 @@
 #include <linux/clk.h>
 #include <linux/delay.h>
 #include <linux/io.h>
+<<<<<<< HEAD
 #include <linux/ktime.h>
+=======
+#include <linux/jiffies.h>
+>>>>>>> FETCH_HEAD
 #include <linux/module.h>
 #include <linux/platform_device.h>
 
@@ -48,12 +52,20 @@ struct mxc_w1_device {
 static u8 mxc_w1_ds2_reset_bus(void *data)
 {
 	struct mxc_w1_device *dev = data;
+<<<<<<< HEAD
 	ktime_t timeout;
+=======
+	unsigned long timeout;
+>>>>>>> FETCH_HEAD
 
 	writeb(MXC_W1_CONTROL_RPP, dev->regs + MXC_W1_CONTROL);
 
 	/* Wait for reset sequence 511+512us, use 1500us for sure */
+<<<<<<< HEAD
 	timeout = ktime_add_us(ktime_get(), 1500);
+=======
+	timeout = jiffies + usecs_to_jiffies(1500);
+>>>>>>> FETCH_HEAD
 
 	udelay(511 + 512);
 
@@ -63,7 +75,11 @@ static u8 mxc_w1_ds2_reset_bus(void *data)
 		/* PST bit is valid after the RPP bit is self-cleared */
 		if (!(ctrl & MXC_W1_CONTROL_RPP))
 			return !(ctrl & MXC_W1_CONTROL_PST);
+<<<<<<< HEAD
 	} while (ktime_before(ktime_get(), timeout));
+=======
+	} while (time_is_after_jiffies(timeout));
+>>>>>>> FETCH_HEAD
 
 	return 1;
 }
@@ -76,12 +92,20 @@ static u8 mxc_w1_ds2_reset_bus(void *data)
 static u8 mxc_w1_ds2_touch_bit(void *data, u8 bit)
 {
 	struct mxc_w1_device *dev = data;
+<<<<<<< HEAD
 	ktime_t timeout;
+=======
+	unsigned long timeout;
+>>>>>>> FETCH_HEAD
 
 	writeb(MXC_W1_CONTROL_WR(bit), dev->regs + MXC_W1_CONTROL);
 
 	/* Wait for read/write bit (60us, Max 120us), use 200us for sure */
+<<<<<<< HEAD
 	timeout = ktime_add_us(ktime_get(), 200);
+=======
+	timeout = jiffies + usecs_to_jiffies(200);
+>>>>>>> FETCH_HEAD
 
 	udelay(60);
 
@@ -91,7 +115,11 @@ static u8 mxc_w1_ds2_touch_bit(void *data, u8 bit)
 		/* RDST bit is valid after the WR1/RD bit is self-cleared */
 		if (!(ctrl & MXC_W1_CONTROL_WR(bit)))
 			return !!(ctrl & MXC_W1_CONTROL_RDST);
+<<<<<<< HEAD
 	} while (ktime_before(ktime_get(), timeout));
+=======
+	} while (time_is_after_jiffies(timeout));
+>>>>>>> FETCH_HEAD
 
 	return 0;
 }

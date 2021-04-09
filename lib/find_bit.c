@@ -21,6 +21,7 @@
 #include <linux/export.h>
 #include <linux/kernel.h>
 
+<<<<<<< HEAD
 #if !defined(find_next_bit) || !defined(find_next_zero_bit) || \
 		!defined(find_next_and_bit)
 
@@ -34,16 +35,31 @@
 static inline unsigned long _find_next_bit(const unsigned long *addr1,
 		const unsigned long *addr2, unsigned long nbits,
 		unsigned long start, unsigned long invert)
+=======
+#if !defined(find_next_bit) || !defined(find_next_zero_bit)
+
+/*
+ * This is a common helper function for find_next_bit and
+ * find_next_zero_bit.  The difference is the "invert" argument, which
+ * is XORed with each fetched word before searching it for one bits.
+ */
+static unsigned long _find_next_bit(const unsigned long *addr,
+		unsigned long nbits, unsigned long start, unsigned long invert)
+>>>>>>> FETCH_HEAD
 {
 	unsigned long tmp;
 
 	if (!nbits || start >= nbits)
 		return nbits;
 
+<<<<<<< HEAD
 	tmp = addr1[start / BITS_PER_LONG];
 	if (addr2)
 		tmp &= addr2[start / BITS_PER_LONG];
 	tmp ^= invert;
+=======
+	tmp = addr[start / BITS_PER_LONG] ^ invert;
+>>>>>>> FETCH_HEAD
 
 	/* Handle 1st word. */
 	tmp &= BITMAP_FIRST_WORD_MASK(start);
@@ -54,10 +70,14 @@ static inline unsigned long _find_next_bit(const unsigned long *addr1,
 		if (start >= nbits)
 			return nbits;
 
+<<<<<<< HEAD
 		tmp = addr1[start / BITS_PER_LONG];
 		if (addr2)
 			tmp &= addr2[start / BITS_PER_LONG];
 		tmp ^= invert;
+=======
+		tmp = addr[start / BITS_PER_LONG] ^ invert;
+>>>>>>> FETCH_HEAD
 	}
 
 	return min(start + __ffs(tmp), nbits);
@@ -71,7 +91,11 @@ static inline unsigned long _find_next_bit(const unsigned long *addr1,
 unsigned long find_next_bit(const unsigned long *addr, unsigned long size,
 			    unsigned long offset)
 {
+<<<<<<< HEAD
 	return _find_next_bit(addr, NULL, size, offset, 0UL);
+=======
+	return _find_next_bit(addr, size, offset, 0UL);
+>>>>>>> FETCH_HEAD
 }
 EXPORT_SYMBOL(find_next_bit);
 #endif
@@ -80,11 +104,16 @@ EXPORT_SYMBOL(find_next_bit);
 unsigned long find_next_zero_bit(const unsigned long *addr, unsigned long size,
 				 unsigned long offset)
 {
+<<<<<<< HEAD
 	return _find_next_bit(addr, NULL, size, offset, ~0UL);
+=======
+	return _find_next_bit(addr, size, offset, ~0UL);
+>>>>>>> FETCH_HEAD
 }
 EXPORT_SYMBOL(find_next_zero_bit);
 #endif
 
+<<<<<<< HEAD
 #if !defined(find_next_and_bit)
 unsigned long find_next_and_bit(const unsigned long *addr1,
 		const unsigned long *addr2, unsigned long size,
@@ -95,6 +124,8 @@ unsigned long find_next_and_bit(const unsigned long *addr1,
 EXPORT_SYMBOL(find_next_and_bit);
 #endif
 
+=======
+>>>>>>> FETCH_HEAD
 #ifndef find_first_bit
 /*
  * Find the first set bit in a memory region.
@@ -166,19 +197,28 @@ static inline unsigned long ext2_swab(const unsigned long y)
 }
 
 #if !defined(find_next_bit_le) || !defined(find_next_zero_bit_le)
+<<<<<<< HEAD
 static inline unsigned long _find_next_bit_le(const unsigned long *addr1,
 		const unsigned long *addr2, unsigned long nbits,
 		unsigned long start, unsigned long invert)
+=======
+static unsigned long _find_next_bit_le(const unsigned long *addr,
+		unsigned long nbits, unsigned long start, unsigned long invert)
+>>>>>>> FETCH_HEAD
 {
 	unsigned long tmp;
 
 	if (!nbits || start >= nbits)
 		return nbits;
 
+<<<<<<< HEAD
 	tmp = addr1[start / BITS_PER_LONG];
 	if (addr2)
 		tmp &= addr2[start / BITS_PER_LONG];
 	tmp ^= invert;
+=======
+	tmp = addr[start / BITS_PER_LONG] ^ invert;
+>>>>>>> FETCH_HEAD
 
 	/* Handle 1st word. */
 	tmp &= ext2_swab(BITMAP_FIRST_WORD_MASK(start));
@@ -189,10 +229,14 @@ static inline unsigned long _find_next_bit_le(const unsigned long *addr1,
 		if (start >= nbits)
 			return nbits;
 
+<<<<<<< HEAD
 		tmp = addr1[start / BITS_PER_LONG];
 		if (addr2)
 			tmp &= addr2[start / BITS_PER_LONG];
 		tmp ^= invert;
+=======
+		tmp = addr[start / BITS_PER_LONG] ^ invert;
+>>>>>>> FETCH_HEAD
 	}
 
 	return min(start + __ffs(ext2_swab(tmp)), nbits);
@@ -203,7 +247,11 @@ static inline unsigned long _find_next_bit_le(const unsigned long *addr1,
 unsigned long find_next_zero_bit_le(const void *addr, unsigned
 		long size, unsigned long offset)
 {
+<<<<<<< HEAD
 	return _find_next_bit_le(addr, NULL, size, offset, ~0UL);
+=======
+	return _find_next_bit_le(addr, size, offset, ~0UL);
+>>>>>>> FETCH_HEAD
 }
 EXPORT_SYMBOL(find_next_zero_bit_le);
 #endif
@@ -212,7 +260,11 @@ EXPORT_SYMBOL(find_next_zero_bit_le);
 unsigned long find_next_bit_le(const void *addr, unsigned
 		long size, unsigned long offset)
 {
+<<<<<<< HEAD
 	return _find_next_bit_le(addr, NULL, size, offset, 0UL);
+=======
+	return _find_next_bit_le(addr, size, offset, 0UL);
+>>>>>>> FETCH_HEAD
 }
 EXPORT_SYMBOL(find_next_bit_le);
 #endif

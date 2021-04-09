@@ -2,10 +2,14 @@
 
 #include <linux/font.h>
 
+<<<<<<< HEAD
 #define FONTDATAMAX 2048
 
 static const struct font_data acorndata_8x8 = {
 { 0, 0, FONTDATAMAX, 0 }, {
+=======
+static const unsigned char acorndata_8x8[] = {
+>>>>>>> FETCH_HEAD
 /* 00 */  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* ^@ */
 /* 01 */  0x7e, 0x81, 0xa5, 0x81, 0xbd, 0x99, 0x81, 0x7e, /* ^A */
 /* 02 */  0x7e, 0xff, 0xbd, 0xff, 0xc3, 0xe7, 0xff, 0x7e, /* ^B */
@@ -262,14 +266,22 @@ static const struct font_data acorndata_8x8 = {
 /* FD */  0x38, 0x04, 0x18, 0x20, 0x3c, 0x00, 0x00, 0x00,
 /* FE */  0x00, 0x00, 0x3c, 0x3c, 0x3c, 0x3c, 0x00, 0x00,
 /* FF */  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
+<<<<<<< HEAD
 } };
+=======
+};
+>>>>>>> FETCH_HEAD
 
 const struct font_desc font_acorn_8x8 = {
 	.idx	= ACORN8x8_IDX,
 	.name	= "Acorn8x8",
 	.width	= 8,
 	.height	= 8,
+<<<<<<< HEAD
 	.data	= acorndata_8x8.data,
+=======
+	.data	= acorndata_8x8,
+>>>>>>> FETCH_HEAD
 #ifdef CONFIG_ARCH_ACORN
 	.pref	= 20,
 #else

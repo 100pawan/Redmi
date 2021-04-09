@@ -342,6 +342,7 @@ static int ti_abb_set_voltage_sel(struct regulator_dev *rdev, unsigned sel)
 		return ret;
 	}
 
+<<<<<<< HEAD
 	info = &abb->info[sel];
 	/*
 	 * When Linux kernel is starting up, we are'nt sure of the
@@ -353,6 +354,10 @@ static int ti_abb_set_voltage_sel(struct regulator_dev *rdev, unsigned sel)
 		goto just_set_abb;
 
 	/* If data is exactly the same, then just update index, no change */
+=======
+	/* If data is exactly the same, then just update index, no change */
+	info = &abb->info[sel];
+>>>>>>> FETCH_HEAD
 	oinfo = &abb->info[abb->current_info_idx];
 	if (!memcmp(info, oinfo, sizeof(*info))) {
 		dev_dbg(dev, "%s: Same data new idx=%d, old idx=%d\n", __func__,
@@ -360,7 +365,10 @@ static int ti_abb_set_voltage_sel(struct regulator_dev *rdev, unsigned sel)
 		goto out;
 	}
 
+<<<<<<< HEAD
 just_set_abb:
+=======
+>>>>>>> FETCH_HEAD
 	ret = ti_abb_set_opp(rdev, abb, info);
 
 out:

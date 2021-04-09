@@ -11,7 +11,11 @@
  */
 
 struct trace_seq {
+<<<<<<< HEAD
 	char			buffer[PAGE_SIZE];
+=======
+	unsigned char		buffer[PAGE_SIZE];
+>>>>>>> FETCH_HEAD
 	struct seq_buf		seq;
 	int			full;
 };
@@ -50,7 +54,11 @@ static inline int trace_seq_used(struct trace_seq *s)
  * that is about to be written to and then return the result
  * of that write.
  */
+<<<<<<< HEAD
 static inline char *
+=======
+static inline unsigned char *
+>>>>>>> FETCH_HEAD
 trace_seq_buffer_ptr(struct trace_seq *s)
 {
 	return s->buffer + seq_buf_used(&s->seq);

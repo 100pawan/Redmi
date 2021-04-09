@@ -114,7 +114,11 @@ static int mlx4_buddy_init(struct mlx4_buddy *buddy, int max_order)
 		goto err_out;
 
 	for (i = 0; i <= buddy->max_order; ++i) {
+<<<<<<< HEAD
 		s = BITS_TO_LONGS(1UL << (buddy->max_order - i));
+=======
+		s = BITS_TO_LONGS(1 << (buddy->max_order - i));
+>>>>>>> FETCH_HEAD
 		buddy->bits[i] = kcalloc(s, sizeof (long), GFP_KERNEL | __GFP_NOWARN);
 		if (!buddy->bits[i]) {
 			buddy->bits[i] = vzalloc(s * sizeof(long));

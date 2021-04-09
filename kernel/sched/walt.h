@@ -46,6 +46,10 @@ extern struct mutex cluster_lock;
 extern rwlock_t related_thread_group_lock;
 extern __read_mostly unsigned int sched_ravg_hist_size;
 extern __read_mostly unsigned int sched_freq_aggregate;
+<<<<<<< HEAD
+=======
+extern __read_mostly int sched_freq_aggregate_threshold;
+>>>>>>> FETCH_HEAD
 extern __read_mostly unsigned int sched_window_stats_policy;
 extern __read_mostly unsigned int sched_group_upmigrate;
 extern __read_mostly unsigned int sched_group_downmigrate;
@@ -93,17 +97,29 @@ walt_adjust_nr_big_tasks(struct rq *rq, int delta, bool inc)
 
 static inline void
 fixup_cumulative_runnable_avg(struct walt_sched_stats *stats,
+<<<<<<< HEAD
 			      s64 demand_scaled_delta,
 			      s64 pred_demand_scaled_delta)
+=======
+			      s64 task_load_delta, s64 pred_demand_delta)
+>>>>>>> FETCH_HEAD
 {
 	if (sched_disable_window_stats)
 		return;
 
+<<<<<<< HEAD
 	stats->cumulative_runnable_avg_scaled += demand_scaled_delta;
 	BUG_ON((s64)stats->cumulative_runnable_avg_scaled < 0);
 
 	stats->pred_demands_sum_scaled += pred_demand_scaled_delta;
 	BUG_ON((s64)stats->pred_demands_sum_scaled < 0);
+=======
+	stats->cumulative_runnable_avg += task_load_delta;
+	BUG_ON((s64)stats->cumulative_runnable_avg < 0);
+
+	stats->pred_demands_sum += pred_demand_delta;
+	BUG_ON((s64)stats->pred_demands_sum < 0);
+>>>>>>> FETCH_HEAD
 }
 
 static inline void
@@ -112,8 +128,13 @@ walt_inc_cumulative_runnable_avg(struct rq *rq, struct task_struct *p)
 	if (sched_disable_window_stats)
 		return;
 
+<<<<<<< HEAD
 	fixup_cumulative_runnable_avg(&rq->walt_stats, p->ravg.demand_scaled,
 				      p->ravg.pred_demand_scaled);
+=======
+	fixup_cumulative_runnable_avg(&rq->walt_stats, p->ravg.demand,
+				      p->ravg.pred_demand);
+>>>>>>> FETCH_HEAD
 
 	/*
 	 * Add a task's contribution to the cumulative window demand when
@@ -123,7 +144,11 @@ walt_inc_cumulative_runnable_avg(struct rq *rq, struct task_struct *p)
 	 * (2) task is waking for the first time in this window.
 	 */
 	if (p->on_rq || (p->last_sleep_ts < rq->window_start))
+<<<<<<< HEAD
 		walt_fixup_cum_window_demand(rq, p->ravg.demand_scaled);
+=======
+		walt_fixup_cum_window_demand(rq, p->ravg.demand);
+>>>>>>> FETCH_HEAD
 }
 
 static inline void
@@ -132,9 +157,14 @@ walt_dec_cumulative_runnable_avg(struct rq *rq, struct task_struct *p)
 	if (sched_disable_window_stats)
 		return;
 
+<<<<<<< HEAD
 	fixup_cumulative_runnable_avg(&rq->walt_stats,
 				      -(s64)p->ravg.demand_scaled,
 				      -(s64)p->ravg.pred_demand_scaled);
+=======
+	fixup_cumulative_runnable_avg(&rq->walt_stats, -(s64)p->ravg.demand,
+				      -(s64)p->ravg.pred_demand);
+>>>>>>> FETCH_HEAD
 
 	/*
 	 * on_rq will be 1 for sleeping tasks. So check if the task
@@ -142,12 +172,21 @@ walt_dec_cumulative_runnable_avg(struct rq *rq, struct task_struct *p)
 	 * prio/cgroup/class.
 	 */
 	if (task_on_rq_migrating(p) || p->state == TASK_RUNNING)
+<<<<<<< HEAD
 		walt_fixup_cum_window_demand(rq, -(s64)p->ravg.demand_scaled);
 }
 
 extern void fixup_walt_sched_stats_common(struct rq *rq, struct task_struct *p,
 					  u16 updated_demand_scaled,
 					  u16 updated_pred_demand_scaled);
+=======
+		walt_fixup_cum_window_demand(rq, -(s64)p->ravg.demand);
+}
+
+extern void fixup_walt_sched_stats_common(struct rq *rq, struct task_struct *p,
+					  u32 new_task_load,
+					  u32 new_pred_demand);
+>>>>>>> FETCH_HEAD
 extern void inc_rq_walt_stats(struct rq *rq, struct task_struct *p);
 extern void dec_rq_walt_stats(struct rq *rq, struct task_struct *p);
 extern void fixup_busy_time(struct task_struct *p, int new_cpu);
@@ -288,7 +327,11 @@ static inline int same_cluster(int src_cpu, int dst_cpu)
 
 void walt_irq_work(struct irq_work *irq_work);
 
+<<<<<<< HEAD
 void walt_sched_init_rq(struct rq *rq);
+=======
+void walt_sched_init(struct rq *rq);
+>>>>>>> FETCH_HEAD
 
 extern int __read_mostly min_power_cpu;
 static inline int walt_start_cpu(int prev_cpu)
@@ -304,6 +347,7 @@ extern void walt_rotate_work_init(void);
 extern void walt_rotation_checkpoint(int nr_big);
 extern unsigned int walt_rotation_enabled;
 
+<<<<<<< HEAD
 extern __read_mostly bool sched_freq_aggr_en;
 static inline void walt_enable_frequency_aggregation(bool enable)
 {
@@ -313,6 +357,11 @@ static inline void walt_enable_frequency_aggregation(bool enable)
 #else /* CONFIG_SCHED_WALT */
 
 static inline void walt_sched_init_rq(struct rq *rq) { }
+=======
+#else /* CONFIG_SCHED_WALT */
+
+static inline void walt_sched_init(struct rq *rq) { }
+>>>>>>> FETCH_HEAD
 static inline void walt_rotate_work_init(void) { }
 static inline void walt_rotation_checkpoint(int nr_big) { }
 static inline void walt_update_last_enqueue(struct task_struct *p) { }
@@ -383,8 +432,12 @@ dec_rq_walt_stats(struct rq *rq, struct task_struct *p) { }
 
 static inline void
 fixup_walt_sched_stats_common(struct rq *rq, struct task_struct *p,
+<<<<<<< HEAD
 			      u16 updated_demand_scaled,
 			      u16 updated_pred_demand_scaled)
+=======
+			      u32 new_task_load, u32 new_pred_demand)
+>>>>>>> FETCH_HEAD
 {
 }
 

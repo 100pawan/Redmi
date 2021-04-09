@@ -1234,10 +1234,13 @@ static int reiserfs_parse_options(struct super_block *s,
 						 "turned on.");
 				return 0;
 			}
+<<<<<<< HEAD
 			if (qf_names[qtype] !=
 			    REISERFS_SB(s)->s_qf_names[qtype])
 				kfree(qf_names[qtype]);
 			qf_names[qtype] = NULL;
+=======
+>>>>>>> FETCH_HEAD
 			if (*arg) {	/* Some filename specified? */
 				if (REISERFS_SB(s)->s_qf_names[qtype]
 				    && strcmp(REISERFS_SB(s)->s_qf_names[qtype],
@@ -1267,6 +1270,13 @@ static int reiserfs_parse_options(struct super_block *s,
 				else
 					*mount_options |= 1 << REISERFS_GRPQUOTA;
 			} else {
+<<<<<<< HEAD
+=======
+				if (qf_names[qtype] !=
+				    REISERFS_SB(s)->s_qf_names[qtype])
+					kfree(qf_names[qtype]);
+				qf_names[qtype] = NULL;
+>>>>>>> FETCH_HEAD
 				if (qtype == USRQUOTA)
 					*mount_options &= ~(1 << REISERFS_USRQUOTA);
 				else

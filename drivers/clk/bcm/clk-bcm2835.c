@@ -1177,10 +1177,15 @@ static struct clk_hw *bcm2835_register_pll(struct bcm2835_cprman *cprman,
 	pll->hw.init = &init;
 
 	ret = devm_clk_hw_register(cprman->dev, &pll->hw);
+<<<<<<< HEAD
 	if (ret) {
 		kfree(pll);
 		return NULL;
 	}
+=======
+	if (ret)
+		return NULL;
+>>>>>>> FETCH_HEAD
 	return &pll->hw;
 }
 
@@ -1297,6 +1302,7 @@ static struct clk_hw *bcm2835_register_clock(struct bcm2835_cprman *cprman,
 	return &clock->hw;
 }
 
+<<<<<<< HEAD
 static struct clk_hw *bcm2835_register_gate(struct bcm2835_cprman *cprman,
 					 const struct bcm2835_gate_data *data)
 {
@@ -1304,6 +1310,15 @@ static struct clk_hw *bcm2835_register_gate(struct bcm2835_cprman *cprman,
 				    CLK_IGNORE_UNUSED | CLK_SET_RATE_GATE,
 				    cprman->regs + data->ctl_reg,
 				    CM_GATE_BIT, 0, &cprman->regs_lock);
+=======
+static struct clk *bcm2835_register_gate(struct bcm2835_cprman *cprman,
+					 const struct bcm2835_gate_data *data)
+{
+	return clk_register_gate(cprman->dev, data->name, data->parent,
+				 CLK_IGNORE_UNUSED | CLK_SET_RATE_GATE,
+				 cprman->regs + data->ctl_reg,
+				 CM_GATE_BIT, 0, &cprman->regs_lock);
+>>>>>>> FETCH_HEAD
 }
 
 typedef struct clk_hw *(*bcm2835_clk_register)(struct bcm2835_cprman *cprman,

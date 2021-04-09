@@ -45,6 +45,10 @@
 #include <linux/cleancache.h>
 
 #include "ext4.h"
+<<<<<<< HEAD
+=======
+#include <trace/events/android_fs.h>
+>>>>>>> FETCH_HEAD
 
 static inline bool ext4_bio_encrypted(struct bio *bio)
 {
@@ -55,6 +59,20 @@ static inline bool ext4_bio_encrypted(struct bio *bio)
 #endif
 }
 
+<<<<<<< HEAD
+=======
+static void
+ext4_trace_read_completion(struct bio *bio)
+{
+	struct page *first_page = bio->bi_io_vec[0].bv_page;
+
+	if (first_page != NULL)
+		trace_android_fs_dataread_end(first_page->mapping->host,
+					      page_offset(first_page),
+					      bio->bi_iter.bi_size);
+}
+
+>>>>>>> FETCH_HEAD
 /*
  * I/O completion handler for multipage BIOs.
  *
@@ -72,6 +90,12 @@ static void mpage_end_io(struct bio *bio)
 	struct bio_vec *bv;
 	int i;
 
+<<<<<<< HEAD
+=======
+	if (trace_android_fs_dataread_start_enabled())
+		ext4_trace_read_completion(bio);
+
+>>>>>>> FETCH_HEAD
 	if (ext4_bio_encrypted(bio)) {
 		if (bio->bi_error) {
 			fscrypt_release_ctx(bio->bi_private);
@@ -95,6 +119,33 @@ static void mpage_end_io(struct bio *bio)
 	bio_put(bio);
 }
 
+<<<<<<< HEAD
+=======
+static void
+ext4_submit_bio_read(struct bio *bio)
+{
+	if (trace_android_fs_dataread_start_enabled()) {
+		struct page *first_page = bio->bi_io_vec[0].bv_page;
+
+		if (first_page != NULL) {
+			char *path, pathbuf[MAX_TRACE_PATHBUF_LEN];
+
+			path = android_fstrace_get_pathname(pathbuf,
+						    MAX_TRACE_PATHBUF_LEN,
+						    first_page->mapping->host);
+			trace_android_fs_dataread_start(
+				first_page->mapping->host,
+				page_offset(first_page),
+				bio->bi_iter.bi_size,
+				current->pid,
+				path,
+				current->comm);
+		}
+	}
+	submit_bio(bio);
+}
+
+>>>>>>> FETCH_HEAD
 int ext4_mpage_readpages(struct address_space *mapping,
 			 struct list_head *pages, struct page *page,
 			 unsigned nr_pages)
@@ -235,7 +286,11 @@ int ext4_mpage_readpages(struct address_space *mapping,
 		 */
 		if (bio && (last_block_in_bio != blocks[0] - 1)) {
 		submit_and_realloc:
+<<<<<<< HEAD
 			submit_bio(bio);
+=======
+			ext4_submit_bio_read(bio);
+>>>>>>> FETCH_HEAD
 			bio = NULL;
 		}
 		if (bio == NULL) {
@@ -268,14 +323,22 @@ int ext4_mpage_readpages(struct address_space *mapping,
 		if (((map.m_flags & EXT4_MAP_BOUNDARY) &&
 		     (relative_block == map.m_len)) ||
 		    (first_hole != blocks_per_page)) {
+<<<<<<< HEAD
 			submit_bio(bio);
+=======
+			ext4_submit_bio_read(bio);
+>>>>>>> FETCH_HEAD
 			bio = NULL;
 		} else
 			last_block_in_bio = blocks[blocks_per_page - 1];
 		goto next_page;
 	confused:
 		if (bio) {
+<<<<<<< HEAD
 			submit_bio(bio);
+=======
+			ext4_submit_bio_read(bio);
+>>>>>>> FETCH_HEAD
 			bio = NULL;
 		}
 		if (!PageUptodate(page))
@@ -288,6 +351,10 @@ int ext4_mpage_readpages(struct address_space *mapping,
 	}
 	BUG_ON(pages && !list_empty(pages));
 	if (bio)
+<<<<<<< HEAD
 		submit_bio(bio);
+=======
+		ext4_submit_bio_read(bio);
+>>>>>>> FETCH_HEAD
 	return 0;
 }

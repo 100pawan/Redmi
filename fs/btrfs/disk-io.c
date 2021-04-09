@@ -1527,6 +1527,7 @@ int btrfs_init_fs_root(struct btrfs_root *root)
 	spin_lock_init(&root->ino_cache_lock);
 	init_waitqueue_head(&root->ino_cache_wait);
 
+<<<<<<< HEAD
 	/*
 	 * Don't assign anonymous block device to roots that are not exposed to
 	 * userspace, the id pool is limited to 1M
@@ -1537,6 +1538,11 @@ int btrfs_init_fs_root(struct btrfs_root *root)
 		if (ret)
 			goto fail;
 	}
+=======
+	ret = get_anon_bdev(&root->anon_dev);
+	if (ret)
+		goto fail;
+>>>>>>> FETCH_HEAD
 
 	mutex_lock(&root->objectid_mutex);
 	ret = btrfs_find_highest_objectid(root,
@@ -4432,7 +4438,10 @@ static void btrfs_cleanup_bg_io(struct btrfs_block_group_cache *cache)
 		cache->io_ctl.inode = NULL;
 		iput(inode);
 	}
+<<<<<<< HEAD
 	ASSERT(cache->io_ctl.pages == NULL);
+=======
+>>>>>>> FETCH_HEAD
 	btrfs_put_block_group(cache);
 }
 

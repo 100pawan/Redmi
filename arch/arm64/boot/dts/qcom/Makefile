@@ -1,7 +1,10 @@
+<<<<<<< HEAD
 ifeq ($(CONFIG_YSL),y)
 dtb-$(CONFIG_ARCH_MSM8953) += ysl_msm8953.dtb
 else
 
+=======
+>>>>>>> FETCH_HEAD
 dtb-$(CONFIG_ARCH_QCOM)	+= apq8016-sbc.dtb msm8916-mtp.dtb
 dtb-$(CONFIG_ARCH_QCOM)	+= msm8996-mtp.dtb
 dtb-$(CONFIG_ARCH_QCOM)	+= apq8096-db820c.dtb
@@ -677,8 +680,15 @@ dtb-$(CONFIG_ARCH_SDM429) += sdm429-mtp.dtb \
 endif
 
 dtb-$(CONFIG_ARCH_SDM845_VM) += sdm845-vm.dtb
+<<<<<<< HEAD
 endif
 
 always		:= $(dtb-y)
 subdir-y	:= $(dts-dirs)
 clean-files	:= *.dtb *.dtbo
+=======
+
+always		:= $(dtb-y)
+subdir-y	:= $(dts-dirs)
+clean-files	:= *.dtb
+>>>>>>> FETCH_HEAD

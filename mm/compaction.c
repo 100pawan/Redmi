@@ -21,10 +21,13 @@
 #include <linux/freezer.h>
 #include <linux/page_owner.h>
 #include <linux/psi.h>
+<<<<<<< HEAD
 #include <linux/fb.h>
 #include <linux/moduleparam.h>
 #include <linux/time.h>
 #include <linux/workqueue.h>
+=======
+>>>>>>> FETCH_HEAD
 #include "internal.h"
 
 #ifdef CONFIG_COMPACTION
@@ -1776,6 +1779,7 @@ enum compact_result try_to_compact_pages(gfp_t gfp_mask, unsigned int order,
 	return rc;
 }
 
+<<<<<<< HEAD
 static struct workqueue_struct *compaction_wq;
 static struct delayed_work compaction_work;
 static bool screen_on = true;
@@ -1817,6 +1821,8 @@ static int fb_notifier_callback(struct notifier_block *self, unsigned long event
 static struct notifier_block compaction_notifier_block = {
 	.notifier_call = fb_notifier_callback,
 };
+=======
+>>>>>>> FETCH_HEAD
 
 /* Compact all zones within a node */
 static void compact_node(int nid)
@@ -1863,6 +1869,7 @@ static void compact_nodes(void)
 		compact_node(nid);
 }
 
+<<<<<<< HEAD
 static void do_compaction(struct work_struct *work)
 {
 	/* Return early if the screen is on */
@@ -1880,6 +1887,8 @@ static void do_compaction(struct work_struct *work)
 	pr_info("Scheduled memory compaction is completed\n");
 }
 
+=======
+>>>>>>> FETCH_HEAD
 /* The written value is actually unused, all memory is compacted */
 int sysctl_compact_memory;
 
@@ -2154,6 +2163,7 @@ static int __init kcompactd_init(void)
 }
 subsys_initcall(kcompactd_init)
 
+<<<<<<< HEAD
 static int  __init scheduled_compaction_init(void)
 {
 	compaction_wq = create_freezable_workqueue("compaction_wq");
@@ -2169,4 +2179,6 @@ static int  __init scheduled_compaction_init(void)
 }
 late_initcall(scheduled_compaction_init);
 
+=======
+>>>>>>> FETCH_HEAD
 #endif /* CONFIG_COMPACTION */

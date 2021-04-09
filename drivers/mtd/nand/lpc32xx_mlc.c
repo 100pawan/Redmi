@@ -805,7 +805,11 @@ static int lpc32xx_nand_probe(struct platform_device *pdev)
 	if (!res)
 		return res;
 
+<<<<<<< HEAD
 	nand_release(nand_chip);
+=======
+	nand_release(mtd);
+>>>>>>> FETCH_HEAD
 
 err_exit4:
 	free_irq(host->irq, host);
@@ -828,8 +832,14 @@ err_exit1:
 static int lpc32xx_nand_remove(struct platform_device *pdev)
 {
 	struct lpc32xx_nand_host *host = platform_get_drvdata(pdev);
+<<<<<<< HEAD
 
 	nand_release(&host->nand_chip);
+=======
+	struct mtd_info *mtd = nand_to_mtd(&host->nand_chip);
+
+	nand_release(mtd);
+>>>>>>> FETCH_HEAD
 	free_irq(host->irq, host);
 	if (use_dma)
 		dma_release_channel(host->dma_chan);

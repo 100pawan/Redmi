@@ -128,6 +128,10 @@ struct ide_io_ports {
  */
 #define PARTN_BITS	6	/* number of minor dev bits for partitions */
 #define MAX_DRIVES	2	/* per interface; 2 assumed by lots of code */
+<<<<<<< HEAD
+=======
+#define SECTOR_SIZE	512
+>>>>>>> FETCH_HEAD
 
 /*
  * Timeouts for various operations:

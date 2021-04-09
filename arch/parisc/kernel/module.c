@@ -218,7 +218,11 @@ void *module_alloc(unsigned long size)
 	 * easier than trying to map the text, data, init_text and
 	 * init_data correctly */
 	return __vmalloc_node_range(size, 1, VMALLOC_START, VMALLOC_END,
+<<<<<<< HEAD
 				    GFP_KERNEL,
+=======
+				    GFP_KERNEL | __GFP_HIGHMEM,
+>>>>>>> FETCH_HEAD
 				    PAGE_KERNEL_RWX, 0, NUMA_NO_NODE,
 				    __builtin_return_address(0));
 }

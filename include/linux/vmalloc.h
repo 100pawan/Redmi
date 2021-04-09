@@ -19,11 +19,16 @@ struct notifier_block;		/* in notifier.h */
 #define VM_UNINITIALIZED	0x00000020	/* vm_struct is not fully initialized */
 #define VM_NO_GUARD		0x00000040      /* don't add guard page */
 #define VM_KASAN		0x00000080      /* has allocated kasan shadow memory */
+<<<<<<< HEAD
 /*
  * Memory with VM_FLUSH_RESET_PERMS cannot be freed in an interrupt or with
  * vfree_atomic().
  */
 #define VM_FLUSH_RESET_PERMS	0x00000100      /* Reset direct map and flush TLB on unmap */
+=======
+#define VM_LOWMEM		0x00000100	/* Tracking of direct mapped lowmem */
+
+>>>>>>> FETCH_HEAD
 /* bits [20..32] reserved for arch specific ioremap internals */
 
 /*
@@ -48,16 +53,23 @@ struct vm_struct {
 struct vmap_area {
 	unsigned long va_start;
 	unsigned long va_end;
+<<<<<<< HEAD
 
 	/*
 	 * Largest available free size in subtree.
 	 */
 	unsigned long subtree_max_size;
+=======
+>>>>>>> FETCH_HEAD
 	unsigned long flags;
 	struct rb_node rb_node;         /* address sorted rbtree */
 	struct list_head list;          /* address sorted list */
 	struct llist_node purge_list;    /* "lazy purge" list */
 	struct vm_struct *vm;
+<<<<<<< HEAD
+=======
+	struct rcu_head rcu_head;
+>>>>>>> FETCH_HEAD
 };
 
 /*
@@ -89,6 +101,7 @@ extern void *__vmalloc_node_range(unsigned long size, unsigned long align,
 			unsigned long start, unsigned long end, gfp_t gfp_mask,
 			pgprot_t prot, unsigned long vm_flags, int node,
 			const void *caller);
+<<<<<<< HEAD
 #ifndef CONFIG_MMU
 extern void *__vmalloc_node_flags(unsigned long size, int node, gfp_t flags);
 static inline void *__vmalloc_node_flags_caller(unsigned long size, int node,
@@ -100,6 +113,8 @@ static inline void *__vmalloc_node_flags_caller(unsigned long size, int node,
 extern void *__vmalloc_node_flags_caller(unsigned long size,
 					 int node, gfp_t flags, void *caller);
 #endif
+=======
+>>>>>>> FETCH_HEAD
 
 extern void vfree(const void *addr);
 extern void vfree_atomic(const void *addr);
@@ -150,6 +165,7 @@ extern int map_kernel_range_noflush(unsigned long start, unsigned long size,
 				    pgprot_t prot, struct page **pages);
 extern void unmap_kernel_range_noflush(unsigned long addr, unsigned long size);
 extern void unmap_kernel_range(unsigned long addr, unsigned long size);
+<<<<<<< HEAD
 static inline void set_vm_flush_reset_perms(void *addr)
 {
 	struct vm_struct *vm = find_vm_area(addr);
@@ -157,6 +173,8 @@ static inline void set_vm_flush_reset_perms(void *addr)
 	if (vm)
 		vm->flags |= VM_FLUSH_RESET_PERMS;
 }
+=======
+>>>>>>> FETCH_HEAD
 #else
 static inline int
 map_kernel_range_noflush(unsigned long start, unsigned long size,
@@ -172,9 +190,12 @@ static inline void
 unmap_kernel_range(unsigned long addr, unsigned long size)
 {
 }
+<<<<<<< HEAD
 static inline void set_vm_flush_reset_perms(void *addr)
 {
 }
+=======
+>>>>>>> FETCH_HEAD
 #endif
 
 /* Allocate/destroy a 'vmalloc' VM area. */
@@ -191,6 +212,16 @@ extern long vwrite(char *buf, char *addr, unsigned long count);
 extern struct list_head vmap_area_list;
 extern __init void vm_area_add_early(struct vm_struct *vm);
 extern __init void vm_area_register_early(struct vm_struct *vm, size_t align);
+<<<<<<< HEAD
+=======
+extern __init int vm_area_check_early(struct vm_struct *vm);
+#ifdef CONFIG_ENABLE_VMALLOC_SAVING
+extern void mark_vmalloc_reserved_area(void *addr, unsigned long size);
+#else
+static inline void mark_vmalloc_reserved_area(void *addr, unsigned long size)
+{ };
+#endif
+>>>>>>> FETCH_HEAD
 
 #ifdef CONFIG_SMP
 # ifdef CONFIG_MMU
@@ -216,7 +247,16 @@ pcpu_free_vm_areas(struct vm_struct **vms, int nr_vms)
 #endif
 
 #ifdef CONFIG_MMU
+<<<<<<< HEAD
 #define VMALLOC_TOTAL (VMALLOC_END - VMALLOC_START)
+=======
+#ifdef CONFIG_ENABLE_VMALLOC_SAVING
+extern unsigned long total_vmalloc_size;
+#define VMALLOC_TOTAL total_vmalloc_size
+#else
+#define VMALLOC_TOTAL (VMALLOC_END - VMALLOC_START)
+#endif
+>>>>>>> FETCH_HEAD
 #else
 #define VMALLOC_TOTAL 0UL
 #endif

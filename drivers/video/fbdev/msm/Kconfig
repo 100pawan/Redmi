@@ -83,6 +83,7 @@ config FB_MSM_MDSS_HDMI_MHL_SII8334
 	uses USB connector to output HDMI content
 
 config FB_MSM_MDSS_SPI_PANEL
+<<<<<<< HEAD
         depends on FB_MSM_MDSS
         bool "Support SPI panel feature"
         default n
@@ -91,6 +92,15 @@ config FB_MSM_MDSS_SPI_PANEL
         MDSS frame buffer data to connected panel. Limited by SPI rate, the
         current max fps only reach to 27 fps, and limited by MDP hardware
         architecture only supply on MDP3
+=======
+	depends on SPI_QUP
+	bool "Support SPI panel feature"
+	---help---
+	The MDSS SPI Panel provides support for transmittimg SPI signals of
+	MDSS frame buffer data to connected panel. Limited by SPI clock rate,
+	the current max fps only reach to ~30 fps with 240x320 resolution, and
+	limited by MDP hardware architecture only supply GPU compostition.
+>>>>>>> FETCH_HEAD
 
 config FB_MSM_MDSS_MHL3
 	depends on FB_MSM_MDSS_HDMI_PANEL
@@ -124,6 +134,7 @@ config FB_MSM_MDSS_MDP3
 	---help---
 	The MDP3 provides support for an older version display controller.
 	Included in latest display sub-system, known as MDSS.
+<<<<<<< HEAD
 	
 config FB_MSM_MDSS_KCAL_CTRL
 	depends on FB_MSM_MDSS
@@ -131,6 +142,8 @@ config FB_MSM_MDSS_KCAL_CTRL
 	---help---
 	  Enable sysfs for post-processing control of mdss-mdp5 display
 	  controllers in MDSS.	
+=======
+>>>>>>> FETCH_HEAD
 
 config FB_MSM_MDSS_XLOG_DEBUG
 	depends on FB_MSM_MDSS

@@ -158,8 +158,12 @@ void drm_kms_helper_poll_enable_locked(struct drm_device *dev)
 	}
 
 	if (poll)
+<<<<<<< HEAD
 		queue_delayed_work(system_power_efficient_wq, 
 				   &dev->mode_config.output_poll_work, delay);
+=======
+		schedule_delayed_work(&dev->mode_config.output_poll_work, delay);
+>>>>>>> FETCH_HEAD
 }
 EXPORT_SYMBOL(drm_kms_helper_poll_enable_locked);
 
@@ -274,8 +278,13 @@ int drm_helper_probe_single_connector_modes(struct drm_connector *connector,
 		 */
 		dev->mode_config.delayed_event = true;
 		if (dev->mode_config.poll_enabled)
+<<<<<<< HEAD
 			queue_delayed_work(system_power_efficient_wq, 
 					   &dev->mode_config.output_poll_work, 0);
+=======
+			schedule_delayed_work(&dev->mode_config.output_poll_work,
+					      0);
+>>>>>>> FETCH_HEAD
 	}
 
 	/* Re-enable polling in case the global poll config changed. */
@@ -461,8 +470,12 @@ out:
 		drm_kms_helper_hotplug_event(dev);
 
 	if (repoll)
+<<<<<<< HEAD
 		queue_delayed_work(system_power_efficient_wq,
 				   delayed_work, DRM_OUTPUT_POLL_PERIOD);
+=======
+		schedule_delayed_work(delayed_work, DRM_OUTPUT_POLL_PERIOD);
+>>>>>>> FETCH_HEAD
 }
 
 /**

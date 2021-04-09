@@ -3166,9 +3166,13 @@ _base_release_memory_pools(struct MPT3SAS_ADAPTER *ioc)
 		ioc->scsi_lookup = NULL;
 	}
 	kfree(ioc->hpr_lookup);
+<<<<<<< HEAD
 	ioc->hpr_lookup = NULL;
 	kfree(ioc->internal_lookup);
 	ioc->internal_lookup = NULL;
+=======
+	kfree(ioc->internal_lookup);
+>>>>>>> FETCH_HEAD
 	if (ioc->chain_lookup) {
 		for (i = 0; i < ioc->chain_depth; i++) {
 			if (ioc->chain_lookup[i].chain_buffer)
@@ -4477,7 +4481,11 @@ _base_send_ioc_init(struct MPT3SAS_ADAPTER *ioc)
 
 	r = _base_handshake_req_reply_wait(ioc,
 	    sizeof(Mpi2IOCInitRequest_t), (u32 *)&mpi_request,
+<<<<<<< HEAD
 	    sizeof(Mpi2IOCInitReply_t), (u16 *)&mpi_reply, 30);
+=======
+	    sizeof(Mpi2IOCInitReply_t), (u16 *)&mpi_reply, 10);
+>>>>>>> FETCH_HEAD
 
 	if (r != 0) {
 		pr_err(MPT3SAS_FMT "%s: handshake failed (r=%d)\n",

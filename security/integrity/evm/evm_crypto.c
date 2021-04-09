@@ -240,7 +240,11 @@ static int evm_calc_hmac_or_hash(struct dentry *dentry,
 
 	/* Portable EVM signatures must include an IMA hash */
 	if (type == EVM_XATTR_PORTABLE_DIGSIG && !ima_present)
+<<<<<<< HEAD
 		error = -EPERM;
+=======
+		return -EPERM;
+>>>>>>> FETCH_HEAD
 out:
 	kfree(xattr_value);
 	kfree(desc);

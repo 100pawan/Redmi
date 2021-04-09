@@ -634,10 +634,15 @@ int radeon_driver_open_kms(struct drm_device *dev, struct drm_file *file_priv)
 	file_priv->driver_priv = NULL;
 
 	r = pm_runtime_get_sync(dev->dev);
+<<<<<<< HEAD
 	if (r < 0) {
 		pm_runtime_put_autosuspend(dev->dev);
 		return r;
 	}
+=======
+	if (r < 0)
+		return r;
+>>>>>>> FETCH_HEAD
 
 	/* new gpu have virtual address space support */
 	if (rdev->family >= CHIP_CAYMAN) {

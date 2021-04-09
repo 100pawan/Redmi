@@ -148,7 +148,11 @@ static int rb4xx_spi_probe(struct platform_device *pdev)
 	if (IS_ERR(spi_base))
 		return PTR_ERR(spi_base);
 
+<<<<<<< HEAD
 	master = devm_spi_alloc_master(&pdev->dev, sizeof(*rbspi));
+=======
+	master = spi_alloc_master(&pdev->dev, sizeof(*rbspi));
+>>>>>>> FETCH_HEAD
 	if (!master)
 		return -ENOMEM;
 

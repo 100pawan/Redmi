@@ -921,7 +921,11 @@ struct mwifiex_tkip_param {
 struct mwifiex_aes_param {
 	u8 pn[WPA_PN_SIZE];
 	__le16 key_len;
+<<<<<<< HEAD
 	u8 key[WLAN_KEY_LEN_CCMP_256];
+=======
+	u8 key[WLAN_KEY_LEN_CCMP];
+>>>>>>> FETCH_HEAD
 } __packed;
 
 struct mwifiex_wapi_param {

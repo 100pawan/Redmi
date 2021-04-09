@@ -227,9 +227,12 @@ config ARCH_HAS_FORTIFY_SOURCE
 	  An architecture should select this when it can successfully
 	  build and run with CONFIG_FORTIFY_SOURCE.
 
+<<<<<<< HEAD
 config ARCH_HAS_SET_MEMORY
 	bool
 
+=======
+>>>>>>> FETCH_HEAD
 config FORTIFY_COMPILE_CHECK
 	depends on ARCH_HAS_FORTIFY_SOURCE
 	bool

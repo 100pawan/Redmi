@@ -128,13 +128,23 @@ config OF_OVERLAY
 config OF_NUMA
 	bool
 
+<<<<<<< HEAD
 config OF_DMA_DEFAULT_COHERENT
 	# arches should select this if DMA is coherent by default for OF devices
 	bool
 
+=======
+>>>>>>> FETCH_HEAD
 config OF_BATTERYDATA
 	def_bool y
 	help
 	  OpenFirmware BatteryData accessors
 
+<<<<<<< HEAD
+=======
+config OF_DMA_DEFAULT_COHERENT
+	# arches should select this if DMA is coherent by default for OF devices
+	bool
+
+>>>>>>> FETCH_HEAD
 endif # OF

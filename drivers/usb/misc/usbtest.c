@@ -2771,7 +2771,10 @@ static void usbtest_disconnect(struct usb_interface *intf)
 
 	usb_set_intfdata(intf, NULL);
 	dev_dbg(&intf->dev, "disconnect\n");
+<<<<<<< HEAD
 	kfree(dev->buf);
+=======
+>>>>>>> FETCH_HEAD
 	kfree(dev);
 }
 

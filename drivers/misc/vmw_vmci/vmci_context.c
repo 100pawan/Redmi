@@ -750,7 +750,11 @@ static int vmci_ctx_get_chkpt_doorbells(struct vmci_ctx *context,
 			return VMCI_ERROR_MORE_DATA;
 		}
 
+<<<<<<< HEAD
 		dbells = kzalloc(data_size, GFP_ATOMIC);
+=======
+		dbells = kmalloc(data_size, GFP_ATOMIC);
+>>>>>>> FETCH_HEAD
 		if (!dbells)
 			return VMCI_ERROR_NO_MEM;
 

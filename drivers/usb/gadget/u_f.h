@@ -17,7 +17,10 @@
 #define __U_F_H__
 
 #include <linux/usb/gadget.h>
+<<<<<<< HEAD
 #include <linux/overflow.h>
+=======
+>>>>>>> FETCH_HEAD
 
 /* Variable Length Array Macros **********************************************/
 #define vla_group(groupname) size_t groupname##__next = 0
@@ -25,6 +28,7 @@
 
 #define vla_item(groupname, type, name, n) \
 	size_t groupname##_##name##__offset = ({			       \
+<<<<<<< HEAD
 		size_t offset = 0;					       \
 		if (groupname##__next != SIZE_MAX) {			       \
 			size_t align_mask = __alignof__(type) - 1;	       \
@@ -37,10 +41,17 @@
 				offset = 0;				       \
 			}						       \
 		}							       \
+=======
+		size_t align_mask = __alignof__(type) - 1;		       \
+		size_t offset = (groupname##__next + align_mask) & ~align_mask;\
+		size_t size = (n) * sizeof(type);			       \
+		groupname##__next = offset + size;			       \
+>>>>>>> FETCH_HEAD
 		offset;							       \
 	})
 
 #define vla_item_with_sz(groupname, type, name, n) \
+<<<<<<< HEAD
 	size_t groupname##_##name##__sz = array_size(n, sizeof(type));	        \
 	size_t groupname##_##name##__offset = ({			        \
 		size_t offset = 0;						\
@@ -55,6 +66,15 @@
 			}							\
 		}								\
 		offset;								\
+=======
+	size_t groupname##_##name##__sz = (n) * sizeof(type);		       \
+	size_t groupname##_##name##__offset = ({			       \
+		size_t align_mask = __alignof__(type) - 1;		       \
+		size_t offset = (groupname##__next + align_mask) & ~align_mask;\
+		size_t size = groupname##_##name##__sz;			       \
+		groupname##__next = offset + size;			       \
+		offset;							       \
+>>>>>>> FETCH_HEAD
 	})
 
 #define vla_ptr(ptr, groupname, name) \

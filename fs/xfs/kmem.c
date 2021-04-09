@@ -66,7 +66,11 @@ kmem_zalloc_large(size_t size, xfs_km_flags_t flags)
 		noio_flag = memalloc_noio_save();
 
 	lflags = kmem_flags_convert(flags);
+<<<<<<< HEAD
 	ptr = __vmalloc(size, lflags | __GFP_ZERO, PAGE_KERNEL);
+=======
+	ptr = __vmalloc(size, lflags | __GFP_HIGHMEM | __GFP_ZERO, PAGE_KERNEL);
+>>>>>>> FETCH_HEAD
 
 	if ((current->flags & PF_FSTRANS) || (flags & KM_NOFS))
 		memalloc_noio_restore(noio_flag);

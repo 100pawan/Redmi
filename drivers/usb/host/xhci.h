@@ -316,6 +316,10 @@ struct xhci_op_regs {
 #define XDEV_U3		(0x3 << 5)
 #define XDEV_INACTIVE	(0x6 << 5)
 #define XDEV_POLLING	(0x7 << 5)
+<<<<<<< HEAD
+=======
+#define XDEV_RECOVERY	(0x8 << 5)
+>>>>>>> FETCH_HEAD
 #define XDEV_COMP_MODE  (0xa << 5)
 #define XDEV_RESUME	(0xf << 5)
 /* true: port has power (see HCC_PPC) */
@@ -708,7 +712,11 @@ struct xhci_ep_ctx {
  * 4 - TRB error
  * 5-7 - reserved
  */
+<<<<<<< HEAD
 #define EP_STATE_MASK		(0x7)
+=======
+#define EP_STATE_MASK		(0xf)
+>>>>>>> FETCH_HEAD
 #define EP_STATE_DISABLED	0
 #define EP_STATE_RUNNING	1
 #define EP_STATE_HALTED		2

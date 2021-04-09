@@ -40,7 +40,10 @@
 	.hidden _ebss
 	.hidden _got
 	.hidden _egot
+<<<<<<< HEAD
 	.hidden _end
+=======
+>>>>>>> FETCH_HEAD
 
 	__HEAD
 	.code32

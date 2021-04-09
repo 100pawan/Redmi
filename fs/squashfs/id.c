@@ -48,6 +48,7 @@ int squashfs_get_id(struct super_block *sb, unsigned int index,
 	struct squashfs_sb_info *msblk = sb->s_fs_info;
 	int block = SQUASHFS_ID_BLOCK(index);
 	int offset = SQUASHFS_ID_BLOCK_OFFSET(index);
+<<<<<<< HEAD
 	u64 start_block;
 	__le32 disk_id;
 	int err;
@@ -57,6 +58,12 @@ int squashfs_get_id(struct super_block *sb, unsigned int index,
 
 	start_block = le64_to_cpu(msblk->id_table[block]);
 
+=======
+	u64 start_block = le64_to_cpu(msblk->id_table[block]);
+	__le32 disk_id;
+	int err;
+
+>>>>>>> FETCH_HEAD
 	err = squashfs_read_metadata(sb, &disk_id, &start_block, &offset,
 							sizeof(disk_id));
 	if (err < 0)
@@ -74,10 +81,14 @@ __le64 *squashfs_read_id_index_table(struct super_block *sb,
 		u64 id_table_start, u64 next_table, unsigned short no_ids)
 {
 	unsigned int length = SQUASHFS_ID_BLOCK_BYTES(no_ids);
+<<<<<<< HEAD
 	unsigned int indexes = SQUASHFS_ID_BLOCKS(no_ids);
 	int n;
 	__le64 *table;
 	u64 start, end;
+=======
+	__le64 *table;
+>>>>>>> FETCH_HEAD
 
 	TRACE("In read_id_index_table, length %d\n", length);
 
@@ -88,6 +99,7 @@ __le64 *squashfs_read_id_index_table(struct super_block *sb,
 		return ERR_PTR(-EINVAL);
 
 	/*
+<<<<<<< HEAD
 	 * The computed size of the index table (length bytes) should exactly
 	 * match the table start and end points
 	 */
@@ -120,6 +132,22 @@ __le64 *squashfs_read_id_index_table(struct super_block *sb,
 	start = le64_to_cpu(table[indexes - 1]);
 	if (start >= id_table_start || (id_table_start - start) >
 				(SQUASHFS_METADATA_SIZE + SQUASHFS_BLOCK_OFFSET)) {
+=======
+	 * length bytes should not extend into the next table - this check
+	 * also traps instances where id_table_start is incorrectly larger
+	 * than the next table start
+	 */
+	if (id_table_start + length > next_table)
+		return ERR_PTR(-EINVAL);
+
+	table = squashfs_read_table(sb, id_table_start, length);
+
+	/*
+	 * table[0] points to the first id lookup table metadata block, this
+	 * should be less than id_table_start
+	 */
+	if (!IS_ERR(table) && le64_to_cpu(table[0]) >= id_table_start) {
+>>>>>>> FETCH_HEAD
 		kfree(table);
 		return ERR_PTR(-EINVAL);
 	}

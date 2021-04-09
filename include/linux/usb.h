@@ -99,6 +99,7 @@ enum usb_interface_condition {
 	USB_INTERFACE_UNBINDING,
 };
 
+<<<<<<< HEAD
 int __must_check
 usb_find_common_endpoints(struct usb_host_interface *alt,
 		struct usb_endpoint_descriptor **bulk_in,
@@ -134,6 +135,8 @@ usb_find_int_out_endpoint(struct usb_host_interface *alt,
 	return usb_find_common_endpoints(alt, NULL, NULL, NULL, int_out);
 }
 
+=======
+>>>>>>> FETCH_HEAD
 /**
  * struct usb_interface - what usb device drivers talk to
  * @altsetting: array of interface structures, one for each alternate
@@ -1715,8 +1718,11 @@ static inline int usb_urb_dir_out(struct urb *urb)
 	return (urb->transfer_flags & URB_DIR_MASK) == URB_DIR_OUT;
 }
 
+<<<<<<< HEAD
 int usb_urb_ep_type_check(const struct urb *urb);
 
+=======
+>>>>>>> FETCH_HEAD
 void *usb_alloc_coherent(struct usb_device *dev, size_t size,
 	gfp_t mem_flags, dma_addr_t *dma);
 void usb_free_coherent(struct usb_device *dev, size_t size,

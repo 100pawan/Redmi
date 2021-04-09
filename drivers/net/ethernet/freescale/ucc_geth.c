@@ -3939,12 +3939,19 @@ static int ucc_geth_remove(struct platform_device* ofdev)
 	struct device_node *np = ofdev->dev.of_node;
 
 	unregister_netdev(dev);
+<<<<<<< HEAD
+=======
+	free_netdev(dev);
+>>>>>>> FETCH_HEAD
 	ucc_geth_memclean(ugeth);
 	if (of_phy_is_fixed_link(np))
 		of_phy_deregister_fixed_link(np);
 	of_node_put(ugeth->ug_info->tbi_node);
 	of_node_put(ugeth->ug_info->phy_node);
+<<<<<<< HEAD
 	free_netdev(dev);
+=======
+>>>>>>> FETCH_HEAD
 
 	return 0;
 }

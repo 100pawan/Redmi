@@ -248,6 +248,15 @@ static struct {
 #define cpuhp_lock_acquire()      lock_map_acquire(&cpu_hotplug.dep_map)
 #define cpuhp_lock_release()      lock_map_release(&cpu_hotplug.dep_map)
 
+<<<<<<< HEAD
+=======
+void cpu_hotplug_mutex_held(void)
+{
+	lockdep_assert_held(&cpu_hotplug.lock);
+}
+EXPORT_SYMBOL(cpu_hotplug_mutex_held);
+
+>>>>>>> FETCH_HEAD
 void get_online_cpus(void)
 {
 	might_sleep();
@@ -817,10 +826,13 @@ void __unregister_cpu_notifier(struct notifier_block *nb)
 EXPORT_SYMBOL(__unregister_cpu_notifier);
 
 #ifdef CONFIG_HOTPLUG_CPU
+<<<<<<< HEAD
 #ifndef arch_clear_mm_cpumask_cpu
 #define arch_clear_mm_cpumask_cpu(cpu, mm) cpumask_clear_cpu(cpu, mm_cpumask(mm))
 #endif
 
+=======
+>>>>>>> FETCH_HEAD
 /**
  * clear_tasks_mm_cpumask - Safely clear tasks' mm_cpumask for a CPU
  * @cpu: a CPU id
@@ -856,7 +868,11 @@ void clear_tasks_mm_cpumask(int cpu)
 		t = find_lock_task_mm(p);
 		if (!t)
 			continue;
+<<<<<<< HEAD
 		arch_clear_mm_cpumask_cpu(cpu, t->mm);
+=======
+		cpumask_clear_cpu(cpu, mm_cpumask(t->mm));
+>>>>>>> FETCH_HEAD
 		task_unlock(t);
 	}
 	rcu_read_unlock();
@@ -1308,6 +1324,7 @@ int freeze_secondary_cpus(int primary)
 	 */
 	cpumask_clear(frozen_cpus);
 
+<<<<<<< HEAD
 	pr_debug("Disabling non-boot CPUs ...\n");
 	for_each_online_cpu(cpu) {
 		if (cpu == primary)
@@ -1319,6 +1336,12 @@ int freeze_secondary_cpus(int primary)
 			break;
 		}
 
+=======
+	pr_info("Disabling non-boot CPUs ...\n");
+	for_each_online_cpu(cpu) {
+		if (cpu == primary)
+			continue;
+>>>>>>> FETCH_HEAD
 		trace_suspend_resume(TPS("CPU_OFF"), cpu, true);
 		error = _cpu_down(cpu, 1, CPUHP_OFFLINE);
 		trace_suspend_resume(TPS("CPU_OFF"), cpu, false);
@@ -1365,7 +1388,11 @@ void enable_nonboot_cpus(void)
 	if (cpumask_empty(frozen_cpus))
 		goto out;
 
+<<<<<<< HEAD
 	pr_debug("Enabling non-boot CPUs ...\n");
+=======
+	pr_info("Enabling non-boot CPUs ...\n");
+>>>>>>> FETCH_HEAD
 
 	arch_enable_nonboot_cpus_begin();
 
@@ -1374,7 +1401,11 @@ void enable_nonboot_cpus(void)
 		error = _cpu_up(cpu, 1, CPUHP_ONLINE);
 		trace_suspend_resume(TPS("CPU_ON"), cpu, false);
 		if (!error) {
+<<<<<<< HEAD
 			pr_debug("CPU%d is up\n", cpu);
+=======
+			pr_info("CPU%d is up\n", cpu);
+>>>>>>> FETCH_HEAD
 			cpu_device = get_cpu_device(cpu);
 			if (!cpu_device)
 				pr_err("%s: failed to get cpu%d device\n",

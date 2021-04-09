@@ -18,11 +18,16 @@
 #include <linux/pagevec.h>
 #include <linux/migrate.h>
 #include <linux/delay.h>
+<<<<<<< HEAD
 #include <linux/vmalloc.h>
 #include <linux/swap_slots.h>
 
 #include <asm/pgtable.h>
 #include "internal.h"
+=======
+
+#include <asm/pgtable.h>
+>>>>>>> FETCH_HEAD
 
 /*
  * swapper_space is a fiction, retained to simplify the path through
@@ -36,8 +41,20 @@ static const struct address_space_operations swap_aops = {
 #endif
 };
 
+<<<<<<< HEAD
 struct address_space *swapper_spaces[MAX_SWAPFILES];
 static unsigned int nr_swapper_spaces[MAX_SWAPFILES];
+=======
+struct address_space swapper_spaces[MAX_SWAPFILES] = {
+	[0 ... MAX_SWAPFILES - 1] = {
+		.page_tree	= RADIX_TREE_INIT(GFP_ATOMIC|__GFP_NOWARN),
+		.i_mmap_writable = ATOMIC_INIT(0),
+		.a_ops		= &swap_aops,
+		/* swap cache doesn't use writeback related tags */
+		.flags		= 1 << AS_NO_WRITEBACK_TAGS,
+	}
+};
+>>>>>>> FETCH_HEAD
 
 #define INC_CACHE_INFO(x)	do { swap_cache_info.x++; } while (0)
 
@@ -50,6 +67,7 @@ static struct {
 
 unsigned long total_swapcache_pages(void)
 {
+<<<<<<< HEAD
 	unsigned int i, j, nr;
 	unsigned long ret = 0;
 	struct address_space *spaces;
@@ -70,6 +88,13 @@ unsigned long total_swapcache_pages(void)
 			ret += spaces[j].nrpages;
 	}
 	rcu_read_unlock();
+=======
+	int i;
+	unsigned long ret = 0;
+
+	for (i = 0; i < MAX_SWAPFILES; i++)
+		ret += swapper_spaces[i].nrpages;
+>>>>>>> FETCH_HEAD
 	return ret;
 }
 
@@ -327,6 +352,7 @@ struct page *__read_swap_cache_async(swp_entry_t entry, gfp_t gfp_mask,
 			break;
 
 		/*
+<<<<<<< HEAD
 		 * Just skip read ahead for unused swap slot.
 		 * During swap_off when swap_slot_cache is disabled,
 		 * we have to handle the race between putting
@@ -338,6 +364,8 @@ struct page *__read_swap_cache_async(swp_entry_t entry, gfp_t gfp_mask,
 			break;
 
 		/*
+=======
+>>>>>>> FETCH_HEAD
 		 * Get a new page to read into from swap.
 		 */
 		if (!new_page) {
@@ -349,7 +377,11 @@ struct page *__read_swap_cache_async(swp_entry_t entry, gfp_t gfp_mask,
 		/*
 		 * call radix_tree_preload() while we can wait.
 		 */
+<<<<<<< HEAD
 		err = radix_tree_maybe_preload(gfp_mask & GFP_RECLAIM_MASK);
+=======
+		err = radix_tree_maybe_preload(gfp_mask & GFP_KERNEL);
+>>>>>>> FETCH_HEAD
 		if (err)
 			break;
 
@@ -536,6 +568,7 @@ struct page *swapin_readahead(swp_entry_t entry, gfp_t gfp_mask,
 skip:
 	return read_swap_cache_async(entry, gfp_mask, vma, addr);
 }
+<<<<<<< HEAD
 
 int init_swap_address_space(unsigned int type, unsigned long nr_pages)
 {
@@ -571,3 +604,5 @@ void exit_swap_address_space(unsigned int type)
 	synchronize_rcu();
 	kvfree(spaces);
 }
+=======
+>>>>>>> FETCH_HEAD

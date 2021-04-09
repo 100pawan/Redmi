@@ -389,7 +389,11 @@ int hva_hw_probe(struct platform_device *pdev, struct hva_dev *hva)
 	ret = pm_runtime_get_sync(dev);
 	if (ret < 0) {
 		dev_err(dev, "%s     failed to set PM\n", HVA_PREFIX);
+<<<<<<< HEAD
 		goto err_pm;
+=======
+		goto err_clk;
+>>>>>>> FETCH_HEAD
 	}
 
 	/* check IP hardware version */

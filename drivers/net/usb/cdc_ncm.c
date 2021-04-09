@@ -1128,10 +1128,14 @@ cdc_ncm_fill_tx_frame(struct usbnet *dev, struct sk_buff *skb, __le32 sign)
 	 * accordingly. Otherwise, we should check here.
 	 */
 	if (ctx->drvflags & CDC_NCM_FLAG_NDP_TO_END)
+<<<<<<< HEAD
 		delayed_ndp_size = ctx->max_ndp_size +
 			max_t(u32,
 			      ctx->tx_ndp_modulus,
 			      ctx->tx_modulus + ctx->tx_remainder) - 1;
+=======
+		delayed_ndp_size = ALIGN(ctx->max_ndp_size, ctx->tx_ndp_modulus);
+>>>>>>> FETCH_HEAD
 	else
 		delayed_ndp_size = 0;
 
@@ -1284,8 +1288,12 @@ cdc_ncm_fill_tx_frame(struct usbnet *dev, struct sk_buff *skb, __le32 sign)
 	if (!(dev->driver_info->flags & FLAG_SEND_ZLP) &&
 	    skb_out->len > ctx->min_tx_pkt) {
 		padding_count = ctx->tx_max - skb_out->len;
+<<<<<<< HEAD
 		if (!WARN_ON(padding_count > ctx->tx_max))
 			memset(skb_put(skb_out, padding_count), 0, padding_count);
+=======
+		memset(skb_put(skb_out, padding_count), 0, padding_count);
+>>>>>>> FETCH_HEAD
 	} else if (skb_out->len < ctx->tx_max &&
 		   (skb_out->len % dev->maxpacket) == 0) {
 		*skb_put(skb_out, 1) = 0;	/* force short packet */
@@ -1606,6 +1614,12 @@ static void cdc_ncm_status(struct usbnet *dev, struct urb *urb)
 		 * USB_CDC_NOTIFY_NETWORK_CONNECTION notification shall be
 		 * sent by device after USB_CDC_NOTIFY_SPEED_CHANGE.
 		 */
+<<<<<<< HEAD
+=======
+		netif_info(dev, link, dev->net,
+			   "network connection: %sconnected\n",
+			   !!event->wValue ? "" : "dis");
+>>>>>>> FETCH_HEAD
 		usbnet_link_change(dev, !!event->wValue, 0);
 		break;
 

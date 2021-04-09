@@ -365,6 +365,7 @@ static void dwc2_handle_wakeup_detected_intr(struct dwc2_hsotg *hsotg)
 			if (ret && (ret != -ENOTSUPP))
 				dev_err(hsotg->dev, "exit hibernation failed\n");
 
+<<<<<<< HEAD
 			/* Change to L0 state */
 			hsotg->lx_state = DWC2_L0;
 			call_gadget(hsotg, resume);
@@ -372,6 +373,12 @@ static void dwc2_handle_wakeup_detected_intr(struct dwc2_hsotg *hsotg)
 			/* Change to L0 state */
 			hsotg->lx_state = DWC2_L0;
 		}
+=======
+			call_gadget(hsotg, resume);
+		}
+		/* Change to L0 state */
+		hsotg->lx_state = DWC2_L0;
+>>>>>>> FETCH_HEAD
 	} else {
 		if (hsotg->core_params->hibernation)
 			return;

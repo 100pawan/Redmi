@@ -2219,7 +2219,11 @@ s32 ixgbe_fc_enable_generic(struct ixgbe_hw *hw)
 	}
 
 	/* Configure pause time (2 TCs per register) */
+<<<<<<< HEAD
 	reg = hw->fc.pause_time * 0x00010001U;
+=======
+	reg = hw->fc.pause_time * 0x00010001;
+>>>>>>> FETCH_HEAD
 	for (i = 0; i < (MAX_TRAFFIC_CLASS / 2); i++)
 		IXGBE_WRITE_REG(hw, IXGBE_FCTTV(i), reg);
 

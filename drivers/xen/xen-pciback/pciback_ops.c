@@ -296,6 +296,7 @@ int xen_pcibk_disable_msix(struct xen_pcibk_device *pdev,
 	return 0;
 }
 #endif
+<<<<<<< HEAD
 
 static inline bool xen_pcibk_test_op_pending(struct xen_pcibk_device *pdev)
 {
@@ -304,12 +305,15 @@ static inline bool xen_pcibk_test_op_pending(struct xen_pcibk_device *pdev)
 	       !test_and_set_bit(_PDEVF_op_active, &pdev->flags);
 }
 
+=======
+>>>>>>> FETCH_HEAD
 /*
 * Now the same evtchn is used for both pcifront conf_read_write request
 * as well as pcie aer front end ack. We use a new work_queue to schedule
 * xen_pcibk conf_read_write service for avoiding confict with aer_core
 * do_recovery job which also use the system default work_queue
 */
+<<<<<<< HEAD
 static void xen_pcibk_test_and_schedule_op(struct xen_pcibk_device *pdev)
 {
 	bool eoi = true;
@@ -319,18 +323,31 @@ static void xen_pcibk_test_and_schedule_op(struct xen_pcibk_device *pdev)
 	if (xen_pcibk_test_op_pending(pdev)) {
 		schedule_work(&pdev->op_work);
 		eoi = false;
+=======
+void xen_pcibk_test_and_schedule_op(struct xen_pcibk_device *pdev)
+{
+	/* Check that frontend is requesting an operation and that we are not
+	 * already processing a request */
+	if (test_bit(_XEN_PCIF_active, (unsigned long *)&pdev->sh_info->flags)
+	    && !test_and_set_bit(_PDEVF_op_active, &pdev->flags)) {
+		schedule_work(&pdev->op_work);
+>>>>>>> FETCH_HEAD
 	}
 	/*_XEN_PCIB_active should have been cleared by pcifront. And also make
 	sure xen_pcibk is waiting for ack by checking _PCIB_op_pending*/
 	if (!test_bit(_XEN_PCIB_active, (unsigned long *)&pdev->sh_info->flags)
 	    && test_bit(_PCIB_op_pending, &pdev->flags)) {
 		wake_up(&xen_pcibk_aer_wait_queue);
+<<<<<<< HEAD
 		eoi = false;
 	}
 
 	/* EOI if there was nothing to do. */
 	if (eoi)
 		xen_pcibk_lateeoi(pdev, XEN_EOI_FLAG_SPURIOUS);
+=======
+	}
+>>>>>>> FETCH_HEAD
 }
 
 /* Performing the configuration space reads/writes must not be done in atomic
@@ -338,8 +355,15 @@ static void xen_pcibk_test_and_schedule_op(struct xen_pcibk_device *pdev)
  * use of semaphores). This function is intended to be called from a work
  * queue in process context taking a struct xen_pcibk_device as a parameter */
 
+<<<<<<< HEAD
 static void xen_pcibk_do_one_op(struct xen_pcibk_device *pdev)
 {
+=======
+void xen_pcibk_do_op(struct work_struct *data)
+{
+	struct xen_pcibk_device *pdev =
+		container_of(data, struct xen_pcibk_device, op_work);
+>>>>>>> FETCH_HEAD
 	struct pci_dev *dev;
 	struct xen_pcibk_dev_data *dev_data = NULL;
 	struct xen_pci_op *op = &pdev->op;
@@ -412,6 +436,7 @@ static void xen_pcibk_do_one_op(struct xen_pcibk_device *pdev)
 	smp_mb__before_atomic(); /* /after/ clearing PCIF_active */
 	clear_bit(_PDEVF_op_active, &pdev->flags);
 	smp_mb__after_atomic(); /* /before/ final check for work */
+<<<<<<< HEAD
 }
 
 void xen_pcibk_do_op(struct work_struct *data)
@@ -424,11 +449,19 @@ void xen_pcibk_do_op(struct work_struct *data)
 	} while (xen_pcibk_test_op_pending(pdev));
 
 	xen_pcibk_lateeoi(pdev, 0);
+=======
+
+	/* Check to see if the driver domain tried to start another request in
+	 * between clearing _XEN_PCIF_active and clearing _PDEVF_op_active.
+	*/
+	xen_pcibk_test_and_schedule_op(pdev);
+>>>>>>> FETCH_HEAD
 }
 
 irqreturn_t xen_pcibk_handle_event(int irq, void *dev_id)
 {
 	struct xen_pcibk_device *pdev = dev_id;
+<<<<<<< HEAD
 	bool eoi;
 
 	/* IRQs might come in before pdev->evtchn_irq is written. */
@@ -437,6 +470,8 @@ irqreturn_t xen_pcibk_handle_event(int irq, void *dev_id)
 
 	eoi = test_and_set_bit(_EOI_pending, &pdev->flags);
 	WARN(eoi, "IRQ while EOI pending\n");
+=======
+>>>>>>> FETCH_HEAD
 
 	xen_pcibk_test_and_schedule_op(pdev);
 

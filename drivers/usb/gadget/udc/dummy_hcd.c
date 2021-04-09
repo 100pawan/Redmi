@@ -2736,7 +2736,11 @@ static int __init init(void)
 {
 	int	retval = -ENOMEM;
 	int	i;
+<<<<<<< HEAD
 	struct	dummy *dum[MAX_NUM_UDC] = {};
+=======
+	struct	dummy *dum[MAX_NUM_UDC];
+>>>>>>> FETCH_HEAD
 
 	if (usb_disabled())
 		return -ENODEV;

@@ -2492,12 +2492,15 @@ bytes respectively. Such letter suffixes can also be entirely omitted.
 			memory contents and reserves bad memory
 			regions that are detected.
 
+<<<<<<< HEAD
 	mem_sleep_default=	[SUSPEND] Default system suspend mode:
 			s2idle  - Suspend-To-Idle
 			shallow - Power-On Suspend or equivalent (if supported)
 			deep    - Suspend-To-RAM or equivalent (if supported)
 			See Documentation/power/states.txt.
 
+=======
+>>>>>>> FETCH_HEAD
 	meye.*=		[HW] Set MotionEye Camera parameters
 			See Documentation/video4linux/meye.txt.
 
@@ -2555,8 +2558,11 @@ bytes respectively. Such letter suffixes can also be entirely omitted.
 					       mds=off [X86]
 					       tsx_async_abort=off [X86]
 					       kvm.nx_huge_pages=off [X86]
+<<<<<<< HEAD
 					       no_entry_flush [PPC]
 					       no_uaccess_flush [PPC]
+=======
+>>>>>>> FETCH_HEAD
 
 				Exceptions:
 					       This does not have any effect on
@@ -2863,8 +2869,11 @@ bytes respectively. Such letter suffixes can also be entirely omitted.
 
 	noefi		Disable EFI runtime services support.
 
+<<<<<<< HEAD
 	no_entry_flush	[PPC] Don't flush the L1-D cache when entering the kernel.
 
+=======
+>>>>>>> FETCH_HEAD
 	noexec		[IA-64]
 
 	noexec		[X86]
@@ -2914,9 +2923,12 @@ bytes respectively. Such letter suffixes can also be entirely omitted.
 	nospec_store_bypass_disable
 			[HW] Disable all mitigations for the Speculative Store Bypass vulnerability
 
+<<<<<<< HEAD
 	no_uaccess_flush
 			[PPC] Don't flush the L1-D cache after accessing user data.
 
+=======
+>>>>>>> FETCH_HEAD
 	noxsave		[BUGS=X86] Disables x86 extended register state save
 			and restore using xsave. The kernel will fallback to
 			enabling legacy floating-point and sse state.
@@ -3934,6 +3946,16 @@ bytes respectively. Such letter suffixes can also be entirely omitted.
 			[KNL, SMP] Set scheduler's default relax_domain_level.
 			See Documentation/cgroup-v1/cpusets.txt.
 
+<<<<<<< HEAD
+=======
+	relative_sleep_states=
+			[SUSPEND] Use sleep state labeling where the deepest
+			state available other than hibernation is always "mem".
+			Format: { "0" | "1" }
+			0 -- Traditional sleep state labels.
+			1 -- Relative sleep state labels.
+
+>>>>>>> FETCH_HEAD
 	reserve=	[KNL,BUGS] Force the kernel to ignore some iomem area
 
 	reservetop=	[X86-32]
@@ -5060,6 +5082,7 @@ bytes respectively. Such letter suffixes can also be entirely omitted.
 			Disables the PV optimizations forcing the HVM guest to
 			run as generic HVM guest with no PV drivers.
 
+<<<<<<< HEAD
 	xen.event_eoi_delay=	[XEN]
 			How long to delay EOI handling in case of event
 			storms (jiffies). Default is 10.
@@ -5068,6 +5091,8 @@ bytes respectively. Such letter suffixes can also be entirely omitted.
 			After which time (jiffies) the event handling loop
 			should start to delay EOI handling. Default is 2.
 
+=======
+>>>>>>> FETCH_HEAD
 	xirc2ps_cs=	[NET,PCMCIA]
 			Format:
 			<irq>,<irq_mask>,<io>,<full_duplex>,<do_sound>,<lockup_hack>[,<irq2>[,<irq3>[,<irq4>]]]

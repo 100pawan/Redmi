@@ -256,6 +256,7 @@ ifdef CONFIG_64BIT
   endif
 endif
 
+<<<<<<< HEAD
 # When linking a 32-bit executable the LLVM linker cannot cope with a
 # 32-bit load address that has been sign-extended to 64 bits.  Simply
 # remove the upper 32 bits then, as it is safe to do so with other
@@ -273,6 +274,14 @@ KBUILD_CPPFLAGS += -DDATAOFFSET=$(if $(dataoffset-y),$(dataoffset-y),0)
 
 bootvars-y	= VMLINUX_LOAD_ADDRESS=$(load-y) \
 		  LINKER_LOAD_ADDRESS=$(load-ld) \
+=======
+KBUILD_AFLAGS	+= $(cflags-y)
+KBUILD_CFLAGS	+= $(cflags-y)
+KBUILD_CPPFLAGS += -DVMLINUX_LOAD_ADDRESS=$(load-y)
+KBUILD_CPPFLAGS += -DDATAOFFSET=$(if $(dataoffset-y),$(dataoffset-y),0)
+
+bootvars-y	= VMLINUX_LOAD_ADDRESS=$(load-y) \
+>>>>>>> FETCH_HEAD
 		  VMLINUX_ENTRY_ADDRESS=$(entry-y) \
 		  PLATFORM="$(platform-y)"
 ifdef CONFIG_32BIT

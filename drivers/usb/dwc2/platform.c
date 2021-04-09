@@ -507,8 +507,12 @@ static void dwc2_driver_shutdown(struct platform_device *dev)
 {
 	struct dwc2_hsotg *hsotg = platform_get_drvdata(dev);
 
+<<<<<<< HEAD
 	dwc2_disable_global_interrupts(hsotg);
 	synchronize_irq(hsotg->irq);
+=======
+	disable_irq(hsotg->irq);
+>>>>>>> FETCH_HEAD
 }
 
 static const struct of_device_id dwc2_of_match_table[] = {
@@ -662,6 +666,7 @@ static int dwc2_driver_probe(struct platform_device *dev)
 	if (hsotg->dr_mode == USB_DR_MODE_PERIPHERAL)
 		dwc2_lowlevel_hw_disable(hsotg);
 
+<<<<<<< HEAD
 #if IS_ENABLED(CONFIG_USB_DWC2_PERIPHERAL) || \
 	IS_ENABLED(CONFIG_USB_DWC2_DUAL_ROLE)
 	/* Postponed adding a new gadget to the udc class driver list */
@@ -679,6 +684,12 @@ static int dwc2_driver_probe(struct platform_device *dev)
 error:
 	if (hsotg->dr_mode != USB_DR_MODE_PERIPHERAL)
 		dwc2_lowlevel_hw_disable(hsotg);
+=======
+	return 0;
+
+error:
+	dwc2_lowlevel_hw_disable(hsotg);
+>>>>>>> FETCH_HEAD
 	return retval;
 }
 

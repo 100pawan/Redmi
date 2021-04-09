@@ -1732,6 +1732,7 @@ int ubi_thread(void *u)
 		    !ubi->thread_enabled || ubi_dbg_is_bgt_disabled(ubi)) {
 			set_current_state(TASK_INTERRUPTIBLE);
 			spin_unlock(&ubi->wl_lock);
+<<<<<<< HEAD
 
 			/*
 			 * Check kthread_should_stop() after we set the task
@@ -1745,6 +1746,8 @@ int ubi_thread(void *u)
 				break;
 			}
 
+=======
+>>>>>>> FETCH_HEAD
 			schedule();
 			continue;
 		}

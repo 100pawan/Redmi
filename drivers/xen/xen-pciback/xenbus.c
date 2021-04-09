@@ -122,7 +122,11 @@ static int xen_pcibk_do_attach(struct xen_pcibk_device *pdev, int gnt_ref,
 
 	pdev->sh_info = vaddr;
 
+<<<<<<< HEAD
 	err = bind_interdomain_evtchn_to_irqhandler_lateeoi(
+=======
+	err = bind_interdomain_evtchn_to_irqhandler(
+>>>>>>> FETCH_HEAD
 		pdev->xdev->otherend_id, remote_evtchn, xen_pcibk_handle_event,
 		0, DRV_NAME, pdev);
 	if (err < 0) {
@@ -689,7 +693,11 @@ static int xen_pcibk_xenbus_probe(struct xenbus_device *dev,
 
 	/* watch the backend node for backend configuration information */
 	err = xenbus_watch_path(dev, dev->nodename, &pdev->be_watch,
+<<<<<<< HEAD
 				NULL, xen_pcibk_be_watch);
+=======
+				xen_pcibk_be_watch);
+>>>>>>> FETCH_HEAD
 	if (err)
 		goto out;
 

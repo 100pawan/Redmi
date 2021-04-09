@@ -315,6 +315,13 @@ struct lan78xx_net {
 	struct tasklet_struct	bh;
 	struct delayed_work	wq;
 
+<<<<<<< HEAD
+=======
+	struct usb_host_endpoint *ep_blkin;
+	struct usb_host_endpoint *ep_blkout;
+	struct usb_host_endpoint *ep_intr;
+
+>>>>>>> FETCH_HEAD
 	int			msg_enable;
 
 	struct urb		*urb_intr;
@@ -2556,12 +2563,84 @@ lan78xx_start_xmit(struct sk_buff *skb, struct net_device *net)
 	return NETDEV_TX_OK;
 }
 
+<<<<<<< HEAD
+=======
+static int
+lan78xx_get_endpoints(struct lan78xx_net *dev, struct usb_interface *intf)
+{
+	int tmp;
+	struct usb_host_interface *alt = NULL;
+	struct usb_host_endpoint *in = NULL, *out = NULL;
+	struct usb_host_endpoint *status = NULL;
+
+	for (tmp = 0; tmp < intf->num_altsetting; tmp++) {
+		unsigned ep;
+
+		in = NULL;
+		out = NULL;
+		status = NULL;
+		alt = intf->altsetting + tmp;
+
+		for (ep = 0; ep < alt->desc.bNumEndpoints; ep++) {
+			struct usb_host_endpoint *e;
+			int intr = 0;
+
+			e = alt->endpoint + ep;
+			switch (e->desc.bmAttributes) {
+			case USB_ENDPOINT_XFER_INT:
+				if (!usb_endpoint_dir_in(&e->desc))
+					continue;
+				intr = 1;
+				/* FALLTHROUGH */
+			case USB_ENDPOINT_XFER_BULK:
+				break;
+			default:
+				continue;
+			}
+			if (usb_endpoint_dir_in(&e->desc)) {
+				if (!intr && !in)
+					in = e;
+				else if (intr && !status)
+					status = e;
+			} else {
+				if (!out)
+					out = e;
+			}
+		}
+		if (in && out)
+			break;
+	}
+	if (!alt || !in || !out)
+		return -EINVAL;
+
+	dev->pipe_in = usb_rcvbulkpipe(dev->udev,
+				       in->desc.bEndpointAddress &
+				       USB_ENDPOINT_NUMBER_MASK);
+	dev->pipe_out = usb_sndbulkpipe(dev->udev,
+					out->desc.bEndpointAddress &
+					USB_ENDPOINT_NUMBER_MASK);
+	dev->ep_intr = status;
+
+	return 0;
+}
+
+>>>>>>> FETCH_HEAD
 static int lan78xx_bind(struct lan78xx_net *dev, struct usb_interface *intf)
 {
 	struct lan78xx_priv *pdata = NULL;
 	int ret;
 	int i;
 
+<<<<<<< HEAD
+=======
+	ret = lan78xx_get_endpoints(dev, intf);
+	if (ret) {
+		netdev_warn(dev->net, "lan78xx_get_endpoints failed: %d\n",
+			    ret);
+		return ret;
+	}
+
+>>>>>>> FETCH_HEAD
 	dev->data[0] = (unsigned long)kzalloc(sizeof(*pdata), GFP_KERNEL);
 
 	pdata = (struct lan78xx_priv *)(dev->data[0]);
@@ -3269,7 +3348,10 @@ static void lan78xx_stat_monitor(unsigned long param)
 static int lan78xx_probe(struct usb_interface *intf,
 			 const struct usb_device_id *id)
 {
+<<<<<<< HEAD
 	struct usb_host_endpoint *ep_blkin, *ep_blkout, *ep_intr;
+=======
+>>>>>>> FETCH_HEAD
 	struct lan78xx_net *dev;
 	struct net_device *netdev;
 	struct usb_device *udev;
@@ -3320,6 +3402,7 @@ static int lan78xx_probe(struct usb_interface *intf,
 
 	mutex_init(&dev->stats.access_lock);
 
+<<<<<<< HEAD
 	if (intf->cur_altsetting->desc.bNumEndpoints < 3) {
 		ret = -ENODEV;
 		goto out2;
@@ -3348,6 +3431,8 @@ static int lan78xx_probe(struct usb_interface *intf,
 	dev->pipe_intr = usb_rcvintpipe(dev->udev,
 					usb_endpoint_num(&ep_intr->desc));
 
+=======
+>>>>>>> FETCH_HEAD
 	ret = lan78xx_bind(dev, intf);
 	if (ret < 0)
 		goto out2;
@@ -3357,7 +3442,22 @@ static int lan78xx_probe(struct usb_interface *intf,
 		netdev->mtu = dev->hard_mtu - netdev->hard_header_len;
 	netif_set_gso_max_size(netdev, MAX_SINGLE_PACKET_SIZE - MAX_HEADER);
 
+<<<<<<< HEAD
 	period = ep_intr->desc.bInterval;
+=======
+	dev->ep_blkin = (intf->cur_altsetting)->endpoint + 0;
+	dev->ep_blkout = (intf->cur_altsetting)->endpoint + 1;
+	dev->ep_intr = (intf->cur_altsetting)->endpoint + 2;
+
+	dev->pipe_in = usb_rcvbulkpipe(udev, BULK_IN_PIPE);
+	dev->pipe_out = usb_sndbulkpipe(udev, BULK_OUT_PIPE);
+
+	dev->pipe_intr = usb_rcvintpipe(dev->udev,
+					dev->ep_intr->desc.bEndpointAddress &
+					USB_ENDPOINT_NUMBER_MASK);
+	period = dev->ep_intr->desc.bInterval;
+
+>>>>>>> FETCH_HEAD
 	maxp = usb_maxpacket(dev->udev, dev->pipe_intr, 0);
 	buf = kmalloc(maxp, GFP_KERNEL);
 	if (buf) {
@@ -3370,7 +3470,10 @@ static int lan78xx_probe(struct usb_interface *intf,
 			usb_fill_int_urb(dev->urb_intr, dev->udev,
 					 dev->pipe_intr, buf, maxp,
 					 intr_complete, dev, period);
+<<<<<<< HEAD
 			dev->urb_intr->transfer_flags |= URB_FREE_BUFFER;
+=======
+>>>>>>> FETCH_HEAD
 		}
 	}
 

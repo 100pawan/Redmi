@@ -60,16 +60,23 @@ static int prism2sta_probe_usb(struct usb_interface *interface,
 			       const struct usb_device_id *id)
 {
 	struct usb_device *dev;
+<<<<<<< HEAD
 	struct usb_endpoint_descriptor *bulk_in, *bulk_out;
 	struct usb_host_interface *iface_desc = interface->cur_altsetting;
+=======
+
+>>>>>>> FETCH_HEAD
 	struct wlandevice *wlandev = NULL;
 	struct hfa384x *hw = NULL;
 	int result = 0;
 
+<<<<<<< HEAD
 	result = usb_find_common_endpoints(iface_desc, &bulk_in, &bulk_out, NULL, NULL);
 	if (result)
 		goto failed;
 
+=======
+>>>>>>> FETCH_HEAD
 	dev = interface_to_usbdev(interface);
 	wlandev = create_wlan();
 	if (!wlandev) {
@@ -86,8 +93,11 @@ static int prism2sta_probe_usb(struct usb_interface *interface,
 	}
 
 	/* Initialize the hw data */
+<<<<<<< HEAD
 	hw->endp_in = usb_rcvbulkpipe(dev, bulk_in->bEndpointAddress);
 	hw->endp_out = usb_sndbulkpipe(dev, bulk_out->bEndpointAddress);
+=======
+>>>>>>> FETCH_HEAD
 	hfa384x_create(hw, dev);
 	hw->wlandev = wlandev;
 

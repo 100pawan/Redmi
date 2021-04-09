@@ -573,7 +573,11 @@ DECLARE_EVENT_CLASS(sched_cpu_load,
 		__entry->nr_big_tasks		= rq->walt_stats.nr_big_tasks;
 		__entry->load_scale_factor	= cpu_load_scale_factor(rq->cpu);
 		__entry->capacity		= cpu_capacity(rq->cpu);
+<<<<<<< HEAD
 		__entry->cumulative_runnable_avg = rq->walt_stats.cumulative_runnable_avg_scaled;
+=======
+		__entry->cumulative_runnable_avg = rq->walt_stats.cumulative_runnable_avg;
+>>>>>>> FETCH_HEAD
 		__entry->irqload		= irqload;
 		__entry->max_freq		= cpu_max_freq(rq->cpu);
 		__entry->power_cost		= power_cost;
@@ -635,7 +639,11 @@ TRACE_EVENT(sched_load_to_gov,
 		__entry->grp_rq_ps	= rq->grp_time.prev_runnable_sum;
 		__entry->nt_ps		= rq->nt_prev_runnable_sum;
 		__entry->grp_nt_ps	= rq->grp_time.nt_prev_runnable_sum;
+<<<<<<< HEAD
 		__entry->pl		= rq->walt_stats.pred_demands_sum_scaled;
+=======
+		__entry->pl		= rq->walt_stats.pred_demands_sum;
+>>>>>>> FETCH_HEAD
 		__entry->load		= load;
 		__entry->big_task_rotation = big_task_rotation;
 		__entry->sysctl_sched_little_cluster_coloc_fmin_khz =
@@ -1418,7 +1426,11 @@ TRACE_EVENT(sched_contrib_scale_f,
 extern unsigned int sysctl_sched_use_walt_cpu_util;
 extern unsigned int sysctl_sched_use_walt_task_util;
 extern unsigned int sched_ravg_window;
+<<<<<<< HEAD
 extern bool walt_disabled;
+=======
+extern unsigned int walt_disabled;
+>>>>>>> FETCH_HEAD
 #endif
 
 /*
@@ -1793,6 +1805,30 @@ TRACE_EVENT(sched_get_nr_running_avg,
 		__field( int,	iowait_avg		)
 		__field( unsigned int,	max_nr		)
 		__field( unsigned int,	big_max_nr	)
+<<<<<<< HEAD
+=======
+		__array(	char,	comm,   TASK_COMM_LEN	)
+		__field(	pid_t,	pid			)
+		__field(	pid_t,	cur_pid			)
+		__field(	u64,	wallclock		)
+		__field(	u64,	mark_start		)
+		__field(	u64,	delta_m			)
+		__field(	u64,	win_start		)
+		__field(	u64,	delta			)
+		__field(	u64,	irqtime			)
+		__field(        int,    evt			)
+		__field(unsigned int,	demand			)
+		__field(unsigned int,	sum			)
+		__field(	 int,	cpu			)
+		__field(	u64,	cs			)
+		__field(	u64,	ps			)
+		__field(	u64,	util			)
+		__field(	u32,	curr_window		)
+		__field(	u32,	prev_window		)
+		__field(	u64,	nt_cs			)
+		__field(	u64,	nt_ps			)
+		__field(	u32,	active_windows		)
+>>>>>>> FETCH_HEAD
 	),
 
 	TP_fast_assign(
@@ -1803,9 +1839,26 @@ TRACE_EVENT(sched_get_nr_running_avg,
 		__entry->big_max_nr	= big_max_nr;
 	),
 
+<<<<<<< HEAD
 	TP_printk("avg=%d big_avg=%d iowait_avg=%d max_nr=%u big_max_nr=%u",
 		__entry->avg, __entry->big_avg, __entry->iowait_avg,
 		__entry->max_nr, __entry->big_max_nr)
+=======
+	TP_printk("avg=%d big_avg=%d iowait_avg=%d max_nr=%u big_max_nr=%u"
+		" wc %llu ws %llu delta %llu event %d cpu %d cur_pid %d task %d (%s) ms %llu delta %llu demand %u sum %u irqtime %llu"
+		" cs %llu ps %llu util %llu cur_window %u prev_window %u active_wins %u",
+		__entry->avg, __entry->big_avg, __entry->iowait_avg,
+		__entry->max_nr, __entry->big_max_nr,
+		__entry->wallclock, __entry->win_start, __entry->delta,
+		__entry->evt, __entry->cpu, __entry->cur_pid,
+		__entry->pid, __entry->comm, __entry->mark_start,
+		__entry->delta_m, __entry->demand,
+		__entry->sum, __entry->irqtime,
+		__entry->cs, __entry->ps, __entry->util,
+		__entry->curr_window, __entry->prev_window,
+		  __entry->active_windows
+		)
+>>>>>>> FETCH_HEAD
 );
 
 TRACE_EVENT(core_ctl_eval_need,

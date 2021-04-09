@@ -46,11 +46,14 @@ static unsigned evtchn_2l_max_channels(void)
 	return EVTCHN_2L_NR_CHANNELS;
 }
 
+<<<<<<< HEAD
 static void evtchn_2l_remove(evtchn_port_t evtchn, unsigned int cpu)
 {
 	clear_bit(evtchn, BM(per_cpu(cpu_evtchn_mask, cpu)));
 }
 
+=======
+>>>>>>> FETCH_HEAD
 static void evtchn_2l_bind_to_cpu(struct irq_info *info, unsigned cpu)
 {
 	clear_bit(info->evtchn, BM(per_cpu(cpu_evtchn_mask, info->cpu)));
@@ -75,6 +78,15 @@ static bool evtchn_2l_is_pending(unsigned port)
 	return sync_test_bit(port, BM(&s->evtchn_pending[0]));
 }
 
+<<<<<<< HEAD
+=======
+static bool evtchn_2l_test_and_set_mask(unsigned port)
+{
+	struct shared_info *s = HYPERVISOR_shared_info;
+	return sync_test_and_set_bit(port, BM(&s->evtchn_mask[0]));
+}
+
+>>>>>>> FETCH_HEAD
 static void evtchn_2l_mask(unsigned port)
 {
 	struct shared_info *s = HYPERVISOR_shared_info;
@@ -89,8 +101,11 @@ static void evtchn_2l_unmask(unsigned port)
 
 	BUG_ON(!irqs_disabled());
 
+<<<<<<< HEAD
 	smp_wmb();	/* All writes before unmask must be visible. */
 
+=======
+>>>>>>> FETCH_HEAD
 	if (unlikely((cpu != cpu_from_evtchn(port))))
 		do_hypercall = 1;
 	else {
@@ -159,7 +174,11 @@ static inline xen_ulong_t active_evtchns(unsigned int cpu,
  * a bitset of words which contain pending event bits.  The second
  * level is a bitset of pending events themselves.
  */
+<<<<<<< HEAD
 static void evtchn_2l_handle_events(unsigned cpu, struct evtchn_loop_ctrl *ctrl)
+=======
+static void evtchn_2l_handle_events(unsigned cpu)
+>>>>>>> FETCH_HEAD
 {
 	int irq;
 	xen_ulong_t pending_words;
@@ -240,7 +259,14 @@ static void evtchn_2l_handle_events(unsigned cpu, struct evtchn_loop_ctrl *ctrl)
 
 			/* Process port. */
 			port = (word_idx * BITS_PER_EVTCHN_WORD) + bit_idx;
+<<<<<<< HEAD
 			handle_irq_for_port(port, ctrl);
+=======
+			irq = get_evtchn_to_irq(port);
+
+			if (irq != -1)
+				generic_handle_irq(irq);
+>>>>>>> FETCH_HEAD
 
 			bit_idx = (bit_idx + 1) % BITS_PER_EVTCHN_WORD;
 
@@ -352,6 +378,7 @@ static void evtchn_2l_resume(void)
 				EVTCHN_2L_NR_CHANNELS/BITS_PER_EVTCHN_WORD);
 }
 
+<<<<<<< HEAD
 static int evtchn_2l_percpu_deinit(unsigned int cpu)
 {
 	memset(per_cpu(cpu_evtchn_mask, cpu), 0, sizeof(xen_ulong_t) *
@@ -364,15 +391,27 @@ static const struct evtchn_ops evtchn_ops_2l = {
 	.max_channels      = evtchn_2l_max_channels,
 	.nr_channels       = evtchn_2l_max_channels,
 	.remove            = evtchn_2l_remove,
+=======
+static const struct evtchn_ops evtchn_ops_2l = {
+	.max_channels      = evtchn_2l_max_channels,
+	.nr_channels       = evtchn_2l_max_channels,
+>>>>>>> FETCH_HEAD
 	.bind_to_cpu       = evtchn_2l_bind_to_cpu,
 	.clear_pending     = evtchn_2l_clear_pending,
 	.set_pending       = evtchn_2l_set_pending,
 	.is_pending        = evtchn_2l_is_pending,
+<<<<<<< HEAD
+=======
+	.test_and_set_mask = evtchn_2l_test_and_set_mask,
+>>>>>>> FETCH_HEAD
 	.mask              = evtchn_2l_mask,
 	.unmask            = evtchn_2l_unmask,
 	.handle_events     = evtchn_2l_handle_events,
 	.resume	           = evtchn_2l_resume,
+<<<<<<< HEAD
 	.percpu_deinit     = evtchn_2l_percpu_deinit,
+=======
+>>>>>>> FETCH_HEAD
 };
 
 void __init xen_evtchn_2l_init(void)

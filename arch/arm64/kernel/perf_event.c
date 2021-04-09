@@ -25,7 +25,10 @@
 #include <asm/virt.h>
 
 #include <linux/acpi.h>
+<<<<<<< HEAD
 #include <linux/clocksource.h>
+=======
+>>>>>>> FETCH_HEAD
 #include <linux/of.h>
 #include <linux/perf/arm_pmu.h>
 #include <linux/platform_device.h>
@@ -1228,6 +1231,7 @@ static struct platform_driver armv8_pmu_driver = {
 };
 
 builtin_platform_driver(armv8_pmu_driver);
+<<<<<<< HEAD
 
 void arch_perf_update_userpage(struct perf_event *event,
 			       struct perf_event_mmap_page *userpg, u64 now)
@@ -1257,3 +1261,5 @@ void arch_perf_update_userpage(struct perf_event *event,
 	userpg->time_shift = (u16)shift;
 	userpg->time_offset = -now;
 }
+=======
+>>>>>>> FETCH_HEAD

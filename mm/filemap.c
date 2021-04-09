@@ -2685,6 +2685,7 @@ filler:
 		unlock_page(page);
 		goto out;
 	}
+<<<<<<< HEAD
 
 	/*
 	 * A previous I/O error may have been due to temporary
@@ -2693,6 +2694,8 @@ filler:
 	 * set again if read page fails.
 	 */
 	ClearPageError(page);
+=======
+>>>>>>> FETCH_HEAD
 	goto filler;
 
 out:

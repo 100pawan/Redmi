@@ -449,7 +449,11 @@ void sctp_icmp_proto_unreachable(struct sock *sk,
 		else {
 			if (!mod_timer(&t->proto_unreach_timer,
 						jiffies + (HZ/20)))
+<<<<<<< HEAD
 				sctp_transport_hold(t);
+=======
+				sctp_association_hold(asoc);
+>>>>>>> FETCH_HEAD
 		}
 	} else {
 		struct net *net = sock_net(sk);
@@ -458,7 +462,11 @@ void sctp_icmp_proto_unreachable(struct sock *sk,
 			 "encountered!\n", __func__);
 
 		if (del_timer(&t->proto_unreach_timer))
+<<<<<<< HEAD
 			sctp_transport_put(t);
+=======
+			sctp_association_put(asoc);
+>>>>>>> FETCH_HEAD
 
 		sctp_do_sm(net, SCTP_EVENT_T_OTHER,
 			   SCTP_ST_OTHER(SCTP_EVENT_ICMP_PROTO_UNREACH),

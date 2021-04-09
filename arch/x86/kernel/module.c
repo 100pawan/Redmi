@@ -85,7 +85,11 @@ void *module_alloc(unsigned long size)
 
 	p = __vmalloc_node_range(size, MODULE_ALIGN,
 				    MODULES_VADDR + get_module_load_offset(),
+<<<<<<< HEAD
 				    MODULES_END, GFP_KERNEL,
+=======
+				    MODULES_END, GFP_KERNEL | __GFP_HIGHMEM,
+>>>>>>> FETCH_HEAD
 				    PAGE_KERNEL_EXEC, 0, NUMA_NO_NODE,
 				    __builtin_return_address(0));
 	if (p && (kasan_module_alloc(p, size) < 0)) {
@@ -125,7 +129,10 @@ int apply_relocate(Elf32_Shdr *sechdrs,
 			*location += sym->st_value;
 			break;
 		case R_386_PC32:
+<<<<<<< HEAD
 		case R_386_PLT32:
+=======
+>>>>>>> FETCH_HEAD
 			/* Add the value, subtract its position */
 			*location += sym->st_value - (uint32_t)location;
 			break;

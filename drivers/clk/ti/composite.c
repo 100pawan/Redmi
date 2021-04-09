@@ -226,7 +226,10 @@ cleanup:
 		if (!cclk->comp_clks[i])
 			continue;
 		list_del(&cclk->comp_clks[i]->link);
+<<<<<<< HEAD
 		kfree(cclk->comp_clks[i]->parent_names);
+=======
+>>>>>>> FETCH_HEAD
 		kfree(cclk->comp_clks[i]);
 	}
 

@@ -1554,6 +1554,7 @@ static inline __u32 skb_queue_len(const struct sk_buff_head *list_)
 }
 
 /**
+<<<<<<< HEAD
  *	skb_queue_len_lockless	- get queue length
  *	@list_: list to measure
  *
@@ -1566,6 +1567,8 @@ static inline __u32 skb_queue_len_lockless(const struct sk_buff_head *list_)
 }
 
 /**
+=======
+>>>>>>> FETCH_HEAD
  *	__skb_queue_head_init - initialize non-spinlock portions of sk_buff_head
  *	@list: queue to initialize
  *
@@ -1768,7 +1771,11 @@ static inline void __skb_unlink(struct sk_buff *skb, struct sk_buff_head *list)
 {
 	struct sk_buff *next, *prev;
 
+<<<<<<< HEAD
 	WRITE_ONCE(list->qlen, list->qlen - 1);
+=======
+	list->qlen--;
+>>>>>>> FETCH_HEAD
 	next	   = skb->next;
 	prev	   = skb->prev;
 	skb->next  = skb->prev = NULL;
@@ -2811,7 +2818,11 @@ static inline int skb_padto(struct sk_buff *skb, unsigned int len)
  *	is untouched. Otherwise it is extended. Returns zero on
  *	success. The skb is freed on error.
  */
+<<<<<<< HEAD
 static inline int __must_check skb_put_padto(struct sk_buff *skb, unsigned int len)
+=======
+static inline int skb_put_padto(struct sk_buff *skb, unsigned int len)
+>>>>>>> FETCH_HEAD
 {
 	unsigned int size = skb->len;
 

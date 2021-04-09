@@ -3,7 +3,10 @@
 #define __LINUX_OVERFLOW_H
 
 #include <linux/compiler.h>
+<<<<<<< HEAD
 #include <linux/limits.h>
+=======
+>>>>>>> FETCH_HEAD
 
 /*
  * In the fallback code below, we need to compute the minimum and
@@ -306,4 +309,8 @@ static inline __must_check size_t __ab_c_size(size_t n, size_t size, size_t c)
 	(_to_shift != _s || *_d < 0 || _a < 0 ||			\
 		(*_d >> _to_shift) != _a);				\
 })
+<<<<<<< HEAD
+=======
+
+>>>>>>> FETCH_HEAD
 #endif /* __LINUX_OVERFLOW_H */

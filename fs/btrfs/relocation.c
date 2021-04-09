@@ -1335,7 +1335,13 @@ static void __del_reloc_root(struct btrfs_root *root)
 			RB_CLEAR_NODE(&node->rb_node);
 		}
 		spin_unlock(&rc->reloc_root_tree.lock);
+<<<<<<< HEAD
 		ASSERT(!node || (struct btrfs_root *)node->data == root);
+=======
+		if (!node)
+			return;
+		BUG_ON((struct btrfs_root *)node->data != root);
+>>>>>>> FETCH_HEAD
 	}
 
 	spin_lock(&root->fs_info->trans_lock);

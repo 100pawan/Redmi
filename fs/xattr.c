@@ -203,6 +203,7 @@ int __vfs_setxattr_noperm(struct dentry *dentry, const char *name,
 	return error;
 }
 
+<<<<<<< HEAD
 /**
  * __vfs_setxattr_locked: set an extended attribute while holding the inode
  * lock
@@ -219,6 +220,12 @@ int
 __vfs_setxattr_locked(struct dentry *dentry, const char *name,
 		const void *value, size_t size, int flags,
 		struct inode **delegated_inode)
+=======
+
+int
+vfs_setxattr(struct dentry *dentry, const char *name, const void *value,
+		size_t size, int flags)
+>>>>>>> FETCH_HEAD
 {
 	struct inode *inode = dentry->d_inode;
 	int error;
@@ -227,10 +234,15 @@ __vfs_setxattr_locked(struct dentry *dentry, const char *name,
 	if (error)
 		return error;
 
+<<<<<<< HEAD
+=======
+	inode_lock(inode);
+>>>>>>> FETCH_HEAD
 	error = security_inode_setxattr(dentry, name, value, size, flags);
 	if (error)
 		goto out;
 
+<<<<<<< HEAD
 	error = try_break_deleg(inode, delegated_inode);
 	if (error)
 		goto out;
@@ -261,6 +273,12 @@ retry_deleg:
 		if (!error)
 			goto retry_deleg;
 	}
+=======
+	error = __vfs_setxattr_noperm(dentry, name, value, size, flags);
+
+out:
+	inode_unlock(inode);
+>>>>>>> FETCH_HEAD
 	return error;
 }
 EXPORT_SYMBOL_GPL(vfs_setxattr);
@@ -416,6 +434,7 @@ __vfs_removexattr(struct dentry *dentry, const char *name)
 }
 EXPORT_SYMBOL(__vfs_removexattr);
 
+<<<<<<< HEAD
 /**
  * __vfs_removexattr_locked: set an extended attribute while holding the inode
  * lock
@@ -428,6 +447,10 @@ EXPORT_SYMBOL(__vfs_removexattr);
 int
 __vfs_removexattr_locked(struct dentry *dentry, const char *name,
 		struct inode **delegated_inode)
+=======
+int
+vfs_removexattr(struct dentry *dentry, const char *name)
+>>>>>>> FETCH_HEAD
 {
 	struct inode *inode = dentry->d_inode;
 	int error;
@@ -436,14 +459,21 @@ __vfs_removexattr_locked(struct dentry *dentry, const char *name,
 	if (error)
 		return error;
 
+<<<<<<< HEAD
+=======
+	inode_lock(inode);
+>>>>>>> FETCH_HEAD
 	error = security_inode_removexattr(dentry, name);
 	if (error)
 		goto out;
 
+<<<<<<< HEAD
 	error = try_break_deleg(inode, delegated_inode);
 	if (error)
 		goto out;
 
+=======
+>>>>>>> FETCH_HEAD
 	error = __vfs_removexattr(dentry, name);
 
 	if (!error) {
@@ -452,6 +482,7 @@ __vfs_removexattr_locked(struct dentry *dentry, const char *name,
 	}
 
 out:
+<<<<<<< HEAD
 	return error;
 }
 EXPORT_SYMBOL_GPL(__vfs_removexattr_locked);
@@ -474,10 +505,17 @@ retry_deleg:
 			goto retry_deleg;
 	}
 
+=======
+	inode_unlock(inode);
+>>>>>>> FETCH_HEAD
 	return error;
 }
 EXPORT_SYMBOL_GPL(vfs_removexattr);
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> FETCH_HEAD
 /*
  * Extended attribute SET operations
  */

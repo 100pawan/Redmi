@@ -151,7 +151,10 @@ static struct clk __init *alchemy_clk_setup_cpu(const char *parent_name,
 {
 	struct clk_init_data id;
 	struct clk_hw *h;
+<<<<<<< HEAD
 	struct clk *clk;
+=======
+>>>>>>> FETCH_HEAD
 
 	h = kzalloc(sizeof(*h), GFP_KERNEL);
 	if (!h)
@@ -164,6 +167,7 @@ static struct clk __init *alchemy_clk_setup_cpu(const char *parent_name,
 	id.ops = &alchemy_clkops_cpu;
 	h->init = &id;
 
+<<<<<<< HEAD
 	clk = clk_register(NULL, h);
 	if (IS_ERR(clk)) {
 		pr_err("failed to register clock\n");
@@ -171,6 +175,9 @@ static struct clk __init *alchemy_clk_setup_cpu(const char *parent_name,
 	}
 
 	return clk;
+=======
+	return clk_register(NULL, h);
+>>>>>>> FETCH_HEAD
 }
 
 /* AUXPLLs ************************************************************/

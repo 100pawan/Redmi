@@ -243,6 +243,7 @@ struct sta_info *sta_info_get_by_idx(struct ieee80211_sub_if_data *sdata,
  */
 void sta_info_free(struct ieee80211_local *local, struct sta_info *sta)
 {
+<<<<<<< HEAD
 	/*
 	 * If we had used sta_info_pre_move_state() then we might not
 	 * have gone through the state transitions down again, so do
@@ -261,6 +262,8 @@ void sta_info_free(struct ieee80211_local *local, struct sta_info *sta)
 			break;
 	}
 
+=======
+>>>>>>> FETCH_HEAD
 	if (sta->rate_ctrl)
 		rate_control_free_sta(sta);
 
@@ -601,7 +604,11 @@ static int sta_info_insert_finish(struct sta_info *sta) __acquires(RCU)
  out_drop_sta:
 	local->num_sta--;
 	synchronize_net();
+<<<<<<< HEAD
 	cleanup_single_sta(sta);
+=======
+	__cleanup_single_sta(sta);
+>>>>>>> FETCH_HEAD
  out_err:
 	mutex_unlock(&local->sta_mtx);
 	kfree(sinfo);
@@ -620,6 +627,7 @@ int sta_info_insert_rcu(struct sta_info *sta) __acquires(RCU)
 
 	err = sta_info_insert_check(sta);
 	if (err) {
+<<<<<<< HEAD
 		sta_info_free(local, sta);
 		mutex_unlock(&local->sta_mtx);
 		rcu_read_lock();
@@ -627,6 +635,21 @@ int sta_info_insert_rcu(struct sta_info *sta) __acquires(RCU)
 	}
 
 	return sta_info_insert_finish(sta);
+=======
+		mutex_unlock(&local->sta_mtx);
+		rcu_read_lock();
+		goto out_free;
+	}
+
+	err = sta_info_insert_finish(sta);
+	if (err)
+		goto out_free;
+
+	return 0;
+ out_free:
+	sta_info_free(local, sta);
+	return err;
+>>>>>>> FETCH_HEAD
 }
 
 int sta_info_insert(struct sta_info *sta)
@@ -958,7 +981,11 @@ static void __sta_info_destroy_part2(struct sta_info *sta)
 	might_sleep();
 	lockdep_assert_held(&local->sta_mtx);
 
+<<<<<<< HEAD
 	if (sta->sta_state == IEEE80211_STA_AUTHORIZED) {
+=======
+	while (sta->sta_state == IEEE80211_STA_AUTHORIZED) {
+>>>>>>> FETCH_HEAD
 		ret = sta_info_move_state(sta, IEEE80211_STA_ASSOC);
 		WARN_ON_ONCE(ret);
 	}

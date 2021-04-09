@@ -251,6 +251,7 @@ int qdisc_set_default(const char *name)
 	return ops ? 0 : -ENOENT;
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_NET_SCH_DEFAULT
 /* Set default value from kernel config */
 static int __init sch_default_qdisc(void)
@@ -260,6 +261,8 @@ static int __init sch_default_qdisc(void)
 late_initcall(sch_default_qdisc);
 #endif
 
+=======
+>>>>>>> FETCH_HEAD
 /* We know handle. Find qdisc among all qdisc's attached to device
  * (root qdisc, all its children, children of children etc.)
  * Note: caller either uses rtnl or rcu_read_lock()
@@ -402,8 +405,12 @@ struct qdisc_rate_table *qdisc_get_rtab(struct tc_ratespec *r,
 {
 	struct qdisc_rate_table *rtab;
 
+<<<<<<< HEAD
 	if (tab == NULL || r->rate == 0 ||
 	    r->cell_log == 0 || r->cell_log >= 32 ||
+=======
+	if (tab == NULL || r->rate == 0 || r->cell_log == 0 ||
+>>>>>>> FETCH_HEAD
 	    nla_len(tab) != TC_RTAB_SIZE)
 		return NULL;
 
@@ -1832,7 +1839,11 @@ static int tc_dump_tclass_qdisc(struct Qdisc *q, struct sk_buff *skb,
 
 static int tc_dump_tclass_root(struct Qdisc *root, struct sk_buff *skb,
 			       struct tcmsg *tcm, struct netlink_callback *cb,
+<<<<<<< HEAD
 			       int *t_p, int s_t, bool recur)
+=======
+			       int *t_p, int s_t)
+>>>>>>> FETCH_HEAD
 {
 	struct Qdisc *q;
 	int b;
@@ -1843,7 +1854,11 @@ static int tc_dump_tclass_root(struct Qdisc *root, struct sk_buff *skb,
 	if (tc_dump_tclass_qdisc(root, skb, tcm, cb, t_p, s_t) < 0)
 		return -1;
 
+<<<<<<< HEAD
 	if (!qdisc_dev(root) || !recur)
+=======
+	if (!qdisc_dev(root))
+>>>>>>> FETCH_HEAD
 		return 0;
 
 	hash_for_each(qdisc_dev(root)->qdisc_hash, b, q, hash) {
@@ -1871,13 +1886,21 @@ static int tc_dump_tclass(struct sk_buff *skb, struct netlink_callback *cb)
 	s_t = cb->args[0];
 	t = 0;
 
+<<<<<<< HEAD
 	if (tc_dump_tclass_root(dev->qdisc, skb, tcm, cb, &t, s_t, true) < 0)
+=======
+	if (tc_dump_tclass_root(dev->qdisc, skb, tcm, cb, &t, s_t) < 0)
+>>>>>>> FETCH_HEAD
 		goto done;
 
 	dev_queue = dev_ingress_queue(dev);
 	if (dev_queue &&
 	    tc_dump_tclass_root(dev_queue->qdisc_sleeping, skb, tcm, cb,
+<<<<<<< HEAD
 				&t, s_t, false) < 0)
+=======
+				&t, s_t) < 0)
+>>>>>>> FETCH_HEAD
 		goto done;
 
 done:

@@ -98,6 +98,7 @@
 #include <trace/events/sched.h>
 #include "walt.h"
 
+<<<<<<< HEAD
 static atomic_t __su_instances;
 
 int su_instances(void)
@@ -130,6 +131,8 @@ void su_exit(void)
 	atomic_dec(&__su_instances);
 }
 
+=======
+>>>>>>> FETCH_HEAD
 ATOMIC_NOTIFIER_HEAD(load_alert_notifier_head);
 
 DEFINE_MUTEX(sched_domains_mutex);
@@ -192,7 +195,12 @@ __read_mostly int scheduler_running;
  * part of the period that we allow rt tasks to run in us.
  * default: 0.95s
  */
+<<<<<<< HEAD
 int sysctl_sched_rt_runtime = 118750;
+=======
+int sysctl_sched_rt_runtime = 950000;
+
+>>>>>>> FETCH_HEAD
 /* cpus with isolated domains */
 cpumask_var_t cpu_isolated_map;
 
@@ -477,8 +485,11 @@ void wake_q_add(struct wake_q_head *head, struct task_struct *task)
 	if (cmpxchg(&node->next, NULL, WAKE_Q_TAIL))
 		return;
 
+<<<<<<< HEAD
 	head->count++;
 
+=======
+>>>>>>> FETCH_HEAD
 	get_task_struct(task);
 
 	/*
@@ -488,10 +499,13 @@ void wake_q_add(struct wake_q_head *head, struct task_struct *task)
 	head->lastp = &node->next;
 }
 
+<<<<<<< HEAD
 static int
 try_to_wake_up(struct task_struct *p, unsigned int state, int wake_flags,
 	       int sibling_count_hint);
 
+=======
+>>>>>>> FETCH_HEAD
 void wake_up_q(struct wake_q_head *head)
 {
 	struct wake_q_node *node = head->first;
@@ -506,10 +520,17 @@ void wake_up_q(struct wake_q_head *head)
 		task->wake_q.next = NULL;
 
 		/*
+<<<<<<< HEAD
 		 * try_to_wake_up() implies a wmb() to pair with the queueing
 		 * in wake_q_add() so as not to miss wakeups.
 		 */
 		try_to_wake_up(task, TASK_NORMAL, 0, head->count);
+=======
+		 * wake_up_process() implies a wmb() to pair with the queueing
+		 * in wake_q_add() so as not to miss wakeups.
+		 */
+		wake_up_process(task);
+>>>>>>> FETCH_HEAD
 		put_task_struct(task);
 	}
 }
@@ -1227,6 +1248,7 @@ static int __set_cpus_allowed_ptr(struct task_struct *p,
 		goto out;
 
 	cpumask_andnot(&allowed_mask, new_mask, cpu_isolated_mask);
+<<<<<<< HEAD
 
 	/*
 	 * Picking a ~random cpu helps in cases where we are changing affinity
@@ -1238,6 +1260,15 @@ static int __set_cpus_allowed_ptr(struct task_struct *p,
 		cpumask_and(&allowed_mask, cpu_valid_mask, new_mask);
 		dest_cpu = cpumask_any(&allowed_mask);
 		if (!cpumask_intersects(new_mask, cpu_valid_mask)) {
+=======
+	cpumask_and(&allowed_mask, &allowed_mask, cpu_valid_mask);
+
+	dest_cpu = cpumask_any(&allowed_mask);
+	if (dest_cpu >= nr_cpu_ids) {
+		cpumask_and(&allowed_mask, cpu_valid_mask, new_mask);
+		dest_cpu = cpumask_any(&allowed_mask);
+		if (dest_cpu >= nr_cpu_ids) {
+>>>>>>> FETCH_HEAD
 			ret = -EINVAL;
 			goto out;
 		}
@@ -1691,16 +1722,24 @@ out:
  * The caller (fork, wakeup) owns p->pi_lock, ->cpus_allowed is stable.
  */
 static inline
+<<<<<<< HEAD
 int select_task_rq(struct task_struct *p, int cpu, int sd_flags, int wake_flags,
 		   int sibling_count_hint)
+=======
+int select_task_rq(struct task_struct *p, int cpu, int sd_flags, int wake_flags)
+>>>>>>> FETCH_HEAD
 {
 	bool allow_isolated = (p->flags & PF_KTHREAD);
 
 	lockdep_assert_held(&p->pi_lock);
 
 	if (tsk_nr_cpus_allowed(p) > 1)
+<<<<<<< HEAD
 		cpu = p->sched_class->select_task_rq(p, cpu, sd_flags, wake_flags,
 						     sibling_count_hint);
+=======
+		cpu = p->sched_class->select_task_rq(p, cpu, sd_flags, wake_flags);
+>>>>>>> FETCH_HEAD
 	else
 		cpu = cpumask_any(tsk_cpus_allowed(p));
 
@@ -1908,9 +1947,24 @@ void scheduler_ipi(void)
 	 */
 	preempt_fold_need_resched();
 
+<<<<<<< HEAD
 	if (llist_empty(&this_rq()->wake_list) && !got_nohz_idle_kick())
 		return;
 
+=======
+	if (llist_empty(&this_rq()->wake_list) && !got_nohz_idle_kick() &&
+							!got_boost_kick())
+		return;
+
+	if (got_boost_kick()) {
+		struct rq *rq = cpu_rq(cpu);
+
+		if (rq->curr->sched_class == &fair_sched_class)
+			check_for_migration(rq, rq->curr);
+		clear_boost_kick(cpu);
+	}
+
+>>>>>>> FETCH_HEAD
 	/*
 	 * Not all reschedule IPI handlers call irq_enter/irq_exit, since
 	 * traditionally all their work was done from the interrupt return
@@ -1987,10 +2041,15 @@ static void ttwu_queue(struct task_struct *p, int cpu, int wake_flags)
 	struct rq_flags rf;
 
 #if defined(CONFIG_SMP)
+<<<<<<< HEAD
 	if (sched_feat(TTWU_QUEUE) &&
 			!idle_cpu(cpu) &&
 			!cpus_share_cache(smp_processor_id(), cpu)) {
 		sched_clock_cpu(cpu); /* Sync clocks across CPUs */
+=======
+	if (sched_feat(TTWU_QUEUE) && !cpus_share_cache(smp_processor_id(), cpu)) {
+		sched_clock_cpu(cpu); /* sync clocks x-cpu */
+>>>>>>> FETCH_HEAD
 		ttwu_queue_remote(p, cpu, wake_flags);
 		return;
 	}
@@ -2099,8 +2158,11 @@ static void ttwu_queue(struct task_struct *p, int cpu, int wake_flags)
  * @p: the thread to be awakened
  * @state: the mask of task states that can be woken
  * @wake_flags: wake modifier flags (WF_*)
+<<<<<<< HEAD
  * @sibling_count_hint: A hint at the number of threads that are being woken up
  *                      in this event.
+=======
+>>>>>>> FETCH_HEAD
  *
  * Put it on the run-queue if it's not already there. The "current"
  * thread is always on the run-queue (except when the actual
@@ -2112,8 +2174,12 @@ static void ttwu_queue(struct task_struct *p, int cpu, int wake_flags)
  * or @state didn't match @p's state.
  */
 static int
+<<<<<<< HEAD
 try_to_wake_up(struct task_struct *p, unsigned int state, int wake_flags,
 	       int sibling_count_hint)
+=======
+try_to_wake_up(struct task_struct *p, unsigned int state, int wake_flags)
+>>>>>>> FETCH_HEAD
 {
 	unsigned long flags;
 	int cpu, success = 0;
@@ -2217,8 +2283,12 @@ try_to_wake_up(struct task_struct *p, unsigned int state, int wake_flags,
 	p->sched_contributes_to_load = !!task_contributes_to_load(p);
 	p->state = TASK_WAKING;
 
+<<<<<<< HEAD
 	cpu = select_task_rq(p, p->wake_cpu, SD_BALANCE_WAKE, wake_flags,
 			     sibling_count_hint);
+=======
+	cpu = select_task_rq(p, p->wake_cpu, SD_BALANCE_WAKE, wake_flags);
+>>>>>>> FETCH_HEAD
 	src_cpu = task_cpu(p);
 	if (src_cpu != cpu) {
 		wake_flags |= WF_MIGRATED;
@@ -2319,13 +2389,21 @@ out:
  */
 int wake_up_process(struct task_struct *p)
 {
+<<<<<<< HEAD
 	return try_to_wake_up(p, TASK_NORMAL, 0, 1);
+=======
+	return try_to_wake_up(p, TASK_NORMAL, 0);
+>>>>>>> FETCH_HEAD
 }
 EXPORT_SYMBOL(wake_up_process);
 
 int wake_up_state(struct task_struct *p, unsigned int state)
 {
+<<<<<<< HEAD
 	return try_to_wake_up(p, state, 0, 1);
+=======
+	return try_to_wake_up(p, state, 0);
+>>>>>>> FETCH_HEAD
 }
 
 /*
@@ -2364,9 +2442,12 @@ static void __sched_fork(unsigned long clone_flags, struct task_struct *p)
 	p->se.vruntime			= 0;
 	p->last_sleep_ts		= 0;
 	p->last_cpu_selected_ts		= 0;
+<<<<<<< HEAD
 	p->boost                = 0;
 	p->boost_expires        = 0;
 	p->boost_period         = 0;
+=======
+>>>>>>> FETCH_HEAD
 
 	INIT_LIST_HEAD(&p->se.group_node);
 
@@ -2743,7 +2824,11 @@ void wake_up_new_task(struct task_struct *p)
 	 * Use __set_task_cpu() to avoid calling sched_class::migrate_task_rq,
 	 * as we're not fully set-up yet.
 	 */
+<<<<<<< HEAD
 	__set_task_cpu(p, select_task_rq(p, task_cpu(p), SD_BALANCE_FORK, 0, 1));
+=======
+	__set_task_cpu(p, select_task_rq(p, task_cpu(p), SD_BALANCE_FORK, 0));
+>>>>>>> FETCH_HEAD
 #endif
 	rq = __task_rq_lock(p, &rf);
 	post_init_entity_util_avg(&p->se);
@@ -3184,7 +3269,11 @@ void sched_exec(void)
 	int dest_cpu;
 
 	raw_spin_lock_irqsave(&p->pi_lock, flags);
+<<<<<<< HEAD
 	dest_cpu = p->sched_class->select_task_rq(p, task_cpu(p), SD_BALANCE_EXEC, 0, 1);
+=======
+	dest_cpu = p->sched_class->select_task_rq(p, task_cpu(p), SD_BALANCE_EXEC, 0);
+>>>>>>> FETCH_HEAD
 	if (dest_cpu == smp_processor_id())
 		goto unlock;
 
@@ -3678,8 +3767,11 @@ static void __sched notrace __schedule(bool preempt)
 		rq->curr = next;
 		++*switch_count;
 
+<<<<<<< HEAD
 		psi_sched_switch(prev, next, !task_on_rq_queued(prev));
 
+=======
+>>>>>>> FETCH_HEAD
 		trace_sched_switch(preempt, prev, next);
 		rq = context_switch(rq, prev, next, &rf); /* unlocks the rq */
 	} else {
@@ -3906,7 +3998,11 @@ asmlinkage __visible void __sched preempt_schedule_irq(void)
 int default_wake_function(wait_queue_t *curr, unsigned mode, int wake_flags,
 			  void *key)
 {
+<<<<<<< HEAD
 	return try_to_wake_up(curr->private, mode, wake_flags, 1);
+=======
+	return try_to_wake_up(curr->private, mode, wake_flags);
+>>>>>>> FETCH_HEAD
 }
 EXPORT_SYMBOL(default_wake_function);
 
@@ -3978,8 +4074,12 @@ void rt_mutex_setprio(struct task_struct *p, int prio)
 	if (dl_prio(prio)) {
 		struct task_struct *pi_task = rt_mutex_get_top_task(p);
 		if (!dl_prio(p->normal_prio) ||
+<<<<<<< HEAD
 		    (pi_task && dl_prio(pi_task->prio) &&
 		     dl_entity_preempt(&pi_task->dl, &p->dl))) {
+=======
+		    (pi_task && dl_entity_preempt(&pi_task->dl, &p->dl))) {
+>>>>>>> FETCH_HEAD
 			p->dl.dl_boosted = 1;
 			queue_flag |= ENQUEUE_REPLENISH;
 		} else
@@ -5068,6 +5168,7 @@ out_put_task:
 	return retval;
 }
 
+<<<<<<< HEAD
 char sched_lib_name[LIB_PATH_LENGTH];
 unsigned int sched_lib_mask_force;
 bool is_sched_lib_based_app(pid_t pid)
@@ -5119,6 +5220,8 @@ put_task_struct:
 	return found;
 }
 
+=======
+>>>>>>> FETCH_HEAD
 static int get_user_cpu_mask(unsigned long __user *user_mask_ptr, unsigned len,
 			     struct cpumask *new_mask)
 {
@@ -7249,7 +7352,11 @@ sd_init(struct sched_domain_topology_level *tl,
 	*sd = (struct sched_domain){
 		.min_interval		= sd_weight,
 		.max_interval		= 2*sd_weight,
+<<<<<<< HEAD
 		.busy_factor		= 1,
+=======
+		.busy_factor		= 32,
+>>>>>>> FETCH_HEAD
 		.imbalance_pct		= 125,
 
 		.cache_nice_tries	= 0,
@@ -7829,10 +7936,25 @@ static int build_sched_domains(const struct cpumask *cpu_map,
 	/* Attach the domains */
 	rcu_read_lock();
 	for_each_cpu(i, cpu_map) {
+<<<<<<< HEAD
+=======
+		int max_cpu = READ_ONCE(d.rd->max_cap_orig_cpu);
+		int min_cpu = READ_ONCE(d.rd->min_cap_orig_cpu);
+
+		if ((max_cpu < 0) || (cpu_rq(i)->cpu_capacity_orig >
+		    cpu_rq(max_cpu)->cpu_capacity_orig))
+			WRITE_ONCE(d.rd->max_cap_orig_cpu, i);
+
+		if ((min_cpu < 0) || (cpu_rq(i)->cpu_capacity_orig <
+		    cpu_rq(min_cpu)->cpu_capacity_orig))
+			WRITE_ONCE(d.rd->min_cap_orig_cpu, i);
+
+>>>>>>> FETCH_HEAD
 		sd = *per_cpu_ptr(d.sd, i);
 
 		cpu_attach_domain(sd, d.rd, i);
 	}
+<<<<<<< HEAD
 
 	/*
 	* The max_cpu_capacity reflect the original capacity which does not
@@ -7845,6 +7967,8 @@ static int build_sched_domains(const struct cpumask *cpu_map,
 						d.rd->max_cap_orig_cpu);
 	}
 
+=======
+>>>>>>> FETCH_HEAD
 	rcu_read_unlock();
 
 	ret = 0;
@@ -8447,7 +8571,11 @@ void __init sched_init(void)
 		rq->avg_idle = 2*sysctl_sched_migration_cost;
 		rq->max_idle_balance_cost = sysctl_sched_migration_cost;
 		rq->push_task = NULL;
+<<<<<<< HEAD
 		walt_sched_init_rq(rq);
+=======
+		walt_sched_init(rq);
+>>>>>>> FETCH_HEAD
 
 		INIT_LIST_HEAD(&rq->cfs_tasks);
 
@@ -9172,9 +9300,14 @@ int sched_rr_handler(struct ctl_table *table, int write,
 	/* make sure that internally we keep jiffies */
 	/* also, writing zero resets timeslice to default */
 	if (!ret && write) {
+<<<<<<< HEAD
 		sched_rr_timeslice =
 			sysctl_sched_rr_timeslice <= 0 ? RR_TIMESLICE :
 			msecs_to_jiffies(sysctl_sched_rr_timeslice);
+=======
+		sched_rr_timeslice = sched_rr_timeslice <= 0 ?
+			RR_TIMESLICE : msecs_to_jiffies(sched_rr_timeslice);
+>>>>>>> FETCH_HEAD
 	}
 	mutex_unlock(&mutex);
 	return ret;
@@ -9718,6 +9851,7 @@ const u32 sched_prio_to_wmult[40] = {
  /*  15 */ 119304647, 148102320, 186737708, 238609294, 286331153,
 };
 
+<<<<<<< HEAD
 /*
  *@boost:should be 0,1,2.
  *@period:boost time based on ms units.
@@ -9738,6 +9872,8 @@ int set_task_boost(int boost, u64 period)
 	return 0;
 }
 
+=======
+>>>>>>> FETCH_HEAD
 #ifdef CONFIG_SCHED_WALT
 /*
  * sched_exit() - Set EXITING_TASK_MARKER in task's ravg.demand field

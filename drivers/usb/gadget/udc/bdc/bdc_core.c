@@ -286,7 +286,10 @@ static void bdc_mem_init(struct bdc *bdc, bool reinit)
 	 * in that case reinit is passed as 1
 	 */
 	if (reinit) {
+<<<<<<< HEAD
 		int i;
+=======
+>>>>>>> FETCH_HEAD
 		/* Enable interrupts */
 		temp = bdc_readl(bdc->regs, BDC_BDCSC);
 		temp |= BDC_GIE;
@@ -296,9 +299,12 @@ static void bdc_mem_init(struct bdc *bdc, bool reinit)
 		/* Initialize SRR to 0 */
 		memset(bdc->srr.sr_bds, 0,
 					NUM_SR_ENTRIES * sizeof(struct bdc_bd));
+<<<<<<< HEAD
 		/* clear ep flags to avoid post disconnect stops/deconfigs */
 		for (i = 1; i < bdc->num_eps; ++i)
 			bdc->bdc_ep_array[i]->flags = 0;
+=======
+>>>>>>> FETCH_HEAD
 	} else {
 		/* One time initiaization only */
 		/* Enable status report function pointers */

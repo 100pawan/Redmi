@@ -266,6 +266,7 @@
 				atmel,adc-use-res = "highres";
 
 				trigger0 {
+<<<<<<< HEAD
 					trigger-name = "external-rising";
 					trigger-value = <0x1>;
 					trigger-external;
@@ -286,6 +287,25 @@
 				trigger3 {
 					trigger-name = "continuous";
 					trigger-value = <0x6>;
+=======
+					trigger-name = "timer-counter-0";
+					trigger-value = <0x1>;
+				};
+				trigger1 {
+					trigger-name = "timer-counter-1";
+					trigger-value = <0x3>;
+				};
+
+				trigger2 {
+					trigger-name = "timer-counter-2";
+					trigger-value = <0x5>;
+				};
+
+				trigger3 {
+					trigger-name = "external";
+					trigger-value = <0x13>;
+					trigger-external;
+>>>>>>> FETCH_HEAD
 				};
 			};
 

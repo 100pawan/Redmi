@@ -159,11 +159,17 @@ struct kvm_hyperv_exit {
 #define KVM_EXIT_HYPERV_SYNIC          1
 #define KVM_EXIT_HYPERV_HCALL          2
 	__u32 type;
+<<<<<<< HEAD
 	__u32 pad1;
 	union {
 		struct {
 			__u32 msr;
 			__u32 pad2;
+=======
+	union {
+		struct {
+			__u32 msr;
+>>>>>>> FETCH_HEAD
 			__u64 control;
 			__u64 evt_page;
 			__u64 msg_page;

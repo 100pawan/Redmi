@@ -989,10 +989,13 @@ set_rcvbuf:
 #endif
 
 	case SO_MAX_PACING_RATE:
+<<<<<<< HEAD
 		if (val != ~0U)
 			cmpxchg(&sk->sk_pacing_status,
 				SK_PACING_NONE,
 				SK_PACING_NEEDED);
+=======
+>>>>>>> FETCH_HEAD
 		sk->sk_max_pacing_rate = val;
 		sk->sk_pacing_rate = min(sk->sk_pacing_rate,
 					 sk->sk_max_pacing_rate);
@@ -1415,7 +1418,10 @@ struct sock *sk_alloc(struct net *net, int family, gfp_t priority,
 		cgroup_sk_alloc(&sk->sk_cgrp_data);
 		sock_update_classid(&sk->sk_cgrp_data);
 		sock_update_netprioidx(&sk->sk_cgrp_data);
+<<<<<<< HEAD
 		sk_tx_queue_clear(sk);
+=======
+>>>>>>> FETCH_HEAD
 	}
 
 	return sk;
@@ -1545,7 +1551,11 @@ struct sock *sk_clone_lock(const struct sock *sk, const gfp_t priority)
 		newsk->sk_userlocks	= sk->sk_userlocks & ~SOCK_BINDPORT_LOCK;
 
 		sock_reset_flag(newsk, SOCK_DONE);
+<<<<<<< HEAD
 		cgroup_sk_clone(&newsk->sk_cgrp_data);
+=======
+		cgroup_sk_alloc(&newsk->sk_cgrp_data);
+>>>>>>> FETCH_HEAD
 		skb_queue_head_init(&newsk->sk_error_queue);
 
 		filter = rcu_dereference_protected(newsk->sk_filter, 1);
@@ -1600,7 +1610,10 @@ struct sock *sk_clone_lock(const struct sock *sk, const gfp_t priority)
 		 */
 		sk_refcnt_debug_inc(newsk);
 		sk_set_socket(newsk, NULL);
+<<<<<<< HEAD
 		sk_tx_queue_clear(newsk);
+=======
+>>>>>>> FETCH_HEAD
 		newsk->sk_wq = NULL;
 
 		if (newsk->sk_prot->sockets_allocated)
@@ -2335,6 +2348,7 @@ int sock_no_mmap(struct file *file, struct socket *sock, struct vm_area_struct *
 }
 EXPORT_SYMBOL(sock_no_mmap);
 
+<<<<<<< HEAD
 /*
  * When a file is received (via SCM_RIGHTS, etc), we must bump the
  * various sock-based usage counts.
@@ -2356,6 +2370,8 @@ void __receive_sock(struct file *file)
 	}
 }
 
+=======
+>>>>>>> FETCH_HEAD
 ssize_t sock_no_sendpage(struct socket *sock, struct page *page, int offset, size_t size, int flags)
 {
 	ssize_t res;

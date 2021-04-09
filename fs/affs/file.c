@@ -427,6 +427,7 @@ static int affs_write_begin(struct file *file, struct address_space *mapping,
 	return ret;
 }
 
+<<<<<<< HEAD
 static int affs_write_end(struct file *file, struct address_space *mapping,
 			  loff_t pos, unsigned int len, unsigned int copied,
 			  struct page *page, void *fsdata)
@@ -445,6 +446,8 @@ static int affs_write_end(struct file *file, struct address_space *mapping,
 	return ret;
 }
 
+=======
+>>>>>>> FETCH_HEAD
 static sector_t _affs_bmap(struct address_space *mapping, sector_t block)
 {
 	return generic_block_bmap(mapping,block,affs_get_block);
@@ -454,7 +457,11 @@ const struct address_space_operations affs_aops = {
 	.readpage = affs_readpage,
 	.writepage = affs_writepage,
 	.write_begin = affs_write_begin,
+<<<<<<< HEAD
 	.write_end = affs_write_end,
+=======
+	.write_end = generic_write_end,
+>>>>>>> FETCH_HEAD
 	.direct_IO = affs_direct_IO,
 	.bmap = _affs_bmap
 };
@@ -811,12 +818,15 @@ done:
 	if (tmp > inode->i_size)
 		inode->i_size = AFFS_I(inode)->mmu_private = tmp;
 
+<<<<<<< HEAD
 	/* Clear Archived bit on file writes, as AmigaOS would do */
 	if (AFFS_I(inode)->i_protect & FIBF_ARCHIVED) {
 		AFFS_I(inode)->i_protect &= ~FIBF_ARCHIVED;
 		mark_inode_dirty(inode);
 	}
 
+=======
+>>>>>>> FETCH_HEAD
 err_first_bh:
 	unlock_page(page);
 	put_page(page);

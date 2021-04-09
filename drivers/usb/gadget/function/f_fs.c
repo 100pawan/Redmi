@@ -25,7 +25,10 @@
 #include <linux/module.h>
 #include <linux/uio.h>
 #include <linux/ipc_logging.h>
+<<<<<<< HEAD
 #include <linux/freezer.h>
+=======
+>>>>>>> FETCH_HEAD
 #include <asm/unaligned.h>
 
 #include <linux/usb/composite.h>
@@ -1037,7 +1040,11 @@ static ssize_t ffs_epfile_io(struct file *file, struct ffs_io_data *io_data)
 		 * and wait for next epfile open to happen
 		 */
 		if (!atomic_read(&epfile->error)) {
+<<<<<<< HEAD
 			ret = wait_event_freezable(epfile->wait,
+=======
+			ret = wait_event_interruptible(epfile->wait,
+>>>>>>> FETCH_HEAD
 					(ep = epfile->ep));
 			if (ret < 0)
 				return -EINTR;
@@ -1473,11 +1480,18 @@ static long ffs_epfile_ioctl(struct file *file, unsigned code,
 		case FUNCTIONFS_ENDPOINT_DESC:
 		{
 			int desc_idx;
+<<<<<<< HEAD
 			struct usb_endpoint_descriptor desc1, *desc;
 
 			switch (epfile->ffs->gadget->speed) {
 			case USB_SPEED_SUPER:
 			case USB_SPEED_SUPER_PLUS:
+=======
+			struct usb_endpoint_descriptor *desc;
+
+			switch (epfile->ffs->gadget->speed) {
+			case USB_SPEED_SUPER:
+>>>>>>> FETCH_HEAD
 				desc_idx = 2;
 				break;
 			case USB_SPEED_HIGH:
@@ -1486,12 +1500,19 @@ static long ffs_epfile_ioctl(struct file *file, unsigned code,
 			default:
 				desc_idx = 0;
 			}
+<<<<<<< HEAD
 
 			desc = epfile->ep->descs[desc_idx];
 			memcpy(&desc1, desc, desc->bLength);
 
 			spin_unlock_irq(&epfile->ffs->eps_lock);
 			ret = copy_to_user((void *)value, &desc1, desc1.bLength);
+=======
+			desc = epfile->ep->descs[desc_idx];
+
+			spin_unlock_irq(&epfile->ffs->eps_lock);
+			ret = copy_to_user((void *)value, desc, sizeof(*desc));
+>>>>>>> FETCH_HEAD
 			if (ret)
 				ret = -EFAULT;
 			return ret;
@@ -2064,12 +2085,22 @@ static void ffs_data_reset(struct ffs_data *ffs)
 	ffs->setup_state = FFS_NO_SETUP;
 	ffs->flags = 0;
 
+<<<<<<< HEAD
 	ffs->ms_os_descs_ext_prop_count = 0;
 	ffs->ms_os_descs_ext_prop_name_len = 0;
 	ffs->ms_os_descs_ext_prop_data_len = 0;
 
 	ffs_log("exit: state %d setup_state %d flag %lu", ffs->state,
 		ffs->setup_state, ffs->flags);
+=======
+
+	ffs_log("exit: state %d setup_state %d flag %lu", ffs->state,
+		ffs->setup_state, ffs->flags);
+
+	ffs->ms_os_descs_ext_prop_count = 0;
+	ffs->ms_os_descs_ext_prop_name_len = 0;
+	ffs->ms_os_descs_ext_prop_data_len = 0;
+>>>>>>> FETCH_HEAD
 }
 
 
@@ -3529,8 +3560,12 @@ static int _ffs_func_bind(struct usb_configuration *c,
 	}
 
 	if (likely(super)) {
+<<<<<<< HEAD
 		func->function.ss_descriptors = func->function.ssp_descriptors =
 			vla_ptr(vlabuf, d, ss_descs);
+=======
+		func->function.ss_descriptors = vla_ptr(vlabuf, d, ss_descs);
+>>>>>>> FETCH_HEAD
 		ss_len = ffs_do_descs(ffs->ss_descs_count,
 				vla_ptr(vlabuf, d, raw_descs) + fs_len + hs_len,
 				d_raw_descs__sz - fs_len - hs_len,
@@ -4196,7 +4231,10 @@ static void ffs_func_unbind(struct usb_configuration *c,
 	func->function.fs_descriptors = NULL;
 	func->function.hs_descriptors = NULL;
 	func->function.ss_descriptors = NULL;
+<<<<<<< HEAD
 	func->function.ssp_descriptors = NULL;
+=======
+>>>>>>> FETCH_HEAD
 	func->interfaces_nums = NULL;
 
 	ffs_event_add(ffs, FUNCTIONFS_UNBIND);

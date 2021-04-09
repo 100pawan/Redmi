@@ -335,10 +335,15 @@ static void acm_ctrl_irq(struct urb *urb)
 			acm->iocount.dsr++;
 		if (difference & ACM_CTRL_DCD)
 			acm->iocount.dcd++;
+<<<<<<< HEAD
 		if (newctrl & ACM_CTRL_BRK) {
 			acm->iocount.brk++;
 			tty_insert_flip_char(&acm->port, 0, TTY_BREAK);
 		}
+=======
+		if (newctrl & ACM_CTRL_BRK)
+			acm->iocount.brk++;
+>>>>>>> FETCH_HEAD
 		if (newctrl & ACM_CTRL_RI)
 			acm->iocount.rng++;
 		if (newctrl & ACM_CTRL_FRAMING)
@@ -543,8 +548,12 @@ static void acm_port_dtr_rts(struct tty_port *port, int raise)
 
 	res = acm_set_control(acm, val);
 	if (res && (acm->ctrl_caps & USB_CDC_CAP_LINE))
+<<<<<<< HEAD
 		/* This is broken in too many devices to spam the logs */
 		dev_dbg(&acm->control->dev, "failed to set dtr/rts\n");
+=======
+		dev_err(&acm->control->dev, "failed to set dtr/rts\n");
+>>>>>>> FETCH_HEAD
 }
 
 static int acm_port_activate(struct tty_port *port, struct tty_struct *tty)
@@ -1181,6 +1190,7 @@ static int acm_probe(struct usb_interface *intf,
 			}
 		}
 	} else {
+<<<<<<< HEAD
 		int class = -1;
 
 		data_intf_num = union_header->bSlaveInterface0;
@@ -1196,6 +1206,11 @@ static int acm_probe(struct usb_interface *intf,
 			control_interface = data_interface = intf;
 			goto look_for_collapsed_interface;
 		}
+=======
+		data_intf_num = union_header->bSlaveInterface0;
+		control_interface = usb_ifnum_to_if(usb_dev, union_header->bMasterInterface0);
+		data_interface = usb_ifnum_to_if(usb_dev, data_intf_num);
+>>>>>>> FETCH_HEAD
 	}
 
 	if (!control_interface || !data_interface) {
@@ -1460,11 +1475,14 @@ skip_countries:
 
 	return 0;
 alloc_fail8:
+<<<<<<< HEAD
 	if (!acm->combined_interfaces) {
 		/* Clear driver data so that disconnect() returns early. */
 		usb_set_intfdata(data_interface, NULL);
 		usb_driver_release_interface(&acm_driver, data_interface);
 	}
+=======
+>>>>>>> FETCH_HEAD
 	if (acm->country_codes) {
 		device_remove_file(&acm->control->dev,
 				&dev_attr_wCountryCodes);
@@ -1647,8 +1665,11 @@ static int acm_reset_resume(struct usb_interface *intf)
 
 static const struct usb_device_id acm_ids[] = {
 	/* quirky and broken devices */
+<<<<<<< HEAD
 	{ USB_DEVICE(0x0424, 0x274e), /* Microchip Technology, Inc. (formerly SMSC) */
 	  .driver_info = DISABLE_ECHO, }, /* DISABLE ECHO in termios flag */
+=======
+>>>>>>> FETCH_HEAD
 	{ USB_DEVICE(0x076d, 0x0006), /* Denso Cradle CU-321 */
 	.driver_info = NO_UNION_NORMAL, },/* has no union descriptor */
 	{ USB_DEVICE(0x17ef, 0x7000), /* Lenovo USB modem */
@@ -1656,6 +1677,7 @@ static const struct usb_device_id acm_ids[] = {
 	{ USB_DEVICE(0x0870, 0x0001), /* Metricom GS Modem */
 	.driver_info = NO_UNION_NORMAL, /* has no union descriptor */
 	},
+<<<<<<< HEAD
 	{ USB_DEVICE(0x045b, 0x023c),	/* Renesas USB Download mode */
 	.driver_info = DISABLE_ECHO,	/* Don't echo banner */
 	},
@@ -1665,6 +1687,8 @@ static const struct usb_device_id acm_ids[] = {
 	{ USB_DEVICE(0x045b, 0x024D),	/* Renesas USB Download mode */
 	.driver_info = DISABLE_ECHO,	/* Don't echo banner */
 	},
+=======
+>>>>>>> FETCH_HEAD
 	{ USB_DEVICE(0x0e8d, 0x0003), /* FIREFLY, MediaTek Inc; andrey.arapov@gmail.com */
 	.driver_info = NO_UNION_NORMAL, /* has no union descriptor */
 	},
@@ -1857,10 +1881,13 @@ static const struct usb_device_id acm_ids[] = {
 	{ USB_DEVICE(0x04d8, 0x0083),	/* Bootloader mode */
 	.driver_info = IGNORE_DEVICE,
 	},
+<<<<<<< HEAD
 
 	{ USB_DEVICE(0x04d8, 0xf58b),
 	.driver_info = IGNORE_DEVICE,
 	},
+=======
+>>>>>>> FETCH_HEAD
 #endif
 
 	/*Samsung phone in firmware update mode */
@@ -1873,6 +1900,7 @@ static const struct usb_device_id acm_ids[] = {
 	.driver_info = IGNORE_DEVICE,
 	},
 
+<<<<<<< HEAD
 	/* Exclude ETAS ES58x */
 	{ USB_DEVICE(0x108c, 0x0159), /* ES581.4 */
 	.driver_info = IGNORE_DEVICE,
@@ -1884,6 +1912,8 @@ static const struct usb_device_id acm_ids[] = {
 	.driver_info = IGNORE_DEVICE,
 	},
 
+=======
+>>>>>>> FETCH_HEAD
 	{ USB_DEVICE(0x1bc7, 0x0021), /* Telit 3G ACM only composition */
 	.driver_info = SEND_ZERO_PACKET,
 	},
@@ -1891,11 +1921,14 @@ static const struct usb_device_id acm_ids[] = {
 	.driver_info = SEND_ZERO_PACKET,
 	},
 
+<<<<<<< HEAD
 	/* Exclude Goodix Fingerprint Reader */
 	{ USB_DEVICE(0x27c6, 0x5395),
 	.driver_info = IGNORE_DEVICE,
 	},
 
+=======
+>>>>>>> FETCH_HEAD
 	/* control interfaces without any protocol set */
 	{ USB_INTERFACE_INFO(USB_CLASS_COMM, USB_CDC_SUBCLASS_ACM,
 		USB_CDC_PROTO_NONE) },

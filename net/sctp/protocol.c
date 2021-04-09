@@ -210,7 +210,10 @@ int sctp_copy_local_addr_list(struct net *net, struct sctp_bind_addr *bp,
 			 * sock as well as the remote peer.
 			 */
 			if ((((AF_INET == addr->a.sa.sa_family) &&
+<<<<<<< HEAD
 			      (copy_flags & SCTP_ADDR4_ALLOWED) &&
+=======
+>>>>>>> FETCH_HEAD
 			      (copy_flags & SCTP_ADDR4_PEERSUPP))) ||
 			    (((AF_INET6 == addr->a.sa.sa_family) &&
 			      (copy_flags & SCTP_ADDR6_ALLOWED) &&
@@ -1427,10 +1430,17 @@ static __init int sctp_init(void)
 	 * The methodology is similar to that of the tcp hash tables.
 	 * Though not identical.  Start by getting a goal size
 	 */
+<<<<<<< HEAD
 	if (totalram_pages() >= (128 * 1024))
 		goal = totalram_pages() >> (22 - PAGE_SHIFT);
 	else
 		goal = totalram_pages() >> (24 - PAGE_SHIFT);
+=======
+	if (totalram_pages >= (128 * 1024))
+		goal = totalram_pages >> (22 - PAGE_SHIFT);
+	else
+		goal = totalram_pages >> (24 - PAGE_SHIFT);
+>>>>>>> FETCH_HEAD
 
 	/* Then compute the page order for said goal */
 	order = get_order(goal);

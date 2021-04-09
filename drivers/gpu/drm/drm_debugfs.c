@@ -287,6 +287,7 @@ static ssize_t connector_write(struct file *file, const char __user *ubuf,
 
 	buf[len] = '\0';
 
+<<<<<<< HEAD
 	if (sysfs_streq(buf, "on"))
 		connector->force = DRM_FORCE_ON;
 	else if (sysfs_streq(buf, "digital"))
@@ -294,6 +295,15 @@ static ssize_t connector_write(struct file *file, const char __user *ubuf,
 	else if (sysfs_streq(buf, "off"))
 		connector->force = DRM_FORCE_OFF;
 	else if (sysfs_streq(buf, "unspecified"))
+=======
+	if (!strcmp(buf, "on"))
+		connector->force = DRM_FORCE_ON;
+	else if (!strcmp(buf, "digital"))
+		connector->force = DRM_FORCE_ON_DIGITAL;
+	else if (!strcmp(buf, "off"))
+		connector->force = DRM_FORCE_OFF;
+	else if (!strcmp(buf, "unspecified"))
+>>>>>>> FETCH_HEAD
 		connector->force = DRM_FORCE_UNSPECIFIED;
 	else
 		return -EINVAL;

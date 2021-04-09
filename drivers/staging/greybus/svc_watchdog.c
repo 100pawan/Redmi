@@ -90,7 +90,11 @@ static void do_work(struct work_struct *work)
 			dev_err(&svc->dev, "Resetting the greybus network, watch out!!!\n");
 
 			INIT_DELAYED_WORK(&reset_work, greybus_reset);
+<<<<<<< HEAD
 			queue_delayed_work(system_power_efficient_wq, &reset_work, HZ / 2);
+=======
+			schedule_delayed_work(&reset_work, HZ / 2);
+>>>>>>> FETCH_HEAD
 
 			/*
 			 * Disable ourselves, we don't want to trip again unless
@@ -102,7 +106,11 @@ static void do_work(struct work_struct *work)
 
 	/* resubmit our work to happen again, if we are still "alive" */
 	if (watchdog->enabled)
+<<<<<<< HEAD
 		queue_delayed_work(system_power_efficient_wq, &watchdog->work, SVC_WATCHDOG_PERIOD);
+=======
+		schedule_delayed_work(&watchdog->work, SVC_WATCHDOG_PERIOD);
+>>>>>>> FETCH_HEAD
 }
 
 int gb_svc_watchdog_create(struct gb_svc *svc)
@@ -177,7 +185,11 @@ int gb_svc_watchdog_enable(struct gb_svc *svc)
 		return 0;
 
 	watchdog->enabled = true;
+<<<<<<< HEAD
 	queue_delayed_work(system_power_efficient_wq, &watchdog->work, SVC_WATCHDOG_PERIOD);
+=======
+	schedule_delayed_work(&watchdog->work, SVC_WATCHDOG_PERIOD);
+>>>>>>> FETCH_HEAD
 	return 0;
 }
 

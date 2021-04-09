@@ -522,10 +522,13 @@ struct mlx4_en_stats_bitmap {
 	struct mutex mutex; /* for mutual access to stats bitmap */
 };
 
+<<<<<<< HEAD
 enum {
 	MLX4_EN_STATE_FLAG_RESTARTING,
 };
 
+=======
+>>>>>>> FETCH_HEAD
 struct mlx4_en_priv {
 	struct mlx4_en_dev *mdev;
 	struct mlx4_en_port_profile *prof;
@@ -590,7 +593,11 @@ struct mlx4_en_priv {
 	struct mlx4_en_cq *rx_cq[MAX_RX_RINGS];
 	struct mlx4_qp drop_qp;
 	struct work_struct rx_mode_task;
+<<<<<<< HEAD
 	struct work_struct restart_task;
+=======
+	struct work_struct watchdog_task;
+>>>>>>> FETCH_HEAD
 	struct work_struct linkstate_task;
 	struct delayed_work stats_task;
 	struct delayed_work service_task;
@@ -636,7 +643,10 @@ struct mlx4_en_priv {
 	u32 pflags;
 	u8 rss_key[MLX4_EN_RSS_KEY_SIZE];
 	u8 rss_hash_fn;
+<<<<<<< HEAD
 	unsigned long state;
+=======
+>>>>>>> FETCH_HEAD
 };
 
 enum mlx4_en_wol {
@@ -773,7 +783,10 @@ void mlx4_en_ptp_overflow_check(struct mlx4_en_dev *mdev);
 #define DEV_FEATURE_CHANGED(dev, new_features, feature) \
 	((dev->features & feature) ^ (new_features & feature))
 
+<<<<<<< HEAD
 int mlx4_en_moderation_update(struct mlx4_en_priv *priv);
+=======
+>>>>>>> FETCH_HEAD
 int mlx4_en_reset_config(struct net_device *dev,
 			 struct hwtstamp_config ts_config,
 			 netdev_features_t new_features);

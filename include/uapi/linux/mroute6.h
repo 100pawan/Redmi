@@ -1,7 +1,11 @@
 #ifndef _UAPI__LINUX_MROUTE6_H
 #define _UAPI__LINUX_MROUTE6_H
 
+<<<<<<< HEAD
 #include <linux/const.h>
+=======
+#include <linux/kernel.h>
+>>>>>>> FETCH_HEAD
 #include <linux/types.h>
 #include <linux/sockios.h>
 #include <linux/in6.h>		/* For struct sockaddr_in6. */

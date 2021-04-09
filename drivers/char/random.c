@@ -1914,7 +1914,11 @@ static long random_ioctl(struct file *f, unsigned int cmd, unsigned long arg)
 			return -EPERM;
 		if (crng_init < 2)
 			return -ENODATA;
+<<<<<<< HEAD
 		crng_reseed(&primary_crng, &input_pool);
+=======
+		crng_reseed(&primary_crng, NULL);
+>>>>>>> FETCH_HEAD
 		crng_global_init_time = jiffies - 1;
 		return 0;
 	default:
@@ -2153,8 +2157,15 @@ u32 get_random_u32(void)
 {
 	u32 ret;
 	struct batched_entropy *batch;
+<<<<<<< HEAD
 	if (arch_get_random_int(&ret))
 		return ret;
+=======
+
+	if (arch_get_random_int(&ret))
+		return ret;
+
+>>>>>>> FETCH_HEAD
 	batch = &get_cpu_var(batched_entropy_u32);
 	if (batch->position % ARRAY_SIZE(batch->entropy_u32) == 0) {
 		extract_crng((u8 *)batch->entropy_u32);

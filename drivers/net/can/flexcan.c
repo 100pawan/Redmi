@@ -383,7 +383,11 @@ static int flexcan_chip_freeze(struct flexcan_priv *priv)
 	u32 reg;
 
 	reg = flexcan_read(&regs->mcr);
+<<<<<<< HEAD
 	reg |= FLEXCAN_MCR_FRZ | FLEXCAN_MCR_HALT;
+=======
+	reg |= FLEXCAN_MCR_HALT;
+>>>>>>> FETCH_HEAD
 	flexcan_write(reg, &regs->mcr);
 
 	while (timeout-- && !(flexcan_read(&regs->mcr) & FLEXCAN_MCR_FRZ_ACK))
@@ -1098,6 +1102,7 @@ static int register_flexcandev(struct net_device *dev)
 	if (err)
 		goto out_chip_disable;
 
+<<<<<<< HEAD
 	/* set freeze, halt */
 	err = flexcan_chip_freeze(priv);
 	if (err)
@@ -1106,6 +1111,12 @@ static int register_flexcandev(struct net_device *dev)
 	/* activate FIFO, restrict register access */
 	reg = flexcan_read(&regs->mcr);
 	reg |=  FLEXCAN_MCR_FEN | FLEXCAN_MCR_SUPV;
+=======
+	/* set freeze, halt and activate FIFO, restrict register access */
+	reg = flexcan_read(&regs->mcr);
+	reg |= FLEXCAN_MCR_FRZ | FLEXCAN_MCR_HALT |
+		FLEXCAN_MCR_FEN | FLEXCAN_MCR_SUPV;
+>>>>>>> FETCH_HEAD
 	flexcan_write(reg, &regs->mcr);
 
 	/* Currently we only support newer versions of this core

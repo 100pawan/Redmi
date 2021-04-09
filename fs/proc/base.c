@@ -80,7 +80,10 @@
 #include <linux/poll.h>
 #include <linux/nsproxy.h>
 #include <linux/oom.h>
+<<<<<<< HEAD
 #include <linux/oom_score_notifier.h>
+=======
+>>>>>>> FETCH_HEAD
 #include <linux/elf.h>
 #include <linux/pid_namespace.h>
 #include <linux/user_namespace.h>
@@ -577,7 +580,11 @@ static const struct file_operations proc_lstats_operations = {
 static int proc_oom_score(struct seq_file *m, struct pid_namespace *ns,
 			  struct pid *pid, struct task_struct *task)
 {
+<<<<<<< HEAD
 	unsigned long totalpages = totalram_pages() + total_swap_pages;
+=======
+	unsigned long totalpages = totalram_pages + total_swap_pages;
+>>>>>>> FETCH_HEAD
 	unsigned long points = 0;
 
 	points = oom_badness(task, NULL, NULL, totalpages) *
@@ -1072,7 +1079,10 @@ static int __set_oom_adj(struct file *file, int oom_adj, bool legacy)
 	static DEFINE_MUTEX(oom_adj_mutex);
 	struct mm_struct *mm = NULL;
 	struct task_struct *task;
+<<<<<<< HEAD
 	int old_oom_score_adj = 0;
+=======
+>>>>>>> FETCH_HEAD
 	int err = 0;
 
 	task = get_proc_task(file_inode(file));
@@ -1118,6 +1128,7 @@ static int __set_oom_adj(struct file *file, int oom_adj, bool legacy)
 		}
 	}
 
+<<<<<<< HEAD
 #ifdef CONFIG_OOM_SCORE_NOTIFIER
 	old_oom_score_adj = task->signal->oom_score_adj;
 #endif
@@ -1135,6 +1146,11 @@ static int __set_oom_adj(struct file *file, int oom_adj, bool legacy)
 	}
 #endif
 
+=======
+	task->signal->oom_score_adj = oom_adj;
+	if (!legacy && has_capability_noaudit(current, CAP_SYS_RESOURCE))
+		task->signal->oom_score_adj_min = (short)oom_adj;
+>>>>>>> FETCH_HEAD
 	trace_oom_score_adj_update(task);
 
 	if (mm) {
@@ -2996,6 +3012,7 @@ static const struct file_operations proc_hung_task_detection_enabled_operations 
 };
 #endif
 
+<<<<<<< HEAD
 static ssize_t proc_sched_task_boost_read(struct file *file,
 			   char __user *buf, size_t count, loff_t *ppos)
 {
@@ -3106,6 +3123,8 @@ static const struct file_operations proc_task_boost_period_operations = {
 	.llseek		= generic_file_llseek,
 };
 
+=======
+>>>>>>> FETCH_HEAD
 #ifdef CONFIG_USER_NS
 static int proc_id_map_open(struct inode *inode, struct file *file,
 	const struct seq_operations *seq_ops)
@@ -3275,8 +3294,11 @@ static const struct pid_entry tgid_base_stuff[] = {
 #ifdef CONFIG_SCHED_WALT
 	REG("sched_init_task_load",      S_IRUGO|S_IWUSR, proc_pid_sched_init_task_load_operations),
 	REG("sched_group_id",      S_IRUGO|S_IWUGO, proc_pid_sched_group_id_operations),
+<<<<<<< HEAD
 	REG("sched_boost", 0666,  proc_task_boost_enabled_operations),
 	REG("sched_boost_period_ms", 0666, proc_task_boost_period_operations),
+=======
+>>>>>>> FETCH_HEAD
 #endif
 #ifdef CONFIG_SCHED_DEBUG
 	REG("sched",      S_IRUGO|S_IWUSR, proc_pid_sched_operations),

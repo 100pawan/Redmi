@@ -377,7 +377,10 @@ static void handle_tx(struct vhost_net *net)
 	size_t hdr_size;
 	struct socket *sock;
 	struct vhost_net_ubuf_ref *uninitialized_var(ubufs);
+<<<<<<< HEAD
 	struct ubuf_info *ubuf;
+=======
+>>>>>>> FETCH_HEAD
 	bool zcopy, zcopy_used;
 	int sent_pkts = 0;
 
@@ -445,7 +448,13 @@ static void handle_tx(struct vhost_net *net)
 
 		/* use msg_control to pass vhost zerocopy ubuf info to skb */
 		if (zcopy_used) {
+<<<<<<< HEAD
 			ubuf = nvq->ubuf_info + nvq->upend_idx;
+=======
+			struct ubuf_info *ubuf;
+			ubuf = nvq->ubuf_info + nvq->upend_idx;
+
+>>>>>>> FETCH_HEAD
 			vq->heads[nvq->upend_idx].id = cpu_to_vhost32(vq, head);
 			vq->heads[nvq->upend_idx].len = VHOST_DMA_IN_PROGRESS;
 			ubuf->callback = vhost_zerocopy_callback;
@@ -464,8 +473,12 @@ static void handle_tx(struct vhost_net *net)
 		err = sock->ops->sendmsg(sock, &msg, len);
 		if (unlikely(err < 0)) {
 			if (zcopy_used) {
+<<<<<<< HEAD
 				if (vq->heads[ubuf->desc].len == VHOST_DMA_IN_PROGRESS)
 					vhost_net_ubuf_put(ubufs);
+=======
+				vhost_net_ubuf_put(ubufs);
+>>>>>>> FETCH_HEAD
 				nvq->upend_idx = ((unsigned)nvq->upend_idx - 1)
 					% UIO_MAXIOV;
 			}

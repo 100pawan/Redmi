@@ -1585,6 +1585,7 @@ static void fc_exch_recv_seq_resp(struct fc_exch_mgr *mp, struct fc_frame *fp)
 		rc = fc_exch_done_locked(ep);
 		WARN_ON(fc_seq_exch(sp) != ep);
 		spin_unlock_bh(&ep->ex_lock);
+<<<<<<< HEAD
 		if (!rc) {
 			fc_exch_delete(ep);
 		} else {
@@ -1592,6 +1593,10 @@ static void fc_exch_recv_seq_resp(struct fc_exch_mgr *mp, struct fc_frame *fp)
 					"hence skip calling the resp\n");
 			goto skip_resp;
 		}
+=======
+		if (!rc)
+			fc_exch_delete(ep);
+>>>>>>> FETCH_HEAD
 	}
 
 	/*
@@ -1610,7 +1615,10 @@ static void fc_exch_recv_seq_resp(struct fc_exch_mgr *mp, struct fc_frame *fp)
 	if (!fc_invoke_resp(ep, sp, fp))
 		fc_frame_free(fp);
 
+<<<<<<< HEAD
 skip_resp:
+=======
+>>>>>>> FETCH_HEAD
 	fc_exch_release(ep);
 	return;
 rel:
@@ -1854,6 +1862,7 @@ static void fc_exch_reset(struct fc_exch *ep)
 
 	fc_exch_hold(ep);
 
+<<<<<<< HEAD
 	if (!rc) {
 		fc_exch_delete(ep);
 	} else {
@@ -1864,6 +1873,12 @@ static void fc_exch_reset(struct fc_exch *ep)
 
 	fc_invoke_resp(ep, sp, ERR_PTR(-FC_EX_CLOSED));
 skip_resp:
+=======
+	if (!rc)
+		fc_exch_delete(ep);
+
+	fc_invoke_resp(ep, sp, ERR_PTR(-FC_EX_CLOSED));
+>>>>>>> FETCH_HEAD
 	fc_seq_set_resp(sp, NULL, ep->arg);
 	fc_exch_release(ep);
 }

@@ -59,12 +59,15 @@ struct tp_probes {
 	struct tracepoint_func probes[0];
 };
 
+<<<<<<< HEAD
 /* Called in removal of a func but failed to allocate a new tp_funcs */
 static void tp_stub_func(void)
 {
 	return;
 }
 
+=======
+>>>>>>> FETCH_HEAD
 static inline void *allocate_probes(int count)
 {
 	struct tp_probes *p  = kmalloc(count * sizeof(struct tracepoint_func)
@@ -103,7 +106,10 @@ func_add(struct tracepoint_func **funcs, struct tracepoint_func *tp_func,
 {
 	struct tracepoint_func *old, *new;
 	int nr_probes = 0;
+<<<<<<< HEAD
 	int stub_funcs = 0;
+=======
+>>>>>>> FETCH_HEAD
 	int pos = -1;
 
 	if (WARN_ON(!tp_func->func))
@@ -120,6 +126,7 @@ func_add(struct tracepoint_func **funcs, struct tracepoint_func *tp_func,
 			if (old[nr_probes].func == tp_func->func &&
 			    old[nr_probes].data == tp_func->data)
 				return ERR_PTR(-EEXIST);
+<<<<<<< HEAD
 			if (old[nr_probes].func == tp_stub_func)
 				stub_funcs++;
 		}
@@ -148,6 +155,16 @@ func_add(struct tracepoint_func **funcs, struct tracepoint_func *tp_func,
 				nr_probes--; /* Account for insertion */
 
 		} else if (pos < 0) {
+=======
+		}
+	}
+	/* + 2 : one for new probe, one for NULL func */
+	new = allocate_probes(nr_probes + 2);
+	if (new == NULL)
+		return ERR_PTR(-ENOMEM);
+	if (old) {
+		if (pos < 0) {
+>>>>>>> FETCH_HEAD
 			pos = nr_probes;
 			memcpy(new, old, nr_probes * sizeof(struct tracepoint_func));
 		} else {
@@ -181,9 +198,14 @@ static void *func_remove(struct tracepoint_func **funcs,
 	/* (N -> M), (N > 1, M >= 0) probes */
 	if (tp_func->func) {
 		for (nr_probes = 0; old[nr_probes].func; nr_probes++) {
+<<<<<<< HEAD
 			if ((old[nr_probes].func == tp_func->func &&
 			     old[nr_probes].data == tp_func->data) ||
 			    old[nr_probes].func == tp_stub_func)
+=======
+			if (old[nr_probes].func == tp_func->func &&
+			     old[nr_probes].data == tp_func->data)
+>>>>>>> FETCH_HEAD
 				nr_del++;
 		}
 	}
@@ -202,6 +224,7 @@ static void *func_remove(struct tracepoint_func **funcs,
 		/* N -> M, (N > 1, M > 0) */
 		/* + 1 for NULL */
 		new = allocate_probes(nr_probes - nr_del + 1);
+<<<<<<< HEAD
 		if (new) {
 			for (i = 0; old[i].func; i++)
 				if ((old[i].func != tp_func->func
@@ -228,6 +251,16 @@ static void *func_remove(struct tracepoint_func **funcs,
 				}
 			*funcs = old;
 		}
+=======
+		if (new == NULL)
+			return ERR_PTR(-ENOMEM);
+		for (i = 0; old[i].func; i++)
+			if (old[i].func != tp_func->func
+					|| old[i].data != tp_func->data)
+				new[j++] = old[i];
+		new[nr_probes - nr_del].func = NULL;
+		*funcs = new;
+>>>>>>> FETCH_HEAD
 	}
 	debug_print_probes(*funcs);
 	return old;
@@ -280,12 +313,19 @@ static int tracepoint_remove_func(struct tracepoint *tp,
 	tp_funcs = rcu_dereference_protected(tp->funcs,
 			lockdep_is_held(&tracepoints_mutex));
 	old = func_remove(&tp_funcs, func);
+<<<<<<< HEAD
 	if (WARN_ON_ONCE(IS_ERR(old)))
 		return PTR_ERR(old);
 
 	if (tp_funcs == old)
 		/* Failed allocating new tp_funcs, replaced func with stub */
 		return 0;
+=======
+	if (IS_ERR(old)) {
+		WARN_ON_ONCE(PTR_ERR(old) != -ENOMEM);
+		return PTR_ERR(old);
+	}
+>>>>>>> FETCH_HEAD
 
 	if (!tp_funcs) {
 		/* Removed last function */

@@ -98,7 +98,10 @@ struct dsi_cmd_desc {
 #define CMD_REQ_MAX     4
 #define CMD_REQ_RX      0x0001
 #define CMD_REQ_COMMIT  0x0002
+<<<<<<< HEAD
 #define CMD_CLK_CTRL    0x0004
+=======
+>>>>>>> FETCH_HEAD
 #define CMD_REQ_UNICAST 0x0008
 #define CMD_REQ_DMA_TPG 0x0040
 #define CMD_REQ_NO_MAX_PKT_SIZE 0x0008

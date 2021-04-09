@@ -635,8 +635,12 @@ static u32 get_supported_settings(struct hci_dev *hdev)
 
 		if (lmp_ssp_capable(hdev)) {
 			settings |= MGMT_SETTING_SSP;
+<<<<<<< HEAD
 			if (IS_ENABLED(CONFIG_BT_HS))
 				settings |= MGMT_SETTING_HS;
+=======
+			settings |= MGMT_SETTING_HS;
+>>>>>>> FETCH_HEAD
 		}
 
 		if (lmp_sc_capable(hdev))
@@ -1646,10 +1650,13 @@ static int set_hs(struct sock *sk, struct hci_dev *hdev, void *data, u16 len)
 
 	BT_DBG("request for %s", hdev->name);
 
+<<<<<<< HEAD
 	if (!IS_ENABLED(CONFIG_BT_HS))
 		return mgmt_cmd_status(sk, hdev->id, MGMT_OP_SET_HS,
 				       MGMT_STATUS_NOT_SUPPORTED);
 
+=======
+>>>>>>> FETCH_HEAD
 	status = mgmt_bredr_support(hdev);
 	if (status)
 		return mgmt_cmd_status(sk, hdev->id, MGMT_OP_SET_HS, status);

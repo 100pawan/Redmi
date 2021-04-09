@@ -424,7 +424,10 @@ int has_transparent_hugepage(void)
 	}
 	return mask == PM_HUGE_MASK;
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL(has_transparent_hugepage);
+=======
+>>>>>>> FETCH_HEAD
 
 #endif /* CONFIG_TRANSPARENT_HUGEPAGE  */
 

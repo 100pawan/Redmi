@@ -458,9 +458,12 @@ nf_conntrack_hash_sysctl(struct ctl_table *table, int write,
 {
 	int ret;
 
+<<<<<<< HEAD
 	/* module_param hashsize could have changed value */
 	nf_conntrack_htable_size_user = nf_conntrack_htable_size;
 
+=======
+>>>>>>> FETCH_HEAD
 	ret = proc_dointvec(table, write, buffer, lenp, ppos);
 	if (ret < 0 || !write)
 		return ret;

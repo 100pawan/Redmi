@@ -71,7 +71,11 @@ static const unsigned freqs[] = { 400000, 300000, 200000, 100000 };
  * performance cost, and for other reasons may not always be desired.
  * So we allow it it to be disabled.
  */
+<<<<<<< HEAD
 bool use_spi_crc = 0;
+=======
+bool use_spi_crc = 1;
+>>>>>>> FETCH_HEAD
 module_param(use_spi_crc, bool, 0);
 
 static int mmc_schedule_delayed_work(struct delayed_work *work,
@@ -2568,8 +2572,11 @@ void mmc_gate_clock(struct mmc_host *host)
  */
 void mmc_ungate_clock(struct mmc_host *host)
 {
+<<<<<<< HEAD
 	struct mmc_card *card = host->card;
 
+=======
+>>>>>>> FETCH_HEAD
 	/*
 	 * We should previously have gated the clock, so the clock shall
 	 * be 0 here! The clock may however be 0 during initialization,
@@ -2587,8 +2594,12 @@ void mmc_ungate_clock(struct mmc_host *host)
 		 * To workaround this issue, we are triggering retuning of the
 		 * tuning circuit after ungating the controller clocks.
 		 */
+<<<<<<< HEAD
 		if (card->cid.manfid != CID_MANFID_HYNIX)
 			mmc_retune_needed(host);
+=======
+		mmc_retune_needed(host);
+>>>>>>> FETCH_HEAD
 	}
 }
 

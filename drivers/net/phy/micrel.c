@@ -28,9 +28,15 @@
 #include <linux/micrel_phy.h>
 #include <linux/of.h>
 #include <linux/clk.h>
+<<<<<<< HEAD
 #include <linux/delay.h>
 #include <linux/netdevice.h>
 #include <linux/etherdevice.h>
+=======
+#include <linux/netdevice.h>
+#include <linux/etherdevice.h>
+#include <linux/delay.h>
+>>>>>>> FETCH_HEAD
 
 /* Operation Mode Strap Override */
 #define MII_KSZPHY_OMSO				0x16

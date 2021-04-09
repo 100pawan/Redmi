@@ -40,10 +40,13 @@
 #define XO_CLK_RATE	19200000
 #define CMDLINE_DSI_CTL_NUM_STRING_LEN 2
 
+<<<<<<< HEAD
 #if defined(CONFIG_YSL)
 int ID0_status, ID1_status;
 #endif
 
+=======
+>>>>>>> FETCH_HEAD
 /* Master structure to hold all the information about the DSI/panel */
 static struct mdss_dsi_data *mdss_dsi_res;
 
@@ -382,12 +385,20 @@ static int mdss_dsi_panel_power_off(struct mdss_panel_data *pdata)
 	ctrl_pdata = container_of(pdata, struct mdss_dsi_ctrl_pdata,
 				panel_data);
 
+<<<<<<< HEAD
 /*	if((ID0_status == 1) && (ID1_status == 0)){
 		ret = mdss_dsi_panel_reset(pdata, 0);
 		if (ret) {
 			pr_warn("%s: Panel reset failed. rc=%d\n", __func__, ret);
 			ret = 0;
 		}
+=======
+	ret = mdss_dsi_panel_reset(pdata, 0);
+	if (ret) {
+		pr_warn("%s: Panel reset failed. rc=%d\n", __func__, ret);
+		ret = 0;
+	}
+>>>>>>> FETCH_HEAD
 
 	if (gpio_is_valid(ctrl_pdata->vdd_ext_gpio)) {
 		ret = gpio_direction_output(
@@ -398,6 +409,7 @@ static int mdss_dsi_panel_power_off(struct mdss_panel_data *pdata)
 	}
 
 	if (mdss_dsi_pinctrl_set_state(ctrl_pdata, false))
+<<<<<<< HEAD
 			pr_debug("reset disable: pinctrl not enabled\n");
 		ret = msm_dss_enable_vreg(
 			ctrl_pdata->panel_power_data.vreg_config,
@@ -438,13 +450,27 @@ static int mdss_dsi_panel_power_off(struct mdss_panel_data *pdata)
 			pr_err("%s: failed to disable vregs for %s\n",
 				__func__, __mdss_dsi_pm_name(DSI_PANEL_PM));
 #endif
+=======
+		pr_debug("reset disable: pinctrl not enabled\n");
+
+	ret = msm_mdss_enable_vreg(
+		ctrl_pdata->panel_power_data.vreg_config,
+		ctrl_pdata->panel_power_data.num_vreg, 0);
+	if (ret)
+		pr_err("%s: failed to disable vregs for %s\n",
+			__func__, __mdss_dsi_pm_name(DSI_PANEL_PM));
+
+>>>>>>> FETCH_HEAD
 end:
 	return ret;
 }
 
+<<<<<<< HEAD
 #define LCM_ID_GPIO0	66
 #define LCM_ID_GPIO1	20
 
+=======
+>>>>>>> FETCH_HEAD
 static int mdss_dsi_panel_power_on(struct mdss_panel_data *pdata)
 {
 	int ret = 0;
@@ -492,12 +518,15 @@ static int mdss_dsi_panel_power_on(struct mdss_panel_data *pdata)
 			pr_err("%s: Panel reset failed. rc=%d\n",
 					__func__, ret);
 	}
+<<<<<<< HEAD
 	
 	#if defined(CONFIG_YSL)
      ID0_status = gpio_get_value(LCM_ID_GPIO0);
      ID1_status = gpio_get_value(LCM_ID_GPIO1);
      printk("swb.%s:get lcd_detect id0=%d, id1=%d\n", __func__, ID0_status, ID1_status);
 #endif
+=======
+>>>>>>> FETCH_HEAD
 
 	return ret;
 }
@@ -1696,6 +1725,7 @@ end:
 	pr_debug("%s-:\n", __func__);
 	return ret;
 }
+<<<<<<< HEAD
 bool first_read_reg = true;
 int read_x = 0, read_y = 0;
 extern bool gamma_resume;
@@ -1934,6 +1964,8 @@ int mdss_dsi_set_gamma(struct mdss_dsi_ctrl_pdata *ctrl, int val2)
 	printk("guorui: %s no gamma match! please check reg 0xa1 !\n", __func__);
 	return 0;
 }
+=======
+>>>>>>> FETCH_HEAD
 
 static int mdss_dsi_pinctrl_set_state(
 	struct mdss_dsi_ctrl_pdata *ctrl_pdata,
@@ -1998,9 +2030,12 @@ static int mdss_dsi_pinctrl_init(struct platform_device *pdev)
 	return 0;
 }
 
+<<<<<<< HEAD
 extern int  first_gamma_state, set_gamma;
 extern int ce_state;
 
+=======
+>>>>>>> FETCH_HEAD
 static int mdss_dsi_unblank(struct mdss_panel_data *pdata)
 {
 	int ret = 0;
@@ -4522,6 +4557,7 @@ static int mdss_dsi_parse_gpio_params(struct platform_device *ctrl_pdev,
 		"qcom,platform-bklight-en-gpio", 0);
 	if (!gpio_is_valid(ctrl_pdata->bklt_en_gpio))
 		pr_info("%s: bklt_en gpio not specified\n", __func__);
+<<<<<<< HEAD
 	
 	ctrl_pdata->ocp2131_enp_gpio = of_get_named_gpio(ctrl_pdev->dev.of_node, "qcom,ocp2131-enp-gpio", 0);
 	if (!gpio_is_valid(ctrl_pdata->ocp2131_enp_gpio))
@@ -4530,6 +4566,8 @@ static int mdss_dsi_parse_gpio_params(struct platform_device *ctrl_pdev,
 	ctrl_pdata->ocp2131_enn_gpio = of_get_named_gpio(ctrl_pdev->dev.of_node, "qcom,ocp2131-enn-gpio", 0);
 	if (!gpio_is_valid(ctrl_pdata->ocp2131_enn_gpio))
 		pr_info("%s: ocp2131_enn_gpio not specified\n", __func__);
+=======
+>>>>>>> FETCH_HEAD
 
 	ctrl_pdata->bklt_en_gpio_invert =
 			of_property_read_bool(ctrl_pdev->dev.of_node,

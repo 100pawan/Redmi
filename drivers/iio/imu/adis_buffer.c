@@ -39,11 +39,16 @@ int adis_update_scan_mode(struct iio_dev *indio_dev,
 		return -ENOMEM;
 
 	adis->buffer = kzalloc(indio_dev->scan_bytes * 2, GFP_KERNEL);
+<<<<<<< HEAD
 	if (!adis->buffer) {
 		kfree(adis->xfer);
 		adis->xfer = NULL;
 		return -ENOMEM;
 	}
+=======
+	if (!adis->buffer)
+		return -ENOMEM;
+>>>>>>> FETCH_HEAD
 
 	rx = adis->buffer;
 	tx = rx + scan_count;

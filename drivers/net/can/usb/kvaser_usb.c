@@ -791,7 +791,11 @@ static int kvaser_usb_simple_msg_async(struct kvaser_usb_net_priv *priv,
 	if (!urb)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	buf = kzalloc(sizeof(struct kvaser_msg), GFP_ATOMIC);
+=======
+	buf = kmalloc(sizeof(struct kvaser_msg), GFP_ATOMIC);
+>>>>>>> FETCH_HEAD
 	if (!buf) {
 		usb_free_urb(urb);
 		return -ENOMEM;
@@ -1459,7 +1463,11 @@ static int kvaser_usb_set_opt_mode(const struct kvaser_usb_net_priv *priv)
 	struct kvaser_msg *msg;
 	int rc;
 
+<<<<<<< HEAD
 	msg = kzalloc(sizeof(*msg), GFP_KERNEL);
+=======
+	msg = kmalloc(sizeof(*msg), GFP_KERNEL);
+>>>>>>> FETCH_HEAD
 	if (!msg)
 		return -ENOMEM;
 
@@ -1592,7 +1600,11 @@ static int kvaser_usb_flush_queue(struct kvaser_usb_net_priv *priv)
 	struct kvaser_msg *msg;
 	int rc;
 
+<<<<<<< HEAD
 	msg = kzalloc(sizeof(*msg), GFP_KERNEL);
+=======
+	msg = kmalloc(sizeof(*msg), GFP_KERNEL);
+>>>>>>> FETCH_HEAD
 	if (!msg)
 		return -ENOMEM;
 

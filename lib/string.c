@@ -157,9 +157,17 @@ EXPORT_SYMBOL(strlcpy);
  * @src: Where to copy the string from
  * @count: Size of destination buffer
  *
+<<<<<<< HEAD
  * Copy the string, or as much of it as fits, into the dest buffer.  The
  * behavior is undefined if the string buffers overlap.  The destination
  * buffer is always NUL terminated, unless it's zero-sized.
+=======
+ * Copy the string, or as much of it as fits, into the dest buffer.
+ * The routine returns the number of characters copied (not including
+ * the trailing NUL) or -E2BIG if the destination buffer wasn't big enough.
+ * The behavior is undefined if the string buffers overlap.
+ * The destination buffer is always NUL terminated, unless it's zero-sized.
+>>>>>>> FETCH_HEAD
  *
  * Preferred to strlcpy() since the API doesn't require reading memory
  * from the src string beyond the specified "count" bytes, and since
@@ -169,10 +177,15 @@ EXPORT_SYMBOL(strlcpy);
  *
  * Preferred to strncpy() since it always returns a valid string, and
  * doesn't unnecessarily force the tail of the destination buffer to be
+<<<<<<< HEAD
  * zeroed.  If zeroing is desired please use strscpy_pad().
  *
  * Return: The number of characters copied (not including the trailing
  *         %NUL) or -E2BIG if the destination buffer wasn't big enough.
+=======
+ * zeroed.  If the zeroing is desired, it's likely cleaner to use strscpy()
+ * with an overflow test, then just memset() the tail of the dest buffer.
+>>>>>>> FETCH_HEAD
  */
 ssize_t strscpy(char *dest, const char *src, size_t count)
 {
@@ -235,6 +248,7 @@ ssize_t strscpy(char *dest, const char *src, size_t count)
 EXPORT_SYMBOL(strscpy);
 #endif
 
+<<<<<<< HEAD
 /**
  * stpcpy - copy a string from src to dest returning a pointer to the new end
  *          of dest, including src's %NUL-terminator. May overrun dest.
@@ -292,6 +306,8 @@ ssize_t strscpy_pad(char *dest, const char *src, size_t count)
 }
 EXPORT_SYMBOL(strscpy_pad);
 
+=======
+>>>>>>> FETCH_HEAD
 #ifndef __HAVE_ARCH_STRCAT
 /**
  * strcat - Append one %NUL-terminated string to another

@@ -1421,6 +1421,7 @@ struct kcore_copy_info {
 	u64 first_symbol;
 	u64 last_symbol;
 	u64 first_module;
+
 	u64 first_module_symbol;
 	u64 last_module_symbol;
 	struct phdr_data kernel_map;
@@ -1436,8 +1437,10 @@ static int kcore_copy__process_kallsyms(void *arg, const char *name, char type,
 		return 0;
 
 	if (strchr(name, '[')) {
+
 		if (!kci->first_module_symbol || start < kci->first_module_symbol)
 			kci->first_module_symbol = start;
+
 		if (start > kci->last_module_symbol)
 			kci->last_module_symbol = start;
 		return 0;
@@ -1562,9 +1565,11 @@ static int kcore_copy__calc_maps(struct kcore_copy_info *kci, const char *dir,
 		kci->etext += page_size;
 	}
 
+
 	if (kci->first_module_symbol &&
 	    (!kci->first_module || kci->first_module_symbol < kci->first_module))
 		kci->first_module = kci->first_module_symbol;
+
 
 	kci->first_module = round_down(kci->first_module, page_size);
 

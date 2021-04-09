@@ -5095,10 +5095,16 @@ static void bnxt_tx_disable(struct bnxt *bp)
 			txr->dev_state = BNXT_DEV_STATE_CLOSING;
 		}
 	}
+<<<<<<< HEAD
 	/* Drop carrier first to prevent TX timeout */
 	netif_carrier_off(bp->dev);
 	/* Stop all TX queues */
 	netif_tx_disable(bp->dev);
+=======
+	/* Stop all TX queues */
+	netif_tx_disable(bp->dev);
+	netif_carrier_off(bp->dev);
+>>>>>>> FETCH_HEAD
 }
 
 static void bnxt_tx_enable(struct bnxt *bp)
@@ -5590,6 +5596,7 @@ static int __bnxt_open_nic(struct bnxt *bp, bool irq_re_init, bool link_re_init)
 		}
 	}
 
+<<<<<<< HEAD
 	rc = bnxt_init_nic(bp, irq_re_init);
 	if (rc) {
 		netdev_err(bp->dev, "bnxt_init_nic err: %x\n", rc);
@@ -5598,6 +5605,16 @@ static int __bnxt_open_nic(struct bnxt *bp, bool irq_re_init, bool link_re_init)
 
 	bnxt_enable_napi(bp);
 
+=======
+	bnxt_enable_napi(bp);
+
+	rc = bnxt_init_nic(bp, irq_re_init);
+	if (rc) {
+		netdev_err(bp->dev, "bnxt_init_nic err: %x\n", rc);
+		goto open_err;
+	}
+
+>>>>>>> FETCH_HEAD
 	if (link_re_init) {
 		mutex_lock(&bp->link_lock);
 		rc = bnxt_update_phy_setting(bp);
@@ -5619,6 +5636,12 @@ static int __bnxt_open_nic(struct bnxt *bp, bool irq_re_init, bool link_re_init)
 
 	return 0;
 
+<<<<<<< HEAD
+=======
+open_err:
+	bnxt_disable_napi(bp);
+
+>>>>>>> FETCH_HEAD
 open_err_irq:
 	bnxt_del_napi(bp);
 
@@ -6320,8 +6343,12 @@ static int bnxt_init_board(struct pci_dev *pdev, struct net_device *dev)
 	if (dma_set_mask_and_coherent(&pdev->dev, DMA_BIT_MASK(64)) != 0 &&
 	    dma_set_mask_and_coherent(&pdev->dev, DMA_BIT_MASK(32)) != 0) {
 		dev_err(&pdev->dev, "System does not support DMA, aborting\n");
+<<<<<<< HEAD
 		rc = -EIO;
 		goto init_err_release;
+=======
+		goto init_err_disable;
+>>>>>>> FETCH_HEAD
 	}
 
 	pci_set_master(pdev);
@@ -7084,7 +7111,10 @@ static int bnxt_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
 
 	bnxt_parse_log_pcie_link(bp);
 
+<<<<<<< HEAD
 	pci_save_state(pdev);
+=======
+>>>>>>> FETCH_HEAD
 	return 0;
 
 init_err:
@@ -7158,8 +7188,11 @@ static pci_ers_result_t bnxt_io_slot_reset(struct pci_dev *pdev)
 			"Cannot re-enable PCI device after reset.\n");
 	} else {
 		pci_set_master(pdev);
+<<<<<<< HEAD
 		pci_restore_state(pdev);
 		pci_save_state(pdev);
+=======
+>>>>>>> FETCH_HEAD
 
 		if (netif_running(netdev))
 			err = bnxt_open(netdev);

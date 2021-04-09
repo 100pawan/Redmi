@@ -100,7 +100,11 @@ static char *aa_simple_write_to_buffer(int op, const char __user *userbuf,
 		return ERR_PTR(-EACCES);
 
 	/* freed by caller to simple_write_to_buffer */
+<<<<<<< HEAD
 	data = kvmalloc(alloc_size, GFP_KERNEL);
+=======
+	data = kvmalloc(alloc_size);
+>>>>>>> FETCH_HEAD
 	if (data == NULL)
 		return ERR_PTR(-ENOMEM);
 

@@ -1858,8 +1858,13 @@ static int i2c_register_adapter(struct i2c_adapter *adap)
 
 	/* create pre-declared device nodes */
 	of_i2c_register_devices(adap);
+<<<<<<< HEAD
 	i2c_acpi_install_space_handler(adap);
 	i2c_acpi_register_devices(adap);
+=======
+	i2c_acpi_register_devices(adap);
+	i2c_acpi_install_space_handler(adap);
+>>>>>>> FETCH_HEAD
 
 	if (adap->nr < __i2c_first_dynamic_bus_num)
 		i2c_scan_static_board_info(adap);

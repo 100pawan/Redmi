@@ -198,6 +198,7 @@ static struct dmi_system_id __initdata reboot_dmi_table[] = {
 			DMI_MATCH(DMI_PRODUCT_NAME, "MacBook5"),
 		},
 	},
+<<<<<<< HEAD
 	{	/* Handle problems with rebooting on Apple MacBook6,1 */
 		.callback = set_pci_reboot,
 		.ident = "Apple MacBook6,1",
@@ -206,6 +207,8 @@ static struct dmi_system_id __initdata reboot_dmi_table[] = {
 			DMI_MATCH(DMI_PRODUCT_NAME, "MacBook6,1"),
 		},
 	},
+=======
+>>>>>>> FETCH_HEAD
 	{	/* Handle problems with rebooting on Apple MacBookPro5 */
 		.callback = set_pci_reboot,
 		.ident = "Apple MacBookPro5",
@@ -478,6 +481,7 @@ static struct dmi_system_id __initdata reboot_dmi_table[] = {
 		},
 	},
 
+<<<<<<< HEAD
 	{	/* PCIe Wifi card isn't detected after reboot otherwise */
 		.callback = set_pci_reboot,
 		.ident = "Zotac ZBOX CI327 nano",
@@ -487,6 +491,8 @@ static struct dmi_system_id __initdata reboot_dmi_table[] = {
 		},
 	},
 
+=======
+>>>>>>> FETCH_HEAD
 	/* Sony */
 	{	/* Handle problems with rebooting on Sony VGN-Z540N */
 		.callback = set_bios_reboot,
@@ -548,6 +554,7 @@ static void emergency_vmx_disable_all(void)
 	local_irq_disable();
 
 	/*
+<<<<<<< HEAD
 	 * Disable VMX on all CPUs before rebooting, otherwise we risk hanging
 	 * the machine, because the CPU blocks INIT when it's in VMX root.
 	 *
@@ -562,6 +569,31 @@ static void emergency_vmx_disable_all(void)
 		__cpu_emergency_vmxoff();
 
 		/* Halt and exit VMX root operation on the other CPUs. */
+=======
+	 * We need to disable VMX on all CPUs before rebooting, otherwise
+	 * we risk hanging up the machine, because the CPU ignore INIT
+	 * signals when VMX is enabled.
+	 *
+	 * We can't take any locks and we may be on an inconsistent
+	 * state, so we use NMIs as IPIs to tell the other CPUs to disable
+	 * VMX and halt.
+	 *
+	 * For safety, we will avoid running the nmi_shootdown_cpus()
+	 * stuff unnecessarily, but we don't have a way to check
+	 * if other CPUs have VMX enabled. So we will call it only if the
+	 * CPU we are running on has VMX enabled.
+	 *
+	 * We will miss cases where VMX is not enabled on all CPUs. This
+	 * shouldn't do much harm because KVM always enable VMX on all
+	 * CPUs anyway. But we can miss it on the small window where KVM
+	 * is still enabling VMX.
+	 */
+	if (cpu_has_vmx() && cpu_vmx_enabled()) {
+		/* Disable VMX on this CPU. */
+		cpu_vmxoff();
+
+		/* Halt and disable VMX on the other CPUs */
+>>>>>>> FETCH_HEAD
 		nmi_shootdown_cpus(vmxoff_nmi);
 
 	}

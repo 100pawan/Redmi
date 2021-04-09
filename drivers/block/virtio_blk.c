@@ -749,7 +749,10 @@ out_put_disk:
 	put_disk(vblk->disk);
 out_free_vq:
 	vdev->config->del_vqs(vdev);
+<<<<<<< HEAD
 	kfree(vblk->vqs);
+=======
+>>>>>>> FETCH_HEAD
 out_free_vblk:
 	kfree(vblk);
 out_free_index:

@@ -47,7 +47,11 @@ static inline void *__ntfs_malloc(unsigned long size, gfp_t gfp_mask)
 		return kmalloc(PAGE_SIZE, gfp_mask & ~__GFP_HIGHMEM);
 		/* return (void *)__get_free_page(gfp_mask); */
 	}
+<<<<<<< HEAD
 	if (likely((size >> PAGE_SHIFT) < totalram_pages()))
+=======
+	if (likely((size >> PAGE_SHIFT) < totalram_pages))
+>>>>>>> FETCH_HEAD
 		return __vmalloc(size, gfp_mask, PAGE_KERNEL);
 	return NULL;
 }

@@ -1357,6 +1357,7 @@ static int virtnet_set_channels(struct net_device *dev,
 
 	get_online_cpus();
 	err = virtnet_set_queues(vi, queue_pairs);
+<<<<<<< HEAD
 	if (err) {
 		put_online_cpus();
 		goto err;
@@ -1367,6 +1368,16 @@ static int virtnet_set_channels(struct net_device *dev,
 	netif_set_real_num_tx_queues(dev, queue_pairs);
 	netif_set_real_num_rx_queues(dev, queue_pairs);
 err:
+=======
+	if (!err) {
+		netif_set_real_num_tx_queues(dev, queue_pairs);
+		netif_set_real_num_rx_queues(dev, queue_pairs);
+
+		virtnet_set_affinity(vi);
+	}
+	put_online_cpus();
+
+>>>>>>> FETCH_HEAD
 	return err;
 }
 

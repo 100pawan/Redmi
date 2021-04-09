@@ -414,9 +414,15 @@ mic_virtio_copy(struct mic_info *mic, int fd,
 
 static inline unsigned _vring_size(unsigned int num, unsigned long align)
 {
+<<<<<<< HEAD
 	return _ALIGN_UP(((sizeof(struct vring_desc) * num + sizeof(__u16) * (3 + num)
 				+ align - 1) & ~(align - 1))
 		+ sizeof(__u16) * 3 + sizeof(struct vring_used_elem) * num, 4);
+=======
+	return ((sizeof(struct vring_desc) * num + sizeof(__u16) * (3 + num)
+				+ align - 1) & ~(align - 1))
+		+ sizeof(__u16) * 3 + sizeof(struct vring_used_elem) * num;
+>>>>>>> FETCH_HEAD
 }
 
 /*

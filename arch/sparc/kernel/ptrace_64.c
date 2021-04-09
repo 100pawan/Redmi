@@ -533,13 +533,28 @@ static int genregs32_get(struct task_struct *target,
 			for (; count > 0 && pos < 32; count--) {
 				if (access_process_vm(target,
 						      (unsigned long)
+<<<<<<< HEAD
 						      &reg_window[pos++],
+=======
+						      &reg_window[pos],
+>>>>>>> FETCH_HEAD
 						      &reg, sizeof(reg),
 						      FOLL_FORCE)
 				    != sizeof(reg))
 					return -EFAULT;
+<<<<<<< HEAD
 				if (put_user(reg, u++))
 					return -EFAULT;
+=======
+				if (access_process_vm(target,
+						      (unsigned long) u,
+						      &reg, sizeof(reg),
+						      FOLL_FORCE | FOLL_WRITE)
+				    != sizeof(reg))
+					return -EFAULT;
+				pos++;
+				u++;
+>>>>>>> FETCH_HEAD
 			}
 		}
 	}
@@ -639,7 +654,16 @@ static int genregs32_set(struct task_struct *target,
 			}
 		} else {
 			for (; count > 0 && pos < 32; count--) {
+<<<<<<< HEAD
 				if (get_user(reg, u++))
+=======
+				if (access_process_vm(target,
+						      (unsigned long)
+						      u,
+						      &reg, sizeof(reg),
+						      FOLL_FORCE)
+				    != sizeof(reg))
+>>>>>>> FETCH_HEAD
 					return -EFAULT;
 				if (access_process_vm(target,
 						      (unsigned long)

@@ -490,7 +490,11 @@ static int queue_pages_pte_range(pmd_t *pmd, unsigned long addr,
 	struct queue_pages *qp = walk->private;
 	unsigned long flags = qp->flags;
 	int nid, ret;
+<<<<<<< HEAD
 	pte_t *pte, *mapped_pte;
+=======
+	pte_t *pte;
+>>>>>>> FETCH_HEAD
 	spinlock_t *ptl;
 
 	if (pmd_trans_huge(*pmd)) {
@@ -518,7 +522,11 @@ static int queue_pages_pte_range(pmd_t *pmd, unsigned long addr,
 	if (pmd_trans_unstable(pmd))
 		return 0;
 retry:
+<<<<<<< HEAD
 	mapped_pte = pte = pte_offset_map_lock(walk->mm, pmd, addr, &ptl);
+=======
+	pte = pte_offset_map_lock(walk->mm, pmd, addr, &ptl);
+>>>>>>> FETCH_HEAD
 	for (; addr != end; pte++, addr += PAGE_SIZE) {
 		if (!pte_present(*pte))
 			continue;
@@ -557,7 +565,11 @@ retry:
 		} else
 			break;
 	}
+<<<<<<< HEAD
 	pte_unmap_unlock(mapped_pte, ptl);
+=======
+	pte_unmap_unlock(pte - 1, ptl);
+>>>>>>> FETCH_HEAD
 	cond_resched();
 	return addr != end ? -EIO : 0;
 }

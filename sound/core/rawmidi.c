@@ -127,6 +127,10 @@ static int snd_rawmidi_runtime_create(struct snd_rawmidi_substream *substream)
 		return -ENOMEM;
 	runtime->substream = substream;
 	spin_lock_init(&runtime->lock);
+<<<<<<< HEAD
+=======
+	mutex_init(&runtime->realloc_mutex);
+>>>>>>> FETCH_HEAD
 	init_waitqueue_head(&runtime->sleep);
 	INIT_WORK(&runtime->event_work, snd_rawmidi_input_event_work);
 	runtime->event = NULL;
@@ -650,7 +654,11 @@ int snd_rawmidi_output_params(struct snd_rawmidi_substream *substream,
 {
 	char *newbuf, *oldbuf;
 	struct snd_rawmidi_runtime *runtime = substream->runtime;
+<<<<<<< HEAD
 	
+=======
+
+>>>>>>> FETCH_HEAD
 	if (substream->append && substream->use_count > 1)
 		return -EBUSY;
 	snd_rawmidi_drain_output(substream);
@@ -980,6 +988,11 @@ static long snd_rawmidi_kernel_read1(struct snd_rawmidi_substream *substream,
 	unsigned long appl_ptr;
 	int err = 0;
 
+<<<<<<< HEAD
+=======
+	if (userbuf)
+		mutex_lock(&runtime->realloc_mutex);
+>>>>>>> FETCH_HEAD
 	spin_lock_irqsave(&runtime->lock, flags);
 	snd_rawmidi_buffer_ref(runtime);
 	while (count > 0 && runtime->avail) {
@@ -1012,6 +1025,11 @@ static long snd_rawmidi_kernel_read1(struct snd_rawmidi_substream *substream,
  out:
 	snd_rawmidi_buffer_unref(runtime);
 	spin_unlock_irqrestore(&runtime->lock, flags);
+<<<<<<< HEAD
+=======
+	if (userbuf)
+		mutex_unlock(&runtime->realloc_mutex);
+>>>>>>> FETCH_HEAD
 	return result > 0 ? result : err;
 }
 
@@ -1276,10 +1294,20 @@ static long snd_rawmidi_kernel_write1(struct snd_rawmidi_substream *substream,
 		return -EINVAL;
 
 	result = 0;
+<<<<<<< HEAD
+=======
+	if (userbuf)
+		mutex_lock(&runtime->realloc_mutex);
+>>>>>>> FETCH_HEAD
 	spin_lock_irqsave(&runtime->lock, flags);
 	if (substream->append) {
 		if ((long)runtime->avail < count) {
 			spin_unlock_irqrestore(&runtime->lock, flags);
+<<<<<<< HEAD
+=======
+			if (userbuf)
+				mutex_unlock(&runtime->realloc_mutex);
+>>>>>>> FETCH_HEAD
 			return -EAGAIN;
 		}
 	}
@@ -1317,6 +1345,11 @@ static long snd_rawmidi_kernel_write1(struct snd_rawmidi_substream *substream,
 	count1 = runtime->avail < runtime->buffer_size;
 	snd_rawmidi_buffer_unref(runtime);
 	spin_unlock_irqrestore(&runtime->lock, flags);
+<<<<<<< HEAD
+=======
+	if (userbuf)
+		mutex_unlock(&runtime->realloc_mutex);
+>>>>>>> FETCH_HEAD
 	if (count1)
 		snd_rawmidi_output_trigger(substream, 1);
 	return result;

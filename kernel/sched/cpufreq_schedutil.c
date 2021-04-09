@@ -65,9 +65,14 @@ struct sugov_cpu {
 	struct update_util_data update_util;
 	struct sugov_policy *sg_policy;
 
+<<<<<<< HEAD
 	bool iowait_boost_pending;
 	unsigned int iowait_boost;
 	unsigned int iowait_boost_max;
+=======
+	unsigned long iowait_boost;
+	unsigned long iowait_boost_max;
+>>>>>>> FETCH_HEAD
 	u64 last_update;
 
 	struct sched_walt_cpu_load walt_load;
@@ -148,7 +153,11 @@ static void sugov_update_commit(struct sugov_policy *sg_policy, u64 time,
 
 	if (policy->fast_switch_enabled) {
 		next_freq = cpufreq_driver_fast_switch(policy, next_freq);
+<<<<<<< HEAD
 		if (!next_freq)
+=======
+		if (next_freq == CPUFREQ_ENTRY_INVALID)
+>>>>>>> FETCH_HEAD
 			return;
 
 		policy->cur = next_freq;
@@ -216,6 +225,7 @@ static void sugov_set_iowait_boost(struct sugov_cpu *sg_cpu, u64 time,
 				   unsigned int flags)
 {
 	if (flags & SCHED_CPUFREQ_IOWAIT) {
+<<<<<<< HEAD
 		if (sg_cpu->iowait_boost_pending)
 			return;
 
@@ -228,20 +238,29 @@ static void sugov_set_iowait_boost(struct sugov_cpu *sg_cpu, u64 time,
 		} else {
 			sg_cpu->iowait_boost = sg_cpu->sg_policy->policy->min;
 		}
+=======
+		sg_cpu->iowait_boost = sg_cpu->iowait_boost_max;
+>>>>>>> FETCH_HEAD
 	} else if (sg_cpu->iowait_boost) {
 		s64 delta_ns = time - sg_cpu->last_update;
 
 		/* Clear iowait_boost if the CPU apprears to have been idle. */
+<<<<<<< HEAD
 		if (delta_ns > TICK_NSEC) {
 			sg_cpu->iowait_boost = 0;
 			sg_cpu->iowait_boost_pending = false;
 		}
+=======
+		if (delta_ns > TICK_NSEC)
+			sg_cpu->iowait_boost = 0;
+>>>>>>> FETCH_HEAD
 	}
 }
 
 static void sugov_iowait_boost(struct sugov_cpu *sg_cpu, unsigned long *util,
 			       unsigned long *max)
 {
+<<<<<<< HEAD
 	unsigned int boost_util, boost_max;
 
 	if (!sg_cpu->iowait_boost)
@@ -260,10 +279,22 @@ static void sugov_iowait_boost(struct sugov_cpu *sg_cpu, unsigned long *util,
 	boost_util = sg_cpu->iowait_boost;
 	boost_max = sg_cpu->iowait_boost_max;
 
+=======
+	unsigned long boost_util = sg_cpu->iowait_boost;
+	unsigned long boost_max = sg_cpu->iowait_boost_max;
+
+	if (!boost_util)
+		return;
+
+>>>>>>> FETCH_HEAD
 	if (*util * boost_max < *max * boost_util) {
 		*util = boost_util;
 		*max = boost_max;
 	}
+<<<<<<< HEAD
+=======
+	sg_cpu->iowait_boost >>= 1;
+>>>>>>> FETCH_HEAD
 }
 
 static unsigned long freq_to_util(struct sugov_policy *sg_policy,
@@ -443,7 +474,10 @@ static unsigned int sugov_next_freq_shared(struct sugov_cpu *sg_cpu, u64 time)
 		delta_ns = time - j_sg_cpu->last_update;
 		if (delta_ns > stale_ns) {
 			j_sg_cpu->iowait_boost = 0;
+<<<<<<< HEAD
 			j_sg_cpu->iowait_boost_pending = false;
+=======
+>>>>>>> FETCH_HEAD
 			continue;
 		}
 		if (j_sg_cpu->flags & SCHED_CPUFREQ_RT_DL)
@@ -920,15 +954,25 @@ out:
 	return 0;
 
 fail:
+<<<<<<< HEAD
 	kobject_put(&tunables->attr_set.kobj);
+=======
+>>>>>>> FETCH_HEAD
 	policy->governor_data = NULL;
 	sugov_tunables_free(tunables);
 
 stop_kthread:
 	sugov_kthread_stop(sg_policy);
+<<<<<<< HEAD
 	mutex_unlock(&global_tunables_lock);
 
 free_sg_policy:
+=======
+
+free_sg_policy:
+	mutex_unlock(&global_tunables_lock);
+
+>>>>>>> FETCH_HEAD
 	sugov_policy_free(sg_policy);
 
 disable_fast_switch:
@@ -1017,8 +1061,11 @@ static void sugov_limits(struct cpufreq_policy *policy)
 {
 	struct sugov_policy *sg_policy = policy->governor_data;
 	unsigned long flags;
+<<<<<<< HEAD
 	unsigned int ret;
 	int cpu;
+=======
+>>>>>>> FETCH_HEAD
 
 	if (!policy->fast_switch_enabled) {
 		mutex_lock(&sg_policy->work_lock);
@@ -1028,6 +1075,7 @@ static void sugov_limits(struct cpufreq_policy *policy)
 		raw_spin_unlock_irqrestore(&sg_policy->update_lock, flags);
 		cpufreq_policy_apply_limits(policy);
 		mutex_unlock(&sg_policy->work_lock);
+<<<<<<< HEAD
 	} else {
 		raw_spin_lock_irqsave(&sg_policy->update_lock, flags);
 		sugov_track_cycles(sg_policy, sg_policy->policy->cur,
@@ -1039,6 +1087,8 @@ static void sugov_limits(struct cpufreq_policy *policy)
 				trace_cpu_frequency(ret, cpu);
 		}
 		raw_spin_unlock_irqrestore(&sg_policy->update_lock, flags);
+=======
+>>>>>>> FETCH_HEAD
 	}
 
 	sg_policy->need_freq_update = true;

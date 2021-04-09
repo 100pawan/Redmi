@@ -84,7 +84,11 @@ static struct led_classdev msm_torch_led[MAX_LED_TRIGGERS] = {
 		.brightness	= LED_OFF,
 	},
 };
+<<<<<<< HEAD
 static int msm_torch_led_num;
+=======
+
+>>>>>>> FETCH_HEAD
 static int32_t msm_torch_create_classdev(struct platform_device *pdev,
 				void *data)
 {
@@ -103,17 +107,28 @@ static int32_t msm_torch_create_classdev(struct platform_device *pdev,
 			torch_trigger = fctrl->torch_trigger[i];
 			CDBG("%s:%d msm_torch_brightness_set for torch %d",
 				__func__, __LINE__, i);
+<<<<<<< HEAD
 			msm_torch_brightness_set(&msm_torch_led[msm_torch_led_num + i],
 				LED_OFF);
 
 			rc = led_classdev_register(&pdev->dev,
 				&msm_torch_led[msm_torch_led_num + i]);
+=======
+			msm_torch_brightness_set(&msm_torch_led[i],
+				LED_OFF);
+
+			rc = led_classdev_register(&pdev->dev,
+				&msm_torch_led[i]);
+>>>>>>> FETCH_HEAD
 			if (rc) {
 				pr_err("Failed to register %d led dev. rc = %d\n",
 						i, rc);
 				return rc;
 			}
+<<<<<<< HEAD
 			msm_torch_led_num++;
+=======
+>>>>>>> FETCH_HEAD
 		} else {
 			pr_err("Invalid fctrl->torch_trigger[%d]\n", i);
 			return -EINVAL;
@@ -529,7 +544,10 @@ static int32_t msm_flash_init(
 			return rc;
 		}
 	}
+<<<<<<< HEAD
 	flash_ctrl->func_tbl->camera_flash_off(flash_ctrl, NULL);
+=======
+>>>>>>> FETCH_HEAD
 
 	flash_ctrl->flash_state = MSM_CAMERA_FLASH_INIT;
 
@@ -664,7 +682,13 @@ static int32_t msm_flash_low(
 				pr_debug("LED current clamped to %d\n",
 					curr);
 			}
+<<<<<<< HEAD
 			led_trigger_event(flash_ctrl->torch_trigger[i], curr);
+=======
+			CDBG("low_flash_current[%d] = %d", i, curr);
+			led_trigger_event(flash_ctrl->torch_trigger[i],
+				curr);
+>>>>>>> FETCH_HEAD
 		}
 	}
 	if (flash_ctrl->switch_trigger)
@@ -756,6 +780,11 @@ static int32_t msm_flash_config(struct msm_flash_ctrl_t *flash_ctrl,
 
 	mutex_lock(flash_ctrl->flash_mutex);
 
+<<<<<<< HEAD
+=======
+	CDBG("Enter %s type %d\n", __func__, flash_data->cfg_type);
+
+>>>>>>> FETCH_HEAD
 	switch (flash_data->cfg_type) {
 	case CFG_FLASH_INIT:
 		rc = msm_flash_init_prepare(flash_ctrl, flash_data);
@@ -1320,7 +1349,11 @@ static int32_t msm_flash_platform_probe(struct platform_device *pdev)
 		ARRAY_SIZE(flash_ctrl->msm_sd.sd.name),
 		"msm_camera_flash");
 	media_entity_pads_init(&flash_ctrl->msm_sd.sd.entity, 0, NULL);
+<<<<<<< HEAD
 	flash_ctrl->msm_sd.sd.entity.group_id = MSM_CAMERA_SUBDEV_FLASH;
+=======
+	flash_ctrl->msm_sd.sd.entity.function = MSM_CAMERA_SUBDEV_FLASH;
+>>>>>>> FETCH_HEAD
 	flash_ctrl->msm_sd.close_seq = MSM_SD_CLOSE_2ND_CATEGORY | 0x1;
 	msm_sd_register(&flash_ctrl->msm_sd);
 

@@ -175,7 +175,11 @@
 		};
 
 		i2c0: i2c@ff020000 {
+<<<<<<< HEAD
 			compatible = "cdns,i2c-r1p14";
+=======
+			compatible = "cdns,i2c-r1p14", "cdns,i2c-r1p10";
+>>>>>>> FETCH_HEAD
 			status = "disabled";
 			interrupt-parent = <&gic>;
 			interrupts = <0 17 4>;
@@ -185,7 +189,11 @@
 		};
 
 		i2c1: i2c@ff030000 {
+<<<<<<< HEAD
 			compatible = "cdns,i2c-r1p14";
+=======
+			compatible = "cdns,i2c-r1p14", "cdns,i2c-r1p10";
+>>>>>>> FETCH_HEAD
 			status = "disabled";
 			interrupt-parent = <&gic>;
 			interrupts = <0 18 4>;

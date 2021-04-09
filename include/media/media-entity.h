@@ -260,6 +260,7 @@ enum media_entity_type {
  */
 struct media_entity {
 	struct media_gobj graph_obj;	/* must be first field in struct */
+<<<<<<< HEAD
 	u32 id;
 	const char *name;
 	enum media_entity_type obj_type;
@@ -267,6 +268,12 @@ struct media_entity {
 	u32 revision;
 	unsigned long flags;
 	u32 group_id;
+=======
+	const char *name;
+	enum media_entity_type obj_type;
+	u32 function;
+	unsigned long flags;
+>>>>>>> FETCH_HEAD
 
 	u16 num_pads;
 	u16 num_links;
@@ -336,7 +343,11 @@ struct media_intf_devnode {
  */
 static inline u32 media_entity_id(struct media_entity *entity)
 {
+<<<<<<< HEAD
 	return entity->id;
+=======
+	return entity->graph_obj.id;
+>>>>>>> FETCH_HEAD
 }
 
 /**

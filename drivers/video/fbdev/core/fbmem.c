@@ -1067,6 +1067,7 @@ fb_blank(struct fb_info *info, int blank)
 
  	if (blank > FB_BLANK_POWERDOWN)
  		blank = FB_BLANK_POWERDOWN;
+<<<<<<< HEAD
 	
 	  if(info->blank==blank){
 	  if(info->fbops->fb_blank){
@@ -1076,6 +1077,8 @@ fb_blank(struct fb_info *info, int blank)
 
 	   return ret;
 	}
+=======
+>>>>>>> FETCH_HEAD
 
 	event.info = info;
 	event.data = &blank;
@@ -1095,9 +1098,13 @@ fb_blank(struct fb_info *info, int blank)
 		if (!early_ret)
 			fb_notifier_call_chain(FB_R_EARLY_EVENT_BLANK, &event);
 	}
+<<<<<<< HEAD
      if(!ret){
 	info->blank=blank;
 	}
+=======
+
+>>>>>>> FETCH_HEAD
  	return ret;
 }
 EXPORT_SYMBOL(fb_blank);
@@ -1662,7 +1669,10 @@ static int do_register_framebuffer(struct fb_info *fb_info)
 		if (!registered_fb[i])
 			break;
 	fb_info->node = i;
+<<<<<<< HEAD
 	fb_info->blank=-1;
+=======
+>>>>>>> FETCH_HEAD
 	atomic_set(&fb_info->count, 1);
 	mutex_init(&fb_info->lock);
 	mutex_init(&fb_info->mm_lock);

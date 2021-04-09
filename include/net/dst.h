@@ -479,6 +479,7 @@ static inline struct neighbour *dst_neigh_lookup(const struct dst_entry *dst, co
 static inline struct neighbour *dst_neigh_lookup_skb(const struct dst_entry *dst,
 						     struct sk_buff *skb)
 {
+<<<<<<< HEAD
 	struct neighbour *n = NULL;
 
 	/* The packets from tunnel devices (eg bareudp) may have only
@@ -488,6 +489,9 @@ static inline struct neighbour *dst_neigh_lookup_skb(const struct dst_entry *dst
 	if (dst->ops->neigh_lookup)
 		n = dst->ops->neigh_lookup(dst, skb, NULL);
 
+=======
+	struct neighbour *n =  dst->ops->neigh_lookup(dst, skb, NULL);
+>>>>>>> FETCH_HEAD
 	return IS_ERR(n) ? NULL : n;
 }
 

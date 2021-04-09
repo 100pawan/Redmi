@@ -486,6 +486,7 @@ static void iommu_enable_irq_remapping(struct intel_iommu *iommu)
 
 	/* Enable interrupt-remapping */
 	iommu->gcmd |= DMA_GCMD_IRE;
+<<<<<<< HEAD
 	writel(iommu->gcmd, iommu->reg + DMAR_GCMD_REG);
 	IOMMU_WAIT_OP(iommu, DMAR_GSTS_REG,
 		      readl, (sts & DMA_GSTS_IRES), sts);
@@ -498,6 +499,14 @@ static void iommu_enable_irq_remapping(struct intel_iommu *iommu)
 			      readl, !(sts & DMA_GSTS_CFIS), sts);
 	}
 
+=======
+	iommu->gcmd &= ~DMA_GCMD_CFI;  /* Block compatibility-format MSIs */
+	writel(iommu->gcmd, iommu->reg + DMAR_GCMD_REG);
+
+	IOMMU_WAIT_OP(iommu, DMAR_GSTS_REG,
+		      readl, (sts & DMA_GSTS_IRES), sts);
+
+>>>>>>> FETCH_HEAD
 	/*
 	 * With CFI clear in the Global Command register, we should be
 	 * protected from dangerous (i.e. compatibility) interrupts
@@ -1350,8 +1359,11 @@ static int intel_irq_remapping_alloc(struct irq_domain *domain,
 		irq_data = irq_domain_get_irq_data(domain, virq + i);
 		irq_cfg = irqd_cfg(irq_data);
 		if (!irq_data || !irq_cfg) {
+<<<<<<< HEAD
 			if (!i)
 				kfree(data);
+=======
+>>>>>>> FETCH_HEAD
 			ret = -EINVAL;
 			goto out_free_data;
 		}

@@ -100,7 +100,11 @@ static void io_watchdog_func(unsigned long _ohci);
 
 
 /* Some boards misreport power switching/overcurrent */
+<<<<<<< HEAD
 static bool distrust_firmware;
+=======
+static bool distrust_firmware = true;
+>>>>>>> FETCH_HEAD
 module_param (distrust_firmware, bool, 0);
 MODULE_PARM_DESC (distrust_firmware,
 	"true to distrust firmware power/overcurrent setup");
@@ -665,6 +669,7 @@ retry:
 
 	/* handle root hub init quirks ... */
 	val = roothub_a (ohci);
+<<<<<<< HEAD
 	/* Configure for per-port over-current protection by default */
 	val &= ~RH_A_NOCP;
 	val |= RH_A_OCPM;
@@ -683,6 +688,22 @@ retry:
 	}
 	ohci_writel(ohci, val, &ohci->regs->roothub.a);
 
+=======
+	val &= ~(RH_A_PSM | RH_A_OCPM);
+	if (ohci->flags & OHCI_QUIRK_SUPERIO) {
+		/* NSC 87560 and maybe others */
+		val |= RH_A_NOCP;
+		val &= ~(RH_A_POTPGT | RH_A_NPS);
+		ohci_writel (ohci, val, &ohci->regs->roothub.a);
+	} else if ((ohci->flags & OHCI_QUIRK_AMD756) ||
+			(ohci->flags & OHCI_QUIRK_HUB_POWER)) {
+		/* hub power always on; required for AMD-756 and some
+		 * Mac platforms.  ganged overcurrent reporting, if any.
+		 */
+		val |= RH_A_NPS;
+		ohci_writel (ohci, val, &ohci->regs->roothub.a);
+	}
+>>>>>>> FETCH_HEAD
 	ohci_writel (ohci, RH_HS_LPSC, &ohci->regs->roothub.status);
 	ohci_writel (ohci, (val & RH_A_NPS) ? 0 : RH_B_PPCM,
 						&ohci->regs->roothub.b);

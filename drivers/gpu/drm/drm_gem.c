@@ -694,6 +694,12 @@ err:
  * @file_priv: drm file-private structure
  *
  * Open an object using the global name, returning a handle and the size.
+<<<<<<< HEAD
+=======
+ *
+ * This handle (of course) holds a reference to the object, so the object
+ * will not go away until the handle is deleted.
+>>>>>>> FETCH_HEAD
  */
 int
 drm_gem_open_ioctl(struct drm_device *dev, void *data,
@@ -718,15 +724,25 @@ drm_gem_open_ioctl(struct drm_device *dev, void *data,
 
 	/* drm_gem_handle_create_tail unlocks dev->object_name_lock. */
 	ret = drm_gem_handle_create_tail(file_priv, obj, &handle);
+<<<<<<< HEAD
 	if (ret)
 		goto err;
+=======
+	drm_gem_object_unreference_unlocked(obj);
+	if (ret)
+		return ret;
+>>>>>>> FETCH_HEAD
 
 	args->handle = handle;
 	args->size = obj->size;
 
+<<<<<<< HEAD
 err:
 	drm_gem_object_unreference_unlocked(obj);
 	return ret;
+=======
+	return 0;
+>>>>>>> FETCH_HEAD
 }
 
 /**

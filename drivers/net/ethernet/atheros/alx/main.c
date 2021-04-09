@@ -1056,12 +1056,17 @@ out_disable_adv_intr:
 
 static void __alx_stop(struct alx_priv *alx)
 {
+<<<<<<< HEAD
 	alx_free_irq(alx);
 
 	cancel_work_sync(&alx->link_check_wk);
 	cancel_work_sync(&alx->reset_wk);
 
 	alx_halt(alx);
+=======
+	alx_halt(alx);
+	alx_free_irq(alx);
+>>>>>>> FETCH_HEAD
 	alx_free_rings(alx);
 }
 
@@ -1663,6 +1668,12 @@ static void alx_remove(struct pci_dev *pdev)
 	struct alx_priv *alx = pci_get_drvdata(pdev);
 	struct alx_hw *hw = &alx->hw;
 
+<<<<<<< HEAD
+=======
+	cancel_work_sync(&alx->link_check_wk);
+	cancel_work_sync(&alx->reset_wk);
+
+>>>>>>> FETCH_HEAD
 	/* restore permanent mac address */
 	alx_set_macaddr(hw, hw->perm_addr);
 
@@ -1694,12 +1705,16 @@ static int alx_resume(struct device *dev)
 	struct pci_dev *pdev = to_pci_dev(dev);
 	struct alx_priv *alx = pci_get_drvdata(pdev);
 	struct alx_hw *hw = &alx->hw;
+<<<<<<< HEAD
 	int err;
+=======
+>>>>>>> FETCH_HEAD
 
 	alx_reset_phy(hw);
 
 	if (!netif_running(alx->dev))
 		return 0;
+<<<<<<< HEAD
 
 	err = __alx_open(alx, true);
 	if (err)
@@ -1707,6 +1722,10 @@ static int alx_resume(struct device *dev)
 
 	netif_device_attach(alx->dev);
 	return 0;
+=======
+	netif_device_attach(alx->dev);
+	return __alx_open(alx, true);
+>>>>>>> FETCH_HEAD
 }
 
 static SIMPLE_DEV_PM_OPS(alx_pm_ops, alx_suspend, alx_resume);

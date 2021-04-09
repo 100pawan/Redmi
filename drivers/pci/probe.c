@@ -1251,7 +1251,11 @@ int pci_setup_device(struct pci_dev *dev)
 	/* device class may be changed after fixup */
 	class = dev->class >> 8;
 
+<<<<<<< HEAD
 	if (dev->non_compliant_bars && !dev->mmio_always_on) {
+=======
+	if (dev->non_compliant_bars) {
+>>>>>>> FETCH_HEAD
 		pci_read_config_word(dev, PCI_COMMAND, &cmd);
 		if (cmd & (PCI_COMMAND_IO | PCI_COMMAND_MEMORY)) {
 			dev_info(&dev->dev, "device has non-compliant BARs; disabling IO/MEM decoding\n");
@@ -1360,13 +1364,18 @@ static void pci_configure_mps(struct pci_dev *dev)
 	struct pci_dev *bridge = pci_upstream_bridge(dev);
 	int mps, p_mps, rc;
 
+<<<<<<< HEAD
 	if (!pci_is_pcie(dev))
+=======
+	if (!pci_is_pcie(dev) || !bridge || !pci_is_pcie(bridge))
+>>>>>>> FETCH_HEAD
 		return;
 
 	/* MPS and MRRS fields are of type 'RsvdP' for VFs, short-circuit out */
 	if (dev->is_virtfn)
 		return;
 
+<<<<<<< HEAD
 	/*
 	 * For Root Complex Integrated Endpoints, program the maximum
 	 * supported value unless limited by the PCIE_BUS_PEER2PEER case.
@@ -1387,6 +1396,8 @@ static void pci_configure_mps(struct pci_dev *dev)
 	if (!bridge || !pci_is_pcie(bridge))
 		return;
 
+=======
+>>>>>>> FETCH_HEAD
 	mps = pcie_get_mps(dev);
 	p_mps = pcie_get_mps(bridge);
 

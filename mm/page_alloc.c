@@ -16,7 +16,10 @@
 
 #include <linux/stddef.h>
 #include <linux/mm.h>
+<<<<<<< HEAD
 #include <linux/highmem.h>
+=======
+>>>>>>> FETCH_HEAD
 #include <linux/swap.h>
 #include <linux/interrupt.h>
 #include <linux/pagemap.h>
@@ -65,7 +68,10 @@
 #include <linux/page_owner.h>
 #include <linux/kthread.h>
 #include <linux/memcontrol.h>
+<<<<<<< HEAD
 #include <linux/khugepaged.h>
+=======
+>>>>>>> FETCH_HEAD
 #include <linux/show_mem_notifier.h>
 #include <linux/psi.h>
 
@@ -122,8 +128,12 @@ EXPORT_SYMBOL(node_states);
 /* Protect totalram_pages and zone->managed_pages */
 static DEFINE_SPINLOCK(managed_page_count_lock);
 
+<<<<<<< HEAD
 atomic_long_t _totalram_pages __read_mostly;
 EXPORT_SYMBOL(_totalram_pages);
+=======
+unsigned long totalram_pages __read_mostly;
+>>>>>>> FETCH_HEAD
 unsigned long totalreserve_pages __read_mostly;
 unsigned long totalcma_pages __read_mostly;
 
@@ -1129,11 +1139,14 @@ static void free_pcppages_bulk(struct zone *zone, int count,
 	spin_lock(&zone->lock);
 	isolated_pageblocks = has_isolate_pageblock(zone);
 
+<<<<<<< HEAD
 	/*
 	 * Ensure proper count is passed which otherwise would stuck in the
 	 * below while (list_empty(list)) loop.
 	 */
 	count = min(pcp->count, count);
+=======
+>>>>>>> FETCH_HEAD
 	while (count) {
 		struct page *page;
 		struct list_head *list;
@@ -4343,11 +4356,19 @@ EXPORT_SYMBOL_GPL(si_mem_available);
 
 void si_meminfo(struct sysinfo *val)
 {
+<<<<<<< HEAD
 	val->totalram = totalram_pages();
 	val->sharedram = global_node_page_state(NR_SHMEM);
 	val->freeram = global_page_state(NR_FREE_PAGES);
 	val->bufferram = nr_blockdev_pages();
 	val->totalhigh = totalhigh_pages();
+=======
+	val->totalram = totalram_pages;
+	val->sharedram = global_node_page_state(NR_SHMEM);
+	val->freeram = global_page_state(NR_FREE_PAGES);
+	val->bufferram = nr_blockdev_pages();
+	val->totalhigh = totalhigh_pages;
+>>>>>>> FETCH_HEAD
 	val->freehigh = nr_free_highpages();
 	val->mem_unit = PAGE_SIZE;
 }
@@ -4767,7 +4788,11 @@ int numa_zonelist_order_handler(struct ctl_table *table, int write,
 			user_zonelist_order = oldval;
 		} else if (oldval != user_zonelist_order) {
 			mutex_lock(&zonelists_mutex);
+<<<<<<< HEAD
 			build_all_zonelists(NULL, NULL, false);
+=======
+			build_all_zonelists(NULL, NULL);
+>>>>>>> FETCH_HEAD
 			mutex_unlock(&zonelists_mutex);
 		}
 	}
@@ -5147,12 +5172,20 @@ build_all_zonelists_init(void)
  * (2) call of __init annotated helper build_all_zonelists_init
  * [protected by SYSTEM_BOOTING].
  */
+<<<<<<< HEAD
 void __ref build_all_zonelists(pg_data_t *pgdat, struct zone *zone,
 			       bool hotplug_context)
 {
 	set_zonelist_order();
 
 	if (system_state == SYSTEM_BOOTING && !hotplug_context) {
+=======
+void __ref build_all_zonelists(pg_data_t *pgdat, struct zone *zone)
+{
+	set_zonelist_order();
+
+	if (system_state == SYSTEM_BOOTING) {
+>>>>>>> FETCH_HEAD
 		build_all_zonelists_init();
 	} else {
 #ifdef CONFIG_MEMORY_HOTPLUG
@@ -6587,10 +6620,17 @@ void adjust_managed_page_count(struct page *page, long count)
 {
 	spin_lock(&managed_page_count_lock);
 	page_zone(page)->managed_pages += count;
+<<<<<<< HEAD
 	totalram_pages_add(count);
 #ifdef CONFIG_HIGHMEM
 	if (PageHighMem(page))
 		totalhigh_pages_add(count);
+=======
+	totalram_pages += count;
+#ifdef CONFIG_HIGHMEM
+	if (PageHighMem(page))
+		totalhigh_pages += count;
+>>>>>>> FETCH_HEAD
 #endif
 	spin_unlock(&managed_page_count_lock);
 }
@@ -6621,9 +6661,15 @@ EXPORT_SYMBOL(free_reserved_area);
 void free_highmem_page(struct page *page)
 {
 	__free_reserved_page(page);
+<<<<<<< HEAD
 	totalram_pages_inc();
 	page_zone(page)->managed_pages++;
 	totalhigh_pages_inc();
+=======
+	totalram_pages++;
+	page_zone(page)->managed_pages++;
+	totalhigh_pages++;
+>>>>>>> FETCH_HEAD
 }
 #endif
 
@@ -6672,10 +6718,17 @@ void __init mem_init_print_info(const char *str)
 		physpages << (PAGE_SHIFT - 10),
 		codesize >> 10, datasize >> 10, rosize >> 10,
 		(init_data_size + init_code_size) >> 10, bss_size >> 10,
+<<<<<<< HEAD
 		(physpages - totalram_pages() - totalcma_pages) << (PAGE_SHIFT - 10),
 		totalcma_pages << (PAGE_SHIFT - 10),
 #ifdef	CONFIG_HIGHMEM
 		totalhigh_pages() << (PAGE_SHIFT - 10),
+=======
+		(physpages - totalram_pages - totalcma_pages) << (PAGE_SHIFT - 10),
+		totalcma_pages << (PAGE_SHIFT - 10),
+#ifdef	CONFIG_HIGHMEM
+		totalhigh_pages << (PAGE_SHIFT - 10),
+>>>>>>> FETCH_HEAD
 #endif
 		str ? ", " : "", str ? str : "");
 }
@@ -6945,11 +6998,17 @@ int __meminit init_per_zone_wmark_min(void)
 	setup_min_slab_ratio();
 #endif
 
+<<<<<<< HEAD
 	khugepaged_min_free_kbytes_update();
 
 	return 0;
 }
 postcore_initcall(init_per_zone_wmark_min)
+=======
+	return 0;
+}
+core_initcall(init_per_zone_wmark_min)
+>>>>>>> FETCH_HEAD
 
 /*
  * min_free_kbytes_sysctl_handler - just a wrapper around proc_dointvec() so

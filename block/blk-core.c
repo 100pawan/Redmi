@@ -3591,7 +3591,11 @@ int __init blk_dev_init(void)
 
 	/* used for unplugging and affects IO latency/throughput - HIGHPRI */
 	kblockd_workqueue = alloc_workqueue("kblockd",
+<<<<<<< HEAD
 					    WQ_MEM_RECLAIM | WQ_HIGHPRI  | WQ_POWER_EFFICIENT, 0);
+=======
+					    WQ_MEM_RECLAIM | WQ_HIGHPRI, 0);
+>>>>>>> FETCH_HEAD
 	if (!kblockd_workqueue)
 		panic("Failed to create kblockd\n");
 

@@ -343,11 +343,14 @@ static ssize_t ib_umad_read(struct file *filp, char __user *buf,
 
 	mutex_lock(&file->mutex);
 
+<<<<<<< HEAD
 	if (file->agents_dead) {
 		mutex_unlock(&file->mutex);
 		return -EIO;
 	}
 
+=======
+>>>>>>> FETCH_HEAD
 	while (list_empty(&file->recv_list)) {
 		mutex_unlock(&file->mutex);
 
@@ -490,7 +493,11 @@ static ssize_t ib_umad_write(struct file *filp, const char __user *buf,
 
 	agent = __get_agent(file, packet->mad.hdr.id);
 	if (!agent) {
+<<<<<<< HEAD
 		ret = -EIO;
+=======
+		ret = -EINVAL;
+>>>>>>> FETCH_HEAD
 		goto err_up;
 	}
 

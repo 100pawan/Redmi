@@ -12,7 +12,10 @@
 #
 
 import gdb
+<<<<<<< HEAD
 import sys
+=======
+>>>>>>> FETCH_HEAD
 
 from linux import utils
 
@@ -24,11 +27,18 @@ class LxDmesg(gdb.Command):
         super(LxDmesg, self).__init__("lx-dmesg", gdb.COMMAND_DATA)
 
     def invoke(self, arg, from_tty):
+<<<<<<< HEAD
         log_buf_addr = int(str(gdb.parse_and_eval(
             "(void *)'printk.c'::log_buf")).split()[0], 16)
         log_first_idx = int(gdb.parse_and_eval("'printk.c'::log_first_idx"))
         log_next_idx = int(gdb.parse_and_eval("'printk.c'::log_next_idx"))
         log_buf_len = int(gdb.parse_and_eval("'printk.c'::log_buf_len"))
+=======
+        log_buf_addr = int(str(gdb.parse_and_eval("log_buf")).split()[0], 16)
+        log_first_idx = int(gdb.parse_and_eval("log_first_idx"))
+        log_next_idx = int(gdb.parse_and_eval("log_next_idx"))
+        log_buf_len = int(gdb.parse_and_eval("log_buf_len"))
+>>>>>>> FETCH_HEAD
 
         inf = gdb.inferiors()[0]
         start = log_buf_addr + log_first_idx
@@ -53,6 +63,7 @@ class LxDmesg(gdb.Command):
                 continue
 
             text_len = utils.read_u16(log_buf[pos + 10:pos + 12])
+<<<<<<< HEAD
             text = log_buf[pos + 16:pos + 16 + text_len].decode(
                 encoding='utf8', errors='replace')
             time_stamp = utils.read_u64(log_buf[pos:pos + 8])
@@ -66,6 +77,15 @@ class LxDmesg(gdb.Command):
                 if sys.hexversion < 0x03000000:
                     msg = msg.encode(encoding='utf8', errors='replace')
                 gdb.write(msg)
+=======
+            text = log_buf[pos + 16:pos + 16 + text_len].decode()
+            time_stamp = utils.read_u64(log_buf[pos:pos + 8])
+
+            for line in text.splitlines():
+                gdb.write("[{time:12.6f}] {line}\n".format(
+                    time=time_stamp / 1000000000.0,
+                    line=line))
+>>>>>>> FETCH_HEAD
 
             pos += length
 

@@ -38,12 +38,20 @@
 struct cxgb4_match_field {
 	int off; /* Offset from the beginning of the header to match */
 	/* Fill the value/mask pair in the spec if matched */
+<<<<<<< HEAD
 	int (*val)(struct ch_filter_specification *f, __be32 val, __be32 mask);
+=======
+	int (*val)(struct ch_filter_specification *f, u32 val, u32 mask);
+>>>>>>> FETCH_HEAD
 };
 
 /* IPv4 match fields */
 static inline int cxgb4_fill_ipv4_tos(struct ch_filter_specification *f,
+<<<<<<< HEAD
 				      __be32 val, __be32 mask)
+=======
+				      u32 val, u32 mask)
+>>>>>>> FETCH_HEAD
 {
 	f->val.tos  = (ntohl(val)  >> 16) & 0x000000FF;
 	f->mask.tos = (ntohl(mask) >> 16) & 0x000000FF;
@@ -52,7 +60,11 @@ static inline int cxgb4_fill_ipv4_tos(struct ch_filter_specification *f,
 }
 
 static inline int cxgb4_fill_ipv4_frag(struct ch_filter_specification *f,
+<<<<<<< HEAD
 				       __be32 val, __be32 mask)
+=======
+				       u32 val, u32 mask)
+>>>>>>> FETCH_HEAD
 {
 	u32 mask_val;
 	u8 frag_val;
@@ -74,7 +86,11 @@ static inline int cxgb4_fill_ipv4_frag(struct ch_filter_specification *f,
 }
 
 static inline int cxgb4_fill_ipv4_proto(struct ch_filter_specification *f,
+<<<<<<< HEAD
 					__be32 val, __be32 mask)
+=======
+					u32 val, u32 mask)
+>>>>>>> FETCH_HEAD
 {
 	f->val.proto  = (ntohl(val)  >> 16) & 0x000000FF;
 	f->mask.proto = (ntohl(mask) >> 16) & 0x000000FF;
@@ -83,7 +99,11 @@ static inline int cxgb4_fill_ipv4_proto(struct ch_filter_specification *f,
 }
 
 static inline int cxgb4_fill_ipv4_src_ip(struct ch_filter_specification *f,
+<<<<<<< HEAD
 					 __be32 val, __be32 mask)
+=======
+					 u32 val, u32 mask)
+>>>>>>> FETCH_HEAD
 {
 	memcpy(&f->val.fip[0],  &val,  sizeof(u32));
 	memcpy(&f->mask.fip[0], &mask, sizeof(u32));
@@ -92,7 +112,11 @@ static inline int cxgb4_fill_ipv4_src_ip(struct ch_filter_specification *f,
 }
 
 static inline int cxgb4_fill_ipv4_dst_ip(struct ch_filter_specification *f,
+<<<<<<< HEAD
 					 __be32 val, __be32 mask)
+=======
+					 u32 val, u32 mask)
+>>>>>>> FETCH_HEAD
 {
 	memcpy(&f->val.lip[0],  &val,  sizeof(u32));
 	memcpy(&f->mask.lip[0], &mask, sizeof(u32));
@@ -111,7 +135,11 @@ static const struct cxgb4_match_field cxgb4_ipv4_fields[] = {
 
 /* IPv6 match fields */
 static inline int cxgb4_fill_ipv6_tos(struct ch_filter_specification *f,
+<<<<<<< HEAD
 				      __be32 val, __be32 mask)
+=======
+				      u32 val, u32 mask)
+>>>>>>> FETCH_HEAD
 {
 	f->val.tos  = (ntohl(val)  >> 20) & 0x000000FF;
 	f->mask.tos = (ntohl(mask) >> 20) & 0x000000FF;
@@ -120,7 +148,11 @@ static inline int cxgb4_fill_ipv6_tos(struct ch_filter_specification *f,
 }
 
 static inline int cxgb4_fill_ipv6_proto(struct ch_filter_specification *f,
+<<<<<<< HEAD
 					__be32 val, __be32 mask)
+=======
+					u32 val, u32 mask)
+>>>>>>> FETCH_HEAD
 {
 	f->val.proto  = (ntohl(val)  >> 8) & 0x000000FF;
 	f->mask.proto = (ntohl(mask) >> 8) & 0x000000FF;
@@ -129,7 +161,11 @@ static inline int cxgb4_fill_ipv6_proto(struct ch_filter_specification *f,
 }
 
 static inline int cxgb4_fill_ipv6_src_ip0(struct ch_filter_specification *f,
+<<<<<<< HEAD
 					  __be32 val, __be32 mask)
+=======
+					  u32 val, u32 mask)
+>>>>>>> FETCH_HEAD
 {
 	memcpy(&f->val.fip[0],  &val,  sizeof(u32));
 	memcpy(&f->mask.fip[0], &mask, sizeof(u32));
@@ -138,7 +174,11 @@ static inline int cxgb4_fill_ipv6_src_ip0(struct ch_filter_specification *f,
 }
 
 static inline int cxgb4_fill_ipv6_src_ip1(struct ch_filter_specification *f,
+<<<<<<< HEAD
 					  __be32 val, __be32 mask)
+=======
+					  u32 val, u32 mask)
+>>>>>>> FETCH_HEAD
 {
 	memcpy(&f->val.fip[4],  &val,  sizeof(u32));
 	memcpy(&f->mask.fip[4], &mask, sizeof(u32));
@@ -147,7 +187,11 @@ static inline int cxgb4_fill_ipv6_src_ip1(struct ch_filter_specification *f,
 }
 
 static inline int cxgb4_fill_ipv6_src_ip2(struct ch_filter_specification *f,
+<<<<<<< HEAD
 					  __be32 val, __be32 mask)
+=======
+					  u32 val, u32 mask)
+>>>>>>> FETCH_HEAD
 {
 	memcpy(&f->val.fip[8],  &val,  sizeof(u32));
 	memcpy(&f->mask.fip[8], &mask, sizeof(u32));
@@ -156,7 +200,11 @@ static inline int cxgb4_fill_ipv6_src_ip2(struct ch_filter_specification *f,
 }
 
 static inline int cxgb4_fill_ipv6_src_ip3(struct ch_filter_specification *f,
+<<<<<<< HEAD
 					  __be32 val, __be32 mask)
+=======
+					  u32 val, u32 mask)
+>>>>>>> FETCH_HEAD
 {
 	memcpy(&f->val.fip[12],  &val,  sizeof(u32));
 	memcpy(&f->mask.fip[12], &mask, sizeof(u32));
@@ -165,7 +213,11 @@ static inline int cxgb4_fill_ipv6_src_ip3(struct ch_filter_specification *f,
 }
 
 static inline int cxgb4_fill_ipv6_dst_ip0(struct ch_filter_specification *f,
+<<<<<<< HEAD
 					  __be32 val, __be32 mask)
+=======
+					  u32 val, u32 mask)
+>>>>>>> FETCH_HEAD
 {
 	memcpy(&f->val.lip[0],  &val,  sizeof(u32));
 	memcpy(&f->mask.lip[0], &mask, sizeof(u32));
@@ -174,7 +226,11 @@ static inline int cxgb4_fill_ipv6_dst_ip0(struct ch_filter_specification *f,
 }
 
 static inline int cxgb4_fill_ipv6_dst_ip1(struct ch_filter_specification *f,
+<<<<<<< HEAD
 					  __be32 val, __be32 mask)
+=======
+					  u32 val, u32 mask)
+>>>>>>> FETCH_HEAD
 {
 	memcpy(&f->val.lip[4],  &val,  sizeof(u32));
 	memcpy(&f->mask.lip[4], &mask, sizeof(u32));
@@ -183,7 +239,11 @@ static inline int cxgb4_fill_ipv6_dst_ip1(struct ch_filter_specification *f,
 }
 
 static inline int cxgb4_fill_ipv6_dst_ip2(struct ch_filter_specification *f,
+<<<<<<< HEAD
 					  __be32 val, __be32 mask)
+=======
+					  u32 val, u32 mask)
+>>>>>>> FETCH_HEAD
 {
 	memcpy(&f->val.lip[8],  &val,  sizeof(u32));
 	memcpy(&f->mask.lip[8], &mask, sizeof(u32));
@@ -192,7 +252,11 @@ static inline int cxgb4_fill_ipv6_dst_ip2(struct ch_filter_specification *f,
 }
 
 static inline int cxgb4_fill_ipv6_dst_ip3(struct ch_filter_specification *f,
+<<<<<<< HEAD
 					  __be32 val, __be32 mask)
+=======
+					  u32 val, u32 mask)
+>>>>>>> FETCH_HEAD
 {
 	memcpy(&f->val.lip[12],  &val,  sizeof(u32));
 	memcpy(&f->mask.lip[12], &mask, sizeof(u32));
@@ -216,7 +280,11 @@ static const struct cxgb4_match_field cxgb4_ipv6_fields[] = {
 
 /* TCP/UDP match */
 static inline int cxgb4_fill_l4_ports(struct ch_filter_specification *f,
+<<<<<<< HEAD
 				      __be32 val, __be32 mask)
+=======
+				      u32 val, u32 mask)
+>>>>>>> FETCH_HEAD
 {
 	f->val.fport  = ntohl(val)  >> 16;
 	f->mask.fport = ntohl(mask) >> 16;
@@ -237,13 +305,28 @@ static const struct cxgb4_match_field cxgb4_udp_fields[] = {
 };
 
 struct cxgb4_next_header {
+<<<<<<< HEAD
 	/* Offset, shift, and mask added to beginning of the header
+=======
+	unsigned int offset; /* Offset to next header */
+	/* offset, shift, and mask added to offset above
+>>>>>>> FETCH_HEAD
 	 * to get to next header.  Useful when using a header
 	 * field's value to jump to next header such as IHL field
 	 * in IPv4 header.
 	 */
+<<<<<<< HEAD
 	struct tc_u32_sel sel;
 	struct tc_u32_key key;
+=======
+	unsigned int offoff;
+	u32 shift;
+	u32 mask;
+	/* match criteria to make this jump */
+	unsigned int match_off;
+	u32 match_val;
+	u32 match_mask;
+>>>>>>> FETCH_HEAD
 	/* location of jump to make */
 	const struct cxgb4_match_field *jump;
 };
@@ -252,6 +335,7 @@ struct cxgb4_next_header {
  * IPv4 header.
  */
 static const struct cxgb4_next_header cxgb4_ipv4_jumps[] = {
+<<<<<<< HEAD
 	{
 		/* TCP Jump */
 		.sel = {
@@ -283,12 +367,22 @@ static const struct cxgb4_next_header cxgb4_ipv4_jumps[] = {
 		.jump = cxgb4_udp_fields,
 	},
 	{ .jump = NULL },
+=======
+	{ .offset = 0, .offoff = 0, .shift = 6, .mask = 0xF,
+	  .match_off = 8, .match_val = 0x600, .match_mask = 0xFF00,
+	  .jump = cxgb4_tcp_fields },
+	{ .offset = 0, .offoff = 0, .shift = 6, .mask = 0xF,
+	  .match_off = 8, .match_val = 0x1100, .match_mask = 0xFF00,
+	  .jump = cxgb4_udp_fields },
+	{ .jump = NULL }
+>>>>>>> FETCH_HEAD
 };
 
 /* Accept a rule with a jump directly past the 40 Bytes of IPv6 fixed header
  * to get to transport layer header.
  */
 static const struct cxgb4_next_header cxgb4_ipv6_jumps[] = {
+<<<<<<< HEAD
 	{
 		/* TCP Jump */
 		.sel = {
@@ -320,6 +414,15 @@ static const struct cxgb4_next_header cxgb4_ipv6_jumps[] = {
 		.jump = cxgb4_udp_fields,
 	},
 	{ .jump = NULL },
+=======
+	{ .offset = 0x28, .offoff = 0, .shift = 0, .mask = 0,
+	  .match_off = 4, .match_val = 0x60000, .match_mask = 0xFF0000,
+	  .jump = cxgb4_tcp_fields },
+	{ .offset = 0x28, .offoff = 0, .shift = 0, .mask = 0,
+	  .match_off = 4, .match_val = 0x110000, .match_mask = 0xFF0000,
+	  .jump = cxgb4_udp_fields },
+	{ .jump = NULL }
+>>>>>>> FETCH_HEAD
 };
 
 struct cxgb4_link {

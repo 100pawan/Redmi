@@ -563,6 +563,7 @@
 		interrupt-controller;
 		#interrupt-cells = <2>;
 	};
+<<<<<<< HEAD
 
 	usb3_1_oc: usb3-1-oc {
 		samsung,pins = "gpk2-4", "gpk2-5";
@@ -591,6 +592,8 @@
 		samsung,pin-pud = <EXYNOS_PIN_PULL_DOWN>;
 		samsung,pin-drv = <EXYNOS5420_PIN_DRV_LV1>;
 	};
+=======
+>>>>>>> FETCH_HEAD
 };
 
 &pinctrl_2 {

@@ -2619,12 +2619,17 @@ err:
 	if (*names) {
 		for (i = 0; i < *len; i++)
 			kfree((*names)[i]);
+<<<<<<< HEAD
 		kfree(*names);
 	}
 	kfree(*values);
 	*len = 0;
 	*names = NULL;
 	*values = NULL;
+=======
+	}
+	kfree(*values);
+>>>>>>> FETCH_HEAD
 	goto out;
 }
 
@@ -3250,7 +3255,10 @@ out:
 	return match;
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_AUDIT
+=======
+>>>>>>> FETCH_HEAD
 static int (*aurule_callback)(void) = audit_update_lsm_rules;
 
 static int aurule_avc_callback(u32 event)
@@ -3273,7 +3281,10 @@ static int __init aurule_init(void)
 	return err;
 }
 __initcall(aurule_init);
+<<<<<<< HEAD
 #endif
+=======
+>>>>>>> FETCH_HEAD
 
 #ifdef CONFIG_NETLABEL
 /**

@@ -30,8 +30,13 @@ struct alg_sock {
 
 	struct sock *parent;
 
+<<<<<<< HEAD
 	atomic_t refcnt;
 	atomic_t nokey_refcnt;
+=======
+	unsigned int refcnt;
+	unsigned int nokey_refcnt;
+>>>>>>> FETCH_HEAD
 
 	const struct af_alg_type *type;
 	void *private;

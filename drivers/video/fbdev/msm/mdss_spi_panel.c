@@ -24,10 +24,19 @@
 #include "mdss_panel.h"
 #include "mdss_spi_panel.h"
 #include "mdss_spi_client.h"
+<<<<<<< HEAD
 #include "mdp3.h"
 
 DEFINE_LED_TRIGGER(bl_led_trigger);
 static int mdss_spi_panel_reset(struct mdss_panel_data *pdata, int enable)
+=======
+#ifdef TARGET_HW_MDSS_MDP3
+#include "mdp3.h"
+#endif
+
+DEFINE_LED_TRIGGER(bl_led_trigger);
+int mdss_spi_panel_reset(struct mdss_panel_data *pdata, int enable)
+>>>>>>> FETCH_HEAD
 {
 	struct spi_panel_data *ctrl_pdata = NULL;
 	struct mdss_panel_info *pinfo = NULL;
@@ -92,11 +101,20 @@ static int mdss_spi_panel_reset(struct mdss_panel_data *pdata, int enable)
 		gpio_direction_output(ctrl_pdata->disp_dc_gpio, 0);
 		gpio_free(ctrl_pdata->disp_dc_gpio);
 	}
+<<<<<<< HEAD
+=======
+	if (pinfo->cont_splash_enabled)
+		pinfo->cont_splash_enabled = false;
+>>>>>>> FETCH_HEAD
 	return rc;
 }
 
 
+<<<<<<< HEAD
 static int mdss_spi_panel_pinctrl_set_state(
+=======
+int mdss_spi_panel_pinctrl_set_state(
+>>>>>>> FETCH_HEAD
 	struct spi_panel_data *ctrl_pdata,
 	bool active)
 {
@@ -149,7 +167,75 @@ static int mdss_spi_panel_pinctrl_init(struct platform_device *pdev)
 
 	return 0;
 }
+<<<<<<< HEAD
 
+=======
+#ifndef TARGET_HW_MDSS_MDP3
+static int mdss_spi_panel_power_on(struct mdss_panel_data *pdata)
+{
+	int ret = 0;
+	struct spi_panel_data *ctrl_pdata = NULL;
+
+	if (WARN_ON(!pdata))
+		return -EINVAL;
+
+	ctrl_pdata = container_of(pdata, struct spi_panel_data,
+					panel_data);
+	ret = msm_mdss_enable_vreg(
+			ctrl_pdata->panel_power_data.vreg_config,
+			ctrl_pdata->panel_power_data.num_vreg, 1);
+	if (ret) {
+		pr_err("%s: failed to enable vregs for PANEL_PM\n",
+						__func__);
+		return ret;
+	}
+
+	/*
+	 * If continuous splash screen feature is enabled, then we need to
+	 * request all the GPIOs that have already been configured in the
+	 * bootloader. This needs to be done irresepective of whether
+	 * the lp11_init flag is set or not.
+	 */
+	if (pdata->panel_info.cont_splash_enabled) {
+		if (mdss_spi_panel_pinctrl_set_state(ctrl_pdata, true))
+			pr_err("reset enable: pinctrl not enabled\n");
+		ret = mdss_spi_panel_reset(pdata, 1);
+		if (ret)
+			pr_err("%s: Panel reset failed. rc=%d\n",
+				__func__, ret);
+	}
+
+	return ret;
+}
+
+static int mdss_spi_panel_power_off(struct mdss_panel_data *pdata)
+{
+	int ret = 0;
+	struct spi_panel_data *ctrl_pdata = NULL;
+
+	if (WARN_ON(!pdata))
+		return -EINVAL;
+	ctrl_pdata = container_of(pdata, struct spi_panel_data,
+					panel_data);
+	ret = mdss_spi_panel_reset(pdata, 0);
+	if (ret)
+		pr_warn("%s: Panel reset failed. rc=%d\n", __func__, ret);
+
+	if (mdss_spi_panel_pinctrl_set_state(ctrl_pdata, false))
+		pr_warn("reset disable: pinctrl not enabled\n");
+
+	ret = msm_mdss_enable_vreg(
+		ctrl_pdata->panel_power_data.vreg_config,
+		ctrl_pdata->panel_power_data.num_vreg, 0);
+	if (ret)
+		pr_err("%s: failed to disable vregs for PANEL_PM\n",
+					__func__);
+
+	return ret;
+}
+
+#else
+>>>>>>> FETCH_HEAD
 
 static int mdss_spi_panel_power_on(struct mdss_panel_data *pdata)
 {
@@ -227,9 +313,15 @@ static int mdss_spi_panel_power_off(struct mdss_panel_data *pdata)
 end:
 	return ret;
 }
+<<<<<<< HEAD
 
 
 static int mdss_spi_panel_power_ctrl(struct mdss_panel_data *pdata,
+=======
+#endif
+
+int mdss_spi_panel_power_ctrl(struct mdss_panel_data *pdata,
+>>>>>>> FETCH_HEAD
 	int power_state)
 {
 	int ret;
@@ -392,6 +484,7 @@ int is_spi_panel_continuous_splash_on(struct mdss_panel_data *pdata)
 	return true;
 }
 
+<<<<<<< HEAD
 static void enable_spi_panel_te_irq(struct spi_panel_data *ctrl_pdata,
 							bool enable)
 {
@@ -399,6 +492,12 @@ static void enable_spi_panel_te_irq(struct spi_panel_data *ctrl_pdata,
 
 	if (is_enabled == enable)
 		return;
+=======
+void enable_spi_panel_te_irq(struct spi_panel_data *ctrl_pdata,
+							bool enable)
+{
+	static int te_irq_count;
+>>>>>>> FETCH_HEAD
 
 	if (!gpio_is_valid(ctrl_pdata->disp_te_gpio)) {
 		pr_err("%s:%d,SPI panel TE GPIO not configured\n",
@@ -406,6 +505,7 @@ static void enable_spi_panel_te_irq(struct spi_panel_data *ctrl_pdata,
 		return;
 	}
 
+<<<<<<< HEAD
 	if (enable)
 		enable_irq(gpio_to_irq(ctrl_pdata->disp_te_gpio));
 	else
@@ -414,6 +514,22 @@ static void enable_spi_panel_te_irq(struct spi_panel_data *ctrl_pdata,
 	is_enabled = enable;
 }
 
+=======
+	mutex_lock(&ctrl_pdata->te_mutex);
+
+	if (enable) {
+		if (++te_irq_count == 1)
+			enable_irq(gpio_to_irq(ctrl_pdata->disp_te_gpio));
+	} else {
+		if (--te_irq_count == 0)
+			disable_irq(gpio_to_irq(ctrl_pdata->disp_te_gpio));
+	}
+
+	mutex_unlock(&ctrl_pdata->te_mutex);
+}
+
+#ifdef TARGET_HW_MDSS_MDP3
+>>>>>>> FETCH_HEAD
 int mdss_spi_panel_kickoff(struct mdss_panel_data *pdata,
 			char __iomem *buf, int len, int dma_stride)
 {
@@ -462,11 +578,32 @@ int mdss_spi_panel_kickoff(struct mdss_panel_data *pdata,
 	if (rc == 0)
 		pr_err("wait panel TE time out\n");
 
+<<<<<<< HEAD
 	rc = mdss_spi_tx_pixel(tx_buf, ctrl_pdata->byte_pre_frame);
+=======
+	rc = mdp3_spi_tx_pixel(tx_buf, ctrl_pdata->byte_per_frame);
+>>>>>>> FETCH_HEAD
 	mutex_unlock(&ctrl_pdata->spi_tx_mutex);
 
 	return rc;
 }
+<<<<<<< HEAD
+=======
+#else
+void mdss_spi_tx_fb_complete(void *ctx)
+{
+	struct spi_panel_data *ctrl_pdata = ctx;
+
+	if (atomic_add_unless(&ctrl_pdata->koff_cnt, -1, 0)) {
+		if (atomic_read(&ctrl_pdata->koff_cnt)) {
+			pr_err("%s: too many kickoffs=%d\n", __func__,
+				atomic_read(&ctrl_pdata->koff_cnt));
+		}
+		wake_up_all(&ctrl_pdata->tx_done_waitq);
+	}
+}
+#endif
+>>>>>>> FETCH_HEAD
 
 static int mdss_spi_read_panel_data(struct mdss_panel_data *pdata,
 		u8 reg_addr, u8 *data, u8 len)
@@ -486,7 +623,11 @@ static int mdss_spi_read_panel_data(struct mdss_panel_data *pdata,
 	return rc;
 }
 
+<<<<<<< HEAD
 static int mdss_spi_panel_on(struct mdss_panel_data *pdata)
+=======
+int mdss_spi_panel_on(struct mdss_panel_data *pdata)
+>>>>>>> FETCH_HEAD
 {
 	struct spi_panel_data *ctrl = NULL;
 	struct mdss_panel_info *pinfo;
@@ -522,7 +663,11 @@ static int mdss_spi_panel_on(struct mdss_panel_data *pdata)
 }
 
 
+<<<<<<< HEAD
 static int mdss_spi_panel_off(struct mdss_panel_data *pdata)
+=======
+int mdss_spi_panel_off(struct mdss_panel_data *pdata)
+>>>>>>> FETCH_HEAD
 {
 	struct spi_panel_data *ctrl = NULL;
 	struct mdss_panel_info *pinfo;
@@ -1008,6 +1153,19 @@ static int mdss_spi_panel_parse_dt(struct device_node *np,
 	rc = of_property_read_u32(np, "qcom,mdss-spi-v-pulse-width", &tmp);
 	pinfo->lcdc.v_pulse_width = (!rc ? tmp : 2);
 
+<<<<<<< HEAD
+=======
+	/*
+	 * Due to SPI clock limit, frame rate of SPI display can olny reach to
+	 * ~30fps with resolution is 240*240 and format is rgb565.
+	 * VSYNC frequency should be match frame rate for avoid flicker issue.
+	 * but some panels can't support that TE frequency lower than 30Hz, so
+	 * we need to set double the TE frequency in this case.
+	 */
+	rc = of_property_read_u32(np, "qcom,mdss-spi-panel-te-per-vsync", &tmp);
+	ctrl_pdata->vsync_per_te = (!rc ? tmp : 2);
+	pr_debug("%s: vsync_per_te=%d\n", __func__, ctrl_pdata->vsync_per_te);
+>>>>>>> FETCH_HEAD
 
 	rc = of_property_read_u32(np, "qcom,mdss-spi-bpp", &tmp);
 	if (rc) {
@@ -1105,6 +1263,10 @@ static void mdss_spi_panel_pwm_cfg(struct spi_panel_data *ctrl)
 	if (ctrl->pwm_bl == NULL || IS_ERR(ctrl->pwm_bl)) {
 		pr_err("%s: Error: lpg_chan=%d pwm request failed",
 				__func__, ctrl->pwm_lpg_chan);
+<<<<<<< HEAD
+=======
+		ctrl->pwm_bl = NULL;
+>>>>>>> FETCH_HEAD
 	}
 	ctrl->pwm_enabled = 0;
 }
@@ -1167,7 +1329,12 @@ static void mdss_spi_panel_bklt_pwm(struct spi_panel_data *ctrl, int level)
 		ctrl->pwm_enabled = 1;
 	}
 }
+<<<<<<< HEAD
 
+=======
+#if defined(CONFIG_FB_MSM_MDSS_SPI_PANEL) && defined(CONFIG_SPI_QUP)
+#ifdef TARGET_HW_MDSS_MDP3
+>>>>>>> FETCH_HEAD
 static void mdss_spi_panel_bl_ctrl(struct mdss_panel_data *pdata,
 							u32 bl_level)
 {
@@ -1179,8 +1346,12 @@ static void mdss_spi_panel_bl_ctrl(struct mdss_panel_data *pdata,
 		mdss_spi_panel_bl_ctrl_update(pdata, bl_level);
 	}
 }
+<<<<<<< HEAD
 
 #if defined(CONFIG_FB_MSM_MDSS_SPI_PANEL) && defined(CONFIG_SPI_QUP)
+=======
+#endif
+>>>>>>> FETCH_HEAD
 void mdss_spi_panel_bl_ctrl_update(struct mdss_panel_data *pdata,
 							u32 bl_level)
 {
@@ -1211,7 +1382,10 @@ void mdss_spi_panel_bl_ctrl_update(struct mdss_panel_data *pdata,
 	}
 }
 #endif
+<<<<<<< HEAD
 
+=======
+>>>>>>> FETCH_HEAD
 static int mdss_spi_panel_init(struct device_node *node,
 	struct spi_panel_data	*ctrl_pdata,
 	bool cmd_cfg_cont_splash)
@@ -1243,10 +1417,17 @@ static int mdss_spi_panel_init(struct device_node *node,
 		return rc;
 	}
 
+<<<<<<< HEAD
 	ctrl_pdata->byte_pre_frame = pinfo->xres * pinfo->yres * pinfo->bpp/8;
 
 	ctrl_pdata->tx_buf = kmalloc(ctrl_pdata->byte_pre_frame, GFP_KERNEL);
 
+=======
+	ctrl_pdata->byte_per_frame = pinfo->xres * pinfo->yres * pinfo->bpp/8;
+	ctrl_pdata->tx_buf = kzalloc(ctrl_pdata->byte_per_frame, GFP_KERNEL);
+	ctrl_pdata->front_buf = kzalloc(ctrl_pdata->byte_per_frame, GFP_KERNEL);
+	ctrl_pdata->back_buf = kmalloc(ctrl_pdata->byte_per_frame, GFP_KERNEL);
+>>>>>>> FETCH_HEAD
 	if (!cmd_cfg_cont_splash)
 		pinfo->cont_splash_enabled = false;
 
@@ -1259,7 +1440,15 @@ static int mdss_spi_panel_init(struct device_node *node,
 
 	ctrl_pdata->on = mdss_spi_panel_on;
 	ctrl_pdata->off = mdss_spi_panel_off;
+<<<<<<< HEAD
 	ctrl_pdata->panel_data.set_backlight = mdss_spi_panel_bl_ctrl;
+=======
+#ifdef TARGET_HW_MDSS_MDP3
+	ctrl_pdata->panel_data.set_backlight = mdss_spi_panel_bl_ctrl;
+#else
+	ctrl_pdata->panel_data.set_backlight = mdss_spi_panel_bl_ctrl_update;
+#endif
+>>>>>>> FETCH_HEAD
 
 	return 0;
 }
@@ -1281,11 +1470,18 @@ static int mdss_spi_get_panel_cfg(char *panel_cfg,
 		return 0;
 	}
 
+<<<<<<< HEAD
 	pr_debug("%s:%d: cfg:[%s]\n", __func__, __LINE__,
 		 pan_cfg->arg_cfg);
 	ctrl_pdata->panel_data.panel_info.is_prim_panel = true;
 	rc = strlcpy(panel_cfg, pan_cfg->arg_cfg,
 		     sizeof(pan_cfg->arg_cfg));
+=======
+	pr_err("%s:%d: cfg:[%s]\n", __func__, __LINE__,
+		 pan_cfg->arg_cfg);
+	ctrl_pdata->panel_data.panel_info.is_prim_panel = true;
+	rc = strlcpy(panel_cfg, "spi", sizeof(MDSS_MAX_PANEL_LEN));
+>>>>>>> FETCH_HEAD
 	return rc;
 }
 
@@ -1316,7 +1512,11 @@ static int mdss_spi_panel_regulator_init(struct platform_device *pdev)
 	return rc;
 
 }
+<<<<<<< HEAD
 
+=======
+#ifdef TARGET_HW_MDSS_MDP3
+>>>>>>> FETCH_HEAD
 static irqreturn_t spi_panel_te_handler(int irq, void *data)
 {
 	struct spi_panel_data *ctrl_pdata = (struct spi_panel_data *)data;
@@ -1370,6 +1570,56 @@ void mdp3_spi_vsync_enable(struct mdss_panel_data *pdata,
 			enable_spi_panel_te_irq(ctrl_pdata, false);
 	}
 }
+<<<<<<< HEAD
+=======
+#else
+static void mdss_spi_display_handle_vsync(struct spi_panel_data *ctrl_pdata,
+					ktime_t t)
+{
+	ctrl_pdata->vsync_time = t;
+	sysfs_notify_dirent(ctrl_pdata->vsync_event_sd);
+}
+
+static irqreturn_t spi_panel_te_handler(int irq, void *data)
+{
+	struct spi_panel_data *ctrl_pdata = (struct spi_panel_data *)data;
+	ktime_t vsync_time;
+	static int te_count;
+	complete(&ctrl_pdata->spi_panel_te);
+
+	if (ctrl_pdata->vsync_enable && (++te_count ==
+				ctrl_pdata->vsync_per_te)) {
+		vsync_time = ktime_get();
+		mdss_spi_display_handle_vsync(ctrl_pdata, vsync_time);
+		te_count = 0;
+	}
+
+	return IRQ_HANDLED;
+}
+#endif
+
+void mdss_spi_vsync_enable(struct mdss_panel_data *pdata, int enable)
+{
+	struct spi_panel_data *ctrl_pdata = NULL;
+
+	if (WARN_ON(!pdata))
+		return;
+
+	ctrl_pdata = container_of(pdata, struct spi_panel_data,
+					panel_data);
+	if (enable) {
+		if (ctrl_pdata->vsync_enable == false) {
+			enable_spi_panel_te_irq(ctrl_pdata, true);
+			ctrl_pdata->vsync_enable = true;
+		}
+	} else {
+		if (ctrl_pdata->vsync_enable == true) {
+			enable_spi_panel_te_irq(ctrl_pdata, false);
+			ctrl_pdata->vsync_enable = false;
+		}
+	}
+}
+>>>>>>> FETCH_HEAD
 
 static struct device_node *mdss_spi_pref_prim_panel(
 		struct platform_device *pdev)
@@ -1465,6 +1715,11 @@ static int spi_panel_device_register(struct device_node *pan_node,
 	rc = mdss_register_panel(ctrl_pdev, &(ctrl_pdata->panel_data));
 	if (rc) {
 		pr_err("%s: unable to register SPI panel\n", __func__);
+<<<<<<< HEAD
+=======
+		gpio_free(ctrl_pdata->rst_gpio);
+		gpio_free(ctrl_pdata->disp_dc_gpio);
+>>>>>>> FETCH_HEAD
 		return rc;
 	}
 
@@ -1473,6 +1728,7 @@ static int spi_panel_device_register(struct device_node *pan_node,
 }
 
 
+<<<<<<< HEAD
 /**
  * mdss_spi_find_panel_of_node(): find device node of spi panel
  * @pdev: platform_device of the spi ctrl node
@@ -1551,11 +1807,26 @@ end:
 }
 
 
+=======
+int mdss_spi_wait_tx_done(struct spi_panel_data *ctrl_pdata)
+{
+	int rc = 0;
+
+	rc = wait_event_timeout(ctrl_pdata->tx_done_waitq,
+			atomic_read(&ctrl_pdata->koff_cnt) == 0,
+			KOFF_TIMEOUT);
+		return rc;
+}
+
+>>>>>>> FETCH_HEAD
 static int mdss_spi_panel_probe(struct platform_device *pdev)
 {
 	int rc = 0;
 	struct spi_panel_data	*ctrl_pdata;
+<<<<<<< HEAD
 	struct mdss_panel_cfg *pan_cfg = NULL;
+=======
+>>>>>>> FETCH_HEAD
 	struct device_node *spi_pan_node = NULL;
 	bool cmd_cfg_cont_splash = true;
 	char panel_cfg[MDSS_MAX_PANEL_LEN];
@@ -1578,6 +1849,7 @@ static int mdss_spi_panel_probe(struct platform_device *pdev)
 		return -ENOTSUPP;
 	}
 
+<<<<<<< HEAD
 	pan_cfg = util->panel_intf_type(MDSS_PANEL_INTF_DSI);
 	if (IS_ERR(pan_cfg)) {
 		pr_err("%s: return MDSS_PANEL_INTF_DSI\n", __func__);
@@ -1587,6 +1859,8 @@ static int mdss_spi_panel_probe(struct platform_device *pdev)
 		return -ENODEV;
 	}
 
+=======
+>>>>>>> FETCH_HEAD
 	ctrl_pdata = platform_get_drvdata(pdev);
 	if (!ctrl_pdata) {
 		ctrl_pdata = devm_kzalloc(&pdev->dev,
@@ -1642,7 +1916,11 @@ static int mdss_spi_panel_probe(struct platform_device *pdev)
 			__func__, __LINE__);
 
 	/* find panel device node */
+<<<<<<< HEAD
 	spi_pan_node = mdss_spi_find_panel_of_node(pdev, panel_cfg);
+=======
+	spi_pan_node = mdss_spi_pref_prim_panel(pdev);
+>>>>>>> FETCH_HEAD
 	if (!spi_pan_node) {
 		pr_err("%s: can't find panel node %s\n", __func__, panel_cfg);
 		goto error_pan_node;
@@ -1667,6 +1945,11 @@ static int mdss_spi_panel_probe(struct platform_device *pdev)
 
 	init_completion(&ctrl_pdata->spi_panel_te);
 	mutex_init(&ctrl_pdata->spi_tx_mutex);
+<<<<<<< HEAD
+=======
+	mutex_init(&ctrl_pdata->te_mutex);
+	init_waitqueue_head(&ctrl_pdata->tx_done_waitq);
+>>>>>>> FETCH_HEAD
 
 	rc = devm_request_irq(&pdev->dev,
 		gpio_to_irq(ctrl_pdata->disp_te_gpio),
@@ -1674,12 +1957,22 @@ static int mdss_spi_panel_probe(struct platform_device *pdev)
 		"TE_GPIO", ctrl_pdata);
 	if (rc) {
 		pr_err("TE request_irq failed.\n");
+<<<<<<< HEAD
 		return rc;
+=======
+		goto error_te_request;
+>>>>>>> FETCH_HEAD
 	}
 
 	pr_debug("%s: spi panel  initialized\n", __func__);
 	return 0;
 
+<<<<<<< HEAD
+=======
+error_te_request:
+	mutex_destroy(&ctrl_pdata->spi_tx_mutex);
+	mutex_destroy(&ctrl_pdata->te_mutex);
+>>>>>>> FETCH_HEAD
 error_pan_node:
 	of_node_put(spi_pan_node);
 error_vreg:

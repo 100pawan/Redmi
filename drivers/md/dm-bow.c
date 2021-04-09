@@ -12,6 +12,10 @@
 #include <linux/module.h>
 
 #define DM_MSG_PREFIX "bow"
+<<<<<<< HEAD
+=======
+#define SECTOR_SIZE 512
+>>>>>>> FETCH_HEAD
 
 struct log_entry {
 	u64 source;

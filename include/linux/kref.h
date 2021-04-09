@@ -24,8 +24,11 @@ struct kref {
 	atomic_t refcount;
 };
 
+<<<<<<< HEAD
 #define KREF_INIT(n)	{ .refcount = ATOMIC_INIT(n), }
 
+=======
+>>>>>>> FETCH_HEAD
 /**
  * kref_init - initialize object.
  * @kref: object in question.

@@ -52,6 +52,7 @@
 #define I2C_PCA_CON_SI		0x08 /* Serial Interrupt */
 #define I2C_PCA_CON_CR		0x07 /* Clock Rate (MASK) */
 
+<<<<<<< HEAD
 /**
  * struct pca_i2c_bus_settings - The configured PCA i2c bus settings
  * @mode: Configured i2c bus mode
@@ -66,6 +67,8 @@ struct pca_i2c_bus_settings {
 	int clock_freq;
 };
 
+=======
+>>>>>>> FETCH_HEAD
 struct i2c_algo_pca_data {
 	void 				*data;	/* private low level data */
 	void (*write_byte)		(void *data, int reg, int val);
@@ -77,7 +80,10 @@ struct i2c_algo_pca_data {
 	 * For PCA9665, use the frequency you want here. */
 	unsigned int			i2c_clock;
 	unsigned int			chip;
+<<<<<<< HEAD
 	struct pca_i2c_bus_settings		bus_settings;
+=======
+>>>>>>> FETCH_HEAD
 };
 
 int i2c_pca_add_bus(struct i2c_adapter *);

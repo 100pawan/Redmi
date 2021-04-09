@@ -194,7 +194,11 @@ static int __init omapdss_boot_init(void)
 	dss = of_find_matching_node(NULL, omapdss_of_match);
 
 	if (dss == NULL || !of_device_is_available(dss))
+<<<<<<< HEAD
 		goto put_node;
+=======
+		return 0;
+>>>>>>> FETCH_HEAD
 
 	omapdss_walk_device(dss, true);
 
@@ -219,8 +223,11 @@ static int __init omapdss_boot_init(void)
 		kfree(n);
 	}
 
+<<<<<<< HEAD
 put_node:
 	of_node_put(dss);
+=======
+>>>>>>> FETCH_HEAD
 	return 0;
 }
 

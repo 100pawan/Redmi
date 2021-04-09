@@ -82,7 +82,10 @@
 #include <linux/slab.h>
 #include <linux/sched.h>
 #include <linux/mutex.h>
+<<<<<<< HEAD
 #include <linux/rwsem.h>
+=======
+>>>>>>> FETCH_HEAD
 #include <linux/string.h>
 #include <linux/mm.h>
 #include <linux/socket.h>
@@ -192,7 +195,11 @@ static DEFINE_SPINLOCK(napi_hash_lock);
 static unsigned int napi_gen_id = NR_CPUS;
 static DEFINE_READ_MOSTLY_HASHTABLE(napi_hash, 8);
 
+<<<<<<< HEAD
 static DECLARE_RWSEM(devnet_rename_sem);
+=======
+static seqcount_t devnet_rename_seq;
+>>>>>>> FETCH_HEAD
 
 static inline void dev_base_seq_inc(struct net *net)
 {
@@ -869,10 +876,18 @@ EXPORT_SYMBOL(dev_get_by_index);
  *	@net: network namespace
  *	@name: a pointer to the buffer where the name will be stored.
  *	@ifindex: the ifindex of the interface to get the name from.
+<<<<<<< HEAD
+=======
+ *
+ *	The use of raw_seqcount_begin() and cond_resched() before
+ *	retrying is required as we want to give the writers a chance
+ *	to complete when CONFIG_PREEMPT is not set.
+>>>>>>> FETCH_HEAD
  */
 int netdev_get_name(struct net *net, char *name, int ifindex)
 {
 	struct net_device *dev;
+<<<<<<< HEAD
 	int ret;
 
 	down_read(&devnet_rename_sem);
@@ -891,6 +906,27 @@ out:
 	rcu_read_unlock();
 	up_read(&devnet_rename_sem);
 	return ret;
+=======
+	unsigned int seq;
+
+retry:
+	seq = raw_seqcount_begin(&devnet_rename_seq);
+	rcu_read_lock();
+	dev = dev_get_by_index_rcu(net, ifindex);
+	if (!dev) {
+		rcu_read_unlock();
+		return -ENODEV;
+	}
+
+	strcpy(name, dev->name);
+	rcu_read_unlock();
+	if (read_seqcount_retry(&devnet_rename_seq, seq)) {
+		cond_resched();
+		goto retry;
+	}
+
+	return 0;
+>>>>>>> FETCH_HEAD
 }
 
 /**
@@ -1155,10 +1191,17 @@ int dev_change_name(struct net_device *dev, const char *newname)
 	if (dev->flags & IFF_UP)
 		return -EBUSY;
 
+<<<<<<< HEAD
 	down_write(&devnet_rename_sem);
 
 	if (strncmp(newname, dev->name, IFNAMSIZ) == 0) {
 		up_write(&devnet_rename_sem);
+=======
+	write_seqcount_begin(&devnet_rename_seq);
+
+	if (strncmp(newname, dev->name, IFNAMSIZ) == 0) {
+		write_seqcount_end(&devnet_rename_seq);
+>>>>>>> FETCH_HEAD
 		return 0;
 	}
 
@@ -1166,7 +1209,11 @@ int dev_change_name(struct net_device *dev, const char *newname)
 
 	err = dev_get_valid_name(net, dev, newname);
 	if (err < 0) {
+<<<<<<< HEAD
 		up_write(&devnet_rename_sem);
+=======
+		write_seqcount_end(&devnet_rename_seq);
+>>>>>>> FETCH_HEAD
 		return err;
 	}
 
@@ -1181,11 +1228,19 @@ rollback:
 	if (ret) {
 		memcpy(dev->name, oldname, IFNAMSIZ);
 		dev->name_assign_type = old_assign_type;
+<<<<<<< HEAD
 		up_write(&devnet_rename_sem);
 		return ret;
 	}
 
 	up_write(&devnet_rename_sem);
+=======
+		write_seqcount_end(&devnet_rename_seq);
+		return ret;
+	}
+
+	write_seqcount_end(&devnet_rename_seq);
+>>>>>>> FETCH_HEAD
 
 	netdev_adjacent_rename_links(dev, oldname);
 
@@ -1206,7 +1261,11 @@ rollback:
 		/* err >= 0 after dev_alloc_name() or stores the first errno */
 		if (err >= 0) {
 			err = ret;
+<<<<<<< HEAD
 			down_write(&devnet_rename_sem);
+=======
+			write_seqcount_begin(&devnet_rename_seq);
+>>>>>>> FETCH_HEAD
 			memcpy(dev->name, oldname, IFNAMSIZ);
 			memcpy(oldname, newname, IFNAMSIZ);
 			dev->name_assign_type = old_assign_type;
@@ -4495,7 +4554,11 @@ static void flush_backlog(struct work_struct *work)
 	skb_queue_walk_safe(&sd->input_pkt_queue, skb, tmp) {
 		if (skb->dev->reg_state == NETREG_UNREGISTERING) {
 			__skb_unlink(skb, &sd->input_pkt_queue);
+<<<<<<< HEAD
 			dev_kfree_skb_irq(skb);
+=======
+			kfree_skb(skb);
+>>>>>>> FETCH_HEAD
 			input_queue_head_incr(sd);
 		}
 	}
@@ -5309,14 +5372,21 @@ void netif_napi_add(struct net_device *dev, struct napi_struct *napi,
 		pr_err_once("netif_napi_add() called with weight %d on device %s\n",
 			    weight, dev->name);
 	napi->weight = weight;
+<<<<<<< HEAD
+=======
+	list_add(&napi->dev_list, &dev->napi_list);
+>>>>>>> FETCH_HEAD
 	napi->dev = dev;
 #ifdef CONFIG_NETPOLL
 	spin_lock_init(&napi->poll_lock);
 	napi->poll_owner = -1;
 #endif
 	set_bit(NAPI_STATE_SCHED, &napi->state);
+<<<<<<< HEAD
 	set_bit(NAPI_STATE_NPSVC, &napi->state);
 	list_add_rcu(&napi->dev_list, &dev->napi_list);
+=======
+>>>>>>> FETCH_HEAD
 	napi_hash_add(napi);
 }
 EXPORT_SYMBOL(netif_napi_add);
@@ -7488,6 +7558,7 @@ int register_netdevice(struct net_device *dev)
 		rcu_barrier();
 
 		dev->reg_state = NETREG_UNREGISTERED;
+<<<<<<< HEAD
 		/* We should put the kobject that hold in
 		 * netdev_unregister_kobject(), otherwise
 		 * the net device cannot be freed when
@@ -7495,6 +7566,8 @@ int register_netdevice(struct net_device *dev)
 		 * kobject is being hold.
 		 */
 		kobject_put(&dev->dev.kobj);
+=======
+>>>>>>> FETCH_HEAD
 	}
 	/*
 	 *	Prevent userspace races by waiting until the network
@@ -8439,7 +8512,11 @@ static void __net_exit default_device_exit(struct net *net)
 			continue;
 
 		/* Leave virtual devices for the generic cleanup */
+<<<<<<< HEAD
 		if (dev->rtnl_link_ops && !dev->rtnl_link_ops->netns_refund)
+=======
+		if (dev->rtnl_link_ops)
+>>>>>>> FETCH_HEAD
 			continue;
 
 		/* Push remaining network devices to init_net */

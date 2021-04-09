@@ -70,7 +70,11 @@
 #define SPI_SR			0x2c
 #define SPI_SR_EOQF		0x10000000
 #define SPI_SR_TCFQF		0x80000000
+<<<<<<< HEAD
 #define SPI_SR_CLEAR		0x9aaf0000
+=======
+#define SPI_SR_CLEAR		0xdaad0000
+>>>>>>> FETCH_HEAD
 
 #define SPI_RSER		0x30
 #define SPI_RSER_EOQFE		0x10000000

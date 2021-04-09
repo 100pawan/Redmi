@@ -168,8 +168,13 @@ static void recalculate_apic_map(struct kvm *kvm)
 		if (kvm_apic_present(vcpu))
 			max_id = max(max_id, kvm_apic_id(vcpu->arch.apic));
 
+<<<<<<< HEAD
 	new = kvzalloc(sizeof(struct kvm_apic_map) +
 	                   sizeof(struct kvm_lapic *) * ((u64)max_id + 1), GFP_KERNEL);
+=======
+	new = kvm_kvzalloc(sizeof(struct kvm_apic_map) +
+	                   sizeof(struct kvm_lapic *) * ((u64)max_id + 1));
+>>>>>>> FETCH_HEAD
 
 	if (!new)
 		goto out;
@@ -1756,7 +1761,11 @@ void kvm_set_lapic_tscdeadline_msr(struct kvm_vcpu *vcpu, u64 data)
 {
 	struct kvm_lapic *apic = vcpu->arch.apic;
 
+<<<<<<< HEAD
 	if (!kvm_apic_present(vcpu) || apic_lvtt_oneshot(apic) ||
+=======
+	if (!lapic_in_kernel(vcpu) || apic_lvtt_oneshot(apic) ||
+>>>>>>> FETCH_HEAD
 			apic_lvtt_period(apic))
 		return;
 

@@ -91,6 +91,10 @@ struct vscsibk_info {
 	unsigned int irq;
 
 	struct vscsiif_back_ring ring;
+<<<<<<< HEAD
+=======
+	int ring_error;
+>>>>>>> FETCH_HEAD
 
 	spinlock_t ring_lock;
 	atomic_t nr_unreplied_reqs;
@@ -423,12 +427,20 @@ static int scsiback_gnttab_data_map_batch(struct gnttab_map_grant_ref *map,
 		return 0;
 
 	err = gnttab_map_refs(map, NULL, pg, cnt);
+<<<<<<< HEAD
+=======
+	BUG_ON(err);
+>>>>>>> FETCH_HEAD
 	for (i = 0; i < cnt; i++) {
 		if (unlikely(map[i].status != GNTST_okay)) {
 			pr_err("invalid buffer -- could not remap it\n");
 			map[i].handle = SCSIBACK_INVALID_HANDLE;
+<<<<<<< HEAD
 			if (!err)
 				err = -ENOMEM;
+=======
+			err = -ENOMEM;
+>>>>>>> FETCH_HEAD
 		} else {
 			get_page(pg[i]);
 		}
@@ -722,8 +734,12 @@ static struct vscsibk_pend *prepare_pending_reqs(struct vscsibk_info *info,
 	return pending_req;
 }
 
+<<<<<<< HEAD
 static int scsiback_do_cmd_fn(struct vscsibk_info *info,
 			      unsigned int *eoi_flags)
+=======
+static int scsiback_do_cmd_fn(struct vscsibk_info *info)
+>>>>>>> FETCH_HEAD
 {
 	struct vscsiif_back_ring *ring = &info->ring;
 	struct vscsiif_request ring_req;
@@ -740,12 +756,20 @@ static int scsiback_do_cmd_fn(struct vscsibk_info *info,
 		rc = ring->rsp_prod_pvt;
 		pr_warn("Dom%d provided bogus ring requests (%#x - %#x = %u). Halting ring processing\n",
 			   info->domid, rp, rc, rp - rc);
+<<<<<<< HEAD
 		return -EINVAL;
 	}
 
 	while ((rc != rp)) {
 		*eoi_flags &= ~XEN_EOI_FLAG_SPURIOUS;
 
+=======
+		info->ring_error = 1;
+		return 0;
+	}
+
+	while ((rc != rp)) {
+>>>>>>> FETCH_HEAD
 		if (RING_REQUEST_CONS_OVERFLOW(ring, rc))
 			break;
 
@@ -804,6 +828,7 @@ static int scsiback_do_cmd_fn(struct vscsibk_info *info,
 static irqreturn_t scsiback_irq_fn(int irq, void *dev_id)
 {
 	struct vscsibk_info *info = dev_id;
+<<<<<<< HEAD
 	int rc;
 	unsigned int eoi_flags = XEN_EOI_FLAG_SPURIOUS;
 
@@ -813,6 +838,14 @@ static irqreturn_t scsiback_irq_fn(int irq, void *dev_id)
 	/* In case of a ring error we keep the event channel masked. */
 	if (!rc)
 		xen_irq_lateeoi(irq, eoi_flags);
+=======
+
+	if (info->ring_error)
+		return IRQ_HANDLED;
+
+	while (scsiback_do_cmd_fn(info))
+		cond_resched();
+>>>>>>> FETCH_HEAD
 
 	return IRQ_HANDLED;
 }
@@ -834,7 +867,11 @@ static int scsiback_init_sring(struct vscsibk_info *info, grant_ref_t ring_ref,
 	sring = (struct vscsiif_sring *)area;
 	BACK_RING_INIT(&info->ring, sring, PAGE_SIZE);
 
+<<<<<<< HEAD
 	err = bind_interdomain_evtchn_to_irq_lateeoi(info->domid, evtchn);
+=======
+	err = bind_interdomain_evtchn_to_irq(info->domid, evtchn);
+>>>>>>> FETCH_HEAD
 	if (err < 0)
 		goto unmap_page;
 
@@ -1257,6 +1294,10 @@ static int scsiback_probe(struct xenbus_device *dev,
 
 	info->domid = dev->otherend_id;
 	spin_lock_init(&info->ring_lock);
+<<<<<<< HEAD
+=======
+	info->ring_error = 0;
+>>>>>>> FETCH_HEAD
 	atomic_set(&info->nr_unreplied_reqs, 0);
 	init_waitqueue_head(&info->waiting_to_free);
 	info->dev = dev;

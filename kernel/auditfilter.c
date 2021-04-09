@@ -1139,8 +1139,15 @@ int audit_rule_change(int type, __u32 portid, int seq, void *data,
 int audit_list_rules_send(struct sk_buff *request_skb, int seq)
 {
 	u32 portid = NETLINK_CB(request_skb).portid;
+<<<<<<< HEAD
 	struct task_struct *tsk;
 	struct audit_netlink_list *dest;
+=======
+	struct net *net = sock_net(NETLINK_CB(request_skb).sk);
+	struct task_struct *tsk;
+	struct audit_netlink_list *dest;
+	int err = 0;
+>>>>>>> FETCH_HEAD
 
 	/* We can't just spew out the rules here because we might fill
 	 * the available socket buffer space and deadlock waiting for
@@ -1148,10 +1155,17 @@ int audit_list_rules_send(struct sk_buff *request_skb, int seq)
 	 * happen if we're actually running in the context of auditctl
 	 * trying to _send_ the stuff */
 
+<<<<<<< HEAD
 	dest = kmalloc(sizeof(*dest), GFP_KERNEL);
 	if (!dest)
 		return -ENOMEM;
 	dest->net = get_net(sock_net(NETLINK_CB(request_skb).sk));
+=======
+	dest = kmalloc(sizeof(struct audit_netlink_list), GFP_KERNEL);
+	if (!dest)
+		return -ENOMEM;
+	dest->net = get_net(net);
+>>>>>>> FETCH_HEAD
 	dest->portid = portid;
 	skb_queue_head_init(&dest->q);
 
@@ -1159,6 +1173,7 @@ int audit_list_rules_send(struct sk_buff *request_skb, int seq)
 	audit_list_rules(portid, seq, &dest->q);
 	mutex_unlock(&audit_filter_mutex);
 
+<<<<<<< HEAD
 	tsk = kthread_run(audit_send_list_thread, dest, "audit_send_list");
 	if (IS_ERR(tsk)) {
 		skb_queue_purge(&dest->q);
@@ -1168,6 +1183,16 @@ int audit_list_rules_send(struct sk_buff *request_skb, int seq)
 	}
 
 	return 0;
+=======
+	tsk = kthread_run(audit_send_list, dest, "audit_send_list");
+	if (IS_ERR(tsk)) {
+		skb_queue_purge(&dest->q);
+		kfree(dest);
+		err = PTR_ERR(tsk);
+	}
+
+	return err;
+>>>>>>> FETCH_HEAD
 }
 
 int audit_comparator(u32 left, u32 op, u32 right)

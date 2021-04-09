@@ -27,7 +27,10 @@ struct bio;
 #define SWAP_FLAGS_VALID	(SWAP_FLAG_PRIO_MASK | SWAP_FLAG_PREFER | \
 				 SWAP_FLAG_DISCARD | SWAP_FLAG_DISCARD_ONCE | \
 				 SWAP_FLAG_DISCARD_PAGES)
+<<<<<<< HEAD
 #define SWAP_BATCH 64
+=======
+>>>>>>> FETCH_HEAD
 
 static inline int current_is_kswapd(void)
 {
@@ -179,12 +182,15 @@ enum {
  * protected by swap_info_struct.lock.
  */
 struct swap_cluster_info {
+<<<<<<< HEAD
 	spinlock_t lock;	/*
 				 * Protect swap_cluster_info fields
 				 * and swap_info_struct->swap_map
 				 * elements correspond to the swap
 				 * cluster
 				 */
+=======
+>>>>>>> FETCH_HEAD
 	unsigned int data:24;
 	unsigned int flags:8;
 };
@@ -293,6 +299,10 @@ static inline void workingset_node_shadows_dec(struct radix_tree_node *node)
 }
 
 /* linux/mm/page_alloc.c */
+<<<<<<< HEAD
+=======
+extern unsigned long totalram_pages;
+>>>>>>> FETCH_HEAD
 extern unsigned long totalreserve_pages;
 extern unsigned long nr_free_buffer_pages(void);
 extern unsigned long nr_free_pagecache_pages(void);
@@ -378,6 +388,7 @@ int generic_swapfile_activate(struct swap_info_struct *, struct file *,
 		sector_t *);
 
 /* linux/mm/swap_state.c */
+<<<<<<< HEAD
 /* One swap address space for each 64M swap space */
 #define SWAP_ADDRESS_SPACE_SHIFT	14
 #define SWAP_ADDRESS_SPACE_PAGES	(1 << SWAP_ADDRESS_SPACE_SHIFT)
@@ -385,6 +396,10 @@ extern struct address_space *swapper_spaces[];
 #define swap_address_space(entry)			    \
 	(&swapper_spaces[swp_type(entry)][swp_offset(entry) \
 		>> SWAP_ADDRESS_SPACE_SHIFT])
+=======
+extern struct address_space swapper_spaces[];
+#define swap_address_space(entry) (&swapper_spaces[swp_type(entry)])
+>>>>>>> FETCH_HEAD
 extern unsigned long total_swapcache_pages(void);
 extern void show_swap_cache_info(void);
 extern int add_to_swap(struct page *, struct list_head *list);
@@ -407,7 +422,10 @@ extern struct page *swapin_readahead(swp_entry_t, gfp_t,
 extern atomic_long_t nr_swap_pages;
 extern long total_swap_pages;
 extern bool is_swap_fast(swp_entry_t entry);
+<<<<<<< HEAD
 extern bool has_usable_swap(void);
+=======
+>>>>>>> FETCH_HEAD
 
 /* Swap 50% full? Release swapcache more aggressively.. */
 static inline bool vm_swap_full(struct swap_info_struct *si)
@@ -430,31 +448,43 @@ static inline long get_nr_swap_pages(void)
 extern void si_swapinfo(struct sysinfo *);
 extern swp_entry_t get_swap_page(void);
 extern swp_entry_t get_swap_page_of_type(int);
+<<<<<<< HEAD
 extern int get_swap_pages(int n, swp_entry_t swp_entries[]);
+=======
+>>>>>>> FETCH_HEAD
 extern int add_swap_count_continuation(swp_entry_t, gfp_t);
 extern void swap_shmem_alloc(swp_entry_t);
 extern int swap_duplicate(swp_entry_t);
 extern int swapcache_prepare(swp_entry_t);
 extern void swap_free(swp_entry_t);
 extern void swapcache_free(swp_entry_t);
+<<<<<<< HEAD
 extern void swapcache_free_entries(swp_entry_t *entries, int n);
+=======
+>>>>>>> FETCH_HEAD
 extern int free_swap_and_cache(swp_entry_t);
 extern int swap_type_of(dev_t, sector_t, struct block_device **);
 extern unsigned int count_swap_pages(int, int);
 extern sector_t map_swap_page(struct page *, struct block_device **);
 extern sector_t swapdev_block(int, pgoff_t);
 extern int page_swapcount(struct page *);
+<<<<<<< HEAD
 extern int __swp_swapcount(swp_entry_t entry);
+=======
+>>>>>>> FETCH_HEAD
 extern int swp_swapcount(swp_entry_t entry);
 extern struct swap_info_struct *page_swap_info(struct page *);
 extern bool reuse_swap_page(struct page *, int *);
 extern int try_to_free_swap(struct page *);
 struct backing_dev_info;
+<<<<<<< HEAD
 extern int init_swap_address_space(unsigned int type, unsigned long nr_pages);
 extern void exit_swap_address_space(unsigned int type);
 
 extern int get_swap_slots(int n, swp_entry_t *slots);
 extern void swapcache_free_batch(swp_entry_t *entries, int n);
+=======
+>>>>>>> FETCH_HEAD
 
 #else /* CONFIG_SWAP */
 
@@ -542,11 +572,14 @@ static inline int page_swapcount(struct page *page)
 	return 0;
 }
 
+<<<<<<< HEAD
 static inline int __swp_swapcount(swp_entry_t entry)
 {
 	return 0;
 }
 
+=======
+>>>>>>> FETCH_HEAD
 static inline int swp_swapcount(swp_entry_t entry)
 {
 	return 0;

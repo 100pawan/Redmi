@@ -40,7 +40,11 @@ static DEFINE_IDR(zram_index_idr);
 static DEFINE_MUTEX(zram_index_mutex);
 
 static int zram_major;
+<<<<<<< HEAD
 static const char *default_compressor = CONFIG_ZRAM_DEFAULT_COMP_ALGORITHM;
+=======
+static const char *default_compressor = "lzo";
+>>>>>>> FETCH_HEAD
 
 /* Module params (documentation at end) */
 static unsigned int num_devices = 1;
@@ -1103,7 +1107,11 @@ static ssize_t mm_stat_show(struct device *dev,
 			zram->limit_pages << PAGE_SHIFT,
 			max_used << PAGE_SHIFT,
 			(u64)atomic64_read(&zram->stats.same_pages),
+<<<<<<< HEAD
 			atomic_long_read(&pool_stats.pages_compacted),
+=======
+			pool_stats.pages_compacted,
+>>>>>>> FETCH_HEAD
 			(u64)atomic64_read(&zram->stats.huge_pages));
 	up_read(&zram->init_lock);
 

@@ -934,13 +934,20 @@ EXPORT_SYMBOL_GPL(of_dma_get_range);
  */
 bool of_dma_is_coherent(struct device_node *np)
 {
+<<<<<<< HEAD
 	struct device_node *node;
+=======
+	struct device_node *node = of_node_get(np);
+>>>>>>> FETCH_HEAD
 
 	if (IS_ENABLED(CONFIG_OF_DMA_DEFAULT_COHERENT))
 		return true;
 
+<<<<<<< HEAD
 	node = of_node_get(np);
 
+=======
+>>>>>>> FETCH_HEAD
 	while (node) {
 		if (of_property_read_bool(node, "dma-coherent")) {
 			of_node_put(node);

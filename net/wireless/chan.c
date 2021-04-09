@@ -867,10 +867,15 @@ int cfg80211_set_monitor_channel(struct cfg80211_registered_device *rdev,
 {
 	if (!rdev->ops->set_monitor_channel)
 		return -EOPNOTSUPP;
+<<<<<<< HEAD
 	// Always allow user to change channel, even if there is another normal
 	// virtual interface using the device.
 	//if (!cfg80211_has_monitors_only(rdev))
 	//	return -EBUSY;
+=======
+	if (!cfg80211_has_monitors_only(rdev))
+		return -EBUSY;
+>>>>>>> FETCH_HEAD
 
 	return rdev_set_monitor_channel(rdev, chandef);
 }

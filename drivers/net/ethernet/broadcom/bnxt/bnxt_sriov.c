@@ -342,7 +342,10 @@ static void bnxt_free_vf_resources(struct bnxt *bp)
 		}
 	}
 
+<<<<<<< HEAD
 	bp->pf.active_vfs = 0;
+=======
+>>>>>>> FETCH_HEAD
 	kfree(bp->pf.vf);
 	bp->pf.vf = NULL;
 }
@@ -591,6 +594,10 @@ void bnxt_sriov_disable(struct bnxt *bp)
 
 	bnxt_free_vf_resources(bp);
 
+<<<<<<< HEAD
+=======
+	bp->pf.active_vfs = 0;
+>>>>>>> FETCH_HEAD
 	/* Reclaim all resources for the PF. */
 	bnxt_hwrm_func_qcaps(bp);
 }

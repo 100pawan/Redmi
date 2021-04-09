@@ -1,9 +1,14 @@
 #include <linux/font.h>
 
+<<<<<<< HEAD
 #define FONTDATAMAX 2560
 
 static const struct font_data fontdata_6x10 = {
 	{ 0, 0, FONTDATAMAX, 0 }, {
+=======
+static const unsigned char fontdata_6x10[] = {
+
+>>>>>>> FETCH_HEAD
 	/* 0 0x00 '^@' */
 	0x00, /* 00000000 */
 	0x00, /* 00000000 */
@@ -3075,13 +3080,22 @@ static const struct font_data fontdata_6x10 = {
 	0x00, /* 00000000 */
 	0x00, /* 00000000 */
 	0x00, /* 00000000 */
+<<<<<<< HEAD
 } };
+=======
+
+};
+>>>>>>> FETCH_HEAD
 
 const struct font_desc font_6x10 = {
 	.idx	= FONT6x10_IDX,
 	.name	= "6x10",
 	.width	= 6,
 	.height	= 10,
+<<<<<<< HEAD
 	.data	= fontdata_6x10.data,
+=======
+	.data	= fontdata_6x10,
+>>>>>>> FETCH_HEAD
 	.pref	= 0,
 };

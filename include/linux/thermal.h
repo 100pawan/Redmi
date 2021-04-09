@@ -259,6 +259,7 @@ struct thermal_zone_device {
 	enum thermal_notify_event notify_event;
 };
 
+<<<<<<< HEAD
 #ifdef CONFIG_THERMAL_SWITCH
 struct thermal_message_device {
 	struct device device;
@@ -269,6 +270,8 @@ int thermal_message_device_register(void);
 void thermal_message_device_unregister(void);
 #endif
 
+=======
+>>>>>>> FETCH_HEAD
 /**
  * struct thermal_governor - structure that holds thermal governor information
  * @name:	name of the governor

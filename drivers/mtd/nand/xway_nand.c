@@ -211,7 +211,11 @@ static int xway_nand_probe(struct platform_device *pdev)
 
 	err = mtd_device_register(mtd, NULL, 0);
 	if (err)
+<<<<<<< HEAD
 		nand_cleanup(&data->chip);
+=======
+		nand_release(mtd);
+>>>>>>> FETCH_HEAD
 
 	return err;
 }
@@ -223,7 +227,11 @@ static int xway_nand_remove(struct platform_device *pdev)
 {
 	struct xway_nand_data *data = platform_get_drvdata(pdev);
 
+<<<<<<< HEAD
 	nand_release(&data->chip);
+=======
+	nand_release(nand_to_mtd(&data->chip));
+>>>>>>> FETCH_HEAD
 
 	return 0;
 }

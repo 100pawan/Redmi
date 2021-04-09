@@ -838,10 +838,17 @@ static int alarm_timer_nsleep(const clockid_t which_clock, int flags,
 	}
 
 	restart = &current->restart_block;
+<<<<<<< HEAD
 	restart->nanosleep.clockid = type;
 	restart->nanosleep.expires = exp.tv64;
 	restart->nanosleep.rmtp = rmtp;
 	set_restart_fn(restart, alarm_timer_nsleep_restart);
+=======
+	restart->fn = alarm_timer_nsleep_restart;
+	restart->nanosleep.clockid = type;
+	restart->nanosleep.expires = exp.tv64;
+	restart->nanosleep.rmtp = rmtp;
+>>>>>>> FETCH_HEAD
 	ret = -ERESTART_RESTARTBLOCK;
 
 out:

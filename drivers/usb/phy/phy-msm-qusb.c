@@ -97,6 +97,7 @@
 
 #define QUSB2PHY_REFCLK_ENABLE		BIT(0)
 
+<<<<<<< HEAD
 #define QUSB2PHY_PLL_AUTOPGM_CTL1 0x1C
 #define QUSB2PHY_PLL_PWR_CTL 0x18
 #define REF_BUF_EN BIT(0)
@@ -106,6 +107,8 @@
 #define QUSB2PHY_PORT_QUICKCHARGE2 0x74
 #define QUSB2PHY_PORT_INT_STATUS 0xF0
 
+=======
+>>>>>>> FETCH_HEAD
 static unsigned int tune1;
 module_param(tune1, uint, 0644);
 MODULE_PARM_DESC(tune1, "QUSB PHY TUNE1");
@@ -633,6 +636,7 @@ static void qusb_phy_shutdown(struct usb_phy *phy)
 
 	qusb_phy_enable_clocks(qphy, false);
 }
+<<<<<<< HEAD
 
 int qusb_phy_dumpreg(struct usb_phy *phy)
 {
@@ -688,6 +692,8 @@ int qusb_phy_run_dcd(struct usb_phy *phy)
 }
 EXPORT_SYMBOL(qusb_phy_run_dcd);
 
+=======
+>>>>>>> FETCH_HEAD
 /**
  * Performs QUSB2 PHY suspend/resume functionality.
  *

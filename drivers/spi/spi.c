@@ -422,12 +422,15 @@ static LIST_HEAD(spi_master_list);
  */
 static DEFINE_MUTEX(board_lock);
 
+<<<<<<< HEAD
 /*
  * Prevents addition of devices with same chip select and
  * addition of devices below an unregistering controller.
  */
 static DEFINE_MUTEX(spi_add_lock);
 
+=======
+>>>>>>> FETCH_HEAD
 /**
  * spi_alloc_device - Allocate a new SPI device
  * @master: Controller to which device is connected
@@ -506,6 +509,10 @@ static int spi_dev_check(struct device *dev, void *data)
  */
 int spi_add_device(struct spi_device *spi)
 {
+<<<<<<< HEAD
+=======
+	static DEFINE_MUTEX(spi_add_lock);
+>>>>>>> FETCH_HEAD
 	struct spi_master *master = spi->master;
 	struct device *dev = master->dev.parent;
 	int status;
@@ -534,6 +541,7 @@ int spi_add_device(struct spi_device *spi)
 		goto done;
 	}
 
+<<<<<<< HEAD
 	/* Controller may unregister concurrently */
 	if (IS_ENABLED(CONFIG_SPI_DYNAMIC) &&
 	    !device_is_registered(&master->dev)) {
@@ -541,6 +549,8 @@ int spi_add_device(struct spi_device *spi)
 		goto done;
 	}
 
+=======
+>>>>>>> FETCH_HEAD
 	if (master->cs_gpios)
 		spi->cs_gpio = master->cs_gpios[spi->chip_select];
 
@@ -1839,6 +1849,7 @@ struct spi_master *spi_alloc_master(struct device *dev, unsigned size)
 }
 EXPORT_SYMBOL_GPL(spi_alloc_master);
 
+<<<<<<< HEAD
 static void devm_spi_release_master(struct device *dev, void *master)
 {
 	spi_master_put(*(struct spi_master **)master);
@@ -1879,6 +1890,8 @@ struct spi_master *devm_spi_alloc_master(struct device *dev, unsigned int size)
 }
 EXPORT_SYMBOL_GPL(devm_spi_alloc_master);
 
+=======
+>>>>>>> FETCH_HEAD
 #ifdef CONFIG_OF
 static int of_spi_register_master(struct spi_master *master)
 {
@@ -2059,11 +2072,14 @@ int devm_spi_register_master(struct device *dev, struct spi_master *master)
 }
 EXPORT_SYMBOL_GPL(devm_spi_register_master);
 
+<<<<<<< HEAD
 static int devm_spi_match_master(struct device *dev, void *res, void *master)
 {
 	return *(struct spi_master **)res == master;
 }
 
+=======
+>>>>>>> FETCH_HEAD
 static int __unregister(struct device *dev, void *null)
 {
 	spi_unregister_device(to_spi_device(dev));
@@ -2082,11 +2098,15 @@ static int __unregister(struct device *dev, void *null)
  */
 void spi_unregister_master(struct spi_master *master)
 {
+<<<<<<< HEAD
 	/* Prevent addition of new devices, unregister existing ones */
 	if (IS_ENABLED(CONFIG_SPI_DYNAMIC))
 		mutex_lock(&spi_add_lock);
 
 	device_for_each_child(&master->dev, NULL, __unregister);
+=======
+	int dummy;
+>>>>>>> FETCH_HEAD
 
 	if (master->queued) {
 		if (spi_destroy_queue(master))
@@ -2097,6 +2117,7 @@ void spi_unregister_master(struct spi_master *master)
 	list_del(&master->list);
 	mutex_unlock(&board_lock);
 
+<<<<<<< HEAD
 	device_del(&master->dev);
 
 	/* Release the last reference on the master if its driver
@@ -2108,6 +2129,10 @@ void spi_unregister_master(struct spi_master *master)
 
 	if (IS_ENABLED(CONFIG_SPI_DYNAMIC))
 		mutex_unlock(&spi_add_lock);
+=======
+	dummy = device_for_each_child(&master->dev, NULL, __unregister);
+	device_unregister(&master->dev);
+>>>>>>> FETCH_HEAD
 }
 EXPORT_SYMBOL_GPL(spi_unregister_master);
 

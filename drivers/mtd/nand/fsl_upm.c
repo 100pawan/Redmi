@@ -326,7 +326,11 @@ static int fun_remove(struct platform_device *ofdev)
 	struct mtd_info *mtd = nand_to_mtd(&fun->chip);
 	int i;
 
+<<<<<<< HEAD
 	nand_release(&fun->chip);
+=======
+	nand_release(mtd);
+>>>>>>> FETCH_HEAD
 	kfree(mtd->name);
 
 	for (i = 0; i < fun->mchip_count; i++) {

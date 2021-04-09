@@ -255,6 +255,7 @@ config DEVFREQ_SPDM
 	  This driver allows any SPDM based client to vote for bandwidth.
 	  Used with the QTI SPDM Hypervisor Governor.
 
+<<<<<<< HEAD
 config DEVFREQ_BOOST
 	bool "Devfreq Boost"
 	help
@@ -288,6 +289,8 @@ config DEVFREQ_MSM_CPUBW_BOOST_FREQ
 
 endif
 
+=======
+>>>>>>> FETCH_HEAD
 source "drivers/devfreq/event/Kconfig"
 
 endif # PM_DEVFREQ

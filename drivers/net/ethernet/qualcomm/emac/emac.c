@@ -477,6 +477,7 @@ static int emac_clks_phase1_init(struct platform_device *pdev,
 
 	ret = clk_prepare_enable(adpt->clk[EMAC_CLK_CFG_AHB]);
 	if (ret)
+<<<<<<< HEAD
 		goto disable_clk_axi;
 
 	ret = clk_set_rate(adpt->clk[EMAC_CLK_HIGH_SPEED], 19200000);
@@ -495,6 +496,15 @@ disable_clk_axi:
 	clk_disable_unprepare(adpt->clk[EMAC_CLK_AXI]);
 
 	return ret;
+=======
+		return ret;
+
+	ret = clk_set_rate(adpt->clk[EMAC_CLK_HIGH_SPEED], 19200000);
+	if (ret)
+		return ret;
+
+	return clk_prepare_enable(adpt->clk[EMAC_CLK_HIGH_SPEED]);
+>>>>>>> FETCH_HEAD
 }
 
 /* Enable clocks; needs emac_clks_phase1_init to be called before */

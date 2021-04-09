@@ -237,7 +237,11 @@ int ubifs_is_mapped(const struct ubifs_info *c, int lnum)
 int ubifs_check_node(const struct ubifs_info *c, const void *buf, int lnum,
 		     int offs, int quiet, int must_chk_crc)
 {
+<<<<<<< HEAD
 	int err = -EINVAL, type, node_len, dump_node = 1;
+=======
+	int err = -EINVAL, type, node_len;
+>>>>>>> FETCH_HEAD
 	uint32_t crc, node_crc, magic;
 	const struct ubifs_ch *ch = buf;
 
@@ -290,6 +294,7 @@ int ubifs_check_node(const struct ubifs_info *c, const void *buf, int lnum,
 out_len:
 	if (!quiet)
 		ubifs_err(c, "bad node length %d", node_len);
+<<<<<<< HEAD
 	if (type == UBIFS_DATA_NODE && node_len > UBIFS_DATA_NODE_SZ)
 		dump_node = 0;
 out:
@@ -306,6 +311,12 @@ out:
 			print_hex_dump(KERN_ERR, "\t", DUMP_PREFIX_OFFSET, 32, 1,
 					buf, safe_len, 0);
 		}
+=======
+out:
+	if (!quiet) {
+		ubifs_err(c, "bad node at LEB %d:%d", lnum, offs);
+		ubifs_dump_node(c, buf);
+>>>>>>> FETCH_HEAD
 		dump_stack();
 	}
 	return err;
@@ -331,7 +342,11 @@ void ubifs_pad(const struct ubifs_info *c, void *buf, int pad)
 {
 	uint32_t crc;
 
+<<<<<<< HEAD
 	ubifs_assert(pad >= 0);
+=======
+	ubifs_assert(pad >= 0 && !(pad & 7));
+>>>>>>> FETCH_HEAD
 
 	if (pad >= UBIFS_PAD_NODE_SZ) {
 		struct ubifs_ch *ch = buf;
@@ -721,10 +736,13 @@ int ubifs_wbuf_write_nolock(struct ubifs_wbuf *wbuf, void *buf, int len)
 		 * write-buffer.
 		 */
 		memcpy(wbuf->buf + wbuf->used, buf, len);
+<<<<<<< HEAD
 		if (aligned_len > len) {
 			ubifs_assert(aligned_len - len < 8);
 			ubifs_pad(c, wbuf->buf + wbuf->used + len, aligned_len - len);
 		}
+=======
+>>>>>>> FETCH_HEAD
 
 		if (aligned_len == wbuf->avail) {
 			dbg_io("flush jhead %s wbuf to LEB %d:%d",
@@ -817,18 +835,25 @@ int ubifs_wbuf_write_nolock(struct ubifs_wbuf *wbuf, void *buf, int len)
 	}
 
 	spin_lock(&wbuf->lock);
+<<<<<<< HEAD
 	if (aligned_len) {
+=======
+	if (aligned_len)
+>>>>>>> FETCH_HEAD
 		/*
 		 * And now we have what's left and what does not take whole
 		 * max. write unit, so write it to the write-buffer and we are
 		 * done.
 		 */
 		memcpy(wbuf->buf, buf + written, len);
+<<<<<<< HEAD
 		if (aligned_len > len) {
 			ubifs_assert(aligned_len - len < 8);
 			ubifs_pad(c, wbuf->buf + len, aligned_len - len);
 		}
 	}
+=======
+>>>>>>> FETCH_HEAD
 
 	if (c->leb_size - wbuf->offs >= c->max_write_size)
 		wbuf->size = c->max_write_size;

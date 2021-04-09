@@ -109,12 +109,20 @@ int ion_heap_map_user(struct ion_heap *heap, struct ion_buffer *buffer,
 
 static int ion_heap_clear_pages(struct page **pages, int num, pgprot_t pgprot)
 {
+<<<<<<< HEAD
 	void *addr = vmap(pages, num, VM_MAP, pgprot);
+=======
+	void *addr = vm_map_ram(pages, num, -1, pgprot);
+>>>>>>> FETCH_HEAD
 
 	if (!addr)
 		return -ENOMEM;
 	memset(addr, 0, PAGE_SIZE * num);
+<<<<<<< HEAD
 	vunmap(addr);
+=======
+	vm_unmap_ram(addr, num);
+>>>>>>> FETCH_HEAD
 
 	return 0;
 }

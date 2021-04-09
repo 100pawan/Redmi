@@ -1021,7 +1021,11 @@ static int exec_mmap(struct mm_struct *mm)
 	/* Notify parent that we're no longer interested in the old VM */
 	tsk = current;
 	old_mm = current->mm;
+<<<<<<< HEAD
 	exec_mm_release(tsk, old_mm);
+=======
+	mm_release(tsk, old_mm);
+>>>>>>> FETCH_HEAD
 
 	if (old_mm) {
 		sync_mm_rss(old_mm);
@@ -1686,7 +1690,10 @@ static int do_execveat_common(int fd, struct filename *filename,
 	struct file *file;
 	struct files_struct *displaced;
 	int retval;
+<<<<<<< HEAD
 	bool is_su;
+=======
+>>>>>>> FETCH_HEAD
 
 	if (IS_ERR(filename))
 		return PTR_ERR(filename);
@@ -1783,20 +1790,26 @@ static int do_execveat_common(int fd, struct filename *filename,
 	if (retval < 0)
 		goto out;
 
+<<<<<<< HEAD
 	would_dump(bprm, bprm->file);
 
 	/* exec_binprm can release file and it may be freed */
 	is_su = d_is_su(file->f_path.dentry);
 
+=======
+>>>>>>> FETCH_HEAD
 	retval = exec_binprm(bprm);
 	if (retval < 0)
 		goto out;
 
+<<<<<<< HEAD
 	if (is_su && capable(CAP_SYS_ADMIN)) {
 		current->flags |= PF_SU;
 		su_exec();
 	}
 
+=======
+>>>>>>> FETCH_HEAD
 	/* execve succeeded */
 	current->fs->in_exec = 0;
 	current->in_execve = 0;

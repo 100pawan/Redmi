@@ -4302,8 +4302,13 @@ il_apm_init(struct il_priv *il)
 	 *    power savings, even without L1.
 	 */
 	if (il->cfg->set_l0s) {
+<<<<<<< HEAD
 		ret = pcie_capability_read_word(il->pci_dev, PCI_EXP_LNKCTL, &lctl);
 		if (!ret && (lctl & PCI_EXP_LNKCTL_ASPM_L1)) {
+=======
+		pcie_capability_read_word(il->pci_dev, PCI_EXP_LNKCTL, &lctl);
+		if (lctl & PCI_EXP_LNKCTL_ASPM_L1) {
+>>>>>>> FETCH_HEAD
 			/* L1-ASPM enabled; disable(!) L0S  */
 			il_set_bit(il, CSR_GIO_REG,
 				   CSR_GIO_REG_VAL_L0S_ENABLED);

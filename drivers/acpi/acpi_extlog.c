@@ -223,9 +223,15 @@ static int __init extlog_init(void)
 	u64 cap;
 	int rc;
 
+<<<<<<< HEAD
 	if (rdmsrl_safe(MSR_IA32_MCG_CAP, &cap) ||
 	    !(cap & MCG_ELOG_P) ||
 	    !extlog_get_l1addr())
+=======
+	rdmsrl(MSR_IA32_MCG_CAP, cap);
+
+	if (!(cap & MCG_ELOG_P) || !extlog_get_l1addr())
+>>>>>>> FETCH_HEAD
 		return -ENODEV;
 
 	if (get_edac_report_status() == EDAC_REPORTING_FORCE) {

@@ -1,6 +1,10 @@
 #include <linux/highmem.h>
 #include <linux/export.h>
+<<<<<<< HEAD
 #include <linux/swap.h> /* for totalram_pages() */
+=======
+#include <linux/swap.h> /* for totalram_pages */
+>>>>>>> FETCH_HEAD
 #include <linux/bootmem.h>
 
 void *kmap(struct page *page)

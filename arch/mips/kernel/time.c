@@ -22,14 +22,18 @@
 #include <linux/smp.h>
 #include <linux/spinlock.h>
 #include <linux/export.h>
+<<<<<<< HEAD
 #include <linux/cpufreq.h>
 #include <linux/delay.h>
+=======
+>>>>>>> FETCH_HEAD
 
 #include <asm/cpu-features.h>
 #include <asm/cpu-type.h>
 #include <asm/div64.h>
 #include <asm/time.h>
 
+<<<<<<< HEAD
 #ifdef CONFIG_CPU_FREQ
 
 static DEFINE_PER_CPU(unsigned long, pcp_lpj_ref);
@@ -93,6 +97,8 @@ core_initcall(register_cpufreq_notifier);
 
 #endif /* CONFIG_CPU_FREQ */
 
+=======
+>>>>>>> FETCH_HEAD
 /*
  * forward reference
  */

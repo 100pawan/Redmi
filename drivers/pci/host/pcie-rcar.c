@@ -328,12 +328,19 @@ static struct pci_ops rcar_pcie_ops = {
 };
 
 static void rcar_pcie_setup_window(int win, struct rcar_pcie *pcie,
+<<<<<<< HEAD
 				   struct resource_entry *window)
+=======
+				   struct resource *res)
+>>>>>>> FETCH_HEAD
 {
 	/* Setup PCIe address space mappings for each resource */
 	resource_size_t size;
 	resource_size_t res_start;
+<<<<<<< HEAD
 	struct resource *res = window->res;
+=======
+>>>>>>> FETCH_HEAD
 	u32 mask;
 
 	rcar_pci_write_reg(pcie, 0x00000000, PCIEPTCTLR(win));
@@ -347,9 +354,15 @@ static void rcar_pcie_setup_window(int win, struct rcar_pcie *pcie,
 	rcar_pci_write_reg(pcie, mask << 7, PCIEPAMR(win));
 
 	if (res->flags & IORESOURCE_IO)
+<<<<<<< HEAD
 		res_start = pci_pio_to_address(res->start) - window->offset;
 	else
 		res_start = res->start - window->offset;
+=======
+		res_start = pci_pio_to_address(res->start);
+	else
+		res_start = res->start;
+>>>>>>> FETCH_HEAD
 
 	rcar_pci_write_reg(pcie, upper_32_bits(res_start), PCIEPAUR(win));
 	rcar_pci_write_reg(pcie, lower_32_bits(res_start) & ~0x7F,
@@ -378,7 +391,11 @@ static int rcar_pcie_setup(struct list_head *resource, struct rcar_pcie *pci)
 		switch (resource_type(res)) {
 		case IORESOURCE_IO:
 		case IORESOURCE_MEM:
+<<<<<<< HEAD
 			rcar_pcie_setup_window(i, pci, win);
+=======
+			rcar_pcie_setup_window(i, pci, res);
+>>>>>>> FETCH_HEAD
 			i++;
 			break;
 		case IORESOURCE_BUS:

@@ -3,7 +3,10 @@
  * FocalTech TouchScreen driver.
  *
  * Copyright (c) 2010-2017, FocalTech Systems, Ltd., all rights reserved.
+<<<<<<< HEAD
  * Copyright (C) 2019 XiaoMi, Inc.
+=======
+>>>>>>> FETCH_HEAD
  *
  * This software is licensed under the terms of the GNU General Public
  * License version 2, as published by the Free Software Foundation, and
@@ -16,6 +19,7 @@
  *
  */
 /************************************************************************
+<<<<<<< HEAD
 *
 * File Name: focaltech_config.h
 *
@@ -28,6 +32,20 @@
 *   Version: v1.0
 *
 ************************************************************************/
+=======
+ *
+ * File Name: focaltech_config.h
+ *
+ *    Author: Focaltech Driver Team
+ *
+ *   Created: 2016-08-08
+ *
+ *  Abstract: global configurations
+ *
+ *   Version: v1.0
+ *
+ ************************************************************************/
+>>>>>>> FETCH_HEAD
 #ifndef _LINUX_FOCLATECH_CONFIG_H_
 #define _LINUX_FOCLATECH_CONFIG_H_
 
@@ -86,10 +104,18 @@
 /*
  * choose your ic chip type of focaltech
  */
+<<<<<<< HEAD
 #define FTS_CHIP_TYPE   _FT5446
 
 /******************* Enables *********************/
 /*********** 1 to enable, 0 to disable ***********/
+=======
+#define FTS_CHIP_TYPE   _FT3267
+
+/******************* Enables *********************/
+/*********** 1 to enable, 0 to disable ***********/
+
+>>>>>>> FETCH_HEAD
 /*
  * show debug log info
  * enable it for debug, disable it for release
@@ -106,10 +132,25 @@
 /*
  * Report Pressure in multitouch
  * 1:enable(default),0:disable
+<<<<<<< HEAD
 */
 #define FTS_REPORT_PRESSURE_EN                  1
 
 /*
+=======
+ */
+#define FTS_REPORT_PRESSURE_EN                  1
+
+/*
+ * Force touch support
+ * different pressure for multitouch
+ * 1: true pressure for force touch
+ * 0: constant pressure(default)
+ */
+#define FTS_FORCE_TOUCH_EN                      0
+
+/*
+>>>>>>> FETCH_HEAD
  * Gesture function enable
  * default: disable
  */
@@ -119,13 +160,21 @@
  * ESD check & protection
  * default: disable
  */
+<<<<<<< HEAD
 #define FTS_ESDCHECK_EN                         1
+=======
+#define FTS_ESDCHECK_EN                         0
+>>>>>>> FETCH_HEAD
 
 /*
  * Production test enable
  * 1: enable, 0:disable(default)
  */
+<<<<<<< HEAD
 #define FTS_TEST_EN                             1
+=======
+#define FTS_TEST_EN                             0
+>>>>>>> FETCH_HEAD
 
 /*
  * Glove mode enable
@@ -136,7 +185,11 @@
  * cover enable
  * 1: enable, 0:disable(default)
  */
+<<<<<<< HEAD
 #define FTS_COVER_EN                            1
+=======
+#define FTS_COVER_EN                            0
+>>>>>>> FETCH_HEAD
 /*
  * Charger enable
  * 1: enable, 0:disable(default)
@@ -181,12 +234,21 @@
  */
 #define FTS_AUTO_CLB_EN                         0
 
+<<<<<<< HEAD
 /* 
  * Check vendor_id number
  * 0:No check vendor_id (default)  
  * 1/2/3: Check vendor_id for vendor compatibility
  */
 #define FTS_GET_VENDOR_ID_NUM                   2
+=======
+/*
+ * Check vendor_id number
+ * 0:No check vendor_id (default)
+ * 1/2/3: Check vendor_id for vendor compatibility
+ */
+#define FTS_GET_VENDOR_ID_NUM                   0
+>>>>>>> FETCH_HEAD
 
 /*
  * vendor_id(s) for vendor(s) to be compatible with.
@@ -196,28 +258,54 @@
  * FTS_GET_VENDOR_ID_NUM >= 2, compatible with FTS_VENDOR_2_ID
  * FTS_GET_VENDOR_ID_NUM == 3, compatible with FTS_VENDOR_3_ID
  */
+<<<<<<< HEAD
 #define FTS_VENDOR_1_ID                         0x37
 #define FTS_VENDOR_2_ID                         0x34
+=======
+#define FTS_VENDOR_1_ID                         0x00
+#define FTS_VENDOR_2_ID                         0x00
+>>>>>>> FETCH_HEAD
 #define FTS_VENDOR_3_ID                         0x00
 
 /*
  * FW_APP.i file for auto upgrade, you must replace it with your own
  * define your own fw_app, the sample one to be replaced is invalid
+<<<<<<< HEAD
  * NOTE: if FTS_GET_VENDOR_ID_NUM >= 1, it's the fw corresponding with FTS_VENDOR_1_ID
  */
 #define FTS_UPGRADE_FW_APP                      "include/firmware/LQ_E6_FT5446_Ofilm_EBBG_V0f_D01_20180820_app.i"
+=======
+ * NOTE: if FTS_GET_VENDOR_ID_NUM >= 1,
+ *       it's the fw corresponding with FTS_VENDOR_1_ID
+ */
+#define FTS_UPGRADE_FW_APP		"include/firmware/FT8716_app_sample.i"
+>>>>>>> FETCH_HEAD
 
 /*
  * if FTS_GET_VENDOR_ID_NUM >= 2, fw corrsponding with FTS_VENDOR_2_ID
  * define your own fw_app, the sample one is invalid
  */
+<<<<<<< HEAD
 #define FTS_UPGRADE_FW2_APP                     "include/firmware/LQ_E6_FT5446_Ofilm_Auo_V0a_D01_20180820_app.i"
+=======
+#define FTS_UPGRADE_FW2_APP		"include/firmware/FT8716_app_sample.i"
+>>>>>>> FETCH_HEAD
 
 /*
  * if FTS_GET_VENDOR_ID_NUM == 3, fw corrsponding with FTS_VENDOR_3_ID
  * define your own fw_app, the sample one is invalid
  */
+<<<<<<< HEAD
 #define FTS_UPGRADE_FW3_APP                     "include/firmware/FT8716_app_sample.i"
+=======
+#define FTS_UPGRADE_FW3_APP		"include/firmware/FT8716_app_sample.i"
+
+/*
+ * lcd_cfg.i file for lcd cfg upgrade
+ * define your own lcd_cfg.i, the sample one is invalid
+ */
+#define FTS_UPGRADE_LCD_CFG		"include/firmware/lcd_cfg.i"
+>>>>>>> FETCH_HEAD
 
 /*
  * upgrade stress test for debug
@@ -231,4 +319,7 @@
 /*********************************************************/
 
 #endif /* _LINUX_FOCLATECH_CONFIG_H_ */
+<<<<<<< HEAD
 
+=======
+>>>>>>> FETCH_HEAD

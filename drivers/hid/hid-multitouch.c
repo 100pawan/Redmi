@@ -567,8 +567,11 @@ static int mt_touch_input_mapping(struct hid_device *hdev, struct hid_input *hi,
 	case HID_UP_BUTTON:
 		code = BTN_MOUSE + ((usage->hid - 1) & HID_USAGE);
 		hid_map_usage(hi, usage, bit, max, EV_KEY, code);
+<<<<<<< HEAD
 		if (!*bit)
 			return -1;
+=======
+>>>>>>> FETCH_HEAD
 		input_set_capability(hi->input, EV_KEY, code);
 		return 1;
 

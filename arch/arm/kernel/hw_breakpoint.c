@@ -688,6 +688,7 @@ static void disable_single_step(struct perf_event *bp)
 	arch_install_hw_breakpoint(bp);
 }
 
+<<<<<<< HEAD
 /*
  * Arm32 hardware does not always report a watchpoint hit address that matches
  * one of the watchpoints set. It can also report an address "near" the
@@ -734,12 +735,20 @@ static void watchpoint_handler(unsigned long addr, unsigned int fsr,
 	int i, access, closest_match = 0;
 	u32 min_dist = -1, dist;
 	u32 val, ctrl_reg;
+=======
+static void watchpoint_handler(unsigned long addr, unsigned int fsr,
+			       struct pt_regs *regs)
+{
+	int i, access;
+	u32 val, ctrl_reg, alignment_mask;
+>>>>>>> FETCH_HEAD
 	struct perf_event *wp, **slots;
 	struct arch_hw_breakpoint *info;
 	struct arch_hw_breakpoint_ctrl ctrl;
 
 	slots = this_cpu_ptr(wp_on_reg);
 
+<<<<<<< HEAD
 	/*
 	 * Find all watchpoints that match the reported address. If no exact
 	 * match is found. Attribute the hit to the closest watchpoint.
@@ -750,6 +759,17 @@ static void watchpoint_handler(unsigned long addr, unsigned int fsr,
 		if (wp == NULL)
 			continue;
 
+=======
+	for (i = 0; i < core_num_wrps; ++i) {
+		rcu_read_lock();
+
+		wp = slots[i];
+
+		if (wp == NULL)
+			goto unlock;
+
+		info = counter_arch_bp(wp);
+>>>>>>> FETCH_HEAD
 		/*
 		 * The DFAR is an unknown value on debug architectures prior
 		 * to 7.1. Since we only allow a single watchpoint on these
@@ -758,14 +778,36 @@ static void watchpoint_handler(unsigned long addr, unsigned int fsr,
 		 */
 		if (debug_arch < ARM_DEBUG_ARCH_V7_1) {
 			BUG_ON(i > 0);
+<<<<<<< HEAD
 			info = counter_arch_bp(wp);
 			info->trigger = wp->attr.bp_addr;
 		} else {
+=======
+			info->trigger = wp->attr.bp_addr;
+		} else {
+			if (info->ctrl.len == ARM_BREAKPOINT_LEN_8)
+				alignment_mask = 0x7;
+			else
+				alignment_mask = 0x3;
+
+			/* Check if the watchpoint value matches. */
+			val = read_wb_reg(ARM_BASE_WVR + i);
+			if (val != (addr & ~alignment_mask))
+				goto unlock;
+
+			/* Possible match, check the byte address select. */
+			ctrl_reg = read_wb_reg(ARM_BASE_WCR + i);
+			decode_ctrl_reg(ctrl_reg, &ctrl);
+			if (!((1 << (addr & alignment_mask)) & ctrl.len))
+				goto unlock;
+
+>>>>>>> FETCH_HEAD
 			/* Check that the access type matches. */
 			if (debug_exception_updates_fsr()) {
 				access = (fsr & ARM_FSR_ACCESS_MASK) ?
 					  HW_BREAKPOINT_W : HW_BREAKPOINT_R;
 				if (!(access & hw_breakpoint_type(wp)))
+<<<<<<< HEAD
 					continue;
 			}
 
@@ -783,10 +825,17 @@ static void watchpoint_handler(unsigned long addr, unsigned int fsr,
 
 			/* We have a winner. */
 			info = counter_arch_bp(wp);
+=======
+					goto unlock;
+			}
+
+			/* We have a winner. */
+>>>>>>> FETCH_HEAD
 			info->trigger = addr;
 		}
 
 		pr_debug("watchpoint fired: address = 0x%x\n", info->trigger);
+<<<<<<< HEAD
 
 		/*
 		 * If we triggered a user watchpoint from a uaccess routine,
@@ -821,6 +870,21 @@ step:
 	}
 
 	rcu_read_unlock();
+=======
+		perf_bp_event(wp, regs);
+
+		/*
+		 * If no overflow handler is present, insert a temporary
+		 * mismatch breakpoint so we can single-step over the
+		 * watchpoint trigger.
+		 */
+		if (is_default_overflow_handler(wp))
+			enable_single_step(wp, instruction_pointer(regs));
+
+unlock:
+		rcu_read_unlock();
+	}
+>>>>>>> FETCH_HEAD
 }
 
 static void watchpoint_single_step_handler(unsigned long pc)

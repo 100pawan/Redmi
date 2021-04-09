@@ -74,9 +74,13 @@ static void nft_payload_eval(const struct nft_expr *expr,
 	u32 *dest = &regs->data[priv->dreg];
 	int offset;
 
+<<<<<<< HEAD
 	if (priv->len % NFT_REG32_SIZE)
 		dest[priv->len / NFT_REG32_SIZE] = 0;
 
+=======
+	dest[priv->len / NFT_REG32_SIZE] = 0;
+>>>>>>> FETCH_HEAD
 	switch (priv->base) {
 	case NFT_PAYLOAD_LL_HEADER:
 		if (!skb_mac_header_was_set(skb))

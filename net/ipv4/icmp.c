@@ -246,7 +246,11 @@ static struct {
 /**
  * icmp_global_allow - Are we allowed to send one more ICMP message ?
  *
+<<<<<<< HEAD
  * Uses a token bucket to limit our ICMP messages to ~sysctl_icmp_msgs_per_sec.
+=======
+ * Uses a token bucket to limit our ICMP messages to sysctl_icmp_msgs_per_sec.
+>>>>>>> FETCH_HEAD
  * Returns false if we reached the limit and can not send another packet.
  * Note: called with BH disabled
  */
@@ -274,10 +278,14 @@ bool icmp_global_allow(void)
 	}
 	credit = min_t(u32, icmp_global.credit + incr, sysctl_icmp_msgs_burst);
 	if (credit) {
+<<<<<<< HEAD
 		/* We want to use a credit of one in average, but need to randomize
 		 * it for security reasons.
 		 */
 		credit = max_t(int, credit - prandom_u32_max(3), 0);
+=======
+		credit--;
+>>>>>>> FETCH_HEAD
 		rc = true;
 	}
 	WRITE_ONCE(icmp_global.credit, credit);
@@ -740,6 +748,7 @@ out:;
 }
 EXPORT_SYMBOL(__icmp_send);
 
+<<<<<<< HEAD
 #if IS_ENABLED(CONFIG_NF_NAT)
 #include <net/netfilter/nf_conntrack.h>
 void icmp_ndo_send(struct sk_buff *skb_in, int type, int code, __be32 info)
@@ -774,6 +783,8 @@ out:
 }
 EXPORT_SYMBOL(icmp_ndo_send);
 #endif
+=======
+>>>>>>> FETCH_HEAD
 
 static void icmp_socket_deliver(struct sk_buff *skb, u32 info)
 {

@@ -491,9 +491,14 @@ static int brcmnand_revision_init(struct brcmnand_controller *ctrl)
 	} else {
 		ctrl->cs_offsets = brcmnand_cs_offsets;
 
+<<<<<<< HEAD
 		/* v3.3-5.0 have a different CS0 offset layout */
 		if (ctrl->nand_version >= 0x0303 &&
 		    ctrl->nand_version <= 0x0500)
+=======
+		/* v5.0 and earlier has a different CS0 offset layout */
+		if (ctrl->nand_version <= 0x0500)
+>>>>>>> FETCH_HEAD
 			ctrl->cs0_offsets = brcmnand_cs_offsets_cs0;
 	}
 
@@ -912,6 +917,7 @@ static int brcmnand_hamming_ooblayout_free(struct mtd_info *mtd, int section,
 		if (!section) {
 			/*
 			 * Small-page NAND use byte 6 for BBI while large-page
+<<<<<<< HEAD
 			 * NAND use bytes 0 and 1.
 			 */
 			if (cfg->page_size > 512) {
@@ -920,6 +926,13 @@ static int brcmnand_hamming_ooblayout_free(struct mtd_info *mtd, int section,
 			} else {
 				oobregion->length--;
 			}
+=======
+			 * NAND use byte 0.
+			 */
+			if (cfg->page_size > 512)
+				oobregion->offset++;
+			oobregion->length--;
+>>>>>>> FETCH_HEAD
 		}
 	}
 
@@ -2596,7 +2609,11 @@ int brcmnand_remove(struct platform_device *pdev)
 	struct brcmnand_host *host;
 
 	list_for_each_entry(host, &ctrl->host_list, node)
+<<<<<<< HEAD
 		nand_release(&host->chip);
+=======
+		nand_release(nand_to_mtd(&host->chip));
+>>>>>>> FETCH_HEAD
 
 	clk_disable_unprepare(ctrl->clk);
 

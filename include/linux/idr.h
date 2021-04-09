@@ -195,11 +195,14 @@ static inline int ida_get_new(struct ida *ida, int *p_id)
 	return ida_get_new_above(ida, 0, p_id);
 }
 
+<<<<<<< HEAD
 static inline bool ida_is_empty(struct ida *ida)
 {
 	return idr_is_empty(&ida->idr);
 }
 
+=======
+>>>>>>> FETCH_HEAD
 void __init idr_init_cache(void);
 
 #endif /* __IDR_H__ */

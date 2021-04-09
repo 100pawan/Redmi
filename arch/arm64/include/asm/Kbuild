@@ -32,7 +32,10 @@ generic-y += rwsem.h
 generic-y += segment.h
 generic-y += sembuf.h
 generic-y += serial.h
+<<<<<<< HEAD
 generic-y += set_memory.h
+=======
+>>>>>>> FETCH_HEAD
 generic-y += shmbuf.h
 generic-y += simd.h
 generic-y += sizes.h

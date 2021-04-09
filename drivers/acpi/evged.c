@@ -82,8 +82,11 @@ static acpi_status acpi_ged_request_interrupt(struct acpi_resource *ares,
 	struct resource r;
 	struct acpi_resource_irq *p = &ares->data.irq;
 	struct acpi_resource_extended_irq *pext = &ares->data.extended_irq;
+<<<<<<< HEAD
 	char ev_name[5];
 	u8 trigger;
+=======
+>>>>>>> FETCH_HEAD
 
 	if (ares->type == ACPI_RESOURCE_TYPE_END_TAG)
 		return AE_OK;
@@ -92,6 +95,7 @@ static acpi_status acpi_ged_request_interrupt(struct acpi_resource *ares,
 		dev_err(dev, "unable to parse IRQ resource\n");
 		return AE_ERROR;
 	}
+<<<<<<< HEAD
 	if (ares->type == ACPI_RESOURCE_TYPE_IRQ) {
 		gsi = p->interrupts[0];
 		trigger = p->triggering;
@@ -114,6 +118,16 @@ static acpi_status acpi_ged_request_interrupt(struct acpi_resource *ares,
 		if (ACPI_SUCCESS(acpi_get_handle(handle, "_EVT", &evt_handle)))
 			break;
 
+=======
+	if (ares->type == ACPI_RESOURCE_TYPE_IRQ)
+		gsi = p->interrupts[0];
+	else
+		gsi = pext->interrupts[0];
+
+	irq = r.start;
+
+	if (ACPI_FAILURE(acpi_get_handle(handle, "_EVT", &evt_handle))) {
+>>>>>>> FETCH_HEAD
 		dev_err(dev, "cannot locate _EVT method\n");
 		return AE_ERROR;
 	}

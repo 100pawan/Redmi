@@ -1038,7 +1038,11 @@ static int fsmc_nand_remove(struct platform_device *pdev)
 	struct fsmc_nand_data *host = platform_get_drvdata(pdev);
 
 	if (host) {
+<<<<<<< HEAD
 		nand_release(&host->nand);
+=======
+		nand_release(nand_to_mtd(&host->nand));
+>>>>>>> FETCH_HEAD
 
 		if (host->mode == USE_DMA_ACCESS) {
 			dma_release_channel(host->write_dma_chan);

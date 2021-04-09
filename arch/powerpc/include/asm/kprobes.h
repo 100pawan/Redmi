@@ -29,7 +29,10 @@
 #include <linux/types.h>
 #include <linux/ptrace.h>
 #include <linux/percpu.h>
+<<<<<<< HEAD
 #include <linux/module.h>
+=======
+>>>>>>> FETCH_HEAD
 #include <asm/probes.h>
 #include <asm/code-patching.h>
 
@@ -61,7 +64,11 @@ typedef ppc_opcode_t kprobe_opcode_t;
 #define kprobe_lookup_name(name, addr)					\
 {									\
 	char dot_name[MODULE_NAME_LEN + 1 + KSYM_NAME_LEN];		\
+<<<<<<< HEAD
 	const char *modsym;							\
+=======
+	char *modsym;							\
+>>>>>>> FETCH_HEAD
 	bool dot_appended = false;					\
 	if ((modsym = strchr(name, ':')) != NULL) {			\
 		modsym++;						\

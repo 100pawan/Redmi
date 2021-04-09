@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 /* Copyright (c) 2017-2018, The Linux Foundation. All rights reserved.
+=======
+/* Copyright (c) 2017-2018,2020, The Linux Foundation. All rights reserved.
+>>>>>>> FETCH_HEAD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -103,7 +107,11 @@ struct cpu_gpu_lock {
 /* Size of the performance counter save/restore block (in bytes) */
 #define A6XX_CP_PERFCOUNTER_SAVE_RESTORE_SIZE   (4 * 1024)
 
+<<<<<<< HEAD
 #define A6XX_CP_RB_CNTL_DEFAULT (((ilog2(4) << 8) & 0x1F00) | \
+=======
+#define A6XX_CP_RB_CNTL_DEFAULT ((1 << 27) | ((ilog2(4) << 8) & 0x1F00) | \
+>>>>>>> FETCH_HEAD
 		(ilog2(KGSL_RB_DWORDS >> 1) & 0x3F))
 
 /* Preemption functions */

@@ -663,6 +663,7 @@ static void ixgbe_ptp_clear_tx_timestamp(struct ixgbe_adapter *adapter)
 }
 
 /**
+<<<<<<< HEAD
  * ixgbe_ptp_tx_hang - detect error case where Tx timestamp never finishes
  * @adapter: private network adapter structure
  */
@@ -690,6 +691,8 @@ void ixgbe_ptp_tx_hang(struct ixgbe_adapter *adapter)
 }
 
 /**
+=======
+>>>>>>> FETCH_HEAD
  * ixgbe_ptp_tx_hwtstamp - utility function which checks for TX time stamp
  * @adapter: the private adapter struct
  *

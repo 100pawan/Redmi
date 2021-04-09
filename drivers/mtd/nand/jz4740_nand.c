@@ -499,7 +499,11 @@ static int jz_nand_probe(struct platform_device *pdev)
 	return 0;
 
 err_nand_release:
+<<<<<<< HEAD
 	nand_release(chip);
+=======
+	nand_release(mtd);
+>>>>>>> FETCH_HEAD
 err_unclaim_banks:
 	while (chipnr--) {
 		unsigned char bank = nand->banks[chipnr];
@@ -520,7 +524,11 @@ static int jz_nand_remove(struct platform_device *pdev)
 	struct jz_nand *nand = platform_get_drvdata(pdev);
 	size_t i;
 
+<<<<<<< HEAD
 	nand_release(&nand->chip);
+=======
+	nand_release(nand_to_mtd(&nand->chip));
+>>>>>>> FETCH_HEAD
 
 	/* Deassert and disable all chips */
 	writel(0, nand->base + JZ_REG_NAND_CTRL);

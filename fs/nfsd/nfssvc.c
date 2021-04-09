@@ -393,7 +393,12 @@ static void nfsd_last_thread(struct svc_serv *serv, struct net *net)
 		return;
 
 	nfsd_shutdown_net(net);
+<<<<<<< HEAD
 	pr_info("nfsd: last server has exited, flushing export cache\n");
+=======
+	printk(KERN_WARNING "nfsd: last server has exited, flushing export "
+			    "cache\n");
+>>>>>>> FETCH_HEAD
 	nfsd_export_flush(net);
 }
 

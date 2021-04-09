@@ -135,6 +135,7 @@ config GENERIC_TRACER
 	bool
 	select TRACING
 
+<<<<<<< HEAD
 if TRACING
 
 config DISABLE_TRACE_PRINTK
@@ -149,6 +150,8 @@ config DISABLE_TRACE_PRINTK
 
 endif
 
+=======
+>>>>>>> FETCH_HEAD
 #
 # Minimum requirements an architecture has to meet for us to
 # be able to offer generic tracing facilities:

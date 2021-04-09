@@ -265,7 +265,11 @@ struct sk_buff **udp_gro_receive(struct sk_buff **head, struct sk_buff *skb,
 	struct sock *sk;
 
 	if (NAPI_GRO_CB(skb)->encap_mark ||
+<<<<<<< HEAD
 	    (uh->check && skb->ip_summed != CHECKSUM_PARTIAL &&
+=======
+	    (skb->ip_summed != CHECKSUM_PARTIAL &&
+>>>>>>> FETCH_HEAD
 	     NAPI_GRO_CB(skb)->csum_cnt == 0 &&
 	     !NAPI_GRO_CB(skb)->csum_valid))
 		goto out;

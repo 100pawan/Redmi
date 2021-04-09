@@ -8,8 +8,13 @@
 
 #define FONTDATAMAX 2048
 
+<<<<<<< HEAD
 static const struct font_data fontdata_8x8 = {
 	{ 0, 0, FONTDATAMAX, 0 }, {
+=======
+static const unsigned char fontdata_8x8[FONTDATAMAX] = {
+
+>>>>>>> FETCH_HEAD
 	/* 0 0x00 '^@' */
 	0x00, /* 00000000 */
 	0x00, /* 00000000 */
@@ -2569,7 +2574,12 @@ static const struct font_data fontdata_8x8 = {
 	0x00, /* 00000000 */
 	0x00, /* 00000000 */
 	0x00, /* 00000000 */
+<<<<<<< HEAD
 } };
+=======
+
+};
+>>>>>>> FETCH_HEAD
 
 
 const struct font_desc font_vga_8x8 = {
@@ -2577,6 +2587,10 @@ const struct font_desc font_vga_8x8 = {
 	.name	= "VGA8x8",
 	.width	= 8,
 	.height	= 8,
+<<<<<<< HEAD
 	.data	= fontdata_8x8.data,
+=======
+	.data	= fontdata_8x8,
+>>>>>>> FETCH_HEAD
 	.pref	= 0,
 };

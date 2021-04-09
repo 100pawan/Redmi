@@ -224,6 +224,10 @@ static struct bus_type suspend_subsys = {
 
 static const struct platform_suspend_ops pseries_suspend_ops = {
 	.valid		= suspend_valid_only_mem,
+<<<<<<< HEAD
+=======
+	.begin		= pseries_suspend_begin,
+>>>>>>> FETCH_HEAD
 	.prepare_late	= pseries_prepare_late,
 	.enter		= pseries_suspend_enter,
 };

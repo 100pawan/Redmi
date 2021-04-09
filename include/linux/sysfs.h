@@ -300,11 +300,14 @@ static inline void sysfs_enable_ns(struct kernfs_node *kn)
 	return kernfs_enable_ns(kn);
 }
 
+<<<<<<< HEAD
 __printf(2, 3)
 int sysfs_emit(char *buf, const char *fmt, ...);
 __printf(3, 4)
 int sysfs_emit_at(char *buf, int at, const char *fmt, ...);
 
+=======
+>>>>>>> FETCH_HEAD
 #else /* CONFIG_SYSFS */
 
 static inline int sysfs_create_dir_ns(struct kobject *kobj, const void *ns)
@@ -511,6 +514,7 @@ static inline void sysfs_enable_ns(struct kernfs_node *kn)
 {
 }
 
+<<<<<<< HEAD
 __printf(2, 3)
 static inline int sysfs_emit(char *buf, const char *fmt, ...)
 {
@@ -522,6 +526,8 @@ static inline int sysfs_emit_at(char *buf, int at, const char *fmt, ...)
 {
 	return 0;
 }
+=======
+>>>>>>> FETCH_HEAD
 #endif /* CONFIG_SYSFS */
 
 static inline int __must_check sysfs_create_file(struct kobject *kobj,

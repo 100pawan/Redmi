@@ -5,6 +5,7 @@
 #include <linux/mm.h>
 #include <linux/uaccess.h>
 
+<<<<<<< HEAD
 static __always_inline long
 probe_read_common(void *dst, const void __user *src, size_t size)
 {
@@ -31,6 +32,10 @@ probe_write_common(void __user *dst, const void *src, size_t size)
 
 /**
  * probe_kernel_read(): safely attempt to read from a kernel-space location
+=======
+/**
+ * probe_kernel_read(): safely attempt to read from a location
+>>>>>>> FETCH_HEAD
  * @dst: pointer to the buffer that shall take the data
  * @src: address to read from
  * @size: size of the data chunk
@@ -53,14 +58,25 @@ long __probe_kernel_read(void *dst, const void *src, size_t size)
 	mm_segment_t old_fs = get_fs();
 
 	set_fs(KERNEL_DS);
+<<<<<<< HEAD
 	ret = probe_read_common(dst, (__force const void __user *)src, size);
 	set_fs(old_fs);
 
 	return ret;
+=======
+	pagefault_disable();
+	ret = __copy_from_user_inatomic(dst,
+			(__force const void __user *)src, size);
+	pagefault_enable();
+	set_fs(old_fs);
+
+	return ret ? -EFAULT : 0;
+>>>>>>> FETCH_HEAD
 }
 EXPORT_SYMBOL_GPL(probe_kernel_read);
 
 /**
+<<<<<<< HEAD
  * probe_user_read(): safely attempt to read from a user-space location
  * @dst: pointer to the buffer that shall take the data
  * @src: address to read from. This must be a user address.
@@ -88,6 +104,8 @@ long __probe_user_read(void *dst, const void __user *src, size_t size)
 EXPORT_SYMBOL_GPL(probe_user_read);
 
 /**
+=======
+>>>>>>> FETCH_HEAD
  * probe_kernel_write(): safely attempt to write to a location
  * @dst: address to write to
  * @src: pointer to the data that shall be written
@@ -96,7 +114,10 @@ EXPORT_SYMBOL_GPL(probe_user_read);
  * Safely write to address @dst from the buffer at @src.  If a kernel fault
  * happens, handle that and return -EFAULT.
  */
+<<<<<<< HEAD
 
+=======
+>>>>>>> FETCH_HEAD
 long __weak probe_kernel_write(void *dst, const void *src, size_t size)
     __attribute__((alias("__probe_kernel_write")));
 
@@ -106,14 +127,24 @@ long __probe_kernel_write(void *dst, const void *src, size_t size)
 	mm_segment_t old_fs = get_fs();
 
 	set_fs(KERNEL_DS);
+<<<<<<< HEAD
 	ret = probe_write_common((__force void __user *)dst, src, size);
 	set_fs(old_fs);
 
 	return ret;
+=======
+	pagefault_disable();
+	ret = __copy_to_user_inatomic((__force void __user *)dst, src, size);
+	pagefault_enable();
+	set_fs(old_fs);
+
+	return ret ? -EFAULT : 0;
+>>>>>>> FETCH_HEAD
 }
 EXPORT_SYMBOL_GPL(probe_kernel_write);
 
 /**
+<<<<<<< HEAD
  * probe_user_write(): safely attempt to write to a user-space location
  * @dst: address to write to
  * @src: pointer to the data that shall be written
@@ -141,6 +172,8 @@ long __probe_user_write(void __user *dst, const void *src, size_t size)
 EXPORT_SYMBOL_GPL(probe_user_write);
 
 /**
+=======
+>>>>>>> FETCH_HEAD
  * strncpy_from_unsafe: - Copy a NUL terminated string from unsafe address.
  * @dst:   Destination address, in kernel space.  This buffer must be at
  *         least @count bytes long.
@@ -179,6 +212,7 @@ long strncpy_from_unsafe(char *dst, const void *unsafe_addr, long count)
 
 	return ret ? -EFAULT : src - unsafe_addr;
 }
+<<<<<<< HEAD
 
 /**
  * strncpy_from_unsafe_user: - Copy a NUL terminated string from unsafe user
@@ -252,3 +286,5 @@ long strnlen_unsafe_user(const void __user *unsafe_addr, long count)
 
 	return ret;
 }
+=======
+>>>>>>> FETCH_HEAD

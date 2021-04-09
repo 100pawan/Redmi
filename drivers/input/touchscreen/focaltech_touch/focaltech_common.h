@@ -3,7 +3,10 @@
  * FocalTech fts TouchScreen driver.
  *
  * Copyright (c) 2010-2017, Focaltech Ltd. All rights reserved.
+<<<<<<< HEAD
  * Copyright (C) 2019 XiaoMi, Inc.
+=======
+>>>>>>> FETCH_HEAD
  *
  * This software is licensed under the terms of the GNU General Public
  * License version 2, as published by the Free Software Foundation, and
@@ -16,6 +19,7 @@
  *
  */
 /*****************************************************************************
+<<<<<<< HEAD
 *
 * File Name: focaltech_common.h
 *
@@ -28,6 +32,20 @@
 * Reference:
 *
 *****************************************************************************/
+=======
+ *
+ * File Name: focaltech_common.h
+ *
+ * Author: Focaltech Driver Team
+ *
+ * Created: 2016-08-16
+ *
+ * Abstract:
+ *
+ * Reference:
+ *
+ *****************************************************************************/
+>>>>>>> FETCH_HEAD
 
 #ifndef __LINUX_FOCALTECH_COMMON_H__
 #define __LINUX_FOCALTECH_COMMON_H__
@@ -35,9 +53,15 @@
 #include "focaltech_config.h"
 
 /*****************************************************************************
+<<<<<<< HEAD
 * Macro definitions using #define
 *****************************************************************************/
 #define FTS_DRIVER_VERSION                  "Focaltech V1.4 20170630"
+=======
+ * Macro definitions using #define
+ *****************************************************************************/
+#define FTS_DRIVER_VERSION                  "Focaltech V1.3 20170306"
+>>>>>>> FETCH_HEAD
 
 #define FLAGBIT(x)              (0x00000001 << (x))
 #define FLAGBITS(x, y)          ((0xFFFFFFFF >> (32 - (y) - 1)) << (x))
@@ -45,10 +69,30 @@
 #define FLAG_ICSERIALS_LEN      5
 #define FLAG_IDC_BIT            11
 
+<<<<<<< HEAD
 #define IC_SERIALS              (FTS_CHIP_TYPE & FLAGBITS(0, FLAG_ICSERIALS_LEN-1))
 #define FTS_CHIP_IDC            ((FTS_CHIP_TYPE & FLAGBIT(FLAG_IDC_BIT)) == FLAGBIT(FLAG_IDC_BIT))
 
 #define FTS_CHIP_TYPE_MAPPING {{0x02, 0x54, 0x22, 0x54, 0x22, 0x00, 0x00, 0x54, 0x2C}}
+=======
+#define IC_SERIALS              (FTS_CHIP_TYPE & \
+					FLAGBITS(0, FLAG_ICSERIALS_LEN-1))
+#define FTS_CHIP_IDC            ((FTS_CHIP_TYPE & FLAGBIT(FLAG_IDC_BIT)) \
+						== FLAGBIT(FLAG_IDC_BIT))
+
+#define FTS_CHIP_TYPE_MAPPING   { \
+	{0x01, 0x58, 0x22, 0x58, 0x22, 0x00, 0x00, 0x58, 0x2C}, \
+	{0x02, 0x54, 0x22, 0x54, 0x22, 0x00, 0x00, 0x54, 0x2C}, \
+	{0x03, 0x64, 0x26, 0x64, 0x26, 0x00, 0x00, 0x79, 0x1C}, \
+	{0x04, 0x33, 0x67, 0x64, 0x26, 0x00, 0x00, 0x79, 0x1C}, \
+	{0x05, 0x87, 0x16, 0x87, 0x16, 0x87, 0xA6, 0x00, 0x00}, \
+	{0x06, 0x87, 0x36, 0x87, 0x36, 0x87, 0xC6, 0x00, 0x00}, \
+	{0x07, 0x80, 0x06, 0x80, 0x06, 0x80, 0xC6, 0x80, 0xB6}, \
+	{0x08, 0x86, 0x06, 0x86, 0x06, 0x86, 0xA6, 0x00, 0x00}, \
+	{0x09, 0x86, 0x07, 0x86, 0x07, 0x86, 0xA7, 0x00, 0x00}, \
+	{0x0A, 0xE7, 0x16, 0x87, 0x16, 0xE7, 0xA6, 0x87, 0xB6}, \
+}
+>>>>>>> FETCH_HEAD
 
 #define I2C_BUFFER_LENGTH_MAXINUM           256
 #define FILE_NAME_LENGTH                    128
@@ -78,8 +122,14 @@
 
 
 /*****************************************************************************
+<<<<<<< HEAD
 *  Alternative mode (When something goes wrong, the modules may be able to solve the problem.)
 *****************************************************************************/
+=======
+ *  Alternative mode (When something goes wrong,
+ *  the modules may be able to solve the problem.)
+ *****************************************************************************/
+>>>>>>> FETCH_HEAD
 /*
  * point report check
  * default: disable
@@ -88,6 +138,7 @@
 
 
 /*****************************************************************************
+<<<<<<< HEAD
 * Global variable or extern global variabls/functions
 *****************************************************************************/
 struct ft_chip_t
@@ -101,12 +152,31 @@ struct ft_chip_t
     unsigned char pramboot_idl;
     unsigned char bootloader_idh;
     unsigned char bootloader_idl;
+=======
+ * Global variable or extern global variabls/functions
+ *****************************************************************************/
+struct ft_chip_t {
+	unsigned long type;
+	unsigned char chip_idh;
+	unsigned char chip_idl;
+	unsigned char rom_idh;
+	unsigned char rom_idl;
+	unsigned char pramboot_idh;
+	unsigned char pramboot_idl;
+	unsigned char bootloader_idh;
+	unsigned char bootloader_idl;
+>>>>>>> FETCH_HEAD
 };
 
 /* i2c communication*/
 int fts_i2c_write_reg(struct i2c_client *client, u8 regaddr, u8 regvalue);
 int fts_i2c_read_reg(struct i2c_client *client, u8 regaddr, u8 *regvalue);
+<<<<<<< HEAD
 int fts_i2c_read(struct i2c_client *client, char *writebuf, int writelen, char *readbuf, int readlen);
+=======
+int fts_i2c_read(struct i2c_client *client, char *writebuf, int writelen,
+						char *readbuf, int readlen);
+>>>>>>> FETCH_HEAD
 int fts_i2c_write(struct i2c_client *client, char *writebuf, int writelen);
 int fts_i2c_init(void);
 int fts_i2c_exit(void);
@@ -119,18 +189,28 @@ void fts_gesture_recovery(struct i2c_client *client);
 int fts_gesture_readdata(struct i2c_client *client);
 int fts_gesture_suspend(struct i2c_client *i2c_client);
 int fts_gesture_resume(struct i2c_client *client);
+<<<<<<< HEAD
 
 int fts_select_gesture_mode(struct input_dev *dev, unsigned int type, unsigned int code, int value);
+=======
+>>>>>>> FETCH_HEAD
 #endif
 
 /* Apk and functions */
 #if FTS_APK_NODE_EN
+<<<<<<< HEAD
 int fts_create_apk_debug_channel(struct i2c_client * client);
 void fts_release_apk_debug_channel(void);
 #endif
 
 int init_tp_selftest(struct i2c_client * client);
 
+=======
+int fts_create_apk_debug_channel(struct i2c_client *client);
+void fts_release_apk_debug_channel(void);
+#endif
+
+>>>>>>> FETCH_HEAD
 /* ADB functions */
 #if FTS_SYSFS_NODE_EN
 int fts_create_sysfs(struct i2c_client *client);
@@ -175,12 +255,18 @@ void fts_irq_disable(void);
 void fts_irq_enable(void);
 
 /*****************************************************************************
+<<<<<<< HEAD
 * DEBUG function define here
 *****************************************************************************/
+=======
+ * DEBUG function define here
+ *****************************************************************************/
+>>>>>>> FETCH_HEAD
 #if FTS_DEBUG_EN
 #define FTS_DEBUG_LEVEL     1
 
 #if (FTS_DEBUG_LEVEL == 2)
+<<<<<<< HEAD
 #define FTS_DEBUG(fmt, args...) printk(KERN_ERR "[FTS][%s]"fmt"\n", __func__, ##args)
 #else
 #define FTS_DEBUG(fmt, args...) printk(KERN_ERR "[FTS]"fmt"\n", ##args)
@@ -188,6 +274,15 @@ void fts_irq_enable(void);
 
 #define FTS_FUNC_ENTER() printk(KERN_ERR "[FTS]%s: Enter\n", __func__)
 #define FTS_FUNC_EXIT()  printk(KERN_ERR "[FTS]%s: Exit(%d)\n", __func__, __LINE__)
+=======
+#define FTS_DEBUG(fmt, args...) pr_err("[FTS][%s]"fmt"\n", __func__, ##args)
+#else
+#define FTS_DEBUG(fmt, args...) pr_err("[FTS]"fmt"\n", ##args)
+#endif
+
+#define FTS_FUNC_ENTER() pr_err("[FTS]%s: Enter\n", __func__)
+#define FTS_FUNC_EXIT()  pr_err("[FTS]%s: Exit(%d)\n", __func__, __LINE__)
+>>>>>>> FETCH_HEAD
 #else
 #define FTS_DEBUG(fmt, args...)
 #define FTS_FUNC_ENTER()
@@ -195,6 +290,7 @@ void fts_irq_enable(void);
 #endif
 
 #define FTS_INFO(fmt, args...) do { \
+<<<<<<< HEAD
             if (g_show_log) {printk(KERN_ERR "[FTS][Info]"fmt"\n", ##args);} \
         }  while (0)
 
@@ -205,3 +301,16 @@ void fts_irq_enable(void);
 
 #endif /* __LINUX_FOCALTECH_COMMON_H__ */
 
+=======
+		if (g_show_log) \
+			pr_err("[FTS][Info]"fmt"\n", ##args); \
+	}  while (0)
+
+#define FTS_ERROR(fmt, args...)  do { \
+		if (g_show_log) \
+			pr_err("[FTS][Error]"fmt"\n", ##args); \
+	}  while (0)
+
+
+#endif /* __LINUX_FOCALTECH_COMMON_H__ */
+>>>>>>> FETCH_HEAD

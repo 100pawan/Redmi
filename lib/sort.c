@@ -1,4 +1,5 @@
 /*
+<<<<<<< HEAD
  * A fast, small, non-recursive O(n log n) sort for the Linux kernel
  *
  * This performs n*log2(n) + 0.37*n + o(n) comparisons on average,
@@ -7,12 +8,18 @@
  * Glibc qsort() manages n*log2(n) - 1.26*n for random inputs (1.63*n
  * better) at the expense of stack usage and much larger code to avoid
  * quicksort's O(n^2) worst case.
+=======
+ * A fast, small, non-recursive O(nlog n) sort for the Linux kernel
+ *
+ * Jan 23 2005  Matt Mackall <mpm@selenic.com>
+>>>>>>> FETCH_HEAD
  */
 
 #include <linux/types.h>
 #include <linux/export.h>
 #include <linux/sort.h>
 
+<<<<<<< HEAD
 /**
  * is_aligned - is this pointer & size okay for word-wide copying?
  * @base: pointer to data
@@ -141,6 +148,37 @@ static size_t parent(size_t i, unsigned int lsbit, size_t size)
 	i -= size;
 	i -= size & -(i & lsbit);
 	return i / 2;
+=======
+static int alignment_ok(const void *base, int align)
+{
+	return IS_ENABLED(CONFIG_HAVE_EFFICIENT_UNALIGNED_ACCESS) ||
+		((unsigned long)base & (align - 1)) == 0;
+}
+
+static void u32_swap(void *a, void *b, int size)
+{
+	u32 t = *(u32 *)a;
+	*(u32 *)a = *(u32 *)b;
+	*(u32 *)b = t;
+}
+
+static void u64_swap(void *a, void *b, int size)
+{
+	u64 t = *(u64 *)a;
+	*(u64 *)a = *(u64 *)b;
+	*(u64 *)b = t;
+}
+
+static void generic_swap(void *a, void *b, int size)
+{
+	char t;
+
+	do {
+		t = *(char *)a;
+		*(char *)a++ = *(char *)b;
+		*(char *)b++ = t;
+	} while (--size > 0);
+>>>>>>> FETCH_HEAD
 }
 
 /**
@@ -151,6 +189,7 @@ static size_t parent(size_t i, unsigned int lsbit, size_t size)
  * @cmp_func: pointer to comparison function
  * @swap_func: pointer to swap function or NULL
  *
+<<<<<<< HEAD
  * This function does a heapsort on the given array.  You may provide
  * a swap_func function if you need to do something more than a memory
  * copy (e.g. fix up pointers or auxiliary data), but the built-in swap
@@ -161,11 +200,23 @@ static size_t parent(size_t i, unsigned int lsbit, size_t size)
  * O(n*n) worst-case behavior and extra memory requirements that make
  * it less suitable for kernel use.
  */
+=======
+ * This function does a heapsort on the given array. You may provide a
+ * swap_func function optimized to your element type.
+ *
+ * Sorting time is O(n log n) both on average and worst-case. While
+ * qsort is about 20% faster on average, it suffers from exploitable
+ * O(n*n) worst-case behavior and extra memory requirements that make
+ * it less suitable for kernel use.
+ */
+
+>>>>>>> FETCH_HEAD
 void sort(void *base, size_t num, size_t size,
 	  int (*cmp_func)(const void *, const void *),
 	  void (*swap_func)(void *, void *, int size))
 {
 	/* pre-scale counters for performance */
+<<<<<<< HEAD
 	size_t n = num * size, a = (num/2) * size;
 	const unsigned int lsbit = size & -size;  /* Used to find parent */
 
@@ -225,6 +276,47 @@ void sort(void *base, size_t num, size_t size,
 		}
 	}
 }
+=======
+	int i = (num/2 - 1) * size, n = num * size, c, r;
+
+	if (!swap_func) {
+		if (size == 4 && alignment_ok(base, 4))
+			swap_func = u32_swap;
+		else if (size == 8 && alignment_ok(base, 8))
+			swap_func = u64_swap;
+		else
+			swap_func = generic_swap;
+	}
+
+	/* heapify */
+	for ( ; i >= 0; i -= size) {
+		for (r = i; r * 2 + size < n; r  = c) {
+			c = r * 2 + size;
+			if (c < n - size &&
+					cmp_func(base + c, base + c + size) < 0)
+				c += size;
+			if (cmp_func(base + r, base + c) >= 0)
+				break;
+			swap_func(base + r, base + c, size);
+		}
+	}
+
+	/* sort */
+	for (i = n - size; i > 0; i -= size) {
+		swap_func(base, base + i, size);
+		for (r = 0; r * 2 + size < i; r = c) {
+			c = r * 2 + size;
+			if (c < i - size &&
+					cmp_func(base + c, base + c + size) < 0)
+				c += size;
+			if (cmp_func(base + r, base + c) >= 0)
+				break;
+			swap_func(base + r, base + c, size);
+		}
+	}
+}
+
+>>>>>>> FETCH_HEAD
 EXPORT_SYMBOL(sort);
 
 #if 0

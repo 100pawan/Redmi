@@ -752,11 +752,16 @@ static int _rtl_usb_receive(struct ieee80211_hw *hw)
 
 		usb_anchor_urb(urb, &rtlusb->rx_submitted);
 		err = usb_submit_urb(urb, GFP_KERNEL);
+<<<<<<< HEAD
 		if (err) {
 			usb_unanchor_urb(urb);
 			usb_free_urb(urb);
 			goto err_out;
 		}
+=======
+		if (err)
+			goto err_out;
+>>>>>>> FETCH_HEAD
 		usb_free_urb(urb);
 	}
 	return 0;
@@ -930,8 +935,15 @@ static struct urb *_rtl_usb_tx_urb_setup(struct ieee80211_hw *hw,
 
 	WARN_ON(NULL == skb);
 	_urb = usb_alloc_urb(0, GFP_ATOMIC);
+<<<<<<< HEAD
 	if (!_urb)
 		return NULL;
+=======
+	if (!_urb) {
+		kfree_skb(skb);
+		return NULL;
+	}
+>>>>>>> FETCH_HEAD
 	_rtl_install_trx_info(rtlusb, skb, ep_num);
 	usb_fill_bulk_urb(_urb, rtlusb->udev, usb_sndbulkpipe(rtlusb->udev,
 			  ep_num), skb->data, skb->len, _rtl_tx_complete, skb);
@@ -946,6 +958,10 @@ static void _rtl_usb_transmit(struct ieee80211_hw *hw, struct sk_buff *skb,
 	struct rtl_usb *rtlusb = rtl_usbdev(rtl_usbpriv(hw));
 	u32 ep_num;
 	struct urb *_urb = NULL;
+<<<<<<< HEAD
+=======
+	struct sk_buff *_skb = NULL;
+>>>>>>> FETCH_HEAD
 
 	WARN_ON(NULL == rtlusb->usb_tx_aggregate_hdl);
 	if (unlikely(IS_USB_STOP(rtlusb))) {
@@ -955,7 +971,12 @@ static void _rtl_usb_transmit(struct ieee80211_hw *hw, struct sk_buff *skb,
 		return;
 	}
 	ep_num = rtlusb->ep_map.ep_mapping[qnum];
+<<<<<<< HEAD
 	_urb = _rtl_usb_tx_urb_setup(hw, skb, ep_num);
+=======
+	_skb = skb;
+	_urb = _rtl_usb_tx_urb_setup(hw, _skb, ep_num);
+>>>>>>> FETCH_HEAD
 	if (unlikely(!_urb)) {
 		RT_TRACE(rtlpriv, COMP_ERR, DBG_EMERG,
 			 "Can't allocate urb. Drop skb!\n");

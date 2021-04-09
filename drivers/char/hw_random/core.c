@@ -32,7 +32,10 @@
 
 
 #include <linux/device.h>
+<<<<<<< HEAD
 #include <linux/freezer.h>
+=======
+>>>>>>> FETCH_HEAD
 #include <linux/hw_random.h>
 #include <linux/module.h>
 #include <linux/kernel.h>
@@ -407,9 +410,13 @@ static int hwrng_fillfn(void *unused)
 {
 	long rc;
 
+<<<<<<< HEAD
 	set_freezable();
 
 	while (!kthread_freezable_should_stop(NULL)) {
+=======
+	while (!kthread_should_stop()) {
+>>>>>>> FETCH_HEAD
 		struct hwrng *rng;
 
 		rng = get_current_rng();

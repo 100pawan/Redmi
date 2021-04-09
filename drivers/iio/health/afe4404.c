@@ -91,7 +91,10 @@ static const struct reg_field afe4404_reg_fields[] = {
  * @regulator: Pointer to the regulator for the IC
  * @trig: IIO trigger for this device
  * @irq: ADC_RDY line interrupt number
+<<<<<<< HEAD
  * @buffer: Used to construct a scan to push to the iio buffer.
+=======
+>>>>>>> FETCH_HEAD
  */
 struct afe4404_data {
 	struct device *dev;
@@ -100,7 +103,10 @@ struct afe4404_data {
 	struct regulator *regulator;
 	struct iio_trigger *trig;
 	int irq;
+<<<<<<< HEAD
 	s32 buffer[10] __aligned(8);
+=======
+>>>>>>> FETCH_HEAD
 };
 
 enum afe4404_chan_id {
@@ -339,17 +345,29 @@ static irqreturn_t afe4404_trigger_handler(int irq, void *private)
 	struct iio_dev *indio_dev = pf->indio_dev;
 	struct afe4404_data *afe = iio_priv(indio_dev);
 	int ret, bit, i = 0;
+<<<<<<< HEAD
+=======
+	s32 buffer[10];
+>>>>>>> FETCH_HEAD
 
 	for_each_set_bit(bit, indio_dev->active_scan_mask,
 			 indio_dev->masklength) {
 		ret = regmap_read(afe->regmap, afe4404_channel_values[bit],
+<<<<<<< HEAD
 				  &afe->buffer[i++]);
+=======
+				  &buffer[i++]);
+>>>>>>> FETCH_HEAD
 		if (ret)
 			goto err;
 	}
 
+<<<<<<< HEAD
 	iio_push_to_buffers_with_timestamp(indio_dev, afe->buffer,
 					   pf->timestamp);
+=======
+	iio_push_to_buffers_with_timestamp(indio_dev, buffer, pf->timestamp);
+>>>>>>> FETCH_HEAD
 err:
 	iio_trigger_notify_done(indio_dev->trig);
 

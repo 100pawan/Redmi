@@ -271,7 +271,10 @@ static void *rt_cpu_seq_next(struct seq_file *seq, void *v, loff_t *pos)
 		*pos = cpu+1;
 		return &per_cpu(rt_cache_stat, cpu);
 	}
+<<<<<<< HEAD
 	(*pos)++;
+=======
+>>>>>>> FETCH_HEAD
 	return NULL;
 
 }

@@ -681,7 +681,11 @@ static void vmbus_wait_for_unload(void)
 	void *page_addr;
 	struct hv_message *msg;
 	struct vmbus_channel_message_header *hdr;
+<<<<<<< HEAD
 	u32 message_type, i;
+=======
+	u32 message_type;
+>>>>>>> FETCH_HEAD
 
 	/*
 	 * CHANNELMSG_UNLOAD_RESPONSE is always delivered to the CPU which was
@@ -691,11 +695,16 @@ static void vmbus_wait_for_unload(void)
 	 * functional and vmbus_unload_response() will complete
 	 * vmbus_connection.unload_event. If not, the last thing we can do is
 	 * read message pages for all CPUs directly.
+<<<<<<< HEAD
 	 *
 	 * Wait no more than 10 seconds so that the panic path can't get
 	 * hung forever in case the response message isn't seen.
 	 */
 	for (i = 0; i < 1000; i++) {
+=======
+	 */
+	while (1) {
+>>>>>>> FETCH_HEAD
 		if (completion_done(&vmbus_connection.unload_event))
 			break;
 

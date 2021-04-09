@@ -57,6 +57,7 @@ config PSTORE_PMSG
 	  data can be retrieved from /sys/fs/pstore/pmsg-ramoops-[ID].
 
 	  If unsure, say N.
+<<<<<<< HEAD
 	  
 config PSTORE_LAST_KMSG
        bool "export /proc/last_kmsg"
@@ -65,6 +66,8 @@ config PSTORE_LAST_KMSG
        help
          When the option is enabled, pstore will export a proc filesystem
          interface /proc/last_kmsg.	  
+=======
+>>>>>>> FETCH_HEAD
 
 config PSTORE_FTRACE
 	bool "Persistent function tracer"

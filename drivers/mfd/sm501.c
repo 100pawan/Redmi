@@ -1425,6 +1425,7 @@ static int sm501_plat_probe(struct platform_device *dev)
 		goto err_claim;
 	}
 
+<<<<<<< HEAD
 	ret = sm501_init_dev(sm);
 	if (ret)
 		goto err_unmap;
@@ -1433,6 +1434,10 @@ static int sm501_plat_probe(struct platform_device *dev)
 
  err_unmap:
 	iounmap(sm->regs);
+=======
+	return sm501_init_dev(sm);
+
+>>>>>>> FETCH_HEAD
  err_claim:
 	release_resource(sm->regs_claim);
 	kfree(sm->regs_claim);

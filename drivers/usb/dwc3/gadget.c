@@ -630,6 +630,7 @@ static int dwc3_gadget_set_ep_config(struct dwc3 *dwc, struct dwc3_ep *dep,
 		params.param0 |= DWC3_DEPCFG_FIFO_NUMBER(dep->number >> 1);
 
 	if (desc->bInterval) {
+<<<<<<< HEAD
 		u8 bInterval_m1;
 
 		/*
@@ -647,6 +648,10 @@ static int dwc3_gadget_set_ep_config(struct dwc3 *dwc, struct dwc3_ep *dep,
 			dep->interval = 1 << (desc->bInterval - 1);
 
 		params.param1 |= DWC3_DEPCFG_BINTERVAL_M1(bInterval_m1);
+=======
+		params.param1 |= DWC3_DEPCFG_BINTERVAL_M1(desc->bInterval - 1);
+		dep->interval = 1 << (desc->bInterval - 1);
+>>>>>>> FETCH_HEAD
 	}
 
 	return dwc3_send_gadget_ep_cmd(dep, DWC3_DEPCMD_SETEPCONFIG, &params);
@@ -918,6 +923,10 @@ static struct usb_request *dwc3_gadget_ep_alloc_request(struct usb_ep *ep,
 
 	req->epnum	= dep->number;
 	req->dep	= dep;
+<<<<<<< HEAD
+=======
+	req->request.dma = DMA_ERROR_CODE;
+>>>>>>> FETCH_HEAD
 
 	dep->allocated_requests++;
 

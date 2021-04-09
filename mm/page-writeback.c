@@ -98,7 +98,11 @@ unsigned long vm_dirty_bytes;
 /*
  * The interval between `kupdate'-style writebacks
  */
+<<<<<<< HEAD
 unsigned int dirty_writeback_interval; /* centiseconds */
+=======
+unsigned int dirty_writeback_interval = 5 * 100; /* centiseconds */
+>>>>>>> FETCH_HEAD
 
 EXPORT_SYMBOL_GPL(dirty_writeback_interval);
 
@@ -2066,7 +2070,11 @@ static int page_writeback_cpu_online(unsigned int cpu)
  * However, that was when we used "dirty_ratio" to scale with
  * all memory, and we don't do that any more. "dirty_ratio"
  * is now applied to total non-HIGHPAGE memory (by subtracting
+<<<<<<< HEAD
  * totalhigh_pages() from vm_total_pages), and as such we can't
+=======
+ * totalhigh_pages from vm_total_pages), and as such we can't
+>>>>>>> FETCH_HEAD
  * get into the old insane situation any more where we had
  * large amounts of dirty pages compared to a small amount of
  * non-HIGHMEM memory.
@@ -2740,9 +2748,13 @@ int test_clear_page_writeback(struct page *page)
 	 * page state that is static across allocation cycles.
 	 */
 	if (ret) {
+<<<<<<< HEAD
 		__mem_cgroup_update_page_stat(page, memcg,
 					      MEM_CGROUP_STAT_WRITEBACK, -1);
 
+=======
+		mem_cgroup_dec_stat(memcg, MEM_CGROUP_STAT_WRITEBACK);
+>>>>>>> FETCH_HEAD
 		dec_node_page_state(page, NR_WRITEBACK);
 		dec_zone_page_state(page, NR_ZONE_WRITE_PENDING);
 		inc_node_page_state(page, NR_WRITTEN);

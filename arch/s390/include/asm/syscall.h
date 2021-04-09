@@ -41,6 +41,7 @@ static inline void syscall_rollback(struct task_struct *task,
 static inline long syscall_get_error(struct task_struct *task,
 				     struct pt_regs *regs)
 {
+<<<<<<< HEAD
 	unsigned long error = regs->gprs[2];
 #ifdef CONFIG_COMPAT
 	if (test_tsk_thread_flag(task, TIF_31BIT)) {
@@ -52,6 +53,9 @@ static inline long syscall_get_error(struct task_struct *task,
 	}
 #endif
 	return IS_ERR_VALUE(error) ? error : 0;
+=======
+	return IS_ERR_VALUE(regs->gprs[2]) ? regs->gprs[2] : 0;
+>>>>>>> FETCH_HEAD
 }
 
 static inline long syscall_get_return_value(struct task_struct *task,

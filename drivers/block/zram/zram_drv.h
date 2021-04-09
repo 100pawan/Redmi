@@ -21,6 +21,10 @@
 
 #include "zcomp.h"
 
+<<<<<<< HEAD
+=======
+#define SECTOR_SHIFT		9
+>>>>>>> FETCH_HEAD
 #define SECTORS_PER_PAGE_SHIFT	(PAGE_SHIFT - SECTOR_SHIFT)
 #define SECTORS_PER_PAGE	(1 << SECTORS_PER_PAGE_SHIFT)
 #define ZRAM_LOGICAL_BLOCK_SHIFT 12

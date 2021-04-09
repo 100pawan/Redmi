@@ -412,7 +412,11 @@ static struct sk_buff *init_req_packet(struct rxe_qp *qp,
 
 	/* init skb */
 	av = rxe_get_av(pkt);
+<<<<<<< HEAD
 	skb = rxe_init_packet(rxe, av, paylen, pkt);
+=======
+	skb = rxe->ifc_ops->init_packet(rxe, av, paylen, pkt);
+>>>>>>> FETCH_HEAD
 	if (unlikely(!skb))
 		return NULL;
 
@@ -483,7 +487,11 @@ static int fill_packet(struct rxe_qp *qp, struct rxe_send_wqe *wqe,
 	u32 *p;
 	int err;
 
+<<<<<<< HEAD
 	err = rxe_prepare(rxe, pkt, skb, &crc);
+=======
+	err = rxe->ifc_ops->prepare(rxe, pkt, skb, &crc);
+>>>>>>> FETCH_HEAD
 	if (err)
 		return err;
 
@@ -661,8 +669,12 @@ next_wqe:
 	}
 
 	if (unlikely(qp_type(qp) == IB_QPT_RC &&
+<<<<<<< HEAD
 		psn_compare(qp->req.psn, (qp->comp.psn +
 				RXE_MAX_UNACKED_PSNS)) > 0)) {
+=======
+		     qp->req.psn > (qp->comp.psn + RXE_MAX_UNACKED_PSNS))) {
+>>>>>>> FETCH_HEAD
 		qp->req.wait_psn = 1;
 		goto exit;
 	}

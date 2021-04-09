@@ -861,6 +861,7 @@ static inline struct request_queue *bdev_get_queue(struct block_device *bdev)
 }
 
 /*
+<<<<<<< HEAD
  * The basic unit of block I/O is a sector. It is used in a number of contexts
  * in Linux (blk, bio, genhd). The size of one sector is 512 = 2**9
  * bytes. Variables of type sector_t represent an offset or size that is a
@@ -874,6 +875,8 @@ static inline struct request_queue *bdev_get_queue(struct block_device *bdev)
 #endif
 
 /*
+=======
+>>>>>>> FETCH_HEAD
  * blk_rq_pos()			: the current sector
  * blk_rq_bytes()		: bytes left in the entire request
  * blk_rq_cur_bytes()		: bytes left in the current segment
@@ -905,20 +908,32 @@ extern unsigned int blk_rq_err_bytes(const struct request *rq);
 
 static inline unsigned int blk_rq_sectors(const struct request *rq)
 {
+<<<<<<< HEAD
 	return blk_rq_bytes(rq) >> SECTOR_SHIFT;
+=======
+	return blk_rq_bytes(rq) >> 9;
+>>>>>>> FETCH_HEAD
 }
 
 static inline unsigned int blk_rq_cur_sectors(const struct request *rq)
 {
+<<<<<<< HEAD
 	return blk_rq_cur_bytes(rq) >> SECTOR_SHIFT;
+=======
+	return blk_rq_cur_bytes(rq) >> 9;
+>>>>>>> FETCH_HEAD
 }
 
 static inline unsigned int blk_queue_get_max_sectors(struct request_queue *q,
 						     int op)
 {
 	if (unlikely(op == REQ_OP_DISCARD || op == REQ_OP_SECURE_ERASE))
+<<<<<<< HEAD
 		return min(q->limits.max_discard_sectors,
 			   UINT_MAX >> SECTOR_SHIFT);
+=======
+		return min(q->limits.max_discard_sectors, UINT_MAX >> 9);
+>>>>>>> FETCH_HEAD
 
 	if (unlikely(op == REQ_OP_WRITE_SAME))
 		return q->limits.max_write_same_sectors;
@@ -1192,21 +1207,31 @@ extern int blkdev_issue_zeroout(struct block_device *bdev, sector_t sector,
 static inline int sb_issue_discard(struct super_block *sb, sector_t block,
 		sector_t nr_blocks, gfp_t gfp_mask, unsigned long flags)
 {
+<<<<<<< HEAD
 	return blkdev_issue_discard(sb->s_bdev,
 				    block << (sb->s_blocksize_bits -
 					      SECTOR_SHIFT),
 				    nr_blocks << (sb->s_blocksize_bits -
 						  SECTOR_SHIFT),
+=======
+	return blkdev_issue_discard(sb->s_bdev, block << (sb->s_blocksize_bits - 9),
+				    nr_blocks << (sb->s_blocksize_bits - 9),
+>>>>>>> FETCH_HEAD
 				    gfp_mask, flags);
 }
 static inline int sb_issue_zeroout(struct super_block *sb, sector_t block,
 		sector_t nr_blocks, gfp_t gfp_mask)
 {
 	return blkdev_issue_zeroout(sb->s_bdev,
+<<<<<<< HEAD
 				    block << (sb->s_blocksize_bits -
 					      SECTOR_SHIFT),
 				    nr_blocks << (sb->s_blocksize_bits -
 						  SECTOR_SHIFT),
+=======
+				    block << (sb->s_blocksize_bits - 9),
+				    nr_blocks << (sb->s_blocksize_bits - 9),
+>>>>>>> FETCH_HEAD
 				    gfp_mask, true);
 }
 
@@ -1313,8 +1338,12 @@ static inline int queue_alignment_offset(struct request_queue *q)
 static inline int queue_limit_alignment_offset(struct queue_limits *lim, sector_t sector)
 {
 	unsigned int granularity = max(lim->physical_block_size, lim->io_min);
+<<<<<<< HEAD
 	unsigned int alignment = sector_div(sector, granularity >> SECTOR_SHIFT)
 		<< SECTOR_SHIFT;
+=======
+	unsigned int alignment = sector_div(sector, granularity >> 9) << 9;
+>>>>>>> FETCH_HEAD
 
 	return (granularity + lim->alignment_offset - alignment) % granularity;
 }
@@ -1348,8 +1377,13 @@ static inline int queue_limit_discard_alignment(struct queue_limits *lim, sector
 		return 0;
 
 	/* Why are these in bytes, not sectors? */
+<<<<<<< HEAD
 	alignment = lim->discard_alignment >> SECTOR_SHIFT;
 	granularity = lim->discard_granularity >> SECTOR_SHIFT;
+=======
+	alignment = lim->discard_alignment >> 9;
+	granularity = lim->discard_granularity >> 9;
+>>>>>>> FETCH_HEAD
 	if (!granularity)
 		return 0;
 
@@ -1360,7 +1394,11 @@ static inline int queue_limit_discard_alignment(struct queue_limits *lim, sector
 	offset = (granularity + alignment - offset) % granularity;
 
 	/* Turn it back into bytes, gaah */
+<<<<<<< HEAD
 	return offset << SECTOR_SHIFT;
+=======
+	return offset << 9;
+>>>>>>> FETCH_HEAD
 }
 
 static inline int bdev_discard_alignment(struct block_device *bdev)

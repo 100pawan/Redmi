@@ -23,6 +23,7 @@ ENTRY(_text)
 
 jiffies = jiffies_64;
 
+<<<<<<< HEAD
 
 #define HYPERVISOR_EXTABLE					\
 	. = ALIGN(SZ_8);					\
@@ -30,6 +31,8 @@ jiffies = jiffies_64;
 	*(__kvm_ex_table)					\
 	VMLINUX_SYMBOL(__stop___kvm_ex_table) = .;
 
+=======
+>>>>>>> FETCH_HEAD
 #define HYPERVISOR_TEXT					\
 	/*						\
 	 * Align to 4 KB so that			\
@@ -45,7 +48,10 @@ jiffies = jiffies_64;
 	VMLINUX_SYMBOL(__hyp_idmap_text_end) = .;	\
 	VMLINUX_SYMBOL(__hyp_text_start) = .;		\
 	*(.hyp.text)					\
+<<<<<<< HEAD
 	HYPERVISOR_EXTABLE				\
+=======
+>>>>>>> FETCH_HEAD
 	VMLINUX_SYMBOL(__hyp_text_end) = .;
 
 #define IDMAP_TEXT					\

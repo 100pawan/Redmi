@@ -87,7 +87,11 @@ ifneq ($(zload-y),)
 VMLINUZ_LOAD_ADDRESS := $(zload-y)
 else
 VMLINUZ_LOAD_ADDRESS = $(shell $(obj)/calc_vmlinuz_load_addr \
+<<<<<<< HEAD
 		$(obj)/vmlinux.bin $(LINKER_LOAD_ADDRESS))
+=======
+		$(obj)/vmlinux.bin $(VMLINUX_LOAD_ADDRESS))
+>>>>>>> FETCH_HEAD
 endif
 
 vmlinuzobjs-y += $(obj)/piggy.o

@@ -114,9 +114,12 @@ static void htc_process_conn_rsp(struct htc_target *target,
 
 	if (svc_rspmsg->status == HTC_SERVICE_SUCCESS) {
 		epid = svc_rspmsg->endpoint_id;
+<<<<<<< HEAD
 		if (epid < 0 || epid >= ENDPOINT_MAX)
 			return;
 
+=======
+>>>>>>> FETCH_HEAD
 		service_id = be16_to_cpu(svc_rspmsg->service_id);
 		max_msglen = be16_to_cpu(svc_rspmsg->max_msg_len);
 		endpoint = &target->endpoint[epid];
@@ -175,7 +178,10 @@ static int htc_config_pipe_credits(struct htc_target *target)
 	time_left = wait_for_completion_timeout(&target->cmd_wait, HZ);
 	if (!time_left) {
 		dev_err(target->dev, "HTC credit config timeout\n");
+<<<<<<< HEAD
 		kfree_skb(skb);
+=======
+>>>>>>> FETCH_HEAD
 		return -ETIMEDOUT;
 	}
 
@@ -212,7 +218,10 @@ static int htc_setup_complete(struct htc_target *target)
 	time_left = wait_for_completion_timeout(&target->cmd_wait, HZ);
 	if (!time_left) {
 		dev_err(target->dev, "HTC start timeout\n");
+<<<<<<< HEAD
 		kfree_skb(skb);
+=======
+>>>>>>> FETCH_HEAD
 		return -ETIMEDOUT;
 	}
 
@@ -236,7 +245,11 @@ int htc_init(struct htc_target *target)
 	return htc_setup_complete(target);
 }
 
+<<<<<<< HEAD
 int htc_connect_service_hst(struct htc_target *target,
+=======
+int htc_connect_service(struct htc_target *target,
+>>>>>>> FETCH_HEAD
 		     struct htc_service_connreq *service_connreq,
 		     enum htc_endpoint_id *conn_rsp_epid)
 {
@@ -286,7 +299,10 @@ int htc_connect_service_hst(struct htc_target *target,
 	if (!time_left) {
 		dev_err(target->dev, "Service connection timeout for: %d\n",
 			service_connreq->service_id);
+<<<<<<< HEAD
 		kfree_skb(skb);
+=======
+>>>>>>> FETCH_HEAD
 		return -ETIMEDOUT;
 	}
 
@@ -311,12 +327,20 @@ int htc_send_epid(struct htc_target *target, struct sk_buff *skb,
 	return htc_issue_send(target, skb, skb->len, 0, epid);
 }
 
+<<<<<<< HEAD
 void htc_stop_hst(struct htc_target *target)
+=======
+void htc_stop(struct htc_target *target)
+>>>>>>> FETCH_HEAD
 {
 	target->hif->stop(target->hif_dev);
 }
 
+<<<<<<< HEAD
 void htc_start_hst(struct htc_target *target)
+=======
+void htc_start(struct htc_target *target)
+>>>>>>> FETCH_HEAD
 {
 	target->hif->start(target->hif_dev);
 }
@@ -346,8 +370,11 @@ void ath9k_htc_txcompletion_cb(struct htc_target *htc_handle,
 
 	if (skb) {
 		htc_hdr = (struct htc_frame_hdr *) skb->data;
+<<<<<<< HEAD
 		if (htc_hdr->endpoint_id >= ARRAY_SIZE(htc_handle->endpoint))
 			goto ret;
+=======
+>>>>>>> FETCH_HEAD
 		endpoint = &htc_handle->endpoint[htc_hdr->endpoint_id];
 		skb_pull(skb, sizeof(struct htc_frame_hdr));
 

@@ -348,6 +348,7 @@ unsigned long vm_mmap(struct file *file, unsigned long addr,
 }
 EXPORT_SYMBOL(vm_mmap);
 
+<<<<<<< HEAD
 /**
  * kvmalloc_node - attempt to allocate physically contiguous memory, but upon
  * failure, fall back to non-contiguous (vmalloc) allocation.
@@ -394,6 +395,8 @@ void *kvmalloc_node(size_t size, gfp_t flags, int node)
 }
 EXPORT_SYMBOL(kvmalloc_node);
 
+=======
+>>>>>>> FETCH_HEAD
 void kvfree(const void *addr)
 {
 	if (is_vmalloc_addr(addr))
@@ -540,7 +543,11 @@ unsigned long vm_commit_limit(void)
 	if (sysctl_overcommit_kbytes)
 		allowed = sysctl_overcommit_kbytes >> (PAGE_SHIFT - 10);
 	else
+<<<<<<< HEAD
 		allowed = ((totalram_pages() - hugetlb_total_pages())
+=======
+		allowed = ((totalram_pages - hugetlb_total_pages())
+>>>>>>> FETCH_HEAD
 			   * sysctl_overcommit_ratio / 100);
 	allowed += total_swap_pages;
 

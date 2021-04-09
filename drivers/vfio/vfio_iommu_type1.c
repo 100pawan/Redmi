@@ -213,6 +213,7 @@ static int put_pfn(unsigned long pfn, int prot)
 	return 0;
 }
 
+<<<<<<< HEAD
 static int follow_fault_pfn(struct vm_area_struct *vma, struct mm_struct *mm,
 			    unsigned long vaddr, unsigned long *pfn,
 			    bool write_fault)
@@ -239,6 +240,8 @@ static int follow_fault_pfn(struct vm_area_struct *vma, struct mm_struct *mm,
 	return ret;
 }
 
+=======
+>>>>>>> FETCH_HEAD
 static int vaddr_get_pfn(unsigned long vaddr, int prot, unsigned long *pfn)
 {
 	struct page *page[1];
@@ -252,6 +255,7 @@ static int vaddr_get_pfn(unsigned long vaddr, int prot, unsigned long *pfn)
 
 	down_read(&current->mm->mmap_sem);
 
+<<<<<<< HEAD
 retry:
 	vma = find_vma_intersection(current->mm, vaddr, vaddr + 1);
 
@@ -262,6 +266,14 @@ retry:
 
 		if (!ret && !is_invalid_reserved_pfn(*pfn))
 			ret = -EFAULT;
+=======
+	vma = find_vma_intersection(current->mm, vaddr, vaddr + 1);
+
+	if (vma && vma->vm_flags & VM_PFNMAP) {
+		if (!follow_pfn(vma, vaddr, pfn) &&
+		    is_invalid_reserved_pfn(*pfn))
+			ret = 0;
+>>>>>>> FETCH_HEAD
 	}
 
 	up_read(&current->mm->mmap_sem);

@@ -44,6 +44,9 @@ static inline int fls(int x)
 #define find_first_bit		find_first_bit
 #define find_first_zero_bit	find_first_zero_bit
 
+<<<<<<< HEAD
 #include <asm-generic/bitops/find.h>
 
+=======
+>>>>>>> FETCH_HEAD
 #endif /* __UNICORE_BITOPS_H__ */

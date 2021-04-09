@@ -17,7 +17,10 @@
 #include <linux/list.h>
 #include <linux/mutex.h>
 #include <linux/seq_file.h>
+<<<<<<< HEAD
 #include <linux/mm.h>
+=======
+>>>>>>> FETCH_HEAD
 
 #include "sysfs.h"
 #include "../kernfs/kernfs-internal.h"
@@ -550,6 +553,7 @@ void sysfs_remove_bin_file(struct kobject *kobj,
 	kernfs_remove_by_name(kobj->sd, attr->attr.name);
 }
 EXPORT_SYMBOL_GPL(sysfs_remove_bin_file);
+<<<<<<< HEAD
 
 /**
  *	sysfs_emit - scnprintf equivalent, aware of PAGE_SIZE buffer.
@@ -604,3 +608,5 @@ int sysfs_emit_at(char *buf, int at, const char *fmt, ...)
 	return len;
 }
 EXPORT_SYMBOL_GPL(sysfs_emit_at);
+=======
+>>>>>>> FETCH_HEAD

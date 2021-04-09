@@ -58,7 +58,11 @@ ENDPROC(native_usergs_sysret64)
 
 .macro TRACE_IRQS_IRETQ
 #ifdef CONFIG_TRACE_IRQFLAGS
+<<<<<<< HEAD
 	btl	$9, EFLAGS(%rsp)		/* interrupts off? */
+=======
+	bt	$9, EFLAGS(%rsp)		/* interrupts off? */
+>>>>>>> FETCH_HEAD
 	jnc	1f
 	TRACE_IRQS_ON
 1:

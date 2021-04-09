@@ -332,7 +332,11 @@ module_param_named(
 	battery_type, fg_batt_type, charp, 00600
 );
 
+<<<<<<< HEAD
 static int fg_sram_update_period_ms = 30000 / 3;
+=======
+static int fg_sram_update_period_ms = 30000;
+>>>>>>> FETCH_HEAD
 module_param_named(
 	sram_update_period_ms, fg_sram_update_period_ms, int, 00600
 );
@@ -2749,7 +2753,11 @@ out:
 #define BATT_TEMP_OFF		DISABLE_THERM_BIT
 #define BATT_TEMP_ON		(FORCE_RBIAS_ON_BIT | TEMP_SENSE_ALWAYS_BIT | \
 				TEMP_SENSE_CHARGE_BIT)
+<<<<<<< HEAD
 #define TEMP_PERIOD_UPDATE_MS		11000
+=======
+#define TEMP_PERIOD_UPDATE_MS		10000
+>>>>>>> FETCH_HEAD
 #define TEMP_PERIOD_TIMEOUT_MS		3000
 #define BATT_TEMP_LOW_LIMIT		-600
 #define BATT_TEMP_HIGH_LIMIT		1500
@@ -4036,6 +4044,7 @@ static void status_change_work(struct work_struct *work)
 			pr_info("terminated charging at %d/0x%02x\n",
 					capacity, get_monotonic_soc_raw(chip));
 		}
+<<<<<<< HEAD
 
 		if (capacity >= 95 && chip->hold_soc_while_full
 				&& (chip->health == POWER_SUPPLY_HEALTH_COOL || chip->health == POWER_SUPPLY_HEALTH_COOL_XIAOMI)) {
@@ -4046,6 +4055,8 @@ static void status_change_work(struct work_struct *work)
 			pr_info("terminated charging at %d/0x%02x\n",
 					capacity, get_monotonic_soc_raw(chip));
 		}
+=======
+>>>>>>> FETCH_HEAD
 	}
 	if (chip->status == POWER_SUPPLY_STATUS_FULL ||
 			chip->status == POWER_SUPPLY_STATUS_CHARGING) {
@@ -4578,7 +4589,10 @@ static int fg_power_get_property(struct power_supply *psy,
 {
 	struct fg_chip *chip =  power_supply_get_drvdata(psy);
 	bool vbatt_low_sts;
+<<<<<<< HEAD
     int temp = 0;
+=======
+>>>>>>> FETCH_HEAD
 
 	switch (psp) {
 	case POWER_SUPPLY_PROP_BATTERY_TYPE:
@@ -4611,6 +4625,7 @@ static int fg_power_get_property(struct power_supply *psy,
 		val->intval = chip->batt_max_voltage_uv;
 		break;
 	case POWER_SUPPLY_PROP_TEMP:
+<<<<<<< HEAD
 		temp = get_sram_prop_now(chip, FG_DATA_BATT_TEMP);
 		if( -70 <= temp && temp <= -50){
 			temp -= 10;
@@ -4631,6 +4646,9 @@ static int fg_power_get_property(struct power_supply *psy,
 			temp -= 70;
 		}
 		val->intval = temp;
+=======
+		val->intval = get_sram_prop_now(chip, FG_DATA_BATT_TEMP);
+>>>>>>> FETCH_HEAD
 		break;
 	case POWER_SUPPLY_PROP_COOL_TEMP:
 		val->intval = get_prop_jeita_temp(chip, FG_MEM_SOFT_COLD);
@@ -4663,7 +4681,11 @@ static int fg_power_get_property(struct power_supply *psy,
 			val->intval = 1;
 		break;
 	case POWER_SUPPLY_PROP_CHARGE_FULL_DESIGN:
+<<<<<<< HEAD
 		val->intval = 3080000;
+=======
+		val->intval = chip->nom_cap_uah;
+>>>>>>> FETCH_HEAD
 		break;
 	case POWER_SUPPLY_PROP_CHARGE_FULL:
 		val->intval = chip->learning_data.learned_cc_uah;
@@ -6321,6 +6343,7 @@ fail:
 	return -EINVAL;
 }
 
+<<<<<<< HEAD
 #define REDO_BATID_DURING_FIRST_EST BIT(4)
 static void fg_hw_restart(struct fg_chip *chip)
 {
@@ -6363,6 +6386,8 @@ static void fg_hw_restart(struct fg_chip *chip)
 	pr_info("xyy 2 battery id = %d\n", batt_id);
 }
 
+=======
+>>>>>>> FETCH_HEAD
 #define FG_PROFILE_LEN			128
 #define PROFILE_COMPARE_LEN		32
 #define THERMAL_COEFF_ADDR		0x444
@@ -6379,10 +6404,13 @@ static int fg_batt_profile_init(struct fg_chip *chip)
 	u8 reg = 0;
 
 wait:
+<<<<<<< HEAD
     batt_id = get_sram_prop_now(chip, FG_DATA_BATT_ID);
 	if(batt_id <= 85000 || (batt_id >= 115000 && batt_id <= 285000) || (batt_id >= 370000 && batt_id <= 1000000))
 		fg_hw_restart(chip);
 
+=======
+>>>>>>> FETCH_HEAD
 	fg_stay_awake(&chip->profile_wakeup_source);
 	ret = wait_for_completion_interruptible_timeout(&chip->batt_id_avail,
 			msecs_to_jiffies(PROFILE_LOAD_TIMEOUT_MS));
@@ -8109,7 +8137,11 @@ static int fg_common_hw_init(struct fg_chip *chip)
 	}
 
 	rc = fg_mem_masked_write(chip, settings[FG_MEM_DELTA_SOC].address, 0xFF,
+<<<<<<< HEAD
 		    settings[FG_MEM_DELTA_SOC].value == 1 ? 1 : soc_to_setpoint(settings[FG_MEM_DELTA_SOC].value),
+=======
+			soc_to_setpoint(settings[FG_MEM_DELTA_SOC].value),
+>>>>>>> FETCH_HEAD
 			settings[FG_MEM_DELTA_SOC].offset);
 	if (rc) {
 		pr_err("failed to write delta soc rc=%d\n", rc);
@@ -8747,6 +8779,7 @@ done:
 	fg_cleanup(chip);
 }
 
+<<<<<<< HEAD
 #define SOC_LOW_PWR_CFG 0xF5
 #define LO_FRQ_CLKSWITCH_EN BIT(0)
 static void fg_adc_clk_change(struct fg_chip *chip, int val)
@@ -8792,6 +8825,8 @@ adc_clk_change_fail:
 	chip->fg_restarting = false;
 }
 
+=======
+>>>>>>> FETCH_HEAD
 static int fg_probe(struct platform_device *pdev)
 {
 	struct device *dev = &(pdev->dev);
@@ -9035,7 +9070,10 @@ static int fg_probe(struct platform_device *pdev)
 	memset(chip->batt_info, INT_MAX, sizeof(chip->batt_info));
 
 	schedule_work(&chip->init_work);
+<<<<<<< HEAD
     fg_adc_clk_change(chip, 1);
+=======
+>>>>>>> FETCH_HEAD
 
 	pr_info("FG Probe success - FG Revision DIG:%d.%d ANA:%d.%d PMIC subtype=%d\n",
 		chip->revision[DIG_MAJOR], chip->revision[DIG_MINOR],

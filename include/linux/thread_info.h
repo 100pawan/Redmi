@@ -10,10 +10,13 @@
 #include <linux/types.h>
 #include <linux/bug.h>
 #include <linux/restart_block.h>
+<<<<<<< HEAD
 #include <linux/errno.h>
 
 struct timespec;
 struct compat_timespec;
+=======
+>>>>>>> FETCH_HEAD
 
 #ifdef CONFIG_THREAD_INFO_IN_TASK
 /*
@@ -30,6 +33,7 @@ struct compat_timespec;
 
 #ifdef __KERNEL__
 
+<<<<<<< HEAD
 #ifndef arch_set_restart_data
 #define arch_set_restart_data(restart) do { } while (0)
 #endif
@@ -42,6 +46,8 @@ static inline long set_restart_fn(struct restart_block *restart,
 	return -ERESTART_RESTARTBLOCK;
 }
 
+=======
+>>>>>>> FETCH_HEAD
 #define THREADINFO_GFP	(GFP_KERNEL_ACCOUNT | __GFP_NOTRACK | __GFP_ZERO)
 
 /*

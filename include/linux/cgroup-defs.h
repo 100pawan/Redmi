@@ -603,9 +603,13 @@ struct sock_cgroup_data {
 	union {
 #ifdef __LITTLE_ENDIAN
 		struct {
+<<<<<<< HEAD
 			u8	is_data : 1;
 			u8	no_refcnt : 1;
 			u8	unused : 6;
+=======
+			u8	is_data;
+>>>>>>> FETCH_HEAD
 			u8	padding;
 			u16	prioidx;
 			u32	classid;
@@ -615,9 +619,13 @@ struct sock_cgroup_data {
 			u32	classid;
 			u16	prioidx;
 			u8	padding;
+<<<<<<< HEAD
 			u8	unused : 6;
 			u8	no_refcnt : 1;
 			u8	is_data : 1;
+=======
+			u8	is_data;
+>>>>>>> FETCH_HEAD
 		} __packed;
 #endif
 		u64		val;

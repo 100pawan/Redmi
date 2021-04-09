@@ -1050,13 +1050,29 @@ void acpi_ec_unblock_transactions(void)
                                 Event Management
    -------------------------------------------------------------------------- */
 static struct acpi_ec_query_handler *
+<<<<<<< HEAD
 acpi_ec_get_query_handler_by_value(struct acpi_ec *ec, u8 value)
 {
 	struct acpi_ec_query_handler *handler;
+=======
+acpi_ec_get_query_handler(struct acpi_ec_query_handler *handler)
+{
+	if (handler)
+		kref_get(&handler->kref);
+	return handler;
+}
+
+static struct acpi_ec_query_handler *
+acpi_ec_get_query_handler_by_value(struct acpi_ec *ec, u8 value)
+{
+	struct acpi_ec_query_handler *handler;
+	bool found = false;
+>>>>>>> FETCH_HEAD
 
 	mutex_lock(&ec->mutex);
 	list_for_each_entry(handler, &ec->list, node) {
 		if (value == handler->query_bit) {
+<<<<<<< HEAD
 			kref_get(&handler->kref);
 			mutex_unlock(&ec->mutex);
 			return handler;
@@ -1064,6 +1080,14 @@ acpi_ec_get_query_handler_by_value(struct acpi_ec *ec, u8 value)
 	}
 	mutex_unlock(&ec->mutex);
 	return NULL;
+=======
+			found = true;
+			break;
+		}
+	}
+	mutex_unlock(&ec->mutex);
+	return found ? acpi_ec_get_query_handler(handler) : NULL;
+>>>>>>> FETCH_HEAD
 }
 
 static void acpi_ec_query_handler_release(struct kref *kref)

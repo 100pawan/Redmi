@@ -31,6 +31,7 @@
 #include <linux/module.h>
 #include <linux/crypto.h>
 #include <linux/sw842.h>
+<<<<<<< HEAD
 #include <crypto/internal/scompress.h>
 
 struct crypto842_ctx {
@@ -71,6 +72,13 @@ static void crypto842_exit(struct crypto_tfm *tfm)
 	crypto842_free_ctx(NULL, ctx->wmem);
 }
 
+=======
+
+struct crypto842_ctx {
+	char wmem[SW842_MEM_COMPRESS];	/* working memory for compress */
+};
+
+>>>>>>> FETCH_HEAD
 static int crypto842_compress(struct crypto_tfm *tfm,
 			      const u8 *src, unsigned int slen,
 			      u8 *dst, unsigned int *dlen)
@@ -80,6 +88,7 @@ static int crypto842_compress(struct crypto_tfm *tfm,
 	return sw842_compress(src, slen, dst, dlen, ctx->wmem);
 }
 
+<<<<<<< HEAD
 static int crypto842_scompress(struct crypto_scomp *tfm,
 			       const u8 *src, unsigned int slen,
 			       u8 *dst, unsigned int *dlen, void *ctx)
@@ -87,6 +96,8 @@ static int crypto842_scompress(struct crypto_scomp *tfm,
 	return sw842_compress(src, slen, dst, dlen, ctx);
 }
 
+=======
+>>>>>>> FETCH_HEAD
 static int crypto842_decompress(struct crypto_tfm *tfm,
 				const u8 *src, unsigned int slen,
 				u8 *dst, unsigned int *dlen)
@@ -94,6 +105,7 @@ static int crypto842_decompress(struct crypto_tfm *tfm,
 	return sw842_decompress(src, slen, dst, dlen);
 }
 
+<<<<<<< HEAD
 static int crypto842_sdecompress(struct crypto_scomp *tfm,
 				 const u8 *src, unsigned int slen,
 				 u8 *dst, unsigned int *dlen, void *ctx)
@@ -101,6 +113,8 @@ static int crypto842_sdecompress(struct crypto_scomp *tfm,
 	return sw842_decompress(src, slen, dst, dlen);
 }
 
+=======
+>>>>>>> FETCH_HEAD
 static struct crypto_alg alg = {
 	.cra_name		= "842",
 	.cra_driver_name	= "842-generic",
@@ -108,13 +122,17 @@ static struct crypto_alg alg = {
 	.cra_flags		= CRYPTO_ALG_TYPE_COMPRESS,
 	.cra_ctxsize		= sizeof(struct crypto842_ctx),
 	.cra_module		= THIS_MODULE,
+<<<<<<< HEAD
 	.cra_init		= crypto842_init,
 	.cra_exit		= crypto842_exit,
+=======
+>>>>>>> FETCH_HEAD
 	.cra_u			= { .compress = {
 	.coa_compress		= crypto842_compress,
 	.coa_decompress		= crypto842_decompress } }
 };
 
+<<<<<<< HEAD
 static struct scomp_alg scomp = {
 	.alloc_ctx		= crypto842_alloc_ctx,
 	.free_ctx		= crypto842_free_ctx,
@@ -143,13 +161,21 @@ static int __init crypto842_mod_init(void)
 	}
 
 	return ret;
+=======
+static int __init crypto842_mod_init(void)
+{
+	return crypto_register_alg(&alg);
+>>>>>>> FETCH_HEAD
 }
 module_init(crypto842_mod_init);
 
 static void __exit crypto842_mod_exit(void)
 {
 	crypto_unregister_alg(&alg);
+<<<<<<< HEAD
 	crypto_unregister_scomp(&scomp);
+=======
+>>>>>>> FETCH_HEAD
 }
 module_exit(crypto842_mod_exit);
 

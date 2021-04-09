@@ -124,10 +124,14 @@ spidev_sync_write(struct spidev_data *spidev, size_t len)
 	struct spi_transfer	t = {
 			.tx_buf		= spidev->tx_buffer,
 			.len		= len,
+<<<<<<< HEAD
 			.delay_usecs = 0,
 			.cs_change   =0,
 
 			.speed_hz   = 960000,
+=======
+			.speed_hz	= spidev->speed_hz,
+>>>>>>> FETCH_HEAD
 		};
 	struct spi_message	m;
 
@@ -167,6 +171,7 @@ spidev_read(struct file *filp, char __user *buf, size_t count, loff_t *f_pos)
 	spidev = filp->private_data;
 
 	mutex_lock(&spidev->buf_lock);
+<<<<<<< HEAD
 	
 	if (!spidev->rx_buffer) {
 		spidev->rx_buffer = kmalloc(bufsiz, GFP_KERNEL);
@@ -177,6 +182,8 @@ spidev_read(struct file *filp, char __user *buf, size_t count, loff_t *f_pos)
 		}
 	}
 	
+=======
+>>>>>>> FETCH_HEAD
 	status = spidev_sync_read(spidev, count);
 	if (status > 0) {
 		unsigned long	missing;
@@ -187,11 +194,14 @@ spidev_read(struct file *filp, char __user *buf, size_t count, loff_t *f_pos)
 		else
 			status = status - missing;
 	}
+<<<<<<< HEAD
 	kfree(spidev->rx_buffer);
 	spidev->rx_buffer = NULL;
 
     read_unlock:
 	
+=======
+>>>>>>> FETCH_HEAD
 	mutex_unlock(&spidev->buf_lock);
 
 	return status;
@@ -207,12 +217,18 @@ spidev_write(struct file *filp, const char __user *buf,
 	unsigned long		missing;
 
 	/* chipselect only toggles at start or end of operation */
+<<<<<<< HEAD
 	/* Xiaomi Change Start if (count > bufsiz)
 		return -EMSGSIZE; Xiaomi Change End */
+=======
+	if (count > bufsiz)
+		return -EMSGSIZE;
+>>>>>>> FETCH_HEAD
 
 	spidev = filp->private_data;
 
 	mutex_lock(&spidev->buf_lock);
+<<<<<<< HEAD
 	
 	if (!spidev->tx_buffer) {
 		spidev->tx_buffer = kmalloc(count, GFP_KERNEL);
@@ -222,15 +238,20 @@ spidev_write(struct file *filp, const char __user *buf,
 			goto write_unlock;
 		}
 	}
+=======
+>>>>>>> FETCH_HEAD
 	missing = copy_from_user(spidev->tx_buffer, buf, count);
 	if (missing == 0)
 		status = spidev_sync_write(spidev, count);
 	else
 		status = -EFAULT;
+<<<<<<< HEAD
 	kfree(spidev->tx_buffer);
 	spidev->tx_buffer = NULL;
 
     write_unlock:
+=======
+>>>>>>> FETCH_HEAD
 	mutex_unlock(&spidev->buf_lock);
 
 	return status;
@@ -256,6 +277,7 @@ static int spidev_message(struct spidev_data *spidev,
 	 * We walk the array of user-provided transfers, using each one
 	 * to initialize a kernel version of the same transfer.
 	 */
+<<<<<<< HEAD
 	 if (!spidev->rx_buffer) {
 		spidev->rx_buffer = kmalloc(bufsiz, GFP_KERNEL);
 		if (!spidev->rx_buffer) {
@@ -273,6 +295,8 @@ static int spidev_message(struct spidev_data *spidev,
 		}
 	}
 	 
+=======
+>>>>>>> FETCH_HEAD
 	tx_buf = spidev->tx_buffer;
 	rx_buf = spidev->rx_buffer;
 	total = 0;
@@ -365,6 +389,7 @@ static int spidev_message(struct spidev_data *spidev,
 	status = total;
 
 done:
+<<<<<<< HEAD
 kfree(spidev->tx_buffer);
 	spidev->tx_buffer = NULL;
 txbuffer_err:
@@ -372,6 +397,8 @@ txbuffer_err:
 	spidev->rx_buffer = NULL;
 rxbuffer_err:
 
+=======
+>>>>>>> FETCH_HEAD
 	kfree(k_xfers);
 	return status;
 }
@@ -654,7 +681,11 @@ static int spidev_open(struct inode *inode, struct file *filp)
 		pr_debug("spidev: nothing for minor %d\n", iminor(inode));
 		goto err_find_dev;
 	}
+<<<<<<< HEAD
  /* Done By Xiaomi Start 
+=======
+
+>>>>>>> FETCH_HEAD
 	if (!spidev->tx_buffer) {
 		spidev->tx_buffer = kmalloc(bufsiz, GFP_KERNEL);
 		if (!spidev->tx_buffer) {
@@ -672,7 +703,10 @@ static int spidev_open(struct inode *inode, struct file *filp)
 			goto err_alloc_rx_buf;
 		}
 	}
+<<<<<<< HEAD
  Change Done By Xiaomi End */	
+=======
+>>>>>>> FETCH_HEAD
 
 	spidev->users++;
 	filp->private_data = spidev;
@@ -680,12 +714,20 @@ static int spidev_open(struct inode *inode, struct file *filp)
 
 	mutex_unlock(&device_list_lock);
 	return 0;
+<<<<<<< HEAD
 /*
 err_alloc_rx_buf:
 	kfree(spidev->tx_buffer);
 	spidev->tx_buffer = NULL;
 */	
 err_find_dev: 
+=======
+
+err_alloc_rx_buf:
+	kfree(spidev->tx_buffer);
+	spidev->tx_buffer = NULL;
+err_find_dev:
+>>>>>>> FETCH_HEAD
 	mutex_unlock(&device_list_lock);
 	return status;
 }
@@ -693,12 +735,16 @@ err_find_dev:
 static int spidev_release(struct inode *inode, struct file *filp)
 {
 	struct spidev_data	*spidev;
+<<<<<<< HEAD
 	int			dofree;
+=======
+>>>>>>> FETCH_HEAD
 
 	mutex_lock(&device_list_lock);
 	spidev = filp->private_data;
 	filp->private_data = NULL;
 
+<<<<<<< HEAD
 	spin_lock_irq(&spidev->spi_lock);
 	/* ... after we unbound from the underlying device? */
 	dofree = (spidev->spi == NULL);
@@ -709,11 +755,19 @@ static int spidev_release(struct inode *inode, struct file *filp)
 	if (!spidev->users) {
 
      /*
+=======
+	/* last close? */
+	spidev->users--;
+	if (!spidev->users) {
+		int		dofree;
+
+>>>>>>> FETCH_HEAD
 		kfree(spidev->tx_buffer);
 		spidev->tx_buffer = NULL;
 
 		kfree(spidev->rx_buffer);
 		spidev->rx_buffer = NULL;
+<<<<<<< HEAD
     */
 
 		if (dofree)
@@ -724,6 +778,22 @@ static int spidev_release(struct inode *inode, struct file *filp)
 #ifdef CONFIG_SPI_SLAVE
 	if (!dofree)
 		spi_slave_abort(spidev->spi);
+=======
+
+		spin_lock_irq(&spidev->spi_lock);
+		if (spidev->spi)
+			spidev->speed_hz = spidev->spi->max_speed_hz;
+
+		/* ... after we unbound from the underlying device? */
+		dofree = (spidev->spi == NULL);
+		spin_unlock_irq(&spidev->spi_lock);
+
+		if (dofree)
+			kfree(spidev);
+	}
+#ifdef CONFIG_SPI_SLAVE
+	spi_slave_abort(spidev->spi);
+>>>>>>> FETCH_HEAD
 #endif
 	mutex_unlock(&device_list_lock);
 
@@ -759,7 +829,10 @@ static const struct of_device_id spidev_dt_ids[] = {
 	{ .compatible = "rohm,dh2228fv" },
 	{ .compatible = "lineartechnology,ltc2488" },
 	{ .compatible = "qcom,spi-msm-slave" },
+<<<<<<< HEAD
 	{ .compatible = "ifrared,spi-msm-ir-slave", },
+=======
+>>>>>>> FETCH_HEAD
 	{},
 };
 MODULE_DEVICE_TABLE(of, spidev_dt_ids);
@@ -870,13 +943,21 @@ static int spidev_remove(struct spi_device *spi)
 {
 	struct spidev_data	*spidev = spi_get_drvdata(spi);
 
+<<<<<<< HEAD
 	/* prevent new opens */
 	mutex_lock(&device_list_lock);
+=======
+>>>>>>> FETCH_HEAD
 	/* make sure ops on existing fds can abort cleanly */
 	spin_lock_irq(&spidev->spi_lock);
 	spidev->spi = NULL;
 	spin_unlock_irq(&spidev->spi_lock);
 
+<<<<<<< HEAD
+=======
+	/* prevent new opens */
+	mutex_lock(&device_list_lock);
+>>>>>>> FETCH_HEAD
 	list_del(&spidev->device_entry);
 	device_destroy(spidev_class, spidev->devt);
 	clear_bit(MINOR(spidev->devt), minors);

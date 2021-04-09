@@ -1536,7 +1536,11 @@ static const struct mount_opts {
 	 MOPT_NO_EXT2},
 	{Opt_data_err_ignore, EXT4_MOUNT_DATA_ERR_ABORT,
 	 MOPT_NO_EXT2},
+<<<<<<< HEAD
 	{Opt_barrier, EXT4_MOUNT_BARRIER, MOPT_CLEAR},
+=======
+	{Opt_barrier, EXT4_MOUNT_BARRIER, MOPT_SET},
+>>>>>>> FETCH_HEAD
 	{Opt_nobarrier, EXT4_MOUNT_BARRIER, MOPT_CLEAR},
 	{Opt_noauto_da_alloc, EXT4_MOUNT_NO_AUTO_DA_ALLOC, MOPT_SET},
 	{Opt_auto_da_alloc, EXT4_MOUNT_NO_AUTO_DA_ALLOC, MOPT_CLEAR},
@@ -1553,8 +1557,13 @@ static const struct mount_opts {
 	{Opt_journal_dev, 0, MOPT_NO_EXT2 | MOPT_GTE0},
 	{Opt_journal_path, 0, MOPT_NO_EXT2 | MOPT_STRING},
 	{Opt_journal_ioprio, 0, MOPT_NO_EXT2 | MOPT_GTE0},
+<<<<<<< HEAD
 	{Opt_data_journal, EXT4_MOUNT_WRITEBACK_DATA, MOPT_NO_EXT2 | MOPT_DATAJ},
 	{Opt_data_ordered, EXT4_MOUNT_WRITEBACK_DATA, MOPT_NO_EXT2 | MOPT_DATAJ},
+=======
+	{Opt_data_journal, EXT4_MOUNT_JOURNAL_DATA, MOPT_NO_EXT2 | MOPT_DATAJ},
+	{Opt_data_ordered, EXT4_MOUNT_ORDERED_DATA, MOPT_NO_EXT2 | MOPT_DATAJ},
+>>>>>>> FETCH_HEAD
 	{Opt_data_writeback, EXT4_MOUNT_WRITEBACK_DATA,
 	 MOPT_NO_EXT2 | MOPT_DATAJ},
 	{Opt_user_xattr, EXT4_MOUNT_XATTR_USER, MOPT_SET},
@@ -1578,8 +1587,13 @@ static const struct mount_opts {
 	{Opt_noquota, (EXT4_MOUNT_QUOTA | EXT4_MOUNT_USRQUOTA |
 		       EXT4_MOUNT_GRPQUOTA | EXT4_MOUNT_PRJQUOTA),
 							MOPT_CLEAR | MOPT_Q},
+<<<<<<< HEAD
 	{Opt_usrjquota, 0, MOPT_Q | MOPT_STRING},
 	{Opt_grpjquota, 0, MOPT_Q | MOPT_STRING},
+=======
+	{Opt_usrjquota, 0, MOPT_Q},
+	{Opt_grpjquota, 0, MOPT_Q},
+>>>>>>> FETCH_HEAD
 	{Opt_offusrjquota, 0, MOPT_Q},
 	{Opt_offgrpjquota, 0, MOPT_Q},
 	{Opt_jqfmt_vfsold, QFMT_VFS_OLD, MOPT_QFMT},
@@ -2128,7 +2142,11 @@ int ext4_alloc_flex_bg_array(struct super_block *sb, ext4_group_t ngroup)
 	if (size <= sbi->s_flex_groups_allocated)
 		return 0;
 
+<<<<<<< HEAD
 	new_groups = kvzalloc(roundup_pow_of_two(size *
+=======
+	new_groups = ext4_kvzalloc(roundup_pow_of_two(size *
+>>>>>>> FETCH_HEAD
 				   sizeof(*sbi->s_flex_groups)), GFP_KERNEL);
 	if (!new_groups) {
 		ext4_msg(sb, KERN_ERR,
@@ -3562,10 +3580,20 @@ static int ext4_fill_super(struct super_block *sb, void *data, int silent)
 	if (ext4_has_metadata_csum(sb))
 		set_opt(sb, JOURNAL_CHECKSUM);
 
+<<<<<<< HEAD
 //Use writeback mode by default
 		set_opt(sb, WRITEBACK_DATA);
 
 
+=======
+	if ((def_mount_opts & EXT4_DEFM_JMODE) == EXT4_DEFM_JMODE_DATA)
+		set_opt(sb, JOURNAL_DATA);
+	else if ((def_mount_opts & EXT4_DEFM_JMODE) == EXT4_DEFM_JMODE_ORDERED)
+		set_opt(sb, ORDERED_DATA);
+	else if ((def_mount_opts & EXT4_DEFM_JMODE) == EXT4_DEFM_JMODE_WBACK)
+		set_opt(sb, WRITEBACK_DATA);
+
+>>>>>>> FETCH_HEAD
 	if (le16_to_cpu(sbi->s_es->s_errors) == EXT4_ERRORS_PANIC)
 		set_opt(sb, ERRORS_PANIC);
 	else if (le16_to_cpu(sbi->s_es->s_errors) == EXT4_ERRORS_CONTINUE)
@@ -3573,7 +3601,11 @@ static int ext4_fill_super(struct super_block *sb, void *data, int silent)
 	else
 		set_opt(sb, ERRORS_RO);
 	/* block_validity enabled by default; disable with noblock_validity */
+<<<<<<< HEAD
 //	set_opt(sb, BLOCK_VALIDITY);
+=======
+	set_opt(sb, BLOCK_VALIDITY);
+>>>>>>> FETCH_HEAD
 	if (def_mount_opts & EXT4_DEFM_DISCARD)
 		set_opt(sb, DISCARD);
 
@@ -3583,6 +3615,11 @@ static int ext4_fill_super(struct super_block *sb, void *data, int silent)
 	sbi->s_min_batch_time = EXT4_DEF_MIN_BATCH_TIME;
 	sbi->s_max_batch_time = EXT4_DEF_MAX_BATCH_TIME;
 
+<<<<<<< HEAD
+=======
+	if ((def_mount_opts & EXT4_DEFM_NOBARRIER) == 0)
+		set_opt(sb, BARRIER);
+>>>>>>> FETCH_HEAD
 
 	/*
 	 * enable delayed allocation by default
@@ -3977,7 +4014,11 @@ static int ext4_fill_super(struct super_block *sb, void *data, int silent)
 		}
 	}
 	rcu_assign_pointer(sbi->s_group_desc,
+<<<<<<< HEAD
 			   kvmalloc(db_count *
+=======
+			   ext4_kvmalloc(db_count *
+>>>>>>> FETCH_HEAD
 					  sizeof(struct buffer_head *),
 					  GFP_KERNEL));
 	if (sbi->s_group_desc == NULL) {
@@ -4335,7 +4376,10 @@ cantfind_ext4:
 #ifdef CONFIG_QUOTA
 failed_mount8:
 	ext4_unregister_sysfs(sb);
+<<<<<<< HEAD
 	kobject_put(&sbi->s_kobj);
+=======
+>>>>>>> FETCH_HEAD
 #endif
 failed_mount7:
 	ext4_unregister_li_request(sb);
@@ -4681,6 +4725,16 @@ static int ext4_commit_super(struct super_block *sb, int sync)
 		return error;
 
 	/*
+<<<<<<< HEAD
+=======
+	 * The superblock bh should be mapped, but it might not be if the
+	 * device was hot-removed. Not much we can do but fail the I/O.
+	 */
+	if (!buffer_mapped(sbh))
+		return error;
+
+	/*
+>>>>>>> FETCH_HEAD
 	 * If the file system is mounted read-only, don't update the
 	 * superblock write time.  This avoids updating the superblock
 	 * write time when we are mounting the root file system
@@ -5147,10 +5201,14 @@ static int ext4_remount(struct super_block *sb, int *flags, char *data)
 		ext4_register_li_request(sb, first_not_zeroed);
 	}
 
+<<<<<<< HEAD
 	err = ext4_setup_system_zone(sb);
 	if (err)
 		goto restore_opts;
 
+=======
+	ext4_setup_system_zone(sb);
+>>>>>>> FETCH_HEAD
 	if (sbi->s_journal == NULL && !(old_sb_flags & MS_RDONLY))
 		ext4_commit_super(sb, 1);
 
@@ -5415,11 +5473,14 @@ static int ext4_quota_on(struct super_block *sb, int type, int format_id,
 	/* Quotafile not on the same filesystem? */
 	if (path->dentry->d_sb != sb)
 		return -EXDEV;
+<<<<<<< HEAD
 
 	/* Quota already enabled for this file? */
 	if (IS_NOQUOTA(d_inode(path->dentry)))
 		return -EBUSY;
 
+=======
+>>>>>>> FETCH_HEAD
 	/* Journaling quota? */
 	if (EXT4_SB(sb)->s_qf_names[type]) {
 		/* Quotafile not in fs root? */

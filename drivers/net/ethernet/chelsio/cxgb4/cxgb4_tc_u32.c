@@ -47,7 +47,11 @@ static int fill_match_fields(struct adapter *adap,
 			     bool next_header)
 {
 	unsigned int i, j;
+<<<<<<< HEAD
 	__be32 val, mask;
+=======
+	u32 val, mask;
+>>>>>>> FETCH_HEAD
 	int off, err;
 	bool found;
 
@@ -217,7 +221,11 @@ int cxgb4_config_knode(struct net_device *dev, __be16 protocol,
 		const struct cxgb4_next_header *next;
 		bool found = false;
 		unsigned int i, j;
+<<<<<<< HEAD
 		__be32 val, mask;
+=======
+		u32 val, mask;
+>>>>>>> FETCH_HEAD
 		int off;
 
 		if (t->table[link_uhtid - 1].link_handle) {
@@ -231,10 +239,17 @@ int cxgb4_config_knode(struct net_device *dev, __be16 protocol,
 
 		/* Try to find matches that allow jumps to next header. */
 		for (i = 0; next[i].jump; i++) {
+<<<<<<< HEAD
 			if (next[i].sel.offoff != cls->knode.sel->offoff ||
 			    next[i].sel.offshift != cls->knode.sel->offshift ||
 			    next[i].sel.offmask != cls->knode.sel->offmask ||
 			    next[i].sel.off != cls->knode.sel->off)
+=======
+			if (next[i].offoff != cls->knode.sel->offoff ||
+			    next[i].shift != cls->knode.sel->offshift ||
+			    next[i].mask != cls->knode.sel->offmask ||
+			    next[i].offset != cls->knode.sel->off)
+>>>>>>> FETCH_HEAD
 				continue;
 
 			/* Found a possible candidate.  Find a key that
@@ -246,9 +261,15 @@ int cxgb4_config_knode(struct net_device *dev, __be16 protocol,
 				val = cls->knode.sel->keys[j].val;
 				mask = cls->knode.sel->keys[j].mask;
 
+<<<<<<< HEAD
 				if (next[i].key.off == off &&
 				    next[i].key.val == val &&
 				    next[i].key.mask == mask) {
+=======
+				if (next[i].match_off == off &&
+				    next[i].match_val == val &&
+				    next[i].match_mask == mask) {
+>>>>>>> FETCH_HEAD
 					found = true;
 					break;
 				}

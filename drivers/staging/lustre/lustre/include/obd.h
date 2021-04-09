@@ -1217,8 +1217,13 @@ static inline void client_adjust_max_dirty(struct client_obd *cli)
 			cli->cl_dirty_max_pages = dirty_max;
 	}
 
+<<<<<<< HEAD
 	if (cli->cl_dirty_max_pages > totalram_pages() / 8)
 		cli->cl_dirty_max_pages = totalram_pages() / 8;
+=======
+	if (cli->cl_dirty_max_pages > totalram_pages / 8)
+		cli->cl_dirty_max_pages = totalram_pages / 8;
+>>>>>>> FETCH_HEAD
 }
 
 #endif /* __OBD_H */

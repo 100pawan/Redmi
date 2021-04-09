@@ -14,6 +14,7 @@ Required properties:
   - #gpio-cells : Must be 2. The first cell is the pin number and the
     second cell is used to specify optional parameters (currently unused).
 
+<<<<<<< HEAD
   - power supplies for the device, as covered in
     Documentation/devicetree/bindings/regulator/regulator.txt, depending
     on compatible:
@@ -23,6 +24,11 @@ Required properties:
     - for wlf,wm8994:
       AVDD1-supply, AVDD2-supply, DBVDD-supply, DCVDD-supply, CPVDD-supply,
       SPKVDD1-supply, SPKVDD2-supply
+=======
+  - AVDD2-supply, DBVDD1-supply, DBVDD2-supply, DBVDD3-supply, CPVDD-supply,
+    SPKVDD1-supply, SPKVDD2-supply : power supplies for the device, as covered
+    in Documentation/devicetree/bindings/regulator/regulator.txt
+>>>>>>> FETCH_HEAD
 
 Optional properties:
 
@@ -74,11 +80,19 @@ codec: wm8994@1a {
 
 	lineout1-se;
 
+<<<<<<< HEAD
 	AVDD1-supply = <&regulator>;
 	AVDD2-supply = <&regulator>;
 	CPVDD-supply = <&regulator>;
 	DBVDD-supply = <&regulator>;
 	DCVDD-supply = <&regulator>;
+=======
+	AVDD2-supply = <&regulator>;
+	CPVDD-supply = <&regulator>;
+	DBVDD1-supply = <&regulator>;
+	DBVDD2-supply = <&regulator>;
+	DBVDD3-supply = <&regulator>;
+>>>>>>> FETCH_HEAD
 	SPKVDD1-supply = <&regulator>;
 	SPKVDD2-supply = <&regulator>;
 };

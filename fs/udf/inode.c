@@ -140,6 +140,7 @@ void udf_evict_inode(struct inode *inode)
 	struct udf_inode_info *iinfo = UDF_I(inode);
 	int want_delete = 0;
 
+<<<<<<< HEAD
 	if (!is_bad_inode(inode)) {
 		if (!inode->i_nlink) {
 			want_delete = 1;
@@ -154,10 +155,26 @@ void udf_evict_inode(struct inode *inode)
 				 (unsigned long long)inode->i_size,
 				 (unsigned long long)iinfo->i_lenExtents);
 		}
+=======
+	if (!inode->i_nlink && !is_bad_inode(inode)) {
+		want_delete = 1;
+		udf_setsize(inode, 0);
+		udf_update_inode(inode, IS_SYNC(inode));
+>>>>>>> FETCH_HEAD
 	}
 	truncate_inode_pages_final(&inode->i_data);
 	invalidate_inode_buffers(inode);
 	clear_inode(inode);
+<<<<<<< HEAD
+=======
+	if (iinfo->i_alloc_type != ICBTAG_FLAG_AD_IN_ICB &&
+	    inode->i_size != iinfo->i_lenExtents) {
+		udf_warn(inode->i_sb, "Inode %lu (mode %o) has inode size %llu different from extent length %llu. Filesystem need not be standards compliant.\n",
+			 inode->i_ino, inode->i_mode,
+			 (unsigned long long)inode->i_size,
+			 (unsigned long long)iinfo->i_lenExtents);
+	}
+>>>>>>> FETCH_HEAD
 	kfree(iinfo->i_ext.i_data);
 	iinfo->i_ext.i_data = NULL;
 	udf_clear_extent_cache(inode);
@@ -548,6 +565,7 @@ static int udf_do_extend_file(struct inode *inode,
 
 		udf_write_aext(inode, last_pos, &last_ext->extLocation,
 				last_ext->extLength, 1);
+<<<<<<< HEAD
 
 		/*
 		 * We've rewritten the last extent. If we are going to add
@@ -556,6 +574,13 @@ static int udf_do_extend_file(struct inode *inode,
 		 */
 		if (new_block_bytes || prealloc_len)
 			udf_next_aext(inode, last_pos, &tmploc, &tmplen, 0);
+=======
+		/*
+		 * We've rewritten the last extent but there may be empty
+		 * indirect extent after it - enter it.
+		 */
+		udf_next_aext(inode, last_pos, &tmploc, &tmplen, 0);
+>>>>>>> FETCH_HEAD
 	}
 
 	/* Managed to do everything necessary? */

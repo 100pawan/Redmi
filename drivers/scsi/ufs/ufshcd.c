@@ -1545,7 +1545,10 @@ unblock_reqs:
 int ufshcd_hold(struct ufs_hba *hba, bool async)
 {
 	int rc = 0;
+<<<<<<< HEAD
 	bool flush_result;
+=======
+>>>>>>> FETCH_HEAD
 	unsigned long flags;
 
 	if (!ufshcd_is_clkgating_allowed(hba))
@@ -1577,9 +1580,13 @@ start:
 				break;
 			}
 			spin_unlock_irqrestore(hba->host->host_lock, flags);
+<<<<<<< HEAD
 			flush_result = flush_work(&hba->clk_gating.ungate_work);
 			if (hba->clk_gating.is_suspended && !flush_result)
 				goto out;
+=======
+			flush_work(&hba->clk_gating.ungate_work);
+>>>>>>> FETCH_HEAD
 			spin_lock_irqsave(hba->host->host_lock, flags);
 			goto start;
 		}
@@ -6870,13 +6877,21 @@ static irqreturn_t ufshcd_sl_intr(struct ufs_hba *hba, u32 intr_status)
  */
 static irqreturn_t ufshcd_intr(int irq, void *__hba)
 {
+<<<<<<< HEAD
 	u32 intr_status, enabled_intr_status = 0;
+=======
+	u32 intr_status, enabled_intr_status;
+>>>>>>> FETCH_HEAD
 	irqreturn_t retval = IRQ_NONE;
 	struct ufs_hba *hba = __hba;
 	int retries = hba->nutrs;
 
 	spin_lock(hba->host->host_lock);
 	intr_status = ufshcd_readl(hba, REG_INTERRUPT_STATUS);
+<<<<<<< HEAD
+=======
+
+>>>>>>> FETCH_HEAD
 	hba->ufs_stats.last_intr_status = intr_status;
 	hba->ufs_stats.last_intr_ts = ktime_get();
 	/*
@@ -6885,7 +6900,11 @@ static irqreturn_t ufshcd_intr(int irq, void *__hba)
 	 * read, make sure we handle them by checking the interrupt status
 	 * again in a loop until we process all of the reqs before returning.
 	 */
+<<<<<<< HEAD
 	while (intr_status && retries--) {
+=======
+	do {
+>>>>>>> FETCH_HEAD
 		enabled_intr_status =
 			intr_status & ufshcd_readl(hba, REG_INTERRUPT_ENABLE);
 		if (intr_status)
@@ -6894,7 +6913,11 @@ static irqreturn_t ufshcd_intr(int irq, void *__hba)
 			retval |= ufshcd_sl_intr(hba, enabled_intr_status);
 
 		intr_status = ufshcd_readl(hba, REG_INTERRUPT_STATUS);
+<<<<<<< HEAD
 	}
+=======
+	} while (intr_status && --retries);
+>>>>>>> FETCH_HEAD
 
 	if (retval == IRQ_NONE) {
 		dev_err(hba->dev, "%s: Unhandled interrupt 0x%08x\n",
@@ -7032,17 +7055,33 @@ static int ufshcd_eh_device_reset_handler(struct scsi_cmnd *cmd)
 {
 	struct Scsi_Host *host;
 	struct ufs_hba *hba;
+<<<<<<< HEAD
 	u32 pos;
 	int err;
 	u8 resp = 0xF, lun;
+=======
+	unsigned int tag;
+	u32 pos;
+	int err;
+	u8 resp = 0xF;
+	struct ufshcd_lrb *lrbp;
+>>>>>>> FETCH_HEAD
 	unsigned long flags;
 
 	host = cmd->device->host;
 	hba = shost_priv(host);
+<<<<<<< HEAD
 
 	ufshcd_print_cmd_log(hba);
 	lun = ufshcd_scsi_to_upiu_lun(cmd->device->lun);
 	err = ufshcd_issue_tm_cmd(hba, lun, 0, UFS_LOGICAL_RESET, &resp);
+=======
+	tag = cmd->request->tag;
+
+	ufshcd_print_cmd_log(hba);
+	lrbp = &hba->lrb[tag];
+	err = ufshcd_issue_tm_cmd(hba, lrbp->lun, 0, UFS_LOGICAL_RESET, &resp);
+>>>>>>> FETCH_HEAD
 	if (err || resp != UPIU_TASK_MANAGEMENT_FUNC_COMPL) {
 		if (!err)
 			err = resp;
@@ -7051,7 +7090,11 @@ static int ufshcd_eh_device_reset_handler(struct scsi_cmnd *cmd)
 
 	/* clear the commands that were pending for corresponding LUN */
 	for_each_set_bit(pos, &hba->outstanding_reqs, hba->nutrs) {
+<<<<<<< HEAD
 		if (hba->lrb[pos].lun == lun) {
+=======
+		if (hba->lrb[pos].lun == lrbp->lun) {
+>>>>>>> FETCH_HEAD
 			err = ufshcd_clear_cmd(hba, pos);
 			if (err)
 				break;

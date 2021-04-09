@@ -543,7 +543,11 @@ void ath9k_htc_tx_drain(struct ath9k_htc_priv *priv)
 	 * Ensure that all pending TX frames are flushed,
 	 * and that the TX completion/failed tasklets is killed.
 	 */
+<<<<<<< HEAD
 	htc_stop_hst(priv->htc);
+=======
+	htc_stop(priv->htc);
+>>>>>>> FETCH_HEAD
 	tasklet_kill(&priv->wmi->wmi_event_tasklet);
 	tasklet_kill(&priv->tx_failed_tasklet);
 
@@ -972,7 +976,11 @@ static bool ath9k_rx_prepare(struct ath9k_htc_priv *priv,
 	struct ath_htc_rx_status *rxstatus;
 	struct ath_rx_status rx_stats;
 	bool decrypt_error = false;
+<<<<<<< HEAD
 	u16 rs_datalen;
+=======
+	__be16 rs_datalen;
+>>>>>>> FETCH_HEAD
 	bool is_phyerr;
 
 	if (skb->len < HTC_RX_FRAME_HEADER_SIZE) {
@@ -998,9 +1006,15 @@ static bool ath9k_rx_prepare(struct ath9k_htc_priv *priv,
 	 * which are not PHY_ERROR (short radar pulses have a length of 3)
 	 */
 	if (unlikely(!rs_datalen || (rs_datalen < 10 && !is_phyerr))) {
+<<<<<<< HEAD
 		ath_dbg(common, ANY,
 			"Short RX data len, dropping (dlen: %d)\n",
 			rs_datalen);
+=======
+		ath_warn(common,
+			 "Short RX data len, dropping (dlen: %d)\n",
+			 rs_datalen);
+>>>>>>> FETCH_HEAD
 		goto rx_next;
 	}
 

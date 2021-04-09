@@ -194,7 +194,10 @@ struct imx_i2c_dma {
 struct imx_i2c_struct {
 	struct i2c_adapter	adapter;
 	struct clk		*clk;
+<<<<<<< HEAD
 	struct notifier_block	clk_change_nb;
+=======
+>>>>>>> FETCH_HEAD
 	void __iomem		*base;
 	wait_queue_head_t	queue;
 	unsigned long		i2csr;
@@ -413,6 +416,7 @@ static void i2c_imx_dma_free(struct imx_i2c_struct *i2c_imx)
 	dma->chan_using = NULL;
 }
 
+<<<<<<< HEAD
 static void i2c_imx_clear_irq(struct imx_i2c_struct *i2c_imx, unsigned int bits)
 {
 	unsigned int temp;
@@ -426,6 +430,8 @@ static void i2c_imx_clear_irq(struct imx_i2c_struct *i2c_imx, unsigned int bits)
 	imx_i2c_write_reg(temp, i2c_imx, IMX_I2C_I2SR);
 }
 
+=======
+>>>>>>> FETCH_HEAD
 static int i2c_imx_bus_busy(struct imx_i2c_struct *i2c_imx, int for_busy)
 {
 	unsigned long orig_jiffies = jiffies;
@@ -438,7 +444,12 @@ static int i2c_imx_bus_busy(struct imx_i2c_struct *i2c_imx, int for_busy)
 
 		/* check for arbitration lost */
 		if (temp & I2SR_IAL) {
+<<<<<<< HEAD
 			i2c_imx_clear_irq(i2c_imx, I2SR_IAL);
+=======
+			temp &= ~I2SR_IAL;
+			imx_i2c_write_reg(temp, i2c_imx, IMX_I2C_I2SR);
+>>>>>>> FETCH_HEAD
 			return -EAGAIN;
 		}
 
@@ -465,6 +476,7 @@ static int i2c_imx_trx_complete(struct imx_i2c_struct *i2c_imx)
 		dev_dbg(&i2c_imx->adapter.dev, "<%s> Timeout\n", __func__);
 		return -ETIMEDOUT;
 	}
+<<<<<<< HEAD
 
 	/* check for arbitration lost */
 	if (i2c_imx->i2csr & I2SR_IAL) {
@@ -475,6 +487,8 @@ static int i2c_imx_trx_complete(struct imx_i2c_struct *i2c_imx)
 		return -EAGAIN;
 	}
 
+=======
+>>>>>>> FETCH_HEAD
 	dev_dbg(&i2c_imx->adapter.dev, "<%s> TRX complete\n", __func__);
 	i2c_imx->i2csr = 0;
 	return 0;
@@ -491,14 +505,25 @@ static int i2c_imx_acked(struct imx_i2c_struct *i2c_imx)
 	return 0;
 }
 
+<<<<<<< HEAD
 static void i2c_imx_set_clk(struct imx_i2c_struct *i2c_imx,
 			    unsigned int i2c_clk_rate)
 {
 	struct imx_i2c_clk_pair *i2c_clk_div = i2c_imx->hwdata->clk_div;
+=======
+static void i2c_imx_set_clk(struct imx_i2c_struct *i2c_imx)
+{
+	struct imx_i2c_clk_pair *i2c_clk_div = i2c_imx->hwdata->clk_div;
+	unsigned int i2c_clk_rate;
+>>>>>>> FETCH_HEAD
 	unsigned int div;
 	int i;
 
 	/* Divider value calculation */
+<<<<<<< HEAD
+=======
+	i2c_clk_rate = clk_get_rate(i2c_imx->clk);
+>>>>>>> FETCH_HEAD
 	if (i2c_imx->cur_clk == i2c_clk_rate)
 		return;
 
@@ -533,6 +558,7 @@ static void i2c_imx_set_clk(struct imx_i2c_struct *i2c_imx,
 #endif
 }
 
+<<<<<<< HEAD
 static int i2c_imx_clk_notifier_call(struct notifier_block *nb,
 				     unsigned long action, void *data)
 {
@@ -547,6 +573,8 @@ static int i2c_imx_clk_notifier_call(struct notifier_block *nb,
 	return NOTIFY_OK;
 }
 
+=======
+>>>>>>> FETCH_HEAD
 static int i2c_imx_start(struct imx_i2c_struct *i2c_imx)
 {
 	unsigned int temp = 0;
@@ -554,6 +582,11 @@ static int i2c_imx_start(struct imx_i2c_struct *i2c_imx)
 
 	dev_dbg(&i2c_imx->adapter.dev, "<%s>\n", __func__);
 
+<<<<<<< HEAD
+=======
+	i2c_imx_set_clk(i2c_imx);
+
+>>>>>>> FETCH_HEAD
 	imx_i2c_write_reg(i2c_imx->ifdr, i2c_imx, IMX_I2C_IFDR);
 	/* Enable I2C controller */
 	imx_i2c_write_reg(i2c_imx->hwdata->i2sr_clr_opcode, i2c_imx, IMX_I2C_I2SR);
@@ -617,7 +650,13 @@ static irqreturn_t i2c_imx_isr(int irq, void *dev_id)
 	if (temp & I2SR_IIF) {
 		/* save status register */
 		i2c_imx->i2csr = temp;
+<<<<<<< HEAD
 		i2c_imx_clear_irq(i2c_imx, I2SR_IIF);
+=======
+		temp &= ~I2SR_IIF;
+		temp |= (i2c_imx->hwdata->i2sr_clr_opcode & I2SR_IIF);
+		imx_i2c_write_reg(temp, i2c_imx, IMX_I2C_I2SR);
+>>>>>>> FETCH_HEAD
 		wake_up(&i2c_imx->queue);
 		return IRQ_HANDLED;
 	}
@@ -1131,6 +1170,17 @@ static int i2c_imx_probe(struct platform_device *pdev)
 		return ret;
 	}
 
+<<<<<<< HEAD
+=======
+	/* Request IRQ */
+	ret = devm_request_irq(&pdev->dev, irq, i2c_imx_isr, 0,
+				pdev->name, i2c_imx);
+	if (ret) {
+		dev_err(&pdev->dev, "can't claim irq %d\n", irq);
+		goto clk_disable;
+	}
+
+>>>>>>> FETCH_HEAD
 	/* Init queue */
 	init_waitqueue_head(&i2c_imx->queue);
 
@@ -1149,6 +1199,7 @@ static int i2c_imx_probe(struct platform_device *pdev)
 	if (ret < 0)
 		goto rpm_disable;
 
+<<<<<<< HEAD
 	/* Request IRQ */
 	ret = request_threaded_irq(irq, i2c_imx_isr, NULL, IRQF_SHARED,
 				   pdev->name, i2c_imx);
@@ -1157,15 +1208,20 @@ static int i2c_imx_probe(struct platform_device *pdev)
 		goto rpm_disable;
 	}
 
+=======
+>>>>>>> FETCH_HEAD
 	/* Set up clock divider */
 	i2c_imx->bitrate = IMX_I2C_BIT_RATE;
 	ret = of_property_read_u32(pdev->dev.of_node,
 				   "clock-frequency", &i2c_imx->bitrate);
 	if (ret < 0 && pdata && pdata->bitrate)
 		i2c_imx->bitrate = pdata->bitrate;
+<<<<<<< HEAD
 	i2c_imx->clk_change_nb.notifier_call = i2c_imx_clk_notifier_call;
 	clk_notifier_register(i2c_imx->clk, &i2c_imx->clk_change_nb);
 	i2c_imx_set_clk(i2c_imx, clk_get_rate(i2c_imx->clk));
+=======
+>>>>>>> FETCH_HEAD
 
 	/* Set up chip registers to defaults */
 	imx_i2c_write_reg(i2c_imx->hwdata->i2cr_ien_opcode ^ I2CR_IEN,
@@ -1176,12 +1232,20 @@ static int i2c_imx_probe(struct platform_device *pdev)
 	ret = i2c_imx_init_recovery_info(i2c_imx, pdev);
 	/* Give it another chance if pinctrl used is not ready yet */
 	if (ret == -EPROBE_DEFER)
+<<<<<<< HEAD
 		goto clk_notifier_unregister;
+=======
+		goto rpm_disable;
+>>>>>>> FETCH_HEAD
 
 	/* Add I2C adapter */
 	ret = i2c_add_numbered_adapter(&i2c_imx->adapter);
 	if (ret < 0)
+<<<<<<< HEAD
 		goto clk_notifier_unregister;
+=======
+		goto rpm_disable;
+>>>>>>> FETCH_HEAD
 
 	pm_runtime_mark_last_busy(&pdev->dev);
 	pm_runtime_put_autosuspend(&pdev->dev);
@@ -1197,14 +1261,22 @@ static int i2c_imx_probe(struct platform_device *pdev)
 
 	return 0;   /* Return OK */
 
+<<<<<<< HEAD
 clk_notifier_unregister:
 	clk_notifier_unregister(i2c_imx->clk, &i2c_imx->clk_change_nb);
 	free_irq(irq, i2c_imx);
+=======
+>>>>>>> FETCH_HEAD
 rpm_disable:
 	pm_runtime_put_noidle(&pdev->dev);
 	pm_runtime_disable(&pdev->dev);
 	pm_runtime_set_suspended(&pdev->dev);
 	pm_runtime_dont_use_autosuspend(&pdev->dev);
+<<<<<<< HEAD
+=======
+
+clk_disable:
+>>>>>>> FETCH_HEAD
 	clk_disable_unprepare(i2c_imx->clk);
 	return ret;
 }
@@ -1212,7 +1284,11 @@ rpm_disable:
 static int i2c_imx_remove(struct platform_device *pdev)
 {
 	struct imx_i2c_struct *i2c_imx = platform_get_drvdata(pdev);
+<<<<<<< HEAD
 	int irq, ret;
+=======
+	int ret;
+>>>>>>> FETCH_HEAD
 
 	ret = pm_runtime_get_sync(&pdev->dev);
 	if (ret < 0)
@@ -1231,10 +1307,13 @@ static int i2c_imx_remove(struct platform_device *pdev)
 	imx_i2c_write_reg(0, i2c_imx, IMX_I2C_I2CR);
 	imx_i2c_write_reg(0, i2c_imx, IMX_I2C_I2SR);
 
+<<<<<<< HEAD
 	clk_notifier_unregister(i2c_imx->clk, &i2c_imx->clk_change_nb);
 	irq = platform_get_irq(pdev, 0);
 	if (irq >= 0)
 		free_irq(irq, i2c_imx);
+=======
+>>>>>>> FETCH_HEAD
 	clk_disable_unprepare(i2c_imx->clk);
 
 	pm_runtime_put_noidle(&pdev->dev);

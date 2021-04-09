@@ -7257,9 +7257,13 @@ static void ixgbe_service_task(struct work_struct *work)
 
 	if (test_bit(__IXGBE_PTP_RUNNING, &adapter->state)) {
 		ixgbe_ptp_overflow_check(adapter);
+<<<<<<< HEAD
 		if (adapter->flags & IXGBE_FLAG_RX_HWTSTAMP_IN_REGISTER)
 			ixgbe_ptp_rx_hang(adapter);
 		ixgbe_ptp_tx_hang(adapter);
+=======
+		ixgbe_ptp_rx_hang(adapter);
+>>>>>>> FETCH_HEAD
 	}
 
 	ixgbe_service_event_complete(adapter);
@@ -8677,10 +8681,15 @@ static int ixgbe_configure_clsu32(struct ixgbe_adapter *adapter,
 	ixgbe_atr_compute_perfect_hash_82599(&input->filter, mask);
 	err = ixgbe_fdir_write_perfect_filter_82599(hw, &input->filter,
 						    input->sw_idx, queue);
+<<<<<<< HEAD
 	if (err)
 		goto err_out_w_lock;
 
 	ixgbe_update_ethtool_fdir_entry(adapter, input, input->sw_idx);
+=======
+	if (!err)
+		ixgbe_update_ethtool_fdir_entry(adapter, input, input->sw_idx);
+>>>>>>> FETCH_HEAD
 	spin_unlock(&adapter->fdir_perfect_lock);
 
 	if ((uhtid != 0x800) && (adapter->jump_tables[uhtid]))

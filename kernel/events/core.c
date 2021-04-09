@@ -90,11 +90,19 @@ static void remote_function(void *data)
  * @info:	the function call argument
  *
  * Calls the function @func when the task is currently running. This might
+<<<<<<< HEAD
  * be on the current CPU, which just calls the function directly.  This will
  * retry due to any failures in smp_call_function_single(), such as if the
  * task_cpu() goes offline concurrently.
  *
  * returns @func return value or -ESRCH or -ENXIO when the process isn't running
+=======
+ * be on the current CPU, which just calls the function directly
+ *
+ * returns: @func return value, or
+ *	    -ESRCH  - when the process isn't running
+ *	    -EAGAIN - when the process moved away
+>>>>>>> FETCH_HEAD
  */
 static int
 task_function_call(struct task_struct *p, remote_function_f func, void *info)
@@ -107,6 +115,7 @@ task_function_call(struct task_struct *p, remote_function_f func, void *info)
 	};
 	int ret;
 
+<<<<<<< HEAD
 	for (;;) {
 		ret = smp_call_function_single(task_cpu(p), remote_function,
 					       &data, 1);
@@ -118,6 +127,13 @@ task_function_call(struct task_struct *p, remote_function_f func, void *info)
 
 		cond_resched();
 	}
+=======
+	do {
+		ret = smp_call_function_single(task_cpu(p), remote_function, &data, 1);
+		if (!ret)
+			ret = data.ret;
+	} while (ret == -EAGAIN);
+>>>>>>> FETCH_HEAD
 
 	return ret;
 }
@@ -439,7 +455,11 @@ int sysctl_perf_event_mlock __read_mostly = 512 + (PAGE_SIZE / 1024); /* 'free' 
  */
 #define DEFAULT_MAX_SAMPLE_RATE		100000
 #define DEFAULT_SAMPLE_PERIOD_NS	(NSEC_PER_SEC / DEFAULT_MAX_SAMPLE_RATE)
+<<<<<<< HEAD
 #define DEFAULT_CPU_TIME_MAX_PERCENT	5
+=======
+#define DEFAULT_CPU_TIME_MAX_PERCENT	25
+>>>>>>> FETCH_HEAD
 
 int sysctl_perf_event_sample_rate __read_mostly	= DEFAULT_MAX_SAMPLE_RATE;
 
@@ -4074,7 +4094,11 @@ static void unaccount_event(struct perf_event *event)
 
 	if (dec) {
 		if (!atomic_add_unless(&perf_sched_count, -1, 1))
+<<<<<<< HEAD
 			queue_delayed_work(system_power_efficient_wq, &perf_sched_work, HZ);
+=======
+			schedule_delayed_work(&perf_sched_work, HZ);
+>>>>>>> FETCH_HEAD
 	}
 
 	unaccount_event_cpu(event, event->cpu);
@@ -5060,8 +5084,13 @@ void perf_event_update_userpage(struct perf_event *event)
 
 	userpg = rb->user_page;
 	/*
+<<<<<<< HEAD
 	 * Disable preemption to guarantee consistent time stamps are stored to
 	 * the user page.
+=======
+	 * Disable preemption so as to not let the corresponding user-space
+	 * spin too long if we get preempted.
+>>>>>>> FETCH_HEAD
 	 */
 	preempt_disable();
 	++userpg->lock;
@@ -5245,11 +5274,18 @@ static void perf_pmu_output_stop(struct perf_event *event);
 static void perf_mmap_close(struct vm_area_struct *vma)
 {
 	struct perf_event *event = vma->vm_file->private_data;
+<<<<<<< HEAD
+=======
+
+>>>>>>> FETCH_HEAD
 	struct ring_buffer *rb = ring_buffer_get(event);
 	struct user_struct *mmap_user = rb->mmap_user;
 	int mmap_locked = rb->mmap_locked;
 	unsigned long size = perf_data_size(rb);
+<<<<<<< HEAD
 	bool detach_rest = false;
+=======
+>>>>>>> FETCH_HEAD
 
 	if (event->pmu->event_unmapped)
 		event->pmu->event_unmapped(event);
@@ -5280,8 +5316,12 @@ static void perf_mmap_close(struct vm_area_struct *vma)
 		mutex_unlock(&event->mmap_mutex);
 	}
 
+<<<<<<< HEAD
 	if (atomic_dec_and_test(&rb->mmap_count))
 		detach_rest = true;
+=======
+	atomic_dec(&rb->mmap_count);
+>>>>>>> FETCH_HEAD
 
 	if (!atomic_dec_and_mutex_lock(&event->mmap_count, &event->mmap_mutex))
 		goto out_put;
@@ -5290,7 +5330,11 @@ static void perf_mmap_close(struct vm_area_struct *vma)
 	mutex_unlock(&event->mmap_mutex);
 
 	/* If there's still other mmap()s of this buffer, we're done. */
+<<<<<<< HEAD
 	if (!detach_rest)
+=======
+	if (atomic_read(&rb->mmap_count))
+>>>>>>> FETCH_HEAD
 		goto out_put;
 
 	/*
@@ -6448,7 +6492,11 @@ static void perf_event_addr_filters_exec(struct perf_event *event, void *data)
 
 	raw_spin_lock_irqsave(&ifh->lock, flags);
 	list_for_each_entry(filter, &ifh->list, entry) {
+<<<<<<< HEAD
 		if (filter->path.dentry) {
+=======
+		if (filter->inode) {
+>>>>>>> FETCH_HEAD
 			event->addr_filters_offs[count] = 0;
 			restart++;
 		}
@@ -6991,11 +7039,15 @@ static bool perf_addr_filter_match(struct perf_addr_filter *filter,
 				     struct file *file, unsigned long offset,
 				     unsigned long size)
 {
+<<<<<<< HEAD
 	/* d_inode(NULL) won't be equal to any mapped user-space file */
 	if (!filter->path.dentry)
 		return false;
 
 	if (d_inode(filter->path.dentry) != file_inode(file))
+=======
+	if (filter->inode != file->f_inode)
+>>>>>>> FETCH_HEAD
 		return false;
 
 	if (filter->offset > offset + size)
@@ -8201,7 +8253,12 @@ static void free_filters_list(struct list_head *filters)
 	struct perf_addr_filter *filter, *iter;
 
 	list_for_each_entry_safe(filter, iter, filters, entry) {
+<<<<<<< HEAD
 		path_put(&filter->path);
+=======
+		if (filter->inode)
+			iput(filter->inode);
+>>>>>>> FETCH_HEAD
 		list_del(&filter->entry);
 		kfree(filter);
 	}
@@ -8295,7 +8352,11 @@ static void perf_event_addr_filters_apply(struct perf_event *event)
 		 * Adjust base offset if the filter is associated to a binary
 		 * that needs to be mapped:
 		 */
+<<<<<<< HEAD
 		if (filter->path.dentry)
+=======
+		if (filter->inode)
+>>>>>>> FETCH_HEAD
 			event->addr_filters_offs[count] =
 				perf_addr_filter_apply(filter, mm);
 
@@ -8368,6 +8429,10 @@ perf_event_parse_addr_filter(struct perf_event *event, char *fstr,
 {
 	struct perf_addr_filter *filter = NULL;
 	char *start, *orig, *filename = NULL;
+<<<<<<< HEAD
+=======
+	struct path path;
+>>>>>>> FETCH_HEAD
 	substring_t args[MAX_OPT_ARGS];
 	int state = IF_STATE_ACTION, token;
 	unsigned int kernel = 0;
@@ -8430,7 +8495,10 @@ perf_event_parse_addr_filter(struct perf_event *event, char *fstr,
 			if (token == IF_SRC_FILE || token == IF_SRC_FILEADDR) {
 				int fpos = filter->range ? 2 : 1;
 
+<<<<<<< HEAD
 				kfree(filename);
+=======
+>>>>>>> FETCH_HEAD
 				filename = match_strdup(&args[fpos]);
 				if (!filename) {
 					ret = -ENOMEM;
@@ -8459,6 +8527,7 @@ perf_event_parse_addr_filter(struct perf_event *event, char *fstr,
 					goto fail;
 
 				/* look up the path and grab its inode */
+<<<<<<< HEAD
 				ret = kern_path(filename, LOOKUP_FOLLOW,
 						&filter->path);
 				if (ret)
@@ -8468,6 +8537,21 @@ perf_event_parse_addr_filter(struct perf_event *event, char *fstr,
 				if (!filter->path.dentry ||
 				    !S_ISREG(d_inode(filter->path.dentry)
 					     ->i_mode))
+=======
+				ret = kern_path(filename, LOOKUP_FOLLOW, &path);
+				if (ret)
+					goto fail_free_name;
+
+				filter->inode = igrab(d_inode(path.dentry));
+				path_put(&path);
+				kfree(filename);
+				filename = NULL;
+
+				ret = -EINVAL;
+				if (!filter->inode ||
+				    !S_ISREG(filter->inode->i_mode))
+					/* free_filters_list() will iput() */
+>>>>>>> FETCH_HEAD
 					goto fail;
 			}
 
@@ -8480,13 +8564,22 @@ perf_event_parse_addr_filter(struct perf_event *event, char *fstr,
 	if (state != IF_STATE_ACTION)
 		goto fail;
 
+<<<<<<< HEAD
 	kfree(filename);
+=======
+>>>>>>> FETCH_HEAD
 	kfree(orig);
 
 	return 0;
 
+<<<<<<< HEAD
 fail:
 	kfree(filename);
+=======
+fail_free_name:
+	kfree(filename);
+fail:
+>>>>>>> FETCH_HEAD
 	free_filters_list(filters);
 	kfree(orig);
 

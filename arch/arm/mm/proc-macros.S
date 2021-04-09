@@ -4,7 +4,10 @@
  *  VMA_VM_FLAGS
  *  VM_EXEC
  */
+<<<<<<< HEAD
 #include <linux/const.h>
+=======
+>>>>>>> FETCH_HEAD
 #include <asm/asm-offsets.h>
 #include <asm/thread_info.h>
 
@@ -35,7 +38,11 @@
  * act_mm - get current->active_mm
  */
 	.macro	act_mm, rd
+<<<<<<< HEAD
 	bic	\rd, sp, #(THREAD_SIZE - 1) & ~63
+=======
+	bic	\rd, sp, #8128
+>>>>>>> FETCH_HEAD
 	bic	\rd, \rd, #63
 	ldr	\rd, [\rd, #TI_TASK]
 	ldr	\rd, [\rd, #TSK_ACTIVE_MM]

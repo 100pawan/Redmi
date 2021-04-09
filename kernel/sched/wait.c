@@ -42,6 +42,7 @@ void add_wait_queue_exclusive(wait_queue_head_t *q, wait_queue_t *wait)
 }
 EXPORT_SYMBOL(add_wait_queue_exclusive);
 
+<<<<<<< HEAD
 void add_wait_queue_exclusive_lifo(wait_queue_head_t *wq_head, wait_queue_t *wq_entry)
 {
 	unsigned long flags;
@@ -53,6 +54,8 @@ void add_wait_queue_exclusive_lifo(wait_queue_head_t *wq_head, wait_queue_t *wq_
 }
 EXPORT_SYMBOL(add_wait_queue_exclusive_lifo);
 
+=======
+>>>>>>> FETCH_HEAD
 void remove_wait_queue(wait_queue_head_t *q, wait_queue_t *wait)
 {
 	unsigned long flags;
@@ -207,6 +210,7 @@ prepare_to_wait_exclusive(wait_queue_head_t *q, wait_queue_t *wait, int state)
 }
 EXPORT_SYMBOL(prepare_to_wait_exclusive);
 
+<<<<<<< HEAD
 void prepare_to_wait_exclusive_lifo(wait_queue_head_t *wq_head, wait_queue_t *wq_entry, int state)
 {
 	unsigned long flags;
@@ -220,6 +224,8 @@ void prepare_to_wait_exclusive_lifo(wait_queue_head_t *wq_head, wait_queue_t *wq
 }
 EXPORT_SYMBOL(prepare_to_wait_exclusive_lifo);
 
+=======
+>>>>>>> FETCH_HEAD
 void init_wait_entry(wait_queue_t *wait, int flags)
 {
 	wait->flags = flags;

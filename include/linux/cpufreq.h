@@ -548,6 +548,7 @@ static inline void cpufreq_policy_apply_limits(struct cpufreq_policy *policy)
 		__cpufreq_driver_target(policy, policy->min, CPUFREQ_RELATION_L);
 }
 
+<<<<<<< HEAD
 static inline unsigned int
 cpufreq_policy_apply_limits_fast(struct cpufreq_policy *policy)
 {
@@ -561,6 +562,8 @@ cpufreq_policy_apply_limits_fast(struct cpufreq_policy *policy)
 	return ret;
 }
 
+=======
+>>>>>>> FETCH_HEAD
 /* Governor attribute set */
 struct gov_attr_set {
 	struct kobject kobj;
@@ -946,7 +949,10 @@ int cpufreq_generic_init(struct cpufreq_policy *policy,
 		struct cpufreq_frequency_table *table,
 		unsigned int transition_latency);
 
+<<<<<<< HEAD
 extern unsigned int cpuinfo_max_freq_cached;
+=======
+>>>>>>> FETCH_HEAD
 struct sched_domain;
 unsigned long cpufreq_scale_freq_capacity(struct sched_domain *sd, int cpu);
 unsigned long cpufreq_scale_max_freq_capacity(struct sched_domain *sd, int cpu);

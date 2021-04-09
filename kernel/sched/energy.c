@@ -49,7 +49,10 @@ static void free_resources(void)
 		}
 	}
 }
+<<<<<<< HEAD
 static bool sge_ready;
+=======
+>>>>>>> FETCH_HEAD
 
 static int update_topology;
 
@@ -149,7 +152,10 @@ void init_sched_energy_costs(void)
 		}
 	}
 
+<<<<<<< HEAD
 	sge_ready = true;
+=======
+>>>>>>> FETCH_HEAD
 	pr_info("Sched-energy-costs installed from DT\n");
 	return;
 
@@ -168,8 +174,11 @@ static int sched_energy_probe(struct platform_device *pdev)
 
 	if (!sched_is_energy_aware())
 		return 0;
+<<<<<<< HEAD
 	if (!sge_ready)
 		return -EPROBE_DEFER;
+=======
+>>>>>>> FETCH_HEAD
 
 	max_frequencies = kmalloc_array(nr_cpu_ids, sizeof(unsigned long),
 					GFP_KERNEL);
@@ -285,6 +294,7 @@ static int sched_energy_probe(struct platform_device *pdev)
 			cpu_max_cap);
 
 		arch_update_cpu_capacity(cpu);
+<<<<<<< HEAD
 
 		cpu_rq(cpu)->cpu_capacity_orig = cpu_max_cap;
 	}
@@ -301,6 +311,8 @@ static int sched_energy_probe(struct platform_device *pdev)
 		if ((min_cpu < 0) || rq->cpu_capacity_orig <
 		    cpu_rq(min_cpu)->cpu_capacity_orig)
 			WRITE_ONCE(rq->rd->min_cap_orig_cpu, cpu);
+=======
+>>>>>>> FETCH_HEAD
 	}
 
 	kfree(max_frequencies);

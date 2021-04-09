@@ -93,10 +93,13 @@
 #define HAP_VMAX_SHIFT			1
 #define HAP_VMAX_MIN_MV			116
 #define HAP_VMAX_MAX_MV			3596
+<<<<<<< HEAD
 #define HAP_VMAX_MAX_MV_STRONG		3596
 #define HAP_VMAX_MAX_MV_USER		500
 #define HAP_MIN_TIME_STRONG		100
 #define HAP_MIN_TIME_CALL		1000
+=======
+>>>>>>> FETCH_HEAD
 
 #define HAP_ILIM_CFG_REG(chip)		(chip->base + 0x52)
 #define HAP_ILIM_SEL_MASK		BIT(0)
@@ -362,6 +365,7 @@ struct hap_chip {
 	bool				play_irq_en;
 	bool				auto_res_err_recovery_hw;
 	bool				vcc_pon_enabled;
+<<<<<<< HEAD
 	int				vmax_override;
 	u32				vmax_mv_strong;
 	u32				vmax_mv_call;
@@ -371,6 +375,10 @@ struct hap_chip {
 
 struct hap_chip *gchip;
 
+=======
+};
+
+>>>>>>> FETCH_HEAD
 static int qpnp_haptics_parse_buffer_dt(struct hap_chip *chip);
 static int qpnp_haptics_parse_pwm_dt(struct hap_chip *chip);
 
@@ -1341,6 +1349,7 @@ static int qpnp_haptics_auto_mode_config(struct hap_chip *chip, int time_ms)
 	return 0;
 }
 
+<<<<<<< HEAD
 void set_vibrate(int val)
 {
 	int rc;
@@ -1369,6 +1378,8 @@ void set_vibrate(int val)
 
 }
 
+=======
+>>>>>>> FETCH_HEAD
 static irqreturn_t qpnp_haptics_play_irq_handler(int irq, void *data)
 {
 	struct hap_chip *chip = data;
@@ -1509,7 +1520,11 @@ static ssize_t qpnp_haptics_store_duration(struct device *dev,
 {
 	struct led_classdev *cdev = dev_get_drvdata(dev);
 	struct hap_chip *chip = container_of(cdev, struct hap_chip, cdev);
+<<<<<<< HEAD
 	u32 val, old_vmax_mv;
+=======
+	u32 val;
+>>>>>>> FETCH_HEAD
 	int rc;
 
 	rc = kstrtouint(buf, 0, &val);
@@ -1523,6 +1538,7 @@ static ssize_t qpnp_haptics_store_duration(struct device *dev,
 	if (val > chip->max_play_time_ms)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	if (chip->vmax_override) {
 		old_vmax_mv = chip->vmax_mv;
 		if (val >= HAP_MIN_TIME_CALL)
@@ -1539,6 +1555,8 @@ static ssize_t qpnp_haptics_store_duration(struct device *dev,
 		}
 	}
 
+=======
+>>>>>>> FETCH_HEAD
 	mutex_lock(&chip->param_lock);
 	rc = qpnp_haptics_auto_mode_config(chip, val);
 	if (rc < 0) {
@@ -1575,9 +1593,12 @@ static ssize_t qpnp_haptics_store_activate(struct device *dev,
 	if (val != 0 && val != 1)
 		return count;
 
+<<<<<<< HEAD
 	if (chip->vmax_mv <= HAP_VMAX_MIN_MV && (val != 0))
 		return count;
 
+=======
+>>>>>>> FETCH_HEAD
 	if (val) {
 		hrtimer_cancel(&chip->stop_timer);
 		if (is_sw_lra_auto_resonance_control(chip))
@@ -1818,9 +1839,12 @@ static ssize_t qpnp_haptics_store_vmax(struct device *dev,
 	if (rc < 0)
 		return rc;
 
+<<<<<<< HEAD
 	if (chip->vmax_override)
 		return count;
 
+=======
+>>>>>>> FETCH_HEAD
 	old_vmax_mv = chip->vmax_mv;
 	chip->vmax_mv = data;
 	rc = qpnp_haptics_vmax_config(chip, chip->vmax_mv, false);
@@ -1832,6 +1856,7 @@ static ssize_t qpnp_haptics_store_vmax(struct device *dev,
 	return count;
 }
 
+<<<<<<< HEAD
 static ssize_t qpnp_haptics_show_vmax_mv_user(struct device *dev,
 		struct device_attribute *attr, char *buf)
 {
@@ -1953,6 +1978,8 @@ static ssize_t qpnp_haptics_store_vmax_override(struct device *dev,
 	return count;
 }
 
+=======
+>>>>>>> FETCH_HEAD
 static ssize_t qpnp_haptics_show_lra_auto_mode(struct device *dev,
 		struct device_attribute *attr, char *buf)
 {
@@ -1995,10 +2022,13 @@ static struct device_attribute qpnp_haptics_attrs[] = {
 	__ATTR(wf_s_rep_count, 0664, qpnp_haptics_show_wf_s_rep_count,
 		qpnp_haptics_store_wf_s_rep_count),
 	__ATTR(vmax_mv, 0664, qpnp_haptics_show_vmax, qpnp_haptics_store_vmax),
+<<<<<<< HEAD
 	__ATTR(vmax_override, 0664, qpnp_haptics_show_vmax_override, qpnp_haptics_store_vmax_override),
 	__ATTR(vmax_mv_user, 0664, qpnp_haptics_show_vmax_mv_user, qpnp_haptics_store_vmax_mv_user),
 	__ATTR(vmax_mv_strong, 0664, qpnp_haptics_show_vmax_mv_strong, qpnp_haptics_store_vmax_mv_strong),
 	__ATTR(vmax_mv_call, 0664, qpnp_haptics_show_vmax_mv_call, qpnp_haptics_store_vmax_mv_call),
+=======
+>>>>>>> FETCH_HEAD
 	__ATTR(lra_auto_mode, 0664, qpnp_haptics_show_lra_auto_mode,
 		qpnp_haptics_store_lra_auto_mode),
 };
@@ -2377,9 +2407,12 @@ static int qpnp_haptics_parse_dt(struct hap_chip *chip)
 		return rc;
 	}
 
+<<<<<<< HEAD
 	chip->vmax_mv_call = HAP_VMAX_MAX_MV_STRONG;
 	chip->vmax_mv_strong = HAP_VMAX_MAX_MV_STRONG;
 	chip->vmax_mv_user = HAP_VMAX_MAX_MV_USER;
+=======
+>>>>>>> FETCH_HEAD
 	chip->vmax_mv = HAP_VMAX_MAX_MV;
 	rc = of_property_read_u32(node, "qcom,vmax-mv", &temp);
 	if (!rc) {
@@ -2669,8 +2702,11 @@ static int qpnp_haptics_probe(struct platform_device *pdev)
 		}
 	}
 
+<<<<<<< HEAD
 	gchip = chip;
 
+=======
+>>>>>>> FETCH_HEAD
 	return 0;
 
 sysfs_fail:

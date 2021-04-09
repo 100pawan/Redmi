@@ -14,7 +14,10 @@
 #include <linux/fb.h>
 #include <linux/vt_kern.h>
 #include <linux/console.h>
+<<<<<<< HEAD
 #include <linux/font.h>
+=======
+>>>>>>> FETCH_HEAD
 #include <asm/types.h>
 #include "fbcon.h"
 #include "fbcon_rotate.h"

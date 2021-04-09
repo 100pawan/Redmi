@@ -40,7 +40,10 @@ MODULE_AUTHOR("Harald Welte <laforge@netfilter.org>");
 MODULE_DESCRIPTION("{ip,ip6,arp,eb}_tables backend module");
 
 #define XT_PCPU_BLOCK_SIZE 4096
+<<<<<<< HEAD
 #define XT_MAX_TABLE_SIZE       (512 * 1024 * 1024)
+=======
+>>>>>>> FETCH_HEAD
 
 struct compat_delta {
 	unsigned int offset; /* offset in kernel */
@@ -273,7 +276,10 @@ static int match_revfn(u8 af, const char *name, u8 revision, int *bestp)
 	const struct xt_match *m;
 	int have_rev = 0;
 
+<<<<<<< HEAD
 	mutex_lock(&xt[af].mutex);
+=======
+>>>>>>> FETCH_HEAD
 	list_for_each_entry(m, &xt[af].match, list) {
 		if (strcmp(m->name, name) == 0) {
 			if (m->revision > *bestp)
@@ -282,7 +288,10 @@ static int match_revfn(u8 af, const char *name, u8 revision, int *bestp)
 				have_rev = 1;
 		}
 	}
+<<<<<<< HEAD
 	mutex_unlock(&xt[af].mutex);
+=======
+>>>>>>> FETCH_HEAD
 
 	if (af != NFPROTO_UNSPEC && !have_rev)
 		return match_revfn(NFPROTO_UNSPEC, name, revision, bestp);
@@ -295,7 +304,10 @@ static int target_revfn(u8 af, const char *name, u8 revision, int *bestp)
 	const struct xt_target *t;
 	int have_rev = 0;
 
+<<<<<<< HEAD
 	mutex_lock(&xt[af].mutex);
+=======
+>>>>>>> FETCH_HEAD
 	list_for_each_entry(t, &xt[af].target, list) {
 		if (strcmp(t->name, name) == 0) {
 			if (t->revision > *bestp)
@@ -304,7 +316,10 @@ static int target_revfn(u8 af, const char *name, u8 revision, int *bestp)
 				have_rev = 1;
 		}
 	}
+<<<<<<< HEAD
 	mutex_unlock(&xt[af].mutex);
+=======
+>>>>>>> FETCH_HEAD
 
 	if (af != NFPROTO_UNSPEC && !have_rev)
 		return target_revfn(NFPROTO_UNSPEC, name, revision, bestp);
@@ -318,10 +333,18 @@ int xt_find_revision(u8 af, const char *name, u8 revision, int target,
 {
 	int have_rev, best = -1;
 
+<<<<<<< HEAD
+=======
+	mutex_lock(&xt[af].mutex);
+>>>>>>> FETCH_HEAD
 	if (target == 1)
 		have_rev = target_revfn(af, name, revision, &best);
 	else
 		have_rev = match_revfn(af, name, revision, &best);
+<<<<<<< HEAD
+=======
+	mutex_unlock(&xt[af].mutex);
+>>>>>>> FETCH_HEAD
 
 	/* Nothing at all?  Return 0 to try loading module. */
 	if (best == -1) {
@@ -987,11 +1010,19 @@ struct xt_table_info *xt_alloc_table_info(unsigned int size)
 	struct xt_table_info *info = NULL;
 	size_t sz = sizeof(*info) + size;
 
+<<<<<<< HEAD
 	if (sz < sizeof(*info) || sz >= XT_MAX_TABLE_SIZE)
 		return NULL;
 
 	/* Pedantry: prevent them from hitting BUG() in vmalloc.c --RR */
 	if ((size >> PAGE_SHIFT) + 2 > totalram_pages())
+=======
+	if (sz < sizeof(*info))
+		return NULL;
+
+	/* Pedantry: prevent them from hitting BUG() in vmalloc.c --RR */
+	if ((size >> PAGE_SHIFT) + 2 > totalram_pages)
+>>>>>>> FETCH_HEAD
 		return NULL;
 
 	if (sz <= (PAGE_SIZE << PAGE_ALLOC_COSTLY_ORDER))

@@ -277,6 +277,7 @@ static int write_mii_word(rtl8150_t * dev, u8 phy, __u8 indx, u16 reg)
 		return 1;
 }
 
+<<<<<<< HEAD
 static void set_ethernet_addr(rtl8150_t *dev)
 {
 	u8 node_id[ETH_ALEN];
@@ -291,6 +292,14 @@ static void set_ethernet_addr(rtl8150_t *dev)
 		netdev_notice(dev->netdev, "Assigned a random MAC address: %pM\n",
 			      dev->netdev->dev_addr);
 	}
+=======
+static inline void set_ethernet_addr(rtl8150_t * dev)
+{
+	u8 node_id[6];
+
+	get_registers(dev, IDR, sizeof(node_id), node_id);
+	memcpy(dev->netdev->dev_addr, node_id, sizeof(node_id));
+>>>>>>> FETCH_HEAD
 }
 
 static int rtl8150_set_mac_address(struct net_device *netdev, void *p)

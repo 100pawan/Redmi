@@ -589,6 +589,11 @@ extern struct ratelimit_state dm_ratelimit_state;
 #define DMEMIT(x...) sz += ((sz >= maxlen) ? \
 			  0 : scnprintf(result + sz, maxlen - sz, x))
 
+<<<<<<< HEAD
+=======
+#define SECTOR_SHIFT 9
+
+>>>>>>> FETCH_HEAD
 /*
  * Definitions of return values from target end_io function.
  */

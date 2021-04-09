@@ -1513,12 +1513,15 @@ static int fat_read_bpb(struct super_block *sb, struct fat_boot_sector *b,
 		goto out;
 	}
 
+<<<<<<< HEAD
 	if (bpb->fat_fat_length == 0 && bpb->fat32_length == 0) {
 		if (!silent)
 			fat_msg(sb, KERN_ERR, "bogus number of FAT sectors");
 		goto out;
 	}
 
+=======
+>>>>>>> FETCH_HEAD
 	error = 0;
 
 out:

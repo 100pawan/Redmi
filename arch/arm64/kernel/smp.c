@@ -857,7 +857,11 @@ static void ipi_cpu_stop(unsigned int cpu, struct pt_regs *regs)
 		raw_spin_unlock(&stop_lock);
 	}
 
+<<<<<<< HEAD
 	set_cpu_online(cpu, false);
+=======
+	set_cpu_active(cpu, false);
+>>>>>>> FETCH_HEAD
 
 	flush_cache_all();
 	local_irq_disable();
@@ -1050,7 +1054,12 @@ void smp_send_stop(void)
 
 	/* Wait up to one second for other CPUs to stop */
 	timeout = USEC_PER_SEC;
+<<<<<<< HEAD
     while (num_other_active_cpus() && timeout--)
+=======
+
+	while (num_other_active_cpus() && timeout--)
+>>>>>>> FETCH_HEAD
 		udelay(1);
 
 	if (num_other_active_cpus())

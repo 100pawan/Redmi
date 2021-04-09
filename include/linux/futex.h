@@ -1,8 +1,11 @@
 #ifndef _LINUX_FUTEX_H
 #define _LINUX_FUTEX_H
 
+<<<<<<< HEAD
 #include <linux/sched.h>
 
+=======
+>>>>>>> FETCH_HEAD
 #include <uapi/linux/futex.h>
 
 struct inode;
@@ -13,6 +16,12 @@ union ktime;
 long do_futex(u32 __user *uaddr, int op, u32 val, union ktime *timeout,
 	      u32 __user *uaddr2, u32 val2, u32 val3);
 
+<<<<<<< HEAD
+=======
+extern int
+handle_futex_death(u32 __user *uaddr, struct task_struct *curr, int pi);
+
+>>>>>>> FETCH_HEAD
 /*
  * Futexes are matched on equal values of this key.
  * The key type depends on whether it's a shared or private mapping.
@@ -55,6 +64,7 @@ union futex_key {
 #define FUTEX_KEY_INIT (union futex_key) { .both = { .ptr = 0ULL } }
 
 #ifdef CONFIG_FUTEX
+<<<<<<< HEAD
 enum {
 	FUTEX_STATE_OK,
 	FUTEX_STATE_EXITING,
@@ -84,5 +94,21 @@ static inline void futex_init_task(struct task_struct *tsk) { }
 static inline void futex_exit_recursive(struct task_struct *tsk) { }
 static inline void futex_exit_release(struct task_struct *tsk) { }
 static inline void futex_exec_release(struct task_struct *tsk) { }
+=======
+extern void exit_robust_list(struct task_struct *curr);
+extern void exit_pi_state_list(struct task_struct *curr);
+#ifdef CONFIG_HAVE_FUTEX_CMPXCHG
+#define futex_cmpxchg_enabled 1
+#else
+extern int futex_cmpxchg_enabled;
+#endif
+#else
+static inline void exit_robust_list(struct task_struct *curr)
+{
+}
+static inline void exit_pi_state_list(struct task_struct *curr)
+{
+}
+>>>>>>> FETCH_HEAD
 #endif
 #endif

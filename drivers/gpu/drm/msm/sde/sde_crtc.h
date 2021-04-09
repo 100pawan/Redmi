@@ -147,6 +147,7 @@ struct sde_crtc_event {
 	void (*cb_func)(struct drm_crtc *crtc, void *usr);
 	void *usr;
 };
+<<<<<<< HEAD
 /**
  * struct sde_crtc_fps_info - structure for measuring fps periodicity
  * @frame_count		: Total frames during configured periodic duration
@@ -158,13 +159,19 @@ struct sde_crtc_event {
  * @time_buf		: Buffer for storing ktime of the commits
  * @next_time_index	: index into time_buf for storing ktime for next commit
  */
+=======
+
+>>>>>>> FETCH_HEAD
 struct sde_crtc_fps_info {
 	u32 frame_count;
 	ktime_t last_sampled_time_us;
 	u32 measured_fps;
+<<<<<<< HEAD
 	u32 fps_periodic_duration;
 	ktime_t *time_buf;
 	u32 next_time_index;
+=======
+>>>>>>> FETCH_HEAD
 };
 
 /*

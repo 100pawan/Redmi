@@ -3386,9 +3386,12 @@ static void delayed_work(struct work_struct *work)
 	dout("mdsc delayed_work\n");
 	ceph_check_delayed_caps(mdsc);
 
+<<<<<<< HEAD
 	if (mdsc->stopping)
 		return;
 
+=======
+>>>>>>> FETCH_HEAD
 	mutex_lock(&mdsc->mutex);
 	renew_interval = mdsc->mdsmap->m_session_timeout >> 2;
 	renew_caps = time_after_eq(jiffies, HZ*renew_interval +
@@ -3720,6 +3723,7 @@ void ceph_mdsc_force_umount(struct ceph_mds_client *mdsc)
 static void ceph_mdsc_stop(struct ceph_mds_client *mdsc)
 {
 	dout("stop\n");
+<<<<<<< HEAD
 	/*
 	 * Make sure the delayed work stopped before releasing
 	 * the resources.
@@ -3730,6 +3734,9 @@ static void ceph_mdsc_stop(struct ceph_mds_client *mdsc)
 	 */
 	flush_delayed_work(&mdsc->delayed_work);
 
+=======
+	cancel_delayed_work_sync(&mdsc->delayed_work); /* cancel timer */
+>>>>>>> FETCH_HEAD
 	if (mdsc->mdsmap)
 		ceph_mdsmap_destroy(mdsc->mdsmap);
 	kfree(mdsc->sessions);

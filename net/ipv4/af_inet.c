@@ -89,7 +89,10 @@
 #include <linux/netfilter_ipv4.h>
 #include <linux/random.h>
 #include <linux/slab.h>
+<<<<<<< HEAD
 #include <linux/netfilter/xt_qtaguid.h>
+=======
+>>>>>>> FETCH_HEAD
 
 #include <asm/uaccess.h>
 
@@ -415,9 +418,12 @@ int inet_release(struct socket *sock)
 	if (sk) {
 		long timeout;
 
+<<<<<<< HEAD
 #ifdef CONFIG_NETFILTER_XT_MATCH_QTAGUID
 		qtaguid_untag(sock, true);
 #endif
+=======
+>>>>>>> FETCH_HEAD
 		/* Applications forget to leave groups before exiting */
 		ip_mc_drop_socket(sk);
 

@@ -36,7 +36,10 @@
 #include <linux/pstore_ram.h>
 #include <linux/of.h>
 #include <linux/of_address.h>
+<<<<<<< HEAD
 #include <linux/memblock.h>
+=======
+>>>>>>> FETCH_HEAD
 
 #define RAMOOPS_KERNMSG_HDR "===="
 #define MIN_MEM_SIZE 4096UL
@@ -602,9 +605,12 @@ static int ramoops_probe(struct platform_device *pdev)
 		goto fail_out;
 	}
 
+<<<<<<< HEAD
     
 	if (pdata->mem_size && !is_power_of_2(pdata->mem_size))
 		pdata->mem_size = rounddown_pow_of_two(pdata->mem_size);
+=======
+>>>>>>> FETCH_HEAD
 	if (pdata->record_size && !is_power_of_2(pdata->record_size))
 		pdata->record_size = rounddown_pow_of_two(pdata->record_size);
 	if (pdata->console_size && !is_power_of_2(pdata->console_size))
@@ -777,6 +783,7 @@ static void ramoops_register_dummy(void)
 	}
 }
 
+<<<<<<< HEAD
 static struct ramoops_platform_data ramoops_data;
 
 static struct platform_device ramoops_dev  = {
@@ -845,6 +852,8 @@ static int __init msm_register_ramoops_device(void)
 }
 core_initcall(msm_register_ramoops_device);
 
+=======
+>>>>>>> FETCH_HEAD
 static int __init ramoops_init(void)
 {
 	ramoops_register_dummy();

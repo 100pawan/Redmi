@@ -1468,7 +1468,11 @@ void bch_cache_set_unregister(struct cache_set *c)
 }
 
 #define alloc_bucket_pages(gfp, c)			\
+<<<<<<< HEAD
 	((void *) __get_free_pages(__GFP_ZERO|__GFP_COMP|gfp, ilog2(bucket_pages(c))))
+=======
+	((void *) __get_free_pages(__GFP_ZERO|gfp, ilog2(bucket_pages(c))))
+>>>>>>> FETCH_HEAD
 
 struct cache_set *bch_cache_set_alloc(struct cache_sb *sb)
 {
@@ -1510,7 +1514,10 @@ struct cache_set *bch_cache_set_alloc(struct cache_sb *sb)
 	sema_init(&c->sb_write_mutex, 1);
 	mutex_init(&c->bucket_lock);
 	init_waitqueue_head(&c->btree_cache_wait);
+<<<<<<< HEAD
 	spin_lock_init(&c->btree_cannibalize_lock);
+=======
+>>>>>>> FETCH_HEAD
 	init_waitqueue_head(&c->bucket_wait);
 	init_waitqueue_head(&c->gc_wait);
 	sema_init(&c->uuid_write_mutex, 1);
@@ -1779,6 +1786,7 @@ found:
 	    sysfs_create_link(&c->kobj, &ca->kobj, buf))
 		goto err;
 
+<<<<<<< HEAD
 	/*
 	 * A special case is both ca->sb.seq and c->sb.seq are 0,
 	 * such condition happens on a new created cache device whose
@@ -1787,6 +1795,9 @@ found:
 	 * have a mistaken super block version in cache set.
 	 */
 	if (ca->sb.seq > c->sb.seq || c->sb.seq == 0) {
+=======
+	if (ca->sb.seq > c->sb.seq) {
+>>>>>>> FETCH_HEAD
 		c->sb.version		= ca->sb.version;
 		memcpy(c->sb.set_uuid, ca->sb.set_uuid, 16);
 		c->sb.flags             = ca->sb.flags;

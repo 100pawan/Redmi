@@ -119,11 +119,15 @@ show_transport_handle(struct device *dev, struct device_attribute *attr,
 		      char *buf)
 {
 	struct iscsi_internal *priv = dev_to_iscsi_internal(dev);
+<<<<<<< HEAD
 
 	if (!capable(CAP_SYS_ADMIN))
 		return -EACCES;
 	return sysfs_emit(buf, "%llu\n",
 		  (unsigned long long)iscsi_handle(priv->iscsi_transport));
+=======
+	return sprintf(buf, "%llu\n", (unsigned long long)iscsi_handle(priv->iscsi_transport));
+>>>>>>> FETCH_HEAD
 }
 static DEVICE_ATTR(handle, S_IRUGO, show_transport_handle, NULL);
 
@@ -133,7 +137,11 @@ show_transport_##name(struct device *dev, 				\
 		      struct device_attribute *attr,char *buf)		\
 {									\
 	struct iscsi_internal *priv = dev_to_iscsi_internal(dev);	\
+<<<<<<< HEAD
 	return sysfs_emit(buf, format"\n", priv->iscsi_transport->name);\
+=======
+	return sprintf(buf, format"\n", priv->iscsi_transport->name);	\
+>>>>>>> FETCH_HEAD
 }									\
 static DEVICE_ATTR(name, S_IRUGO, show_transport_##name, NULL);
 
@@ -174,7 +182,11 @@ static ssize_t
 show_ep_handle(struct device *dev, struct device_attribute *attr, char *buf)
 {
 	struct iscsi_endpoint *ep = iscsi_dev_to_endpoint(dev);
+<<<<<<< HEAD
 	return sysfs_emit(buf, "%llu\n", (unsigned long long) ep->id);
+=======
+	return sprintf(buf, "%llu\n", (unsigned long long) ep->id);
+>>>>>>> FETCH_HEAD
 }
 static ISCSI_ATTR(ep, handle, S_IRUGO, show_ep_handle, NULL);
 
@@ -2786,9 +2798,12 @@ iscsi_set_param(struct iscsi_transport *transport, struct iscsi_uevent *ev)
 	struct iscsi_cls_session *session;
 	int err = 0, value = 0;
 
+<<<<<<< HEAD
 	if (ev->u.set_param.len > PAGE_SIZE)
 		return -EINVAL;
 
+=======
+>>>>>>> FETCH_HEAD
 	session = iscsi_session_lookup(ev->u.set_param.sid);
 	conn = iscsi_conn_lookup(ev->u.set_param.sid, ev->u.set_param.cid);
 	if (!conn || !session)
@@ -2936,9 +2951,12 @@ iscsi_set_host_param(struct iscsi_transport *transport,
 	if (!transport->set_host_param)
 		return -ENOSYS;
 
+<<<<<<< HEAD
 	if (ev->u.set_host_param.len > PAGE_SIZE)
 		return -EINVAL;
 
+=======
+>>>>>>> FETCH_HEAD
 	shost = scsi_host_lookup(ev->u.set_host_param.host_no);
 	if (!shost) {
 		printk(KERN_ERR "set_host_param could not find host no %u\n",
@@ -3201,7 +3219,11 @@ static int iscsi_set_flashnode_param(struct iscsi_transport *transport,
 		pr_err("%s could not find host no %u\n",
 		       __func__, ev->u.set_flashnode.host_no);
 		err = -ENODEV;
+<<<<<<< HEAD
 		goto exit_set_fnode;
+=======
+		goto put_host;
+>>>>>>> FETCH_HEAD
 	}
 
 	idx = ev->u.set_flashnode.flashnode_idx;
@@ -3525,7 +3547,10 @@ static int
 iscsi_if_recv_msg(struct sk_buff *skb, struct nlmsghdr *nlh, uint32_t *group)
 {
 	int err = 0;
+<<<<<<< HEAD
 	u32 pdu_len;
+=======
+>>>>>>> FETCH_HEAD
 	struct iscsi_uevent *ev = nlmsg_data(nlh);
 	struct iscsi_transport *transport = NULL;
 	struct iscsi_internal *priv;
@@ -3533,9 +3558,12 @@ iscsi_if_recv_msg(struct sk_buff *skb, struct nlmsghdr *nlh, uint32_t *group)
 	struct iscsi_cls_conn *conn;
 	struct iscsi_endpoint *ep = NULL;
 
+<<<<<<< HEAD
 	if (!netlink_capable(skb, CAP_SYS_ADMIN))
 		return -EPERM;
 
+=======
+>>>>>>> FETCH_HEAD
 	if (nlh->nlmsg_type == ISCSI_UEVENT_PATH_UPDATE)
 		*group = ISCSI_NL_GRP_UIP;
 	else
@@ -3641,6 +3669,7 @@ iscsi_if_recv_msg(struct sk_buff *skb, struct nlmsghdr *nlh, uint32_t *group)
 			err = -EINVAL;
 		break;
 	case ISCSI_UEVENT_SEND_PDU:
+<<<<<<< HEAD
 		pdu_len = nlh->nlmsg_len - sizeof(*nlh) - sizeof(*ev);
 
 		if ((ev->u.send_pdu.hdr_size > pdu_len) ||
@@ -3649,6 +3678,8 @@ iscsi_if_recv_msg(struct sk_buff *skb, struct nlmsghdr *nlh, uint32_t *group)
 			break;
 		}
 
+=======
+>>>>>>> FETCH_HEAD
 		conn = iscsi_conn_lookup(ev->u.send_pdu.sid, ev->u.send_pdu.cid);
 		if (conn)
 			ev->r.retcode =	transport->send_pdu(conn,
@@ -4053,7 +4084,11 @@ show_priv_session_state(struct device *dev, struct device_attribute *attr,
 			char *buf)
 {
 	struct iscsi_cls_session *session = iscsi_dev_to_session(dev->parent);
+<<<<<<< HEAD
 	return sysfs_emit(buf, "%s\n", iscsi_session_state_name(session->state));
+=======
+	return sprintf(buf, "%s\n", iscsi_session_state_name(session->state));
+>>>>>>> FETCH_HEAD
 }
 static ISCSI_CLASS_ATTR(priv_sess, state, S_IRUGO, show_priv_session_state,
 			NULL);
@@ -4062,7 +4097,11 @@ show_priv_session_creator(struct device *dev, struct device_attribute *attr,
 			char *buf)
 {
 	struct iscsi_cls_session *session = iscsi_dev_to_session(dev->parent);
+<<<<<<< HEAD
 	return sysfs_emit(buf, "%d\n", session->creator);
+=======
+	return sprintf(buf, "%d\n", session->creator);
+>>>>>>> FETCH_HEAD
 }
 static ISCSI_CLASS_ATTR(priv_sess, creator, S_IRUGO, show_priv_session_creator,
 			NULL);
@@ -4071,7 +4110,11 @@ show_priv_session_target_id(struct device *dev, struct device_attribute *attr,
 			    char *buf)
 {
 	struct iscsi_cls_session *session = iscsi_dev_to_session(dev->parent);
+<<<<<<< HEAD
 	return sysfs_emit(buf, "%d\n", session->target_id);
+=======
+	return sprintf(buf, "%d\n", session->target_id);
+>>>>>>> FETCH_HEAD
 }
 static ISCSI_CLASS_ATTR(priv_sess, target_id, S_IRUGO,
 			show_priv_session_target_id, NULL);
@@ -4084,8 +4127,13 @@ show_priv_session_##field(struct device *dev, 				\
 	struct iscsi_cls_session *session = 				\
 			iscsi_dev_to_session(dev->parent);		\
 	if (session->field == -1)					\
+<<<<<<< HEAD
 		return sysfs_emit(buf, "off\n");			\
 	return sysfs_emit(buf, format"\n", session->field);		\
+=======
+		return sprintf(buf, "off\n");				\
+	return sprintf(buf, format"\n", session->field);		\
+>>>>>>> FETCH_HEAD
 }
 
 #define iscsi_priv_session_attr_store(field)				\

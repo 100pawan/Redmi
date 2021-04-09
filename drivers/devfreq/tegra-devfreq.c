@@ -79,8 +79,11 @@
 
 #define KHZ							1000
 
+<<<<<<< HEAD
 #define KHZ_MAX						(ULONG_MAX / KHZ)
 
+=======
+>>>>>>> FETCH_HEAD
 /* Assume that the bus is saturated if the utilization is 25% */
 #define BUS_SATURATION_RATIO					25
 
@@ -181,7 +184,11 @@ struct tegra_actmon_emc_ratio {
 };
 
 static struct tegra_actmon_emc_ratio actmon_emc_ratios[] = {
+<<<<<<< HEAD
 	{ 1400000,    KHZ_MAX },
+=======
+	{ 1400000, ULONG_MAX },
+>>>>>>> FETCH_HEAD
 	{ 1200000,    750000 },
 	{ 1100000,    600000 },
 	{ 1000000,    500000 },

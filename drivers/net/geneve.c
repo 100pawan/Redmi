@@ -732,8 +732,12 @@ free_dst:
 static struct rtable *geneve_get_v4_rt(struct sk_buff *skb,
 				       struct net_device *dev,
 				       struct flowi4 *fl4,
+<<<<<<< HEAD
 				       struct ip_tunnel_info *info,
 				       __be16 dport, __be16 sport)
+=======
+				       struct ip_tunnel_info *info)
+>>>>>>> FETCH_HEAD
 {
 	bool use_cache = ip_tunnel_dst_cache_usable(skb, info);
 	struct geneve_dev *geneve = netdev_priv(dev);
@@ -747,8 +751,11 @@ static struct rtable *geneve_get_v4_rt(struct sk_buff *skb,
 	memset(fl4, 0, sizeof(*fl4));
 	fl4->flowi4_mark = skb->mark;
 	fl4->flowi4_proto = IPPROTO_UDP;
+<<<<<<< HEAD
 	fl4->fl4_dport = dport;
 	fl4->fl4_sport = sport;
+=======
+>>>>>>> FETCH_HEAD
 
 	if (info) {
 		fl4->daddr = info->key.u.ipv4.dst;
@@ -794,8 +801,12 @@ static struct rtable *geneve_get_v4_rt(struct sk_buff *skb,
 static struct dst_entry *geneve_get_v6_dst(struct sk_buff *skb,
 					   struct net_device *dev,
 					   struct flowi6 *fl6,
+<<<<<<< HEAD
 					   struct ip_tunnel_info *info,
 					   __be16 dport, __be16 sport)
+=======
+					   struct ip_tunnel_info *info)
+>>>>>>> FETCH_HEAD
 {
 	bool use_cache = ip_tunnel_dst_cache_usable(skb, info);
 	struct geneve_dev *geneve = netdev_priv(dev);
@@ -811,8 +822,11 @@ static struct dst_entry *geneve_get_v6_dst(struct sk_buff *skb,
 	memset(fl6, 0, sizeof(*fl6));
 	fl6->flowi6_mark = skb->mark;
 	fl6->flowi6_proto = IPPROTO_UDP;
+<<<<<<< HEAD
 	fl6->fl6_dport = dport;
 	fl6->fl6_sport = sport;
+=======
+>>>>>>> FETCH_HEAD
 
 	if (info) {
 		fl6->daddr = info->key.u.ipv6.dst;
@@ -900,14 +914,22 @@ static netdev_tx_t geneve_xmit_skb(struct sk_buff *skb, struct net_device *dev,
 			goto tx_error;
 	}
 
+<<<<<<< HEAD
 	sport = udp_flow_src_port(geneve->net, skb, 1, USHRT_MAX, true);
 	rt = geneve_get_v4_rt(skb, dev, &fl4, info,
 			      geneve->dst_port, sport);
+=======
+	rt = geneve_get_v4_rt(skb, dev, &fl4, info);
+>>>>>>> FETCH_HEAD
 	if (IS_ERR(rt)) {
 		err = PTR_ERR(rt);
 		goto tx_error;
 	}
 
+<<<<<<< HEAD
+=======
+	sport = udp_flow_src_port(geneve->net, skb, 1, USHRT_MAX, true);
+>>>>>>> FETCH_HEAD
 	skb_reset_mac_header(skb);
 
 	if (info) {
@@ -990,14 +1012,22 @@ static netdev_tx_t geneve6_xmit_skb(struct sk_buff *skb, struct net_device *dev,
 		}
 	}
 
+<<<<<<< HEAD
 	sport = udp_flow_src_port(geneve->net, skb, 1, USHRT_MAX, true);
 	dst = geneve_get_v6_dst(skb, dev, &fl6, info,
 				geneve->dst_port, sport);
+=======
+	dst = geneve_get_v6_dst(skb, dev, &fl6, info);
+>>>>>>> FETCH_HEAD
 	if (IS_ERR(dst)) {
 		err = PTR_ERR(dst);
 		goto tx_error;
 	}
 
+<<<<<<< HEAD
+=======
+	sport = udp_flow_src_port(geneve->net, skb, 1, USHRT_MAX, true);
+>>>>>>> FETCH_HEAD
 	skb_reset_mac_header(skb);
 
 	if (info) {
@@ -1122,6 +1152,7 @@ static int geneve_fill_metadata_dst(struct net_device *dev, struct sk_buff *skb)
 	struct dst_entry *dst;
 	struct flowi6 fl6;
 #endif
+<<<<<<< HEAD
 	__be16 sport;
 
 	if (ip_tunnel_info_af(info) == AF_INET) {
@@ -1130,6 +1161,11 @@ static int geneve_fill_metadata_dst(struct net_device *dev, struct sk_buff *skb)
 
 		rt = geneve_get_v4_rt(skb, dev, &fl4, info,
 				      geneve->dst_port, sport);
+=======
+
+	if (ip_tunnel_info_af(info) == AF_INET) {
+		rt = geneve_get_v4_rt(skb, dev, &fl4, info);
+>>>>>>> FETCH_HEAD
 		if (IS_ERR(rt))
 			return PTR_ERR(rt);
 
@@ -1137,11 +1173,15 @@ static int geneve_fill_metadata_dst(struct net_device *dev, struct sk_buff *skb)
 		info->key.u.ipv4.src = fl4.saddr;
 #if IS_ENABLED(CONFIG_IPV6)
 	} else if (ip_tunnel_info_af(info) == AF_INET6) {
+<<<<<<< HEAD
 		sport = udp_flow_src_port(geneve->net, skb,
 					  1, USHRT_MAX, true);
 
 		dst = geneve_get_v6_dst(skb, dev, &fl6, info,
 					geneve->dst_port, sport);
+=======
+		dst = geneve_get_v6_dst(skb, dev, &fl6, info);
+>>>>>>> FETCH_HEAD
 		if (IS_ERR(dst))
 			return PTR_ERR(dst);
 
@@ -1152,7 +1192,12 @@ static int geneve_fill_metadata_dst(struct net_device *dev, struct sk_buff *skb)
 		return -EINVAL;
 	}
 
+<<<<<<< HEAD
 	info->key.tp_src = sport;
+=======
+	info->key.tp_src = udp_flow_src_port(geneve->net, skb,
+					     1, USHRT_MAX, true);
+>>>>>>> FETCH_HEAD
 	info->key.tp_dst = geneve->dst_port;
 	return 0;
 }

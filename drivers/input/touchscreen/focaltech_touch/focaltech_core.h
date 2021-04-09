@@ -3,7 +3,10 @@
  * FocalTech TouchScreen driver.
  *
  * Copyright (c) 2010-2017, Focaltech Ltd. All rights reserved.
+<<<<<<< HEAD
  * Copyright (C) 2019 XiaoMi, Inc.
+=======
+>>>>>>> FETCH_HEAD
  *
  * This software is licensed under the terms of the GNU General Public
  * License version 2, as published by the Free Software Foundation, and
@@ -16,6 +19,7 @@
  *
  */
 /*****************************************************************************
+<<<<<<< HEAD
 *
 * File Name: focaltech_core.h
 
@@ -28,12 +32,31 @@
 * Reference:
 *
 *****************************************************************************/
+=======
+ *
+ * File Name: focaltech_core.h
+ *
+ * Author: Focaltech Driver Team
+ *
+ * Created: 2016-08-08
+ *
+ * Abstract:
+ *
+ * Reference:
+ *
+ *****************************************************************************/
+>>>>>>> FETCH_HEAD
 
 #ifndef __LINUX_FOCALTECH_CORE_H__
 #define __LINUX_FOCALTECH_CORE_H__
 /*****************************************************************************
+<<<<<<< HEAD
 * Included header files
 *****************************************************************************/
+=======
+ * Included header files
+ *****************************************************************************/
+>>>>>>> FETCH_HEAD
 #include <linux/i2c.h>
 #include <linux/input.h>
 #include <linux/input/mt.h>
@@ -53,7 +76,11 @@
 #include <linux/workqueue.h>
 #include <linux/fs.h>
 #include <linux/proc_fs.h>
+<<<<<<< HEAD
 #include <asm/uaccess.h>
+=======
+#include <linux/uaccess.h>
+>>>>>>> FETCH_HEAD
 #include <linux/version.h>
 #include <linux/types.h>
 #include <linux/sched.h>
@@ -71,8 +98,13 @@
 #include <linux/sensors.h>
 #endif
 /*****************************************************************************
+<<<<<<< HEAD
 * Private constant and macro definitions using #define
 *****************************************************************************/
+=======
+ * Private constant and macro definitions using #define
+ *****************************************************************************/
+>>>>>>> FETCH_HEAD
 #define LEN_FLASH_ECC_MAX                   0xFFFE
 
 #define FTS_WORKQUEUE_NAME                  "fts_wq"
@@ -98,6 +130,7 @@
 #define FTS_TOUCH_UP        1
 #define FTS_TOUCH_CONTACT   2
 
+<<<<<<< HEAD
 #define FT5446_POWER_LDO    0
 
 #define FTS_SYSFS_ECHO_ON(buf)      ((strncasecmp(buf, "1", 1)  == 0) || \
@@ -184,10 +217,82 @@ struct fts_ts_data
     #elif defined(CONFIG_HAS_EARLYSUSPEND)
     struct early_suspend early_suspend;
     #endif
+=======
+#define FTS_SYSFS_ECHO_ON(buf)      ((strncasecmp(buf, "1", 1)  == 0) || \
+					(strncasecmp(buf, "on", 2) == 0))
+#define FTS_SYSFS_ECHO_OFF(buf)     ((strncasecmp(buf, "0", 1)  == 0) || \
+					(strncasecmp(buf, "off", 3) == 0))
+
+/*****************************************************************************
+ * Private enumerations, structures and unions using typedef
+ *****************************************************************************/
+
+
+struct fts_ts_platform_data {
+	int irq_gpio;
+	u32 irq_gpio_flags;
+	int reset_gpio;
+	u32 reset_gpio_flags;
+	bool have_key;
+	u32 key_number;
+	u32 keys[4];
+	u32 key_y_coord;
+	u32 key_x_coords[4];
+	u32 x_max;
+	u32 y_max;
+	u32 x_min;
+	u32 y_min;
+	u32 max_touch_number;
+	bool wakeup_gestures_en;
+};
+
+struct ts_event {
+	u16 au16_x[FTS_MAX_POINTS]; /*x coordinate */
+	u16 au16_y[FTS_MAX_POINTS]; /*y coordinate */
+	u16 pressure[FTS_MAX_POINTS];
+	u8 au8_touch_event[FTS_MAX_POINTS]; /* touch event:
+					     * 0 -- down;
+					     * 1 -- up;
+					     * 2 -- contact
+					     */
+	u8 au8_finger_id[FTS_MAX_POINTS];   /* touch ID */
+	u8 area[FTS_MAX_POINTS];
+	u8 touch_point;
+	u8 point_num;
+};
+
+struct fts_ts_data {
+	struct i2c_client *client;
+	struct input_dev *input_dev;
+	struct ts_event event;
+	const struct fts_ts_platform_data *pdata;
+#if FTS_PSENSOR_EN
+	struct fts_psensor_platform_data *psensor_pdata;
+#endif
+	struct work_struct  touch_event_work;
+	struct workqueue_struct *ts_workqueue;
+	struct regulator *vdd;
+	struct regulator *vcc_i2c;
+	spinlock_t irq_lock;
+	struct mutex report_mutex;
+	u16 addr;
+	bool suspended;
+	u8 fw_ver[3];
+	u8 fw_vendor_id;
+	int touchs;
+	int irq_disable;
+
+#if defined(CONFIG_FB)
+	struct notifier_block fb_notif;
+#elif defined(CONFIG_HAS_EARLYSUSPEND)
+	struct early_suspend early_suspend;
+#endif
+>>>>>>> FETCH_HEAD
 };
 
 
 #if FTS_PSENSOR_EN
+<<<<<<< HEAD
 struct fts_psensor_platform_data
 {
     struct input_dev *input_psensor_dev;
@@ -195,6 +300,14 @@ struct fts_psensor_platform_data
     int tp_psensor_opened;
     char tp_psensor_data; /* 0 near, 1 far */
     struct fts_ts_data *data;
+=======
+struct fts_psensor_platform_data {
+	struct input_dev *input_psensor_dev;
+	struct sensors_classdev ps_cdev;
+	int tp_psensor_opened;
+	char tp_psensor_data; /* 0 near, 1 far */
+	struct fts_ts_data *data;
+>>>>>>> FETCH_HEAD
 };
 
 int fts_sensor_init(struct fts_ts_data *data);
@@ -205,8 +318,13 @@ int fts_sensor_remove(struct fts_ts_data *data);
 #endif
 
 /*****************************************************************************
+<<<<<<< HEAD
 * Static variables
 *****************************************************************************/
+=======
+ * Static variables
+ *****************************************************************************/
+>>>>>>> FETCH_HEAD
 extern struct i2c_client *fts_i2c_client;
 extern struct fts_ts_data *fts_wq_data;
 extern struct input_dev *fts_input_dev;

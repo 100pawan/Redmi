@@ -143,8 +143,11 @@ struct board_info {
 	u32		wake_state;
 
 	int		ip_summed;
+<<<<<<< HEAD
 
 	struct regulator *power_supply;
+=======
+>>>>>>> FETCH_HEAD
 };
 
 /* debug code */
@@ -1461,7 +1464,11 @@ dm9000_probe(struct platform_device *pdev)
 		if (ret) {
 			dev_err(dev, "failed to request reset gpio %d: %d\n",
 				reset_gpios, ret);
+<<<<<<< HEAD
 			goto out_regulator_disable;
+=======
+			return -ENODEV;
+>>>>>>> FETCH_HEAD
 		}
 
 		/* According to manual PWRST# Low Period Min 1ms */
@@ -1473,10 +1480,15 @@ dm9000_probe(struct platform_device *pdev)
 
 	if (!pdata) {
 		pdata = dm9000_parse_dt(&pdev->dev);
+<<<<<<< HEAD
 		if (IS_ERR(pdata)) {
 			ret = PTR_ERR(pdata);
 			goto out_regulator_disable;
 		}
+=======
+		if (IS_ERR(pdata))
+			return PTR_ERR(pdata);
+>>>>>>> FETCH_HEAD
 	}
 
 	/* Init network device */
@@ -1493,8 +1505,11 @@ dm9000_probe(struct platform_device *pdev)
 
 	db->dev = &pdev->dev;
 	db->ndev = ndev;
+<<<<<<< HEAD
 	if (!IS_ERR(power))
 		db->power_supply = power;
+=======
+>>>>>>> FETCH_HEAD
 
 	spin_lock_init(&db->lock);
 	mutex_init(&db->addr_lock);
@@ -1721,10 +1736,13 @@ out:
 	dm9000_release_board(pdev, db);
 	free_netdev(ndev);
 
+<<<<<<< HEAD
 out_regulator_disable:
 	if (!IS_ERR(power))
 		regulator_disable(power);
 
+=======
+>>>>>>> FETCH_HEAD
 	return ret;
 }
 
@@ -1784,6 +1802,7 @@ static int
 dm9000_drv_remove(struct platform_device *pdev)
 {
 	struct net_device *ndev = platform_get_drvdata(pdev);
+<<<<<<< HEAD
 	struct board_info *dm = to_dm9000_board(ndev);
 
 	unregister_netdev(ndev);
@@ -1791,6 +1810,12 @@ dm9000_drv_remove(struct platform_device *pdev)
 	free_netdev(ndev);		/* free device structure */
 	if (dm->power_supply)
 		regulator_disable(dm->power_supply);
+=======
+
+	unregister_netdev(ndev);
+	dm9000_release_board(pdev, netdev_priv(ndev));
+	free_netdev(ndev);		/* free device structure */
+>>>>>>> FETCH_HEAD
 
 	dev_dbg(&pdev->dev, "released and freed device\n");
 	return 0;

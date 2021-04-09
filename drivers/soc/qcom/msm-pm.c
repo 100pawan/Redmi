@@ -51,7 +51,11 @@
 
 #define MAX_BUF_SIZE  1024
 
+<<<<<<< HEAD
 static int msm_pm_debug_mask = 0;
+=======
+static int msm_pm_debug_mask = 1;
+>>>>>>> FETCH_HEAD
 module_param_named(
 	debug_mask, msm_pm_debug_mask, int, 0664
 );

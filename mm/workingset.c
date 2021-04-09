@@ -511,10 +511,17 @@ static int __init workingset_init(void)
 	 * actionable refault distance, which is currently half of
 	 * memory (totalram_pages/2). However, memory hotplug may add
 	 * some more pages at runtime, so keep working with up to
+<<<<<<< HEAD
 	 * double the initial memory by using totalram_pages() as-is.
 	 */
 	timestamp_bits = BITS_PER_LONG - EVICTION_SHIFT;
 	max_order = fls_long(totalram_pages() - 1);
+=======
+	 * double the initial memory by using totalram_pages as-is.
+	 */
+	timestamp_bits = BITS_PER_LONG - EVICTION_SHIFT;
+	max_order = fls_long(totalram_pages - 1);
+>>>>>>> FETCH_HEAD
 	if (max_order > timestamp_bits)
 		bucket_order = max_order - timestamp_bits;
 	pr_info("workingset: timestamp_bits=%d max_order=%d bucket_order=%u\n",

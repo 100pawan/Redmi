@@ -54,10 +54,16 @@ static int hdmi_runtime_get(void)
 	DSSDBG("hdmi_runtime_get\n");
 
 	r = pm_runtime_get_sync(&hdmi.pdev->dev);
+<<<<<<< HEAD
 	if (WARN_ON(r < 0)) {
 		pm_runtime_put_sync(&hdmi.pdev->dev);
 		return r;
 	}
+=======
+	WARN_ON(r < 0);
+	if (r < 0)
+		return r;
+>>>>>>> FETCH_HEAD
 
 	return 0;
 }

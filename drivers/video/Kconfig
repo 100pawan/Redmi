@@ -47,6 +47,9 @@ if FB || SGI_NEWPORT_CONSOLE
 
 endif
 
+<<<<<<< HEAD
 source "drivers/video/klapse/Kconfig"
+=======
+>>>>>>> FETCH_HEAD
 
 endmenu

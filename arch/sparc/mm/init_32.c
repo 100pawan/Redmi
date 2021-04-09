@@ -61,7 +61,11 @@ void show_mem(unsigned int filter)
 	show_free_areas(filter);
 	printk("Free swap:       %6ldkB\n",
 	       get_nr_swap_pages() << (PAGE_SHIFT-10));
+<<<<<<< HEAD
 	printk("%ld pages of RAM\n", totalram_pages());
+=======
+	printk("%ld pages of RAM\n", totalram_pages);
+>>>>>>> FETCH_HEAD
 	printk("%ld free pages\n", nr_free_pages());
 }
 

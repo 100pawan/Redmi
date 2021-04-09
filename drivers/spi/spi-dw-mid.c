@@ -155,7 +155,10 @@ static struct dma_async_tx_descriptor *dw_spi_dma_prepare_tx(struct dw_spi *dws,
 	if (!xfer->tx_buf)
 		return NULL;
 
+<<<<<<< HEAD
 	memset(&txconf, 0, sizeof(txconf));
+=======
+>>>>>>> FETCH_HEAD
 	txconf.direction = DMA_MEM_TO_DEV;
 	txconf.dst_addr = dws->dma_addr;
 	txconf.dst_maxburst = 16;
@@ -202,7 +205,10 @@ static struct dma_async_tx_descriptor *dw_spi_dma_prepare_rx(struct dw_spi *dws,
 	if (!xfer->rx_buf)
 		return NULL;
 
+<<<<<<< HEAD
 	memset(&rxconf, 0, sizeof(rxconf));
+=======
+>>>>>>> FETCH_HEAD
 	rxconf.direction = DMA_DEV_TO_MEM;
 	rxconf.src_addr = dws->dma_addr;
 	rxconf.src_maxburst = 16;
@@ -228,11 +234,16 @@ static struct dma_async_tx_descriptor *dw_spi_dma_prepare_rx(struct dw_spi *dws,
 
 static int mid_spi_dma_setup(struct dw_spi *dws, struct spi_transfer *xfer)
 {
+<<<<<<< HEAD
 	u16 imr = 0, dma_ctrl = 0;
+=======
+	u16 dma_ctrl = 0;
+>>>>>>> FETCH_HEAD
 
 	dw_writel(dws, DW_SPI_DMARDLR, 0xf);
 	dw_writel(dws, DW_SPI_DMATDLR, 0x10);
 
+<<<<<<< HEAD
 	if (xfer->tx_buf) {
 		dma_ctrl |= SPI_DMA_TDMAE;
 		imr |= SPI_INT_TXOI;
@@ -245,6 +256,16 @@ static int mid_spi_dma_setup(struct dw_spi *dws, struct spi_transfer *xfer)
 
 	/* Set the interrupt mask */
 	spi_umask_intr(dws, imr);
+=======
+	if (xfer->tx_buf)
+		dma_ctrl |= SPI_DMA_TDMAE;
+	if (xfer->rx_buf)
+		dma_ctrl |= SPI_DMA_RDMAE;
+	dw_writel(dws, DW_SPI_DMACR, dma_ctrl);
+
+	/* Set the interrupt mask */
+	spi_umask_intr(dws, SPI_INT_TXOI | SPI_INT_RXUI | SPI_INT_RXOI);
+>>>>>>> FETCH_HEAD
 
 	dws->transfer_handler = dma_transfer;
 
@@ -274,7 +295,11 @@ static int mid_spi_dma_transfer(struct dw_spi *dws, struct spi_transfer *xfer)
 		dma_async_issue_pending(dws->txchan);
 	}
 
+<<<<<<< HEAD
 	return 1;
+=======
+	return 0;
+>>>>>>> FETCH_HEAD
 }
 
 static void mid_spi_dma_stop(struct dw_spi *dws)

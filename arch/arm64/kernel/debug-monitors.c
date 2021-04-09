@@ -149,6 +149,7 @@ postcore_initcall(debug_monitors_init);
 /*
  * Single step API and exception handling.
  */
+<<<<<<< HEAD
 static void set_user_regs_spsr_ss(struct user_pt_regs *regs)
 {
 	regs->pstate |= DBG_SPSR_SS;
@@ -163,6 +164,19 @@ NOKPROBE_SYMBOL(clear_user_regs_spsr_ss);
 
 #define set_regs_spsr_ss(r)	set_user_regs_spsr_ss(&(r)->user_regs)
 #define clear_regs_spsr_ss(r)	clear_user_regs_spsr_ss(&(r)->user_regs)
+=======
+static void set_regs_spsr_ss(struct pt_regs *regs)
+{
+	regs->pstate |= DBG_SPSR_SS;
+}
+NOKPROBE_SYMBOL(set_regs_spsr_ss);
+
+static void clear_regs_spsr_ss(struct pt_regs *regs)
+{
+	regs->pstate &= ~DBG_SPSR_SS;
+}
+NOKPROBE_SYMBOL(clear_regs_spsr_ss);
+>>>>>>> FETCH_HEAD
 
 /* EL1 Single Step Handler hooks */
 static LIST_HEAD(step_hook);
@@ -380,13 +394,18 @@ void user_rewind_single_step(struct task_struct *task)
 	 * If single step is active for this thread, then set SPSR.SS
 	 * to 1 to avoid returning to the active-pending state.
 	 */
+<<<<<<< HEAD
 	if (test_tsk_thread_flag(task, TIF_SINGLESTEP))
+=======
+	if (test_ti_thread_flag(task_thread_info(task), TIF_SINGLESTEP))
+>>>>>>> FETCH_HEAD
 		set_regs_spsr_ss(task_pt_regs(task));
 }
 NOKPROBE_SYMBOL(user_rewind_single_step);
 
 void user_fastforward_single_step(struct task_struct *task)
 {
+<<<<<<< HEAD
 	if (test_tsk_thread_flag(task, TIF_SINGLESTEP))
 		clear_regs_spsr_ss(task_pt_regs(task));
 }
@@ -400,6 +419,12 @@ void user_regs_reset_single_step(struct user_pt_regs *regs,
 		clear_user_regs_spsr_ss(regs);
 }
 
+=======
+	if (test_ti_thread_flag(task_thread_info(task), TIF_SINGLESTEP))
+		clear_regs_spsr_ss(task_pt_regs(task));
+}
+
+>>>>>>> FETCH_HEAD
 /* Kernel API */
 void kernel_enable_single_step(struct pt_regs *regs)
 {

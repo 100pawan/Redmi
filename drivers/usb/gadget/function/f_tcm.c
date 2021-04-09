@@ -751,6 +751,7 @@ static int uasp_alloc_stream_res(struct f_uas *fu, struct uas_stream *stream)
 		goto err_sts;
 
 	return 0;
+<<<<<<< HEAD
 
 err_sts:
 	usb_ep_free_request(fu->ep_out, stream->req_out);
@@ -758,6 +759,14 @@ err_sts:
 err_out:
 	usb_ep_free_request(fu->ep_in, stream->req_in);
 	stream->req_in = NULL;
+=======
+err_sts:
+	usb_ep_free_request(fu->ep_status, stream->req_status);
+	stream->req_status = NULL;
+err_out:
+	usb_ep_free_request(fu->ep_out, stream->req_out);
+	stream->req_out = NULL;
+>>>>>>> FETCH_HEAD
 out:
 	return -ENOMEM;
 }

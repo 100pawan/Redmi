@@ -1017,6 +1017,7 @@ static void byt_gpio_disable_free(struct pinctrl_dev *pctl_dev,
 	pm_runtime_put(&vg->pdev->dev);
 }
 
+<<<<<<< HEAD
 static void byt_gpio_direct_irq_check(struct byt_gpio *vg,
 				      unsigned int offset)
 {
@@ -1032,6 +1033,8 @@ static void byt_gpio_direct_irq_check(struct byt_gpio *vg,
 		dev_info_once(&vg->pdev->dev, "Potential Error: Setting GPIO with direct_irq_en to output");
 }
 
+=======
+>>>>>>> FETCH_HEAD
 static int byt_gpio_set_direction(struct pinctrl_dev *pctl_dev,
 				  struct pinctrl_gpio_range *range,
 				  unsigned int offset,
@@ -1039,6 +1042,10 @@ static int byt_gpio_set_direction(struct pinctrl_dev *pctl_dev,
 {
 	struct byt_gpio *vg = pinctrl_dev_get_drvdata(pctl_dev);
 	void __iomem *val_reg = byt_gpio_reg(vg, offset, BYT_VAL_REG);
+<<<<<<< HEAD
+=======
+	void __iomem *conf_reg = byt_gpio_reg(vg, offset, BYT_CONF0_REG);
+>>>>>>> FETCH_HEAD
 	unsigned long flags;
 	u32 value;
 
@@ -1049,8 +1056,19 @@ static int byt_gpio_set_direction(struct pinctrl_dev *pctl_dev,
 	if (input)
 		value |= BYT_OUTPUT_EN;
 	else
+<<<<<<< HEAD
 		byt_gpio_direct_irq_check(vg, offset);
 
+=======
+		/*
+		 * Before making any direction modifications, do a check if gpio
+		 * is set for direct IRQ.  On baytrail, setting GPIO to output
+		 * does not make sense, so let's at least warn the caller before
+		 * they shoot themselves in the foot.
+		 */
+		WARN(readl(conf_reg) & BYT_DIRECT_IRQ_EN,
+		     "Potential Error: Setting GPIO with direct_irq_en to output");
+>>>>>>> FETCH_HEAD
 	writel(value, val_reg);
 
 	raw_spin_unlock_irqrestore(&byt_lock, flags);
@@ -1266,6 +1284,10 @@ static int byt_pin_config_set(struct pinctrl_dev *pctl_dev,
 			break;
 		case PIN_CONFIG_INPUT_DEBOUNCE:
 			debounce = readl(db_reg);
+<<<<<<< HEAD
+=======
+			debounce &= ~BYT_DEBOUNCE_PULSE_MASK;
+>>>>>>> FETCH_HEAD
 
 			if (arg)
 				conf |= BYT_DEBOUNCE_EN;
@@ -1274,6 +1296,7 @@ static int byt_pin_config_set(struct pinctrl_dev *pctl_dev,
 
 			switch (arg) {
 			case 375:
+<<<<<<< HEAD
 				debounce &= ~BYT_DEBOUNCE_PULSE_MASK;
 				debounce |= BYT_DEBOUNCE_PULSE_375US;
 				break;
@@ -1299,6 +1322,26 @@ static int byt_pin_config_set(struct pinctrl_dev *pctl_dev,
 				break;
 			case 24000:
 				debounce &= ~BYT_DEBOUNCE_PULSE_MASK;
+=======
+				debounce |= BYT_DEBOUNCE_PULSE_375US;
+				break;
+			case 750:
+				debounce |= BYT_DEBOUNCE_PULSE_750US;
+				break;
+			case 1500:
+				debounce |= BYT_DEBOUNCE_PULSE_1500US;
+				break;
+			case 3000:
+				debounce |= BYT_DEBOUNCE_PULSE_3MS;
+				break;
+			case 6000:
+				debounce |= BYT_DEBOUNCE_PULSE_6MS;
+				break;
+			case 12000:
+				debounce |= BYT_DEBOUNCE_PULSE_12MS;
+				break;
+			case 24000:
+>>>>>>> FETCH_HEAD
 				debounce |= BYT_DEBOUNCE_PULSE_24MS;
 				break;
 			default:
@@ -1396,6 +1439,7 @@ static int byt_gpio_get_direction(struct gpio_chip *chip, unsigned int offset)
 
 static int byt_gpio_direction_input(struct gpio_chip *chip, unsigned int offset)
 {
+<<<<<<< HEAD
 	struct byt_gpio *vg = gpiochip_get_data(chip);
 	void __iomem *val_reg = byt_gpio_reg(vg, offset, BYT_VAL_REG);
 	unsigned long flags;
@@ -1440,6 +1484,21 @@ static int byt_gpio_direction_output(struct gpio_chip *chip,
 	writel(reg, val_reg);
 
 	raw_spin_unlock_irqrestore(&byt_lock, flags);
+=======
+	return pinctrl_gpio_direction_input(chip->base + offset);
+}
+
+static int byt_gpio_direction_output(struct gpio_chip *chip,
+				     unsigned int offset, int value)
+{
+	int ret = pinctrl_gpio_direction_output(chip->base + offset);
+
+	if (ret)
+		return ret;
+
+	byt_gpio_set(chip, offset, value);
+
+>>>>>>> FETCH_HEAD
 	return 0;
 }
 

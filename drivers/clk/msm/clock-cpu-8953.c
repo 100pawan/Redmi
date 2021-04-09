@@ -157,7 +157,10 @@ static struct mux_div_clk a53ssmux_perf = {
 	},
 	.c = {
 		.dbg_name = "a53ssmux_perf",
+<<<<<<< HEAD
 		.flags = CLKFLAG_NO_RATE_CACHE,
+=======
+>>>>>>> FETCH_HEAD
 		.ops = &clk_ops_mux_div_clk,
 		CLK_INIT(a53ssmux_perf.c),
 	},
@@ -179,7 +182,10 @@ static struct mux_div_clk a53ssmux_pwr = {
 	},
 	.c = {
 		.dbg_name = "a53ssmux_pwr",
+<<<<<<< HEAD
 		.flags = CLKFLAG_NO_RATE_CACHE,
+=======
+>>>>>>> FETCH_HEAD
 		.ops = &clk_ops_mux_div_clk,
 		CLK_INIT(a53ssmux_pwr.c),
 	},

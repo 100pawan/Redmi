@@ -372,18 +372,24 @@ enum msm_vfe_axi_stream_cmd {
 	STOP_IMMEDIATELY,
 };
 
+<<<<<<< HEAD
 enum msm_vfe_hw_state {
 	HW_STATE_NONE,
 	HW_STATE_SLEEP,
 	HW_STATE_AWAKE,
 };
 
+=======
+>>>>>>> FETCH_HEAD
 struct msm_vfe_axi_stream_cfg_cmd {
 	uint8_t num_streams;
 	uint32_t stream_handle[VFE_AXI_SRC_MAX];
 	enum msm_vfe_axi_stream_cmd cmd;
 	uint8_t sync_frame_id_src;
+<<<<<<< HEAD
 	enum msm_vfe_hw_state hw_state;
+=======
+>>>>>>> FETCH_HEAD
 };
 
 enum msm_vfe_axi_stream_update_type {

@@ -46,13 +46,17 @@ int lzo1x_decompress_safe(const unsigned char *in, size_t in_len,
 	const unsigned char * const ip_end = in + in_len;
 	unsigned char * const op_end = out + *out_len;
 
+<<<<<<< HEAD
 	unsigned char bitstream_version;
 
+=======
+>>>>>>> FETCH_HEAD
 	op = out;
 	ip = in;
 
 	if (unlikely(in_len < 3))
 		goto input_overrun;
+<<<<<<< HEAD
 
 	if (likely(in_len >= 5) && likely(*ip == 17)) {
 		bitstream_version = ip[1];
@@ -61,6 +65,8 @@ int lzo1x_decompress_safe(const unsigned char *in, size_t in_len,
 		bitstream_version = 0;
 	}
 
+=======
+>>>>>>> FETCH_HEAD
 	if (*ip > 17) {
 		t = *ip++ - 17;
 		if (t < 4) {
@@ -164,6 +170,7 @@ copy_literal_run:
 			m_pos -= next >> 2;
 			next &= 3;
 		} else {
+<<<<<<< HEAD
 			NEED_IP(2);
 			next = get_unaligned_le16(ip);
 			if (((next & 0xfffc) == 0xfffc) &&
@@ -207,6 +214,34 @@ copy_literal_run:
 					goto eof_found;
 				m_pos -= 0x4000;
 			}
+=======
+			m_pos = op;
+			m_pos -= (t & 8) << 11;
+			t = (t & 7) + (3 - 1);
+			if (unlikely(t == 2)) {
+				size_t offset;
+				const unsigned char *ip_last = ip;
+
+				while (unlikely(*ip == 0)) {
+					ip++;
+					NEED_IP(1);
+				}
+				offset = ip - ip_last;
+				if (unlikely(offset > MAX_255_COUNT))
+					return LZO_E_ERROR;
+
+				offset = (offset << 8) - offset;
+				t += offset + 7 + *ip++;
+				NEED_IP(2);
+			}
+			next = get_unaligned_le16(ip);
+			ip += 2;
+			m_pos -= next >> 2;
+			next &= 3;
+			if (m_pos == op)
+				goto eof_found;
+			m_pos -= 0x4000;
+>>>>>>> FETCH_HEAD
 		}
 		TEST_LB(m_pos);
 #if defined(CONFIG_HAVE_EFFICIENT_UNALIGNED_ACCESS)

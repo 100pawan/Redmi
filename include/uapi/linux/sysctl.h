@@ -22,7 +22,11 @@
 #ifndef _UAPI_LINUX_SYSCTL_H
 #define _UAPI_LINUX_SYSCTL_H
 
+<<<<<<< HEAD
 #include <linux/const.h>
+=======
+#include <linux/kernel.h>
+>>>>>>> FETCH_HEAD
 #include <linux/types.h>
 #include <linux/compiler.h>
 

@@ -2045,9 +2045,12 @@ gadgetfs_fill_super (struct super_block *sb, void *opts, int silent)
 	return 0;
 
 Enomem:
+<<<<<<< HEAD
 	kfree(CHIP);
 	CHIP = NULL;
 
+=======
+>>>>>>> FETCH_HEAD
 	return -ENOMEM;
 }
 

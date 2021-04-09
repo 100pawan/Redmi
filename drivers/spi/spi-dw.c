@@ -384,8 +384,16 @@ static int dw_spi_transfer_one(struct spi_master *master,
 
 	spi_enable_chip(dws, 1);
 
+<<<<<<< HEAD
 	if (dws->dma_mapped)
 		return dws->dma_ops->dma_transfer(dws, transfer);
+=======
+	if (dws->dma_mapped) {
+		ret = dws->dma_ops->dma_transfer(dws, transfer);
+		if (ret < 0)
+			return ret;
+	}
+>>>>>>> FETCH_HEAD
 
 	if (chip->poll_mode)
 		return poll_transfer(dws);
@@ -497,8 +505,11 @@ int dw_spi_add_host(struct device *dev, struct dw_spi *dws)
 	snprintf(dws->name, sizeof(dws->name), "dw_spi%d", dws->bus_num);
 	spin_lock_init(&dws->buf_lock);
 
+<<<<<<< HEAD
 	spi_master_set_devdata(master, dws);
 
+=======
+>>>>>>> FETCH_HEAD
 	ret = request_irq(dws->irq, dw_spi_irq, IRQF_SHARED, dws->name, master);
 	if (ret < 0) {
 		dev_err(dev, "can not get IRQ\n");
@@ -530,7 +541,12 @@ int dw_spi_add_host(struct device *dev, struct dw_spi *dws)
 		}
 	}
 
+<<<<<<< HEAD
 	ret = spi_register_master(master);
+=======
+	spi_master_set_devdata(master, dws);
+	ret = devm_spi_register_master(dev, master);
+>>>>>>> FETCH_HEAD
 	if (ret) {
 		dev_err(&master->dev, "problem registering spi master\n");
 		goto err_dma_exit;
@@ -554,8 +570,11 @@ void dw_spi_remove_host(struct dw_spi *dws)
 {
 	dw_spi_debugfs_remove(dws);
 
+<<<<<<< HEAD
 	spi_unregister_master(dws->master);
 
+=======
+>>>>>>> FETCH_HEAD
 	if (dws->dma_ops && dws->dma_ops->dma_exit)
 		dws->dma_ops->dma_exit(dws);
 

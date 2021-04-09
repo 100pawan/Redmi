@@ -22,12 +22,16 @@
 #include <linux/crypto.h>
 #include <linux/vmalloc.h>
 #include <linux/lz4.h>
+<<<<<<< HEAD
 #include <crypto/internal/scompress.h>
+=======
+>>>>>>> FETCH_HEAD
 
 struct lz4hc_ctx {
 	void *lz4hc_comp_mem;
 };
 
+<<<<<<< HEAD
 static void *lz4hc_alloc_ctx(struct crypto_scomp *tfm)
 {
 	void *ctx;
@@ -39,26 +43,37 @@ static void *lz4hc_alloc_ctx(struct crypto_scomp *tfm)
 	return ctx;
 }
 
+=======
+>>>>>>> FETCH_HEAD
 static int lz4hc_init(struct crypto_tfm *tfm)
 {
 	struct lz4hc_ctx *ctx = crypto_tfm_ctx(tfm);
 
+<<<<<<< HEAD
 	ctx->lz4hc_comp_mem = lz4hc_alloc_ctx(NULL);
 	if (IS_ERR(ctx->lz4hc_comp_mem))
+=======
+	ctx->lz4hc_comp_mem = vmalloc(LZ4HC_MEM_COMPRESS);
+	if (!ctx->lz4hc_comp_mem)
+>>>>>>> FETCH_HEAD
 		return -ENOMEM;
 
 	return 0;
 }
 
+<<<<<<< HEAD
 static void lz4hc_free_ctx(struct crypto_scomp *tfm, void *ctx)
 {
 	vfree(ctx);
 }
 
+=======
+>>>>>>> FETCH_HEAD
 static void lz4hc_exit(struct crypto_tfm *tfm)
 {
 	struct lz4hc_ctx *ctx = crypto_tfm_ctx(tfm);
 
+<<<<<<< HEAD
 	lz4hc_free_ctx(NULL, ctx->lz4hc_comp_mem);
 }
 
@@ -116,6 +131,40 @@ static int lz4hc_decompress_crypto(struct crypto_tfm *tfm, const u8 *src,
 				   unsigned int *dlen)
 {
 	return __lz4hc_decompress_crypto(src, slen, dst, dlen, NULL);
+=======
+	vfree(ctx->lz4hc_comp_mem);
+}
+
+static int lz4hc_compress_crypto(struct crypto_tfm *tfm, const u8 *src,
+			    unsigned int slen, u8 *dst, unsigned int *dlen)
+{
+	struct lz4hc_ctx *ctx = crypto_tfm_ctx(tfm);
+	size_t tmp_len = *dlen;
+	int err;
+
+	err = lz4hc_compress(src, slen, dst, &tmp_len, ctx->lz4hc_comp_mem);
+
+	if (err < 0)
+		return -EINVAL;
+
+	*dlen = tmp_len;
+	return 0;
+}
+
+static int lz4hc_decompress_crypto(struct crypto_tfm *tfm, const u8 *src,
+			      unsigned int slen, u8 *dst, unsigned int *dlen)
+{
+	int err;
+	size_t tmp_len = *dlen;
+	size_t __slen = slen;
+
+	err = lz4_decompress_unknownoutputsize(src, __slen, dst, &tmp_len);
+	if (err < 0)
+		return -EINVAL;
+
+	*dlen = tmp_len;
+	return err;
+>>>>>>> FETCH_HEAD
 }
 
 static struct crypto_alg alg_lz4hc = {
@@ -131,6 +180,7 @@ static struct crypto_alg alg_lz4hc = {
 	.coa_decompress		= lz4hc_decompress_crypto } }
 };
 
+<<<<<<< HEAD
 static struct scomp_alg scomp = {
 	.alloc_ctx		= lz4hc_alloc_ctx,
 	.free_ctx		= lz4hc_free_ctx,
@@ -158,12 +208,20 @@ static int __init lz4hc_mod_init(void)
 	}
 
 	return ret;
+=======
+static int __init lz4hc_mod_init(void)
+{
+	return crypto_register_alg(&alg_lz4hc);
+>>>>>>> FETCH_HEAD
 }
 
 static void __exit lz4hc_mod_fini(void)
 {
 	crypto_unregister_alg(&alg_lz4hc);
+<<<<<<< HEAD
 	crypto_unregister_scomp(&scomp);
+=======
+>>>>>>> FETCH_HEAD
 }
 
 module_init(lz4hc_mod_init);

@@ -83,17 +83,26 @@ static inline int cvm_oct_check_rcv_error(cvmx_wqe_t *work)
 	else
 		port = work->word1.cn38xx.ipprt;
 
+<<<<<<< HEAD
 	if ((work->word2.snoip.err_code == 10) && (work->word1.len <= 64))
+=======
+	if ((work->word2.snoip.err_code == 10) && (work->word1.len <= 64)) {
+>>>>>>> FETCH_HEAD
 		/*
 		 * Ignore length errors on min size packets. Some
 		 * equipment incorrectly pads packets to 64+4FCS
 		 * instead of 60+4FCS.  Note these packets still get
 		 * counted as frame errors.
 		 */
+<<<<<<< HEAD
 		return 0;
 
 	if (work->word2.snoip.err_code == 5 ||
 	    work->word2.snoip.err_code == 7) {
+=======
+	} else if (work->word2.snoip.err_code == 5 ||
+		   work->word2.snoip.err_code == 7) {
+>>>>>>> FETCH_HEAD
 		/*
 		 * We received a packet with either an alignment error
 		 * or a FCS error. This may be signalling that we are
@@ -124,10 +133,14 @@ static inline int cvm_oct_check_rcv_error(cvmx_wqe_t *work)
 				/* Port received 0xd5 preamble */
 				work->packet_ptr.s.addr += i + 1;
 				work->word1.len -= i + 5;
+<<<<<<< HEAD
 				return 0;
 			}
 
 			if ((*ptr & 0xf) == 0xd) {
+=======
+			} else if ((*ptr & 0xf) == 0xd) {
+>>>>>>> FETCH_HEAD
 				/* Port received 0xd preamble */
 				work->packet_ptr.s.addr += i;
 				work->word1.len -= i + 4;
@@ -137,6 +150,7 @@ static inline int cvm_oct_check_rcv_error(cvmx_wqe_t *work)
 					    ((*(ptr + 1) & 0xf) << 4);
 					ptr++;
 				}
+<<<<<<< HEAD
 				return 0;
 			}
 
@@ -151,6 +165,23 @@ static inline int cvm_oct_check_rcv_error(cvmx_wqe_t *work)
 			   port, work->word2.snoip.err_code);
 	cvm_oct_free_work(work);
 	return 1;
+=======
+			} else {
+				printk_ratelimited("Port %d unknown preamble, packet dropped\n",
+						   port);
+				cvm_oct_free_work(work);
+				return 1;
+			}
+		}
+	} else {
+		printk_ratelimited("Port %d receive error code %d, packet dropped\n",
+				   port, work->word2.snoip.err_code);
+		cvm_oct_free_work(work);
+		return 1;
+	}
+
+	return 0;
+>>>>>>> FETCH_HEAD
 }
 
 static int cvm_oct_poll(struct oct_rx_group *rx_group, int budget)

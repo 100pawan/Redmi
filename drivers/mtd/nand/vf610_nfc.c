@@ -795,7 +795,11 @@ static int vf610_nfc_remove(struct platform_device *pdev)
 	struct mtd_info *mtd = platform_get_drvdata(pdev);
 	struct vf610_nfc *nfc = mtd_to_nfc(mtd);
 
+<<<<<<< HEAD
 	nand_release(mtd_to_nand(mtd));
+=======
+	nand_release(mtd);
+>>>>>>> FETCH_HEAD
 	clk_disable_unprepare(nfc->clk);
 	return 0;
 }

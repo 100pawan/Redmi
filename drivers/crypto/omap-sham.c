@@ -167,6 +167,11 @@ struct omap_sham_hmac_ctx {
 };
 
 struct omap_sham_ctx {
+<<<<<<< HEAD
+=======
+	struct omap_sham_dev	*dd;
+
+>>>>>>> FETCH_HEAD
 	unsigned long		flags;
 
 	/* fallback stuff */
@@ -454,9 +459,12 @@ static void omap_sham_write_ctrl_omap4(struct omap_sham_dev *dd, size_t length,
 	struct omap_sham_reqctx *ctx = ahash_request_ctx(dd->req);
 	u32 val, mask;
 
+<<<<<<< HEAD
 	if (likely(ctx->digcnt))
 		omap_sham_write(dd, SHA_REG_DIGCNT(dd), ctx->digcnt);
 
+=======
+>>>>>>> FETCH_HEAD
 	/*
 	 * Setting ALGO_CONST only for the first iteration and
 	 * CLOSE_HASH only for the last one. Note that flags mode bits
@@ -916,6 +924,7 @@ static int omap_sham_update_dma_stop(struct omap_sham_dev *dd)
 	return 0;
 }
 
+<<<<<<< HEAD
 struct omap_sham_dev *omap_sham_find_dev(struct omap_sham_reqctx *ctx)
 {
 	struct omap_sham_dev *dd;
@@ -932,11 +941,14 @@ struct omap_sham_dev *omap_sham_find_dev(struct omap_sham_reqctx *ctx)
 	return dd;
 }
 
+=======
+>>>>>>> FETCH_HEAD
 static int omap_sham_init(struct ahash_request *req)
 {
 	struct crypto_ahash *tfm = crypto_ahash_reqtfm(req);
 	struct omap_sham_ctx *tctx = crypto_ahash_ctx(tfm);
 	struct omap_sham_reqctx *ctx = ahash_request_ctx(req);
+<<<<<<< HEAD
 	struct omap_sham_dev *dd;
 	int bs = 0;
 
@@ -945,6 +957,24 @@ static int omap_sham_init(struct ahash_request *req)
 	dd = omap_sham_find_dev(ctx);
 	if (!dd)
 		return -ENODEV;
+=======
+	struct omap_sham_dev *dd = NULL, *tmp;
+	int bs = 0;
+
+	spin_lock_bh(&sham.lock);
+	if (!tctx->dd) {
+		list_for_each_entry(tmp, &sham.dev_list, list) {
+			dd = tmp;
+			break;
+		}
+		tctx->dd = dd;
+	} else {
+		dd = tctx->dd;
+	}
+	spin_unlock_bh(&sham.lock);
+
+	ctx->dd = dd;
+>>>>>>> FETCH_HEAD
 
 	ctx->flags = 0;
 
@@ -1194,7 +1224,12 @@ err1:
 static int omap_sham_enqueue(struct ahash_request *req, unsigned int op)
 {
 	struct omap_sham_reqctx *ctx = ahash_request_ctx(req);
+<<<<<<< HEAD
 	struct omap_sham_dev *dd = ctx->dd;
+=======
+	struct omap_sham_ctx *tctx = crypto_tfm_ctx(req->base.tfm);
+	struct omap_sham_dev *dd = tctx->dd;
+>>>>>>> FETCH_HEAD
 
 	ctx->op = op;
 
@@ -1204,7 +1239,11 @@ static int omap_sham_enqueue(struct ahash_request *req, unsigned int op)
 static int omap_sham_update(struct ahash_request *req)
 {
 	struct omap_sham_reqctx *ctx = ahash_request_ctx(req);
+<<<<<<< HEAD
 	struct omap_sham_dev *dd = omap_sham_find_dev(ctx);
+=======
+	struct omap_sham_dev *dd = ctx->dd;
+>>>>>>> FETCH_HEAD
 
 	if (!req->nbytes)
 		return 0;
@@ -1309,8 +1348,26 @@ static int omap_sham_setkey(struct crypto_ahash *tfm, const u8 *key,
 	struct omap_sham_hmac_ctx *bctx = tctx->base;
 	int bs = crypto_shash_blocksize(bctx->shash);
 	int ds = crypto_shash_digestsize(bctx->shash);
+<<<<<<< HEAD
 	int err, i;
 
+=======
+	struct omap_sham_dev *dd = NULL, *tmp;
+	int err, i;
+
+	spin_lock_bh(&sham.lock);
+	if (!tctx->dd) {
+		list_for_each_entry(tmp, &sham.dev_list, list) {
+			dd = tmp;
+			break;
+		}
+		tctx->dd = dd;
+	} else {
+		dd = tctx->dd;
+	}
+	spin_unlock_bh(&sham.lock);
+
+>>>>>>> FETCH_HEAD
 	err = crypto_shash_setkey(tctx->fallback, key, keylen);
 	if (err)
 		return err;
@@ -1328,7 +1385,11 @@ static int omap_sham_setkey(struct crypto_ahash *tfm, const u8 *key,
 
 	memset(bctx->ipad + keylen, 0, bs - keylen);
 
+<<<<<<< HEAD
 	if (!test_bit(FLAGS_AUTO_XOR, &sham.flags)) {
+=======
+	if (!test_bit(FLAGS_AUTO_XOR, &dd->flags)) {
+>>>>>>> FETCH_HEAD
 		memcpy(bctx->opad, bctx->ipad, bs);
 
 		for (i = 0; i < bs; i++) {
@@ -2067,7 +2128,10 @@ static int omap_sham_probe(struct platform_device *pdev)
 	}
 
 	dd->flags |= dd->pdata->flags;
+<<<<<<< HEAD
 	sham.flags |= dd->pdata->flags;
+=======
+>>>>>>> FETCH_HEAD
 
 	pm_runtime_use_autosuspend(dev);
 	pm_runtime_set_autosuspend_delay(dev, DEFAULT_AUTOSUSPEND_DELAY);
@@ -2093,9 +2157,12 @@ static int omap_sham_probe(struct platform_device *pdev)
 	spin_unlock(&sham.lock);
 
 	for (i = 0; i < dd->pdata->algs_info_size; i++) {
+<<<<<<< HEAD
 		if (dd->pdata->algs_info[i].registered)
 			break;
 
+=======
+>>>>>>> FETCH_HEAD
 		for (j = 0; j < dd->pdata->algs_info[i].size; j++) {
 			struct ahash_alg *alg;
 
@@ -2141,11 +2208,17 @@ static int omap_sham_remove(struct platform_device *pdev)
 	list_del(&dd->list);
 	spin_unlock(&sham.lock);
 	for (i = dd->pdata->algs_info_size - 1; i >= 0; i--)
+<<<<<<< HEAD
 		for (j = dd->pdata->algs_info[i].registered - 1; j >= 0; j--) {
 			crypto_unregister_ahash(
 					&dd->pdata->algs_info[i].algs_list[j]);
 			dd->pdata->algs_info[i].registered--;
 		}
+=======
+		for (j = dd->pdata->algs_info[i].registered - 1; j >= 0; j--)
+			crypto_unregister_ahash(
+					&dd->pdata->algs_info[i].algs_list[j]);
+>>>>>>> FETCH_HEAD
 	tasklet_kill(&dd->done_task);
 	pm_runtime_disable(&pdev->dev);
 

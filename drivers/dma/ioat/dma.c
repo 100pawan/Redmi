@@ -38,6 +38,7 @@
 
 #include "../dmaengine.h"
 
+<<<<<<< HEAD
 int completion_timeout = 200;
 module_param(completion_timeout, int, 0644);
 MODULE_PARM_DESC(completion_timeout,
@@ -50,6 +51,8 @@ MODULE_PARM_DESC(idle_timeout,
 #define IDLE_TIMEOUT msecs_to_jiffies(idle_timeout)
 #define COMPLETION_TIMEOUT msecs_to_jiffies(completion_timeout)
 
+=======
+>>>>>>> FETCH_HEAD
 static char *chanerr_str[] = {
 	"DMA Transfer Destination Address Error",
 	"Next Descriptor Address Error",

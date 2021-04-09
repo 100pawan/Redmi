@@ -6,7 +6,11 @@
 #include <linux/bug.h>
 #include <asm/cputable.h>
 
+<<<<<<< HEAD
 static __always_inline bool early_cpu_has_feature(unsigned long feature)
+=======
+static inline bool early_cpu_has_feature(unsigned long feature)
+>>>>>>> FETCH_HEAD
 {
 	return !!((CPU_FTRS_ALWAYS & feature) ||
 		  (CPU_FTRS_POSSIBLE & cur_cpu_spec->cpu_features & feature));
@@ -45,7 +49,11 @@ static __always_inline bool cpu_has_feature(unsigned long feature)
 	return static_branch_likely(&cpu_feature_keys[i]);
 }
 #else
+<<<<<<< HEAD
 static __always_inline bool cpu_has_feature(unsigned long feature)
+=======
+static inline bool cpu_has_feature(unsigned long feature)
+>>>>>>> FETCH_HEAD
 {
 	return early_cpu_has_feature(feature);
 }

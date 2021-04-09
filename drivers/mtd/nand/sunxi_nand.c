@@ -2108,7 +2108,11 @@ static int sunxi_nand_chip_init(struct device *dev, struct sunxi_nfc *nfc,
 	ret = mtd_device_register(mtd, NULL, 0);
 	if (ret) {
 		dev_err(dev, "failed to register mtd device: %d\n", ret);
+<<<<<<< HEAD
 		nand_cleanup(nand);
+=======
+		nand_release(mtd);
+>>>>>>> FETCH_HEAD
 		return ret;
 	}
 
@@ -2147,7 +2151,11 @@ static void sunxi_nand_chips_cleanup(struct sunxi_nfc *nfc)
 	while (!list_empty(&nfc->chips)) {
 		chip = list_first_entry(&nfc->chips, struct sunxi_nand_chip,
 					node);
+<<<<<<< HEAD
 		nand_release(&chip->nand);
+=======
+		nand_release(nand_to_mtd(&chip->nand));
+>>>>>>> FETCH_HEAD
 		sunxi_nand_ecc_cleanup(&chip->nand.ecc);
 		list_del(&chip->node);
 	}

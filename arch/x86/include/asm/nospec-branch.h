@@ -223,7 +223,10 @@ enum spectre_v2_mitigation {
 enum spectre_v2_user_mitigation {
 	SPECTRE_V2_USER_NONE,
 	SPECTRE_V2_USER_STRICT,
+<<<<<<< HEAD
 	SPECTRE_V2_USER_STRICT_PREFERRED,
+=======
+>>>>>>> FETCH_HEAD
 	SPECTRE_V2_USER_PRCTL,
 	SPECTRE_V2_USER_SECCOMP,
 };
@@ -321,7 +324,11 @@ DECLARE_STATIC_KEY_FALSE(mds_idle_clear);
  * combination with microcode which triggers a CPU buffer flush when the
  * instruction is executed.
  */
+<<<<<<< HEAD
 static __always_inline void mds_clear_cpu_buffers(void)
+=======
+static inline void mds_clear_cpu_buffers(void)
+>>>>>>> FETCH_HEAD
 {
 	static const u16 ds = __KERNEL_DS;
 
@@ -342,7 +349,11 @@ static __always_inline void mds_clear_cpu_buffers(void)
  *
  * Clear CPU buffers if the corresponding static key is enabled
  */
+<<<<<<< HEAD
 static __always_inline void mds_user_clear_cpu_buffers(void)
+=======
+static inline void mds_user_clear_cpu_buffers(void)
+>>>>>>> FETCH_HEAD
 {
 	if (static_branch_likely(&mds_user_clear))
 		mds_clear_cpu_buffers();

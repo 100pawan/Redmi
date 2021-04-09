@@ -38,6 +38,7 @@
 
 #define FTDI_LUMEL_PD12_PID	0x6002
 
+<<<<<<< HEAD
 /*
  * Custom USB adapters made by Falconia Partners LLC
  * for FreeCalypso project, ID codes allocated to Falconia by FTDI.
@@ -45,6 +46,8 @@
 #define FTDI_FALCONIA_JTAG_BUF_PID	0x7150
 #define FTDI_FALCONIA_JTAG_UNBUF_PID	0x7151
 
+=======
+>>>>>>> FETCH_HEAD
 /* Sienna Serial Interface by Secyourit GmbH */
 #define FTDI_SIENNA_PID		0x8348
 
@@ -166,7 +169,10 @@
 #define XSENS_AWINDA_DONGLE_PID 0x0102
 #define XSENS_MTW_PID		0x0200	/* Xsens MTw */
 #define XSENS_MTDEVBOARD_PID	0x0300	/* Motion Tracker Development Board */
+<<<<<<< HEAD
 #define XSENS_MTIUSBCONVERTER_PID	0x0301	/* MTi USB converter */
+=======
+>>>>>>> FETCH_HEAD
 #define XSENS_CONVERTER_PID	0xD00D	/* Xsens USB-serial converter */
 
 /* Xsens devices using FTDI VID */

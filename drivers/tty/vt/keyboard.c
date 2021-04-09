@@ -712,6 +712,7 @@ static void k_fn(struct vc_data *vc, unsigned char value, char up_flag)
 		return;
 
 	if ((unsigned)value < ARRAY_SIZE(func_table)) {
+<<<<<<< HEAD
 		unsigned long flags;
 
 		spin_lock_irqsave(&func_buf_lock, flags);
@@ -719,6 +720,10 @@ static void k_fn(struct vc_data *vc, unsigned char value, char up_flag)
 			puts_queue(vc, func_table[value]);
 		spin_unlock_irqrestore(&func_buf_lock, flags);
 
+=======
+		if (func_table[value])
+			puts_queue(vc, func_table[value]);
+>>>>>>> FETCH_HEAD
 	} else
 		pr_err("k_fn called with value=%d\n", value);
 }
@@ -1964,11 +1969,21 @@ out:
 #undef s
 #undef v
 
+<<<<<<< HEAD
 /* FIXME: This one needs untangling */
 int vt_do_kdgkb_ioctl(int cmd, struct kbsentry __user *user_kdgkb, int perm)
 {
 	struct kbsentry *kbs;
 	u_char *q;
+=======
+/* FIXME: This one needs untangling and locking */
+int vt_do_kdgkb_ioctl(int cmd, struct kbsentry __user *user_kdgkb, int perm)
+{
+	struct kbsentry *kbs;
+	char *p;
+	u_char *q;
+	u_char __user *up;
+>>>>>>> FETCH_HEAD
 	int sz, fnw_sz;
 	int delta;
 	char *first_free, *fj, *fnw;
@@ -1994,6 +2009,7 @@ int vt_do_kdgkb_ioctl(int cmd, struct kbsentry __user *user_kdgkb, int perm)
 	i = kbs->kb_func;
 
 	switch (cmd) {
+<<<<<<< HEAD
 	case KDGKBSENT: {
 		/* size should have been a struct member */
 		ssize_t len = sizeof(user_kdgkb->kb_string);
@@ -2007,6 +2023,25 @@ int vt_do_kdgkb_ioctl(int cmd, struct kbsentry __user *user_kdgkb, int perm)
 
 		goto reterr;
 	}
+=======
+	case KDGKBSENT:
+		sz = sizeof(kbs->kb_string) - 1; /* sz should have been
+						  a struct member */
+		up = user_kdgkb->kb_string;
+		p = func_table[i];
+		if(p)
+			for ( ; *p && sz; p++, sz--)
+				if (put_user(*p, up++)) {
+					ret = -EFAULT;
+					goto reterr;
+				}
+		if (put_user('\0', up)) {
+			ret = -EFAULT;
+			goto reterr;
+		}
+		kfree(kbs);
+		return ((p && *p) ? -EOVERFLOW : 0);
+>>>>>>> FETCH_HEAD
 	case KDSKBSENT:
 		if (!perm) {
 			ret = -EPERM;

@@ -46,7 +46,10 @@ struct writeset {
 static void writeset_free(struct writeset *ws)
 {
 	vfree(ws->bits);
+<<<<<<< HEAD
 	ws->bits = NULL;
+=======
+>>>>>>> FETCH_HEAD
 }
 
 static int setup_on_disk_bitset(struct dm_disk_bitset *info,
@@ -71,6 +74,11 @@ static size_t bitset_size(unsigned nr_bits)
  */
 static int writeset_alloc(struct writeset *ws, dm_block_t nr_blocks)
 {
+<<<<<<< HEAD
+=======
+	ws->md.nr_bits = nr_blocks;
+	ws->md.root = INVALID_WRITESET_ROOT;
+>>>>>>> FETCH_HEAD
 	ws->bits = vzalloc(bitset_size(nr_blocks));
 	if (!ws->bits) {
 		DMERR("%s: couldn't allocate in memory bitset", __func__);
@@ -83,6 +91,7 @@ static int writeset_alloc(struct writeset *ws, dm_block_t nr_blocks)
 /*
  * Wipes the in-core bitset, and creates a new on disk bitset.
  */
+<<<<<<< HEAD
 static int writeset_init(struct dm_disk_bitset *info, struct writeset *ws,
 			 dm_block_t nr_blocks)
 {
@@ -91,6 +100,14 @@ static int writeset_init(struct dm_disk_bitset *info, struct writeset *ws,
 	memset(ws->bits, 0, bitset_size(nr_blocks));
 
 	ws->md.nr_bits = nr_blocks;
+=======
+static int writeset_init(struct dm_disk_bitset *info, struct writeset *ws)
+{
+	int r;
+
+	memset(ws->bits, 0, bitset_size(ws->md.nr_bits));
+
+>>>>>>> FETCH_HEAD
 	r = setup_on_disk_bitset(info, ws->md.nr_bits, &ws->md.root);
 	if (r) {
 		DMERR("%s: setup_on_disk_bitset failed", __func__);
@@ -134,7 +151,11 @@ static int writeset_test_and_set(struct dm_disk_bitset *info,
 {
 	int r;
 
+<<<<<<< HEAD
 	if (!test_bit(block, ws->bits)) {
+=======
+	if (!test_and_set_bit(block, ws->bits)) {
+>>>>>>> FETCH_HEAD
 		r = dm_bitset_set_bit(info, ws->md.root, block, &ws->md.root);
 		if (r) {
 			/* FIXME: fail mode */
@@ -389,7 +410,11 @@ static void ws_dec(void *context, const void *value)
 
 static int ws_eq(void *context, const void *value1, const void *value2)
 {
+<<<<<<< HEAD
 	return !memcmp(value1, value2, sizeof(struct writeset_disk));
+=======
+	return !memcmp(value1, value2, sizeof(struct writeset_metadata));
+>>>>>>> FETCH_HEAD
 }
 
 /*----------------------------------------------------------------*/
@@ -565,6 +590,7 @@ static int open_metadata(struct era_metadata *md)
 	}
 
 	disk = dm_block_data(sblock);
+<<<<<<< HEAD
 
 	/* Verify the data block size hasn't changed */
 	if (le32_to_cpu(disk->data_block_size) != md->block_size) {
@@ -574,6 +600,8 @@ static int open_metadata(struct era_metadata *md)
 		goto bad;
 	}
 
+=======
+>>>>>>> FETCH_HEAD
 	r = dm_tm_open_with_sm(md->bm, SUPERBLOCK_LOCATION,
 			       disk->metadata_space_map_root,
 			       sizeof(disk->metadata_space_map_root),
@@ -585,10 +613,17 @@ static int open_metadata(struct era_metadata *md)
 
 	setup_infos(md);
 
+<<<<<<< HEAD
 	md->nr_blocks = le32_to_cpu(disk->nr_blocks);
 	md->current_era = le32_to_cpu(disk->current_era);
 
 	ws_unpack(&disk->current_writeset, &md->current_writeset->md);
+=======
+	md->block_size = le32_to_cpu(disk->data_block_size);
+	md->nr_blocks = le32_to_cpu(disk->nr_blocks);
+	md->current_era = le32_to_cpu(disk->current_era);
+
+>>>>>>> FETCH_HEAD
 	md->writeset_tree_root = le64_to_cpu(disk->writeset_tree_root);
 	md->era_array_root = le64_to_cpu(disk->era_array_root);
 	md->metadata_snap = le64_to_cpu(disk->metadata_snap);
@@ -757,12 +792,15 @@ static int metadata_digest_lookup_writeset(struct era_metadata *md,
 	ws_unpack(&disk, &d->writeset);
 	d->value = cpu_to_le32(key);
 
+<<<<<<< HEAD
 	/*
 	 * We initialise another bitset info to avoid any caching side effects
 	 * with the previous one.
 	 */
 	dm_disk_bitset_init(md->tm, &d->info);
 
+=======
+>>>>>>> FETCH_HEAD
 	d->nr_bits = min(d->writeset.nr_bits, md->nr_blocks);
 	d->current_bit = 0;
 	d->step = metadata_digest_transcribe_writeset;
@@ -776,6 +814,15 @@ static int metadata_digest_start(struct era_metadata *md, struct digest *d)
 		return 0;
 
 	memset(d, 0, sizeof(*d));
+<<<<<<< HEAD
+=======
+
+	/*
+	 * We initialise another bitset info to avoid any caching side
+	 * effects with the previous one.
+	 */
+	dm_disk_bitset_init(md->tm, &d->info);
+>>>>>>> FETCH_HEAD
 	d->step = metadata_digest_lookup_writeset;
 
 	return 0;
@@ -813,8 +860,11 @@ static struct era_metadata *metadata_open(struct block_device *bdev,
 
 static void metadata_close(struct era_metadata *md)
 {
+<<<<<<< HEAD
 	writeset_free(&md->writesets[0]);
 	writeset_free(&md->writesets[1]);
+=======
+>>>>>>> FETCH_HEAD
 	destroy_persistent_data_objects(md);
 	kfree(md);
 }
@@ -852,7 +902,10 @@ static int metadata_resize(struct era_metadata *md, void *arg)
 	r = writeset_alloc(&md->writesets[1], *new_size);
 	if (r) {
 		DMERR("%s: writeset_alloc failed for writeset 1", __func__);
+<<<<<<< HEAD
 		writeset_free(&md->writesets[0]);
+=======
+>>>>>>> FETCH_HEAD
 		return r;
 	}
 
@@ -863,8 +916,11 @@ static int metadata_resize(struct era_metadata *md, void *arg)
 			    &value, &md->era_array_root);
 	if (r) {
 		DMERR("%s: dm_array_resize failed", __func__);
+<<<<<<< HEAD
 		writeset_free(&md->writesets[0]);
 		writeset_free(&md->writesets[1]);
+=======
+>>>>>>> FETCH_HEAD
 		return r;
 	}
 
@@ -886,6 +942,10 @@ static int metadata_era_archive(struct era_metadata *md)
 	}
 
 	ws_pack(&md->current_writeset->md, &value);
+<<<<<<< HEAD
+=======
+	md->current_writeset->md.root = INVALID_WRITESET_ROOT;
+>>>>>>> FETCH_HEAD
 
 	keys[0] = md->current_era;
 	__dm_bless_for_disk(&value);
@@ -897,7 +957,10 @@ static int metadata_era_archive(struct era_metadata *md)
 		return r;
 	}
 
+<<<<<<< HEAD
 	md->current_writeset->md.root = INVALID_WRITESET_ROOT;
+=======
+>>>>>>> FETCH_HEAD
 	md->archived_writesets = true;
 
 	return 0;
@@ -914,7 +977,11 @@ static int metadata_new_era(struct era_metadata *md)
 	int r;
 	struct writeset *new_writeset = next_writeset(md);
 
+<<<<<<< HEAD
 	r = writeset_init(&md->bitset_info, new_writeset, md->nr_blocks);
+=======
+	r = writeset_init(&md->bitset_info, new_writeset);
+>>>>>>> FETCH_HEAD
 	if (r) {
 		DMERR("%s: writeset_init failed", __func__);
 		return r;
@@ -967,7 +1034,11 @@ static int metadata_commit(struct era_metadata *md)
 	int r;
 	struct dm_block *sblock;
 
+<<<<<<< HEAD
 	if (md->current_writeset->md.root != INVALID_WRITESET_ROOT) {
+=======
+	if (md->current_writeset->md.root != SUPERBLOCK_LOCATION) {
+>>>>>>> FETCH_HEAD
 		r = dm_bitset_flush(&md->bitset_info, md->current_writeset->md.root,
 				    &md->current_writeset->md.root);
 		if (r) {
@@ -1242,10 +1313,15 @@ static void process_deferred_bios(struct era *era)
 	int r;
 	struct bio_list deferred_bios, marked_bios;
 	struct bio *bio;
+<<<<<<< HEAD
 	struct blk_plug plug;
 	bool commit_needed = false;
 	bool failed = false;
 	struct writeset *ws = era->md->current_writeset;
+=======
+	bool commit_needed = false;
+	bool failed = false;
+>>>>>>> FETCH_HEAD
 
 	bio_list_init(&deferred_bios);
 	bio_list_init(&marked_bios);
@@ -1255,11 +1331,17 @@ static void process_deferred_bios(struct era *era)
 	bio_list_init(&era->deferred_bios);
 	spin_unlock(&era->deferred_lock);
 
+<<<<<<< HEAD
 	if (bio_list_empty(&deferred_bios))
 		return;
 
 	while ((bio = bio_list_pop(&deferred_bios))) {
 		r = writeset_test_and_set(&era->md->bitset_info, ws,
+=======
+	while ((bio = bio_list_pop(&deferred_bios))) {
+		r = writeset_test_and_set(&era->md->bitset_info,
+					  era->md->current_writeset,
+>>>>>>> FETCH_HEAD
 					  get_block(era, bio));
 		if (r < 0) {
 			/*
@@ -1267,6 +1349,10 @@ static void process_deferred_bios(struct era *era)
 			 * FIXME: finish.
 			 */
 			failed = true;
+<<<<<<< HEAD
+=======
+
+>>>>>>> FETCH_HEAD
 		} else if (r == 0)
 			commit_needed = true;
 
@@ -1282,6 +1368,7 @@ static void process_deferred_bios(struct era *era)
 	if (failed)
 		while ((bio = bio_list_pop(&marked_bios)))
 			bio_io_error(bio);
+<<<<<<< HEAD
 	else {
 		blk_start_plug(&plug);
 		while ((bio = bio_list_pop(&marked_bios))) {
@@ -1295,6 +1382,11 @@ static void process_deferred_bios(struct era *era)
 		}
 		blk_finish_plug(&plug);
 	}
+=======
+	else
+		while ((bio = bio_list_pop(&marked_bios)))
+			generic_make_request(bio);
+>>>>>>> FETCH_HEAD
 }
 
 static void process_rpc_calls(struct era *era)
@@ -1515,6 +1607,18 @@ static int era_ctr(struct dm_target *ti, unsigned argc, char **argv)
 	}
 	era->md = md;
 
+<<<<<<< HEAD
+=======
+	era->nr_blocks = calc_nr_blocks(era);
+
+	r = metadata_resize(era->md, &era->nr_blocks);
+	if (r) {
+		ti->error = "couldn't resize metadata";
+		era_destroy(era);
+		return -ENOMEM;
+	}
+
+>>>>>>> FETCH_HEAD
 	era->wq = alloc_ordered_workqueue("dm-" DM_MSG_PREFIX, WQ_MEM_RECLAIM);
 	if (!era->wq) {
 		ti->error = "could not create workqueue for metadata object";
@@ -1592,6 +1696,7 @@ static int era_preresume(struct dm_target *ti)
 	dm_block_t new_size = calc_nr_blocks(era);
 
 	if (era->nr_blocks != new_size) {
+<<<<<<< HEAD
 		r = metadata_resize(era->md, &new_size);
 		if (r) {
 			DMERR("%s: metadata_resize failed", __func__);
@@ -1603,13 +1708,22 @@ static int era_preresume(struct dm_target *ti)
 			DMERR("%s: metadata_commit failed", __func__);
 			return r;
 		}
+=======
+		r = in_worker1(era, metadata_resize, &new_size);
+		if (r)
+			return r;
+>>>>>>> FETCH_HEAD
 
 		era->nr_blocks = new_size;
 	}
 
 	start_worker(era);
 
+<<<<<<< HEAD
 	r = in_worker0(era, metadata_era_rollover);
+=======
+	r = in_worker0(era, metadata_new_era);
+>>>>>>> FETCH_HEAD
 	if (r) {
 		DMERR("%s: metadata_era_rollover failed", __func__);
 		return r;

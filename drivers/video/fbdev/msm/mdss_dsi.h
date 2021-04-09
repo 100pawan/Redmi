@@ -440,8 +440,11 @@ struct mdss_dsi_ctrl_pdata {
 	int bklt_en_gpio;
 	int vdd_ext_gpio;
 	int mode_gpio;
+<<<<<<< HEAD
 	int ocp2131_enp_gpio;
     int ocp2131_enn_gpio;
+=======
+>>>>>>> FETCH_HEAD
 	int intf_mux_gpio;
 	bool bklt_en_gpio_invert;
 	int lcd_mode_sel_gpio;
@@ -485,6 +488,7 @@ struct mdss_dsi_ctrl_pdata {
 	struct dsi_panel_cmds lp_on_cmds;
 	struct dsi_panel_cmds lp_off_cmds;
 	struct dsi_panel_cmds status_cmds;
+<<<<<<< HEAD
 	struct dsi_panel_cmds cabc_on_cmds;
 	struct dsi_panel_cmds cabc_off_cmds;
 	struct dsi_panel_cmds ce_on_cmds;
@@ -520,6 +524,10 @@ struct mdss_dsi_ctrl_pdata {
 	struct dsi_panel_cmds gamma22_cmds;
 	struct dsi_panel_cmds gamma23_cmds;
 	struct dsi_panel_cmds gamma24_cmds;
+=======
+	struct dsi_panel_cmds idle_on_cmds; /* for lp mode */
+	struct dsi_panel_cmds idle_off_cmds;
+>>>>>>> FETCH_HEAD
 	u32 *status_valid_params;
 	u32 *status_cmds_rlen;
 	u32 *status_value;
@@ -728,7 +736,10 @@ void mdss_dsi_ctrl_phy_reset(struct mdss_dsi_ctrl_pdata *ctrl);
 
 void mdss_dsi_debug_bus_init(struct mdss_dsi_data *sdata);
 
+<<<<<<< HEAD
 void mdss_dsi_panel_cmds_send(struct mdss_dsi_ctrl_pdata *ctrl, struct dsi_panel_cmds *pcmds, u32 flags);
+=======
+>>>>>>> FETCH_HEAD
 static inline const char *__mdss_dsi_pm_name(enum dsi_pm_type module)
 {
 	switch (module) {

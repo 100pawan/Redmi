@@ -947,7 +947,11 @@ static noinline int cow_file_range(struct inode *inode,
 	u64 alloc_hint = 0;
 	u64 num_bytes;
 	unsigned long ram_size;
+<<<<<<< HEAD
 	u64 min_alloc_size;
+=======
+	u64 disk_num_bytes;
+>>>>>>> FETCH_HEAD
 	u64 cur_alloc_size;
 	u64 blocksize = root->sectorsize;
 	struct btrfs_key ins;
@@ -963,6 +967,10 @@ static noinline int cow_file_range(struct inode *inode,
 
 	num_bytes = ALIGN(end - start + 1, blocksize);
 	num_bytes = max(blocksize,  num_bytes);
+<<<<<<< HEAD
+=======
+	disk_num_bytes = num_bytes;
+>>>>>>> FETCH_HEAD
 
 	/* if this is a small write inside eof, kick off defrag */
 	if (num_bytes < SZ_64K &&
@@ -991,11 +999,17 @@ static noinline int cow_file_range(struct inode *inode,
 		}
 	}
 
+<<<<<<< HEAD
 	BUG_ON(num_bytes > btrfs_super_total_bytes(root->fs_info->super_copy));
+=======
+	BUG_ON(disk_num_bytes >
+	       btrfs_super_total_bytes(root->fs_info->super_copy));
+>>>>>>> FETCH_HEAD
 
 	alloc_hint = get_extent_allocation_hint(inode, start, num_bytes);
 	btrfs_drop_extent_cache(inode, start, start + num_bytes - 1, 0);
 
+<<<<<<< HEAD
 	/*
 	 * Relocation relies on the relocated extents to have exactly the same
 	 * size as the original extents. Normally writeback for relocation data
@@ -1018,6 +1032,14 @@ static noinline int cow_file_range(struct inode *inode,
 		cur_alloc_size = num_bytes;
 		ret = btrfs_reserve_extent(root, cur_alloc_size, cur_alloc_size,
 					   min_alloc_size, 0, alloc_hint,
+=======
+	while (disk_num_bytes > 0) {
+		unsigned long op;
+
+		cur_alloc_size = disk_num_bytes;
+		ret = btrfs_reserve_extent(root, cur_alloc_size, cur_alloc_size,
+					   root->sectorsize, 0, alloc_hint,
+>>>>>>> FETCH_HEAD
 					   &ins, 1, 1);
 		if (ret < 0)
 			goto out_unlock;
@@ -1072,7 +1094,11 @@ static noinline int cow_file_range(struct inode *inode,
 
 		btrfs_dec_block_group_reservations(root->fs_info, ins.objectid);
 
+<<<<<<< HEAD
 		if (num_bytes < cur_alloc_size)
+=======
+		if (disk_num_bytes < cur_alloc_size)
+>>>>>>> FETCH_HEAD
 			break;
 
 		/* we're not doing compressed IO, don't unlock the first
@@ -1090,10 +1116,15 @@ static noinline int cow_file_range(struct inode *inode,
 					     delalloc_end, locked_page,
 					     EXTENT_LOCKED | EXTENT_DELALLOC,
 					     op);
+<<<<<<< HEAD
 		if (num_bytes < cur_alloc_size)
 			num_bytes = 0;
 		else
 			num_bytes -= cur_alloc_size;
+=======
+		disk_num_bytes -= cur_alloc_size;
+		num_bytes -= cur_alloc_size;
+>>>>>>> FETCH_HEAD
 		alloc_hint = ins.objectid + ins.offset;
 		start += cur_alloc_size;
 	}
@@ -5440,6 +5471,7 @@ no_delete:
 }
 
 /*
+<<<<<<< HEAD
  * Return the key found in the dir entry in the location pointer, fill @type
  * with BTRFS_FT_*, and return 0.
  *
@@ -5447,6 +5479,13 @@ no_delete:
  */
 static int btrfs_inode_by_name(struct inode *dir, struct dentry *dentry,
 			       struct btrfs_key *location, u8 *type)
+=======
+ * this returns the key found in the dir entry in the location pointer.
+ * If no dir entries were found, location->objectid is 0.
+ */
+static int btrfs_inode_by_name(struct inode *dir, struct dentry *dentry,
+			       struct btrfs_key *location)
+>>>>>>> FETCH_HEAD
 {
 	const char *name = dentry->d_name.name;
 	int namelen = dentry->d_name.len;
@@ -5468,8 +5507,11 @@ static int btrfs_inode_by_name(struct inode *dir, struct dentry *dentry,
 		goto out_err;
 
 	btrfs_dir_item_key_to_cpu(path->nodes[0], di, location);
+<<<<<<< HEAD
 	if (!ret)
 		*type = btrfs_dir_type(path->nodes[0], di);
+=======
+>>>>>>> FETCH_HEAD
 out:
 	btrfs_free_path(path);
 	return ret;
@@ -5759,25 +5801,35 @@ static struct inode *new_simple_dir(struct super_block *s,
 	return inode;
 }
 
+<<<<<<< HEAD
 static inline u8 btrfs_inode_type(struct inode *inode)
 {
 	return btrfs_type_by_mode[(inode->i_mode & S_IFMT) >> S_SHIFT];
 }
 
+=======
+>>>>>>> FETCH_HEAD
 struct inode *btrfs_lookup_dentry(struct inode *dir, struct dentry *dentry)
 {
 	struct inode *inode;
 	struct btrfs_root *root = BTRFS_I(dir)->root;
 	struct btrfs_root *sub_root = root;
 	struct btrfs_key location;
+<<<<<<< HEAD
 	u8 di_type = 0;
+=======
+>>>>>>> FETCH_HEAD
 	int index;
 	int ret = 0;
 
 	if (dentry->d_name.len > BTRFS_NAME_LEN)
 		return ERR_PTR(-ENAMETOOLONG);
 
+<<<<<<< HEAD
 	ret = btrfs_inode_by_name(dir, dentry, &location, &di_type);
+=======
+	ret = btrfs_inode_by_name(dir, dentry, &location);
+>>>>>>> FETCH_HEAD
 	if (ret < 0)
 		return ERR_PTR(ret);
 
@@ -5786,6 +5838,7 @@ struct inode *btrfs_lookup_dentry(struct inode *dir, struct dentry *dentry)
 
 	if (location.type == BTRFS_INODE_ITEM_KEY) {
 		inode = btrfs_iget(dir->i_sb, &location, root, NULL);
+<<<<<<< HEAD
 		if (IS_ERR(inode))
 			return inode;
 
@@ -5798,6 +5851,8 @@ struct inode *btrfs_lookup_dentry(struct inode *dir, struct dentry *dentry)
 			iput(inode);
 			return ERR_PTR(-EUCLEAN);
 		}
+=======
+>>>>>>> FETCH_HEAD
 		return inode;
 	}
 
@@ -6413,6 +6468,14 @@ fail:
 	return ERR_PTR(ret);
 }
 
+<<<<<<< HEAD
+=======
+static inline u8 btrfs_inode_type(struct inode *inode)
+{
+	return btrfs_type_by_mode[(inode->i_mode & S_IFMT) >> S_SHIFT];
+}
+
+>>>>>>> FETCH_HEAD
 /*
  * utility function to add 'inode' into 'parent_inode' with
  * a give name and a given sequence number.
@@ -6998,6 +7061,7 @@ again:
 	extent_start = found_key.offset;
 	if (found_type == BTRFS_FILE_EXTENT_REG ||
 	    found_type == BTRFS_FILE_EXTENT_PREALLOC) {
+<<<<<<< HEAD
 		/* Only regular file could have regular/prealloc extent */
 		if (!S_ISREG(inode->i_mode)) {
 			err = -EUCLEAN;
@@ -7006,6 +7070,8 @@ again:
 				   btrfs_ino(inode));
 			goto out;
 		}
+=======
+>>>>>>> FETCH_HEAD
 		extent_end = extent_start +
 		       btrfs_file_extent_num_bytes(leaf, item);
 	} else if (found_type == BTRFS_FILE_EXTENT_INLINE) {
@@ -8535,6 +8601,10 @@ static int btrfs_submit_direct_hook(struct btrfs_dio_private *dip,
 	bio->bi_private = dip;
 	bio->bi_end_io = btrfs_end_dio_bio;
 	btrfs_io_bio(bio)->logical = file_offset;
+<<<<<<< HEAD
+=======
+	atomic_inc(&dip->pending_bios);
+>>>>>>> FETCH_HEAD
 
 	while (bvec <= (orig_bio->bi_io_vec + orig_bio->bi_vcnt - 1)) {
 		nr_sectors = BTRFS_BYTES_TO_BLKS(root->fs_info, bvec->bv_len);
@@ -8600,8 +8670,12 @@ submit:
 	if (!ret)
 		return 0;
 
+<<<<<<< HEAD
 	if (bio != orig_bio)
 		bio_put(bio);
+=======
+	bio_put(bio);
+>>>>>>> FETCH_HEAD
 out_err:
 	dip->errors = 1;
 	/*
@@ -8648,7 +8722,11 @@ static void btrfs_submit_direct(struct bio *dio_bio, struct inode *inode,
 	io_bio->bi_private = dip;
 	dip->orig_bio = io_bio;
 	dip->dio_bio = dio_bio;
+<<<<<<< HEAD
 	atomic_set(&dip->pending_bios, 1);
+=======
+	atomic_set(&dip->pending_bios, 0);
+>>>>>>> FETCH_HEAD
 	btrfs_bio = btrfs_io_bio(io_bio);
 	btrfs_bio->logical = file_offset;
 

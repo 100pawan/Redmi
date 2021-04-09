@@ -5,6 +5,10 @@
 
 #define STM_FLAG_TIMESTAMPED   _BITUL(3)
 #define STM_FLAG_GUARANTEED    _BITUL(7)
+<<<<<<< HEAD
+=======
+
+>>>>>>> FETCH_HEAD
 #define STM_FLAG_NONE		0x00
 
 #define	OST_ENTITY_NONE			0x00

@@ -160,6 +160,7 @@ static int gfs2_check_sb(struct gfs2_sbd *sdp, int silent)
 		return -EINVAL;
 	}
 
+<<<<<<< HEAD
 	if (sb->sb_fs_format != GFS2_FORMAT_FS ||
 	    sb->sb_multihost_format != GFS2_FORMAT_MULTI) {
 		fs_warn(sdp, "Unknown on-disk format, unable to mount\n");
@@ -173,6 +174,17 @@ static int gfs2_check_sb(struct gfs2_sbd *sdp, int silent)
 	}
 
 	return 0;
+=======
+	/*  If format numbers match exactly, we're done.  */
+
+	if (sb->sb_fs_format == GFS2_FORMAT_FS &&
+	    sb->sb_multihost_format == GFS2_FORMAT_MULTI)
+		return 0;
+
+	fs_warn(sdp, "Unknown on-disk format, unable to mount\n");
+
+	return -EINVAL;
+>>>>>>> FETCH_HEAD
 }
 
 static void end_bio_io_page(struct bio *bio)
@@ -924,7 +936,11 @@ fail:
 }
 
 static const match_table_t nolock_tokens = {
+<<<<<<< HEAD
 	{ Opt_jid, "jid=%d", },
+=======
+	{ Opt_jid, "jid=%d\n", },
+>>>>>>> FETCH_HEAD
 	{ Opt_err, NULL },
 };
 

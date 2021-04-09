@@ -40,7 +40,11 @@ class LxVersion(gdb.Command):
 
     def invoke(self, arg, from_tty):
         # linux_banner should contain a newline
+<<<<<<< HEAD
         gdb.write(gdb.parse_and_eval("(char *)linux_banner").string())
+=======
+        gdb.write(gdb.parse_and_eval("linux_banner").string())
+>>>>>>> FETCH_HEAD
 
 LxVersion()
 

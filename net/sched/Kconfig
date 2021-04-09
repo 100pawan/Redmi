@@ -352,6 +352,7 @@ config NET_SCH_PLUG
 	  To compile this code as a module, choose M here: the
 	  module will be called sch_plug.
 
+<<<<<<< HEAD
 menuconfig NET_SCH_DEFAULT
 	bool "Allow override default queue discipline"
 	---help---
@@ -397,6 +398,8 @@ config DEFAULT_NET_SCH
 	default "pfifo_fast"
 endif
 
+=======
+>>>>>>> FETCH_HEAD
 comment "Classification"
 
 config NET_CLS

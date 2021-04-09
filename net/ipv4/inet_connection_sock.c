@@ -89,6 +89,7 @@ int inet_csk_bind_conflict(const struct sock *sk,
 }
 EXPORT_SYMBOL_GPL(inet_csk_bind_conflict);
 
+<<<<<<< HEAD
 void inet_csk_update_fastreuse(struct inet_bind_bucket *tb,
 			       struct sock *sk)
 {
@@ -111,6 +112,8 @@ void inet_csk_update_fastreuse(struct inet_bind_bucket *tb,
 	}
 }
 
+=======
+>>>>>>> FETCH_HEAD
 /* Obtain a reference to a local port for the given sock,
  * if snum is zero it means select any available local port.
  * We try to allocate an odd port (and leave even ports for connect())
@@ -247,10 +250,26 @@ tb_found:
 			}
 			goto fail_unlock;
 		}
+<<<<<<< HEAD
 	}
 
 	inet_csk_update_fastreuse(tb, sk);
 
+=======
+		if (!reuse)
+			tb->fastreuse = 0;
+		if (!sk->sk_reuseport || !uid_eq(tb->fastuid, uid))
+			tb->fastreuseport = 0;
+	} else {
+		tb->fastreuse = reuse;
+		if (sk->sk_reuseport) {
+			tb->fastreuseport = 1;
+			tb->fastuid = uid;
+		} else {
+			tb->fastreuseport = 0;
+		}
+	}
+>>>>>>> FETCH_HEAD
 success:
 	if (!inet_csk(sk)->icsk_bind_hash)
 		inet_bind_hash(sk, tb, port);
@@ -288,7 +307,11 @@ static int inet_csk_wait_for_connect(struct sock *sk, long timeo)
 	 * having to remove and re-insert us on the wait queue.
 	 */
 	for (;;) {
+<<<<<<< HEAD
 		prepare_to_wait_exclusive_lifo(sk_sleep(sk), &wait,
+=======
+		prepare_to_wait_exclusive(sk_sleep(sk), &wait,
+>>>>>>> FETCH_HEAD
 					  TASK_INTERRUPTIBLE);
 		release_sock(sk);
 		if (reqsk_queue_empty(&icsk->icsk_accept_queue))

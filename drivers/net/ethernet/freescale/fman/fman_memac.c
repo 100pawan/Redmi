@@ -851,6 +851,10 @@ int memac_set_tx_pause_frames(struct fman_mac *memac, u8 priority,
 
 	tmp = ioread32be(&regs->command_config);
 	tmp &= ~CMD_CFG_PFC_MODE;
+<<<<<<< HEAD
+=======
+	priority = 0;
+>>>>>>> FETCH_HEAD
 
 	iowrite32be(tmp, &regs->command_config);
 
@@ -952,7 +956,11 @@ int memac_del_hash_mac_address(struct fman_mac *memac, enet_addr_t *eth_addr)
 
 	list_for_each(pos, &memac->multicast_addr_hash->lsts[hash]) {
 		hash_entry = ETH_HASH_ENTRY_OBJ(pos);
+<<<<<<< HEAD
 		if (hash_entry && hash_entry->addr == addr) {
+=======
+		if (hash_entry->addr == addr) {
+>>>>>>> FETCH_HEAD
 			list_del_init(&hash_entry->node);
 			kfree(hash_entry);
 			break;

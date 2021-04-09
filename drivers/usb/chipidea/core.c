@@ -1110,6 +1110,7 @@ static void ci_controller_suspend(struct ci_hdrc *ci)
 	enable_irq(ci->irq);
 }
 
+<<<<<<< HEAD
 /*
  * Handle the wakeup interrupt triggered by extcon connector
  * We need to call ci_irq again for extcon since the first
@@ -1133,6 +1134,8 @@ static void ci_extcon_wakeup_int(struct ci_hdrc *ci)
 		ci_irq(ci->irq, ci);
 }
 
+=======
+>>>>>>> FETCH_HEAD
 static int ci_controller_resume(struct device *dev)
 {
 	struct ci_hdrc *ci = dev_get_drvdata(dev);
@@ -1159,7 +1162,10 @@ static int ci_controller_resume(struct device *dev)
 		enable_irq(ci->irq);
 		if (ci_otg_is_fsm_mode(ci))
 			ci_otg_fsm_wakeup_by_srp(ci);
+<<<<<<< HEAD
 		ci_extcon_wakeup_int(ci);
+=======
+>>>>>>> FETCH_HEAD
 	}
 
 	return 0;

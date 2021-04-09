@@ -20,6 +20,7 @@
 #include <linux/wait.h>
 #include <linux/sched.h>
 #include <linux/usb/g_hid.h>
+<<<<<<< HEAD
 #include <linux/delay.h>
 
 #include "f_hid.h"
@@ -27,6 +28,11 @@
 #include "u_hid.h"
 #include "f_hid_android_keyboard.c"
 #include "f_hid_android_mouse.c"
+=======
+
+#include "u_f.h"
+#include "u_hid.h"
+>>>>>>> FETCH_HEAD
 
 #define HIDG_MINORS	4
 
@@ -72,6 +78,7 @@ struct f_hidg {
 	struct usb_ep			*out_ep;
 };
 
+<<<<<<< HEAD
 /*
  * Hacky device list to fix f_hidg_write being called after device destroyed.
  * It covers only most common race conditions, there will be rare crashes anyway.
@@ -111,6 +118,8 @@ static int hacky_device_list_check(struct f_hidg *hidg)
 	return 1;
 }
 
+=======
+>>>>>>> FETCH_HEAD
 static inline struct f_hidg *func_to_hidg(struct usb_function *f)
 {
 	return container_of(f, struct f_hidg, func);
@@ -247,11 +256,14 @@ static ssize_t f_hidg_read(struct file *file, char __user *buffer,
 	if (!access_ok(VERIFY_WRITE, buffer, count))
 		return -EFAULT;
 
+<<<<<<< HEAD
 	if (hacky_device_list_check(hidg)) {
 		pr_err("%s: trying to read from device %p that was destroyed\n", __func__, hidg);
 		return -EIO;
 	}
 
+=======
+>>>>>>> FETCH_HEAD
 	spin_lock_irqsave(&hidg->read_spinlock, flags);
 
 #define READ_COND (!list_empty(&hidg->completed_out_req))
@@ -339,11 +351,14 @@ static ssize_t f_hidg_write(struct file *file, const char __user *buffer,
 	if (!access_ok(VERIFY_READ, buffer, count))
 		return -EFAULT;
 
+<<<<<<< HEAD
 	if (hacky_device_list_check(hidg)) {
 		pr_err("%s: trying to write to device %p that was destroyed\n", __func__, hidg);
 		return -EIO;
 	}
 
+=======
+>>>>>>> FETCH_HEAD
 	spin_lock_irqsave(&hidg->write_spinlock, flags);
 
 #define WRITE_COND (!hidg->write_pending)
@@ -358,11 +373,14 @@ try_again:
 				hidg->write_queue, WRITE_COND))
 			return -ERESTARTSYS;
 
+<<<<<<< HEAD
 		if (hacky_device_list_check(hidg)) {
 			pr_err("%s: trying to write to device %p that was destroyed\n", __func__, hidg);
 			return -EIO;
 		}
 
+=======
+>>>>>>> FETCH_HEAD
 		spin_lock_irqsave(&hidg->write_spinlock, flags);
 	}
 
@@ -425,6 +443,7 @@ static unsigned int f_hidg_poll(struct file *file, poll_table *wait)
 	struct f_hidg	*hidg  = file->private_data;
 	unsigned int	ret = 0;
 
+<<<<<<< HEAD
 	if (hacky_device_list_check(hidg)) {
 		pr_err("%s: trying to poll device %p that was destroyed\n", __func__, hidg);
 		return -EIO;
@@ -435,6 +454,9 @@ static unsigned int f_hidg_poll(struct file *file, poll_table *wait)
 		pr_err("%s: trying to poll device %p that was destroyed\n", __func__, hidg);
 		return -EIO;
 	}
+=======
+	poll_wait(file, &hidg->read_queue, wait);
+>>>>>>> FETCH_HEAD
 	poll_wait(file, &hidg->write_queue, wait);
 
 	if (WRITE_COND)
@@ -530,12 +552,18 @@ static int hidg_setup(struct usb_function *f,
 		  | HID_REQ_GET_REPORT):
 		VDBG(cdev, "get_report\n");
 
+<<<<<<< HEAD
 		/* send an empty report if boot protocol */
 		length = min_t(unsigned, length, hidg->report_length);
 		if (hidg->bInterfaceSubClass == USB_INTERFACE_SUBCLASS_BOOT)
 			memset(req->buf, 0x0, length);
 		else
 			memset(req->buf, 0x1, length);
+=======
+		/* send an empty report */
+		length = min_t(unsigned, length, hidg->report_length);
+		memset(req->buf, 0x0, length);
+>>>>>>> FETCH_HEAD
 
 		goto respond;
 		break;
@@ -756,8 +784,11 @@ static int hidg_bind(struct usb_configuration *c, struct usb_function *f)
 	int			status;
 	dev_t			dev;
 
+<<<<<<< HEAD
 	pr_info("%s: creating device %p\n", __func__, hidg);
 
+=======
+>>>>>>> FETCH_HEAD
 	/* maybe allocate device-global string IDs, and patch descriptors */
 	us = usb_gstrings_attach(c->cdev, ct_func_strings,
 				 ARRAY_SIZE(ct_func_string_defs));
@@ -825,8 +856,11 @@ static int hidg_bind(struct usb_configuration *c, struct usb_function *f)
 
 	device = device_create(hidg_class, NULL, dev, NULL,
 			       "%s%d", "hidg", hidg->minor);
+<<<<<<< HEAD
 	hacky_device_list_add(hidg);
 
+=======
+>>>>>>> FETCH_HEAD
 	if (IS_ERR(device)) {
 		status = PTR_ERR(device);
 		goto del;
@@ -1006,7 +1040,11 @@ static void hidg_free_inst(struct usb_function_instance *f)
 	mutex_lock(&hidg_ida_lock);
 
 	hidg_put_minor(opts->minor);
+<<<<<<< HEAD
 	if (ida_is_empty(&hidg_ida))
+=======
+	if (idr_is_empty(&hidg_ida.idr))
+>>>>>>> FETCH_HEAD
 		ghid_cleanup();
 
 	mutex_unlock(&hidg_ida_lock);
@@ -1032,7 +1070,11 @@ static struct usb_function_instance *hidg_alloc_inst(void)
 
 	mutex_lock(&hidg_ida_lock);
 
+<<<<<<< HEAD
 	if (ida_is_empty(&hidg_ida)) {
+=======
+	if (idr_is_empty(&hidg_ida.idr)) {
+>>>>>>> FETCH_HEAD
 		status = ghid_setup(NULL, HIDG_MINORS);
 		if (status)  {
 			ret = ERR_PTR(status);
@@ -1045,6 +1087,7 @@ static struct usb_function_instance *hidg_alloc_inst(void)
 	if (opts->minor < 0) {
 		ret = ERR_PTR(opts->minor);
 		kfree(opts);
+<<<<<<< HEAD
 		if (ida_is_empty(&hidg_ida))
 			ghid_cleanup();
 		goto unlock;
@@ -1065,6 +1108,11 @@ static struct usb_function_instance *hidg_alloc_inst(void)
 			opts->report_desc = ghid_device_android_mouse.report_desc;
 			break;
 		}
+=======
+		if (idr_is_empty(&hidg_ida.idr))
+			ghid_cleanup();
+		goto unlock;
+>>>>>>> FETCH_HEAD
 	}
 	config_group_init_type_name(&opts->func_inst.group, "", &hid_func_type);
 
@@ -1090,6 +1138,7 @@ static void hidg_free(struct usb_function *f)
 static void hidg_unbind(struct usb_configuration *c, struct usb_function *f)
 {
 	struct f_hidg *hidg = func_to_hidg(f);
+<<<<<<< HEAD
 	unsigned long flags;
 
 	pr_info("%s: destroying device %p\n", __func__, hidg);
@@ -1097,6 +1146,8 @@ static void hidg_unbind(struct usb_configuration *c, struct usb_function *f)
 	spin_lock_irqsave(&hidg->write_spinlock, flags);
 	hacky_device_list_remove(hidg);
 	spin_unlock_irqrestore(&hidg->write_spinlock, flags);
+=======
+>>>>>>> FETCH_HEAD
 
 	device_destroy(hidg_class, MKDEV(major, hidg->minor));
 	cdev_del(&hidg->cdev);
@@ -1155,6 +1206,7 @@ DECLARE_USB_FUNCTION_INIT(hid, hidg_alloc_inst, hidg_alloc);
 MODULE_LICENSE("GPL");
 MODULE_AUTHOR("Fabien Chouteau");
 
+<<<<<<< HEAD
 int hidg_bind_config(struct usb_configuration *c,
 			    struct hidg_func_descriptor *fdesc, int index)
 {
@@ -1209,6 +1261,8 @@ int hidg_bind_config(struct usb_configuration *c,
 	return status;
 }
 
+=======
+>>>>>>> FETCH_HEAD
 int ghid_setup(struct usb_gadget *g, int count)
 {
 	int status;

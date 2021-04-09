@@ -2352,13 +2352,20 @@ static unsigned long zs_can_compact(struct size_class *class)
 	return obj_wasted * class->pages_per_zspage;
 }
 
+<<<<<<< HEAD
 static unsigned long __zs_compact(struct zs_pool *pool,
 				  struct size_class *class)
+=======
+static void __zs_compact(struct zs_pool *pool, struct size_class *class)
+>>>>>>> FETCH_HEAD
 {
 	struct zs_compact_control cc;
 	struct zspage *src_zspage;
 	struct zspage *dst_zspage = NULL;
+<<<<<<< HEAD
 	unsigned long pages_freed = 0;
+=======
+>>>>>>> FETCH_HEAD
 
 	spin_lock(&class->lock);
 	while ((src_zspage = isolate_zspage(class, true))) {
@@ -2388,7 +2395,11 @@ static unsigned long __zs_compact(struct zs_pool *pool,
 		putback_zspage(class, dst_zspage);
 		if (putback_zspage(class, src_zspage) == ZS_EMPTY) {
 			free_zspage(pool, class, src_zspage);
+<<<<<<< HEAD
 			pages_freed += class->pages_per_zspage;
+=======
+			pool->stats.pages_compacted += class->pages_per_zspage;
+>>>>>>> FETCH_HEAD
 		}
 		spin_unlock(&class->lock);
 		cond_resched();
@@ -2399,15 +2410,21 @@ static unsigned long __zs_compact(struct zs_pool *pool,
 		putback_zspage(class, src_zspage);
 
 	spin_unlock(&class->lock);
+<<<<<<< HEAD
 
 	return pages_freed;
+=======
+>>>>>>> FETCH_HEAD
 }
 
 unsigned long zs_compact(struct zs_pool *pool)
 {
 	int i;
 	struct size_class *class;
+<<<<<<< HEAD
 	unsigned long pages_freed = 0;
+=======
+>>>>>>> FETCH_HEAD
 
 	for (i = zs_size_classes - 1; i >= 0; i--) {
 		class = pool->size_class[i];
@@ -2415,11 +2432,18 @@ unsigned long zs_compact(struct zs_pool *pool)
 			continue;
 		if (class->index != i)
 			continue;
+<<<<<<< HEAD
 		pages_freed += __zs_compact(pool, class);
 	}
 	atomic_long_add(pages_freed, &pool->stats.pages_compacted);
 
 	return pages_freed;
+=======
+		__zs_compact(pool, class);
+	}
+
+	return pool->stats.pages_compacted;
+>>>>>>> FETCH_HEAD
 }
 EXPORT_SYMBOL_GPL(zs_compact);
 
@@ -2436,12 +2460,20 @@ static unsigned long zs_shrinker_scan(struct shrinker *shrinker,
 	struct zs_pool *pool = container_of(shrinker, struct zs_pool,
 			shrinker);
 
+<<<<<<< HEAD
+=======
+	pages_freed = pool->stats.pages_compacted;
+>>>>>>> FETCH_HEAD
 	/*
 	 * Compact classes and calculate compaction delta.
 	 * Can run concurrently with a manually triggered
 	 * (by user) compaction.
 	 */
+<<<<<<< HEAD
 	pages_freed = zs_compact(pool);
+=======
+	pages_freed = zs_compact(pool) - pages_freed;
+>>>>>>> FETCH_HEAD
 
 	return pages_freed ? pages_freed : SHRINK_STOP;
 }

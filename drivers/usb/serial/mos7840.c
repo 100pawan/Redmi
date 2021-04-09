@@ -1362,10 +1362,15 @@ static int mos7840_write(struct tty_struct *tty, struct usb_serial_port *port,
 	if (urb->transfer_buffer == NULL) {
 		urb->transfer_buffer = kmalloc(URB_TRANSFER_BUFFER_SIZE,
 					       GFP_ATOMIC);
+<<<<<<< HEAD
 		if (!urb->transfer_buffer) {
 			bytes_sent = -ENOMEM;
 			goto exit;
 		}
+=======
+		if (!urb->transfer_buffer)
+			goto exit;
+>>>>>>> FETCH_HEAD
 	}
 	transfer_size = min(count, URB_TRANSFER_BUFFER_SIZE);
 

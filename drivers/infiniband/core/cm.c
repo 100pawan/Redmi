@@ -1252,7 +1252,10 @@ int ib_send_cm_req(struct ib_cm_id *cm_id,
 							    id.local_id);
 	if (IS_ERR(cm_id_priv->timewait_info)) {
 		ret = PTR_ERR(cm_id_priv->timewait_info);
+<<<<<<< HEAD
 		cm_id_priv->timewait_info = NULL;
+=======
+>>>>>>> FETCH_HEAD
 		goto out;
 	}
 
@@ -1684,7 +1687,10 @@ static int cm_req_handler(struct cm_work *work)
 							    id.local_id);
 	if (IS_ERR(cm_id_priv->timewait_info)) {
 		ret = PTR_ERR(cm_id_priv->timewait_info);
+<<<<<<< HEAD
 		cm_id_priv->timewait_info = NULL;
+=======
+>>>>>>> FETCH_HEAD
 		goto destroy;
 	}
 	cm_id_priv->timewait_info->work.remote_id = req_msg->local_comm_id;

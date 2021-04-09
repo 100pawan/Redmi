@@ -20,7 +20,11 @@
 #define _UAPI_LINUX_LIGHTNVM_H
 
 #ifdef __KERNEL__
+<<<<<<< HEAD
 #include <linux/const.h>
+=======
+#include <linux/kernel.h>
+>>>>>>> FETCH_HEAD
 #include <linux/ioctl.h>
 #else /* __KERNEL__ */
 #include <stdio.h>

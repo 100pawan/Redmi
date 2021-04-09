@@ -267,6 +267,7 @@ static arch_spinlock_t die_lock = __ARCH_SPIN_LOCK_UNLOCKED;
 static int die_owner = -1;
 static unsigned int die_nest_count;
 
+<<<<<<< HEAD
 #define FS_SYNC_TIMEOUT_MS 2000
 static struct work_struct fs_sync_work;
 static DECLARE_COMPLETION(sync_compl);
@@ -290,17 +291,22 @@ EXPORT_SYMBOL(exec_fs_sync_work);
 /*
  * This function is protected against re-entrancy.
  */
+=======
+>>>>>>> FETCH_HEAD
 static unsigned long oops_begin(void)
 {
 	int cpu;
 	unsigned long flags;
 
+<<<<<<< HEAD
 	if (!in_atomic())
 	{
 		pr_emerg("sys_sync:try sys sync in die\n");
 		exec_fs_sync_work();
 	}
 
+=======
+>>>>>>> FETCH_HEAD
 	oops_enter();
 
 	/* racy, but better than risking deadlock. */

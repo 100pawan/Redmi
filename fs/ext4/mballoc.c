@@ -2387,7 +2387,11 @@ int ext4_mb_alloc_groupinfo(struct super_block *sb, ext4_group_t ngroups)
 		return 0;
 
 	size = roundup_pow_of_two(sizeof(*sbi->s_group_info) * size);
+<<<<<<< HEAD
 	new_groupinfo = kvzalloc(size, GFP_KERNEL);
+=======
+	new_groupinfo = ext4_kvzalloc(size, GFP_KERNEL);
+>>>>>>> FETCH_HEAD
 	if (!new_groupinfo) {
 		ext4_msg(sb, KERN_ERR, "can't allocate buddy meta group");
 		return -ENOMEM;
@@ -2964,7 +2968,11 @@ ext4_mb_mark_diskspace_used(struct ext4_allocation_context *ac,
 	block = ext4_grp_offs_to_block(sb, &ac->ac_b_ex);
 
 	len = EXT4_C2B(sbi, ac->ac_b_ex.fe_len);
+<<<<<<< HEAD
 	if (!ext4_inode_block_valid(ac->ac_inode, block, len)) {
+=======
+	if (!ext4_data_block_valid(sbi, block, len)) {
+>>>>>>> FETCH_HEAD
 		ext4_error(sb, "Allocating blocks %llu-%llu which overlap "
 			   "fs metadata", block, block+len);
 		/* File system mounted not to panic on error
@@ -4651,7 +4659,10 @@ ext4_mb_free_metadata(handle_t *handle, struct ext4_buddy *e4b,
 				ext4_group_first_block_no(sb, group) +
 				EXT4_C2B(sbi, cluster),
 				"Block already on to-be-freed list");
+<<<<<<< HEAD
 			kmem_cache_free(ext4_free_data_cachep, new_entry);
+=======
+>>>>>>> FETCH_HEAD
 			return 0;
 		}
 	}
@@ -4726,7 +4737,11 @@ void ext4_free_blocks(handle_t *handle, struct inode *inode,
 
 	sbi = EXT4_SB(sb);
 	if (!(flags & EXT4_FREE_BLOCKS_VALIDATED) &&
+<<<<<<< HEAD
 	    !ext4_inode_block_valid(inode, block, count)) {
+=======
+	    !ext4_data_block_valid(sbi, block, count)) {
+>>>>>>> FETCH_HEAD
 		ext4_error(sb, "Freeing blocks not in datazone - "
 			   "block = %llu, count = %lu", block, count);
 		goto error_return;

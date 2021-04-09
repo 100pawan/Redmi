@@ -414,9 +414,12 @@ static void l2cap_chan_timeout(struct work_struct *work)
 	BT_DBG("chan %p state %s", chan, state_to_string(chan->state));
 
 	mutex_lock(&conn->chan_lock);
+<<<<<<< HEAD
 	/* __set_chan_timer() calls l2cap_chan_hold(chan) while scheduling
 	 * this work. No need to call l2cap_chan_hold(chan) here again.
 	 */
+=======
+>>>>>>> FETCH_HEAD
 	l2cap_chan_lock(chan);
 
 	if (chan->state == BT_CONNECTED || chan->state == BT_CONFIG)
@@ -429,12 +432,21 @@ static void l2cap_chan_timeout(struct work_struct *work)
 
 	l2cap_chan_close(chan, reason);
 
+<<<<<<< HEAD
 	chan->ops->close(chan);
 
 	l2cap_chan_unlock(chan);
 	l2cap_chan_put(chan);
 
 	mutex_unlock(&conn->chan_lock);
+=======
+	l2cap_chan_unlock(chan);
+
+	chan->ops->close(chan);
+	mutex_unlock(&conn->chan_lock);
+
+	l2cap_chan_put(chan);
+>>>>>>> FETCH_HEAD
 }
 
 struct l2cap_chan *l2cap_chan_create(void)
@@ -1728,9 +1740,15 @@ static void l2cap_conn_del(struct hci_conn *hcon, int err)
 
 		l2cap_chan_del(chan, err);
 
+<<<<<<< HEAD
 		chan->ops->close(chan);
 
 		l2cap_chan_unlock(chan);
+=======
+		l2cap_chan_unlock(chan);
+
+		chan->ops->close(chan);
+>>>>>>> FETCH_HEAD
 		l2cap_chan_put(chan);
 	}
 
@@ -4107,8 +4125,12 @@ static inline int l2cap_config_req(struct l2cap_conn *conn,
 		return 0;
 	}
 
+<<<<<<< HEAD
 	if (chan->state != BT_CONFIG && chan->state != BT_CONNECT2 &&
 	    chan->state != BT_CONNECTED) {
+=======
+	if (chan->state != BT_CONFIG && chan->state != BT_CONNECT2) {
+>>>>>>> FETCH_HEAD
 		cmd_reject_invalid_cid(conn, cmd->ident, chan->scid,
 				       chan->dcid);
 		goto unlock;
@@ -4331,7 +4353,10 @@ static inline int l2cap_disconnect_req(struct l2cap_conn *conn,
 		return 0;
 	}
 
+<<<<<<< HEAD
 	l2cap_chan_hold(chan);
+=======
+>>>>>>> FETCH_HEAD
 	l2cap_chan_lock(chan);
 
 	rsp.dcid = cpu_to_le16(chan->scid);
@@ -4340,11 +4365,20 @@ static inline int l2cap_disconnect_req(struct l2cap_conn *conn,
 
 	chan->ops->set_shutdown(chan);
 
+<<<<<<< HEAD
 	l2cap_chan_del(chan, ECONNRESET);
 
 	chan->ops->close(chan);
 
 	l2cap_chan_unlock(chan);
+=======
+	l2cap_chan_hold(chan);
+	l2cap_chan_del(chan, ECONNRESET);
+
+	l2cap_chan_unlock(chan);
+
+	chan->ops->close(chan);
+>>>>>>> FETCH_HEAD
 	l2cap_chan_put(chan);
 
 	mutex_unlock(&conn->chan_lock);
@@ -4376,21 +4410,36 @@ static inline int l2cap_disconnect_rsp(struct l2cap_conn *conn,
 		return 0;
 	}
 
+<<<<<<< HEAD
 	l2cap_chan_hold(chan);
+=======
+>>>>>>> FETCH_HEAD
 	l2cap_chan_lock(chan);
 
 	if (chan->state != BT_DISCONN) {
 		l2cap_chan_unlock(chan);
+<<<<<<< HEAD
 		l2cap_chan_put(chan);
+=======
+>>>>>>> FETCH_HEAD
 		mutex_unlock(&conn->chan_lock);
 		return 0;
 	}
 
+<<<<<<< HEAD
 	l2cap_chan_del(chan, 0);
 
 	chan->ops->close(chan);
 
 	l2cap_chan_unlock(chan);
+=======
+	l2cap_chan_hold(chan);
+	l2cap_chan_del(chan, 0);
+
+	l2cap_chan_unlock(chan);
+
+	chan->ops->close(chan);
+>>>>>>> FETCH_HEAD
 	l2cap_chan_put(chan);
 
 	mutex_unlock(&conn->chan_lock);
@@ -6675,10 +6724,16 @@ static int l2cap_data_rcv(struct l2cap_chan *chan, struct sk_buff *skb)
 		goto drop;
 	}
 
+<<<<<<< HEAD
 	if (chan->ops->filter) {
 		if (chan->ops->filter(chan, skb))
 			goto drop;
 	}
+=======
+	if ((chan->mode == L2CAP_MODE_ERTM ||
+	     chan->mode == L2CAP_MODE_STREAMING) && sk_filter(chan->data, skb))
+		goto drop;
+>>>>>>> FETCH_HEAD
 
 	if (!control->sframe) {
 		int err;

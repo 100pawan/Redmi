@@ -45,6 +45,10 @@
 //#include "ext4_ice.h"
 
 #include <trace/events/ext4.h>
+<<<<<<< HEAD
+=======
+#include <trace/events/android_fs.h>
+>>>>>>> FETCH_HEAD
 
 #define MPAGE_DA_EXTENT_TAIL 0x01
 
@@ -379,7 +383,12 @@ static int __check_block_validity(struct inode *inode, const char *func,
 	    (inode->i_ino ==
 	     le32_to_cpu(EXT4_SB(inode->i_sb)->s_es->s_journal_inum)))
 		return 0;
+<<<<<<< HEAD
 	if (!ext4_inode_block_valid(inode, map->m_pblk, map->m_len)) {
+=======
+	if (!ext4_data_block_valid(EXT4_SB(inode->i_sb), map->m_pblk,
+				   map->m_len)) {
+>>>>>>> FETCH_HEAD
 		ext4_error_inode(inode, func, line, map->m_pblk,
 				 "lblock %lu mapped to illegal pblock %llu "
 				 "(length %d)", (unsigned long) map->m_lblk,
@@ -1189,6 +1198,19 @@ static int ext4_write_begin(struct file *file, struct address_space *mapping,
 	pgoff_t index;
 	unsigned from, to;
 
+<<<<<<< HEAD
+=======
+	if (trace_android_fs_datawrite_start_enabled()) {
+		char *path, pathbuf[MAX_TRACE_PATHBUF_LEN];
+
+		path = android_fstrace_get_pathname(pathbuf,
+						    MAX_TRACE_PATHBUF_LEN,
+						    inode);
+		trace_android_fs_datawrite_start(inode, pos, len,
+						 current->pid, path,
+						 current->comm);
+	}
+>>>>>>> FETCH_HEAD
 	trace_ext4_write_begin(inode, pos, len, flags);
 	/*
 	 * Reserve one block more for addition to orphan list in case
@@ -1327,6 +1349,10 @@ static int ext4_write_end(struct file *file,
 	int i_size_changed = 0;
 	int inline_data = ext4_has_inline_data(inode);
 
+<<<<<<< HEAD
+=======
+	trace_android_fs_datawrite_end(inode, pos, len);
+>>>>>>> FETCH_HEAD
 	trace_ext4_write_end(inode, pos, len, copied);
 	if (inline_data) {
 		ret = ext4_write_inline_data_end(inode, pos, len,
@@ -1432,6 +1458,10 @@ static int ext4_journalled_write_end(struct file *file,
 	int size_changed = 0;
 	int inline_data = ext4_has_inline_data(inode);
 
+<<<<<<< HEAD
+=======
+	trace_android_fs_datawrite_end(inode, pos, len);
+>>>>>>> FETCH_HEAD
 	trace_ext4_journalled_write_end(inode, pos, len, copied);
 	from = pos & (PAGE_SIZE - 1);
 	to = from + len;
@@ -1982,13 +2012,22 @@ static int __ext4_journalled_writepage(struct page *page,
 	if (!ret)
 		ret = err;
 
+<<<<<<< HEAD
+=======
+	if (!ext4_has_inline_data(inode))
+		ext4_walk_page_buffers(NULL, page_bufs, 0, len,
+				       NULL, bput_one);
+>>>>>>> FETCH_HEAD
 	ext4_set_inode_state(inode, EXT4_STATE_JDATA);
 out:
 	unlock_page(page);
 out_no_pagelock:
+<<<<<<< HEAD
 	if (!inline_data && page_bufs)
 		ext4_walk_page_buffers(NULL, page_bufs, 0, len,
 				       NULL, bput_one);
+=======
+>>>>>>> FETCH_HEAD
 	brelse(inode_bh);
 	return ret;
 }
@@ -2919,6 +2958,19 @@ static int ext4_da_write_begin(struct file *file, struct address_space *mapping,
 					len, flags, pagep, fsdata);
 	}
 	*fsdata = (void *)0;
+<<<<<<< HEAD
+=======
+	if (trace_android_fs_datawrite_start_enabled()) {
+		char *path, pathbuf[MAX_TRACE_PATHBUF_LEN];
+
+		path = android_fstrace_get_pathname(pathbuf,
+						    MAX_TRACE_PATHBUF_LEN,
+						    inode);
+		trace_android_fs_datawrite_start(inode, pos, len,
+						 current->pid,
+						 path, current->comm);
+	}
+>>>>>>> FETCH_HEAD
 	trace_ext4_da_write_begin(inode, pos, len, flags);
 
 	if (ext4_test_inode_state(inode, EXT4_STATE_MAY_INLINE_DATA)) {
@@ -3037,6 +3089,10 @@ static int ext4_da_write_end(struct file *file,
 		return ext4_write_end(file, mapping, pos,
 				      len, copied, page, fsdata);
 
+<<<<<<< HEAD
+=======
+	trace_android_fs_datawrite_end(inode, pos, len);
+>>>>>>> FETCH_HEAD
 	trace_ext4_da_write_end(inode, pos, len, copied);
 	start = pos & (PAGE_SIZE - 1);
 	end = start + copied - 1;
@@ -3569,11 +3625,14 @@ static ssize_t ext4_direct_IO_read(struct kiocb *iocb, struct iov_iter *iter)
 	struct address_space *mapping = iocb->ki_filp->f_mapping;
 	struct inode *inode = mapping->host;
 	ssize_t ret;
+<<<<<<< HEAD
 	loff_t offset = iocb->ki_pos;
 	loff_t size = i_size_read(inode);
 
 	if (offset >= size)
 		return 0;
+=======
+>>>>>>> FETCH_HEAD
 
 	/*
 	 * Shared inode_lock is enough for us - it protects against concurrent
@@ -3606,6 +3665,10 @@ static ssize_t ext4_direct_IO(struct kiocb *iocb, struct iov_iter *iter)
 	size_t count = iov_iter_count(iter);
 	loff_t offset = iocb->ki_pos;
 	ssize_t ret;
+<<<<<<< HEAD
+=======
+	int rw = iov_iter_rw(iter);
+>>>>>>> FETCH_HEAD
 
 #ifdef CONFIG_EXT4_FS_ENCRYPTION
 	if (IS_ENCRYPTED(inode) && S_ISREG(inode->i_mode)
@@ -3623,6 +3686,31 @@ static ssize_t ext4_direct_IO(struct kiocb *iocb, struct iov_iter *iter)
 	if (ext4_has_inline_data(inode))
 		return 0;
 
+<<<<<<< HEAD
+=======
+	if (trace_android_fs_dataread_start_enabled() &&
+	    (rw == READ)) {
+		char *path, pathbuf[MAX_TRACE_PATHBUF_LEN];
+
+		path = android_fstrace_get_pathname(pathbuf,
+						    MAX_TRACE_PATHBUF_LEN,
+						    inode);
+		trace_android_fs_dataread_start(inode, offset, count,
+						current->pid, path,
+						current->comm);
+	}
+	if (trace_android_fs_datawrite_start_enabled() &&
+	    (rw == WRITE)) {
+		char *path, pathbuf[MAX_TRACE_PATHBUF_LEN];
+
+		path = android_fstrace_get_pathname(pathbuf,
+						    MAX_TRACE_PATHBUF_LEN,
+						    inode);
+		trace_android_fs_datawrite_start(inode, offset, count,
+						 current->pid, path,
+						 current->comm);
+	}
+>>>>>>> FETCH_HEAD
 	trace_ext4_direct_IO_enter(inode, offset, count, iov_iter_rw(iter));
 	if (iov_iter_rw(iter) == READ)
 		ret = ext4_direct_IO_read(iocb, iter);
@@ -3630,6 +3718,16 @@ static ssize_t ext4_direct_IO(struct kiocb *iocb, struct iov_iter *iter)
 		ret = ext4_direct_IO_write(iocb, iter);
 	trace_ext4_direct_IO_exit(inode, offset, count, iov_iter_rw(iter), ret);
 
+<<<<<<< HEAD
+=======
+	if (trace_android_fs_dataread_start_enabled() &&
+	    (rw == READ))
+		trace_android_fs_dataread_end(inode, offset, count);
+	if (trace_android_fs_datawrite_start_enabled() &&
+	    (rw == WRITE))
+		trace_android_fs_datawrite_end(inode, offset, count);
+
+>>>>>>> FETCH_HEAD
 	return ret;
 }
 
@@ -4715,7 +4813,11 @@ struct inode *__ext4_iget(struct super_block *sb, unsigned long ino,
 
 	ret = 0;
 	if (ei->i_file_acl &&
+<<<<<<< HEAD
 	    !ext4_inode_block_valid(inode, ei->i_file_acl, 1)) {
+=======
+	    !ext4_data_block_valid(EXT4_SB(sb), ei->i_file_acl, 1)) {
+>>>>>>> FETCH_HEAD
 		ext4_error_inode(inode, function, line, 0,
 				 "iget: bad extended attribute block %llu",
 				 ei->i_file_acl);
@@ -4905,7 +5007,11 @@ static int ext4_do_update_inode(handle_t *handle,
 	struct ext4_inode_info *ei = EXT4_I(inode);
 	struct buffer_head *bh = iloc->bh;
 	struct super_block *sb = inode->i_sb;
+<<<<<<< HEAD
 	int err = 0, block;
+=======
+	int err = 0, rc, block;
+>>>>>>> FETCH_HEAD
 	int need_datasync = 0, set_large_file = 0;
 	uid_t i_uid;
 	gid_t i_gid;
@@ -5015,9 +5121,15 @@ static int ext4_do_update_inode(handle_t *handle,
 					      bh->b_data);
 
 	BUFFER_TRACE(bh, "call ext4_handle_dirty_metadata");
+<<<<<<< HEAD
 	err = ext4_handle_dirty_metadata(handle, NULL, bh);
 	if (err)
 		goto out_brelse;
+=======
+	rc = ext4_handle_dirty_metadata(handle, NULL, bh);
+	if (!err)
+		err = rc;
+>>>>>>> FETCH_HEAD
 	ext4_clear_inode_state(inode, EXT4_STATE_NEW);
 	if (set_large_file) {
 		BUFFER_TRACE(EXT4_SB(sb)->s_sbh, "get write access");

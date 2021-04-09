@@ -29,7 +29,11 @@ static bool rtas_hp_event;
 unsigned long pseries_memory_block_size(void)
 {
 	struct device_node *np;
+<<<<<<< HEAD
 	u64 memblock_size = MIN_MEMORY_BLOCK_SIZE;
+=======
+	unsigned int memblock_size = MIN_MEMORY_BLOCK_SIZE;
+>>>>>>> FETCH_HEAD
 	struct resource r;
 
 	np = of_find_node_by_path("/ibm,dynamic-reconfiguration-memory");

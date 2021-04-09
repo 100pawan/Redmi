@@ -308,6 +308,7 @@ xfs_reinit_inode(
 }
 
 /*
+<<<<<<< HEAD
  * If we are allocating a new inode, then check what was returned is
  * actually a free, empty inode. If we are not allocating an inode,
  * then check we didn't find a free inode.
@@ -348,6 +349,8 @@ xfs_iget_check_free_state(
 }
 
 /*
+=======
+>>>>>>> FETCH_HEAD
  * Check the validity of the inode we just found it the cache
  */
 static int
@@ -396,12 +399,21 @@ xfs_iget_cache_hit(
 	}
 
 	/*
+<<<<<<< HEAD
 	 * Check the inode free state is valid. This also detects lookup
 	 * racing with unlinks.
 	 */
 	error = xfs_iget_check_free_state(ip, flags);
 	if (error)
 		goto out_error;
+=======
+	 * If lookup is racing with unlink return an error immediately.
+	 */
+	if (VFS_I(ip)->i_mode == 0 && !(flags & XFS_IGET_CREATE)) {
+		error = -ENOENT;
+		goto out_error;
+	}
+>>>>>>> FETCH_HEAD
 
 	/*
 	 * If IRECLAIMABLE is set, we've torn down the VFS inode already.
@@ -511,6 +523,7 @@ xfs_iget_cache_miss(
 
 	trace_xfs_iget_miss(ip);
 
+<<<<<<< HEAD
 
 	/*
 	 * Check the inode free state is valid. This also detects lookup
@@ -519,6 +532,12 @@ xfs_iget_cache_miss(
 	error = xfs_iget_check_free_state(ip, flags);
 	if (error)
 		goto out_destroy;
+=======
+	if ((VFS_I(ip)->i_mode == 0) && !(flags & XFS_IGET_CREATE)) {
+		error = -ENOENT;
+		goto out_destroy;
+	}
+>>>>>>> FETCH_HEAD
 
 	/*
 	 * Preload the radix tree so we can insert safely under the

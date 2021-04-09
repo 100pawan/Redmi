@@ -247,12 +247,20 @@ static int sc18is602_probe(struct i2c_client *client,
 	struct sc18is602_platform_data *pdata = dev_get_platdata(dev);
 	struct sc18is602 *hw;
 	struct spi_master *master;
+<<<<<<< HEAD
+=======
+	int error;
+>>>>>>> FETCH_HEAD
 
 	if (!i2c_check_functionality(client->adapter, I2C_FUNC_I2C |
 				     I2C_FUNC_SMBUS_WRITE_BYTE_DATA))
 		return -EINVAL;
 
+<<<<<<< HEAD
 	master = devm_spi_alloc_master(dev, sizeof(struct sc18is602));
+=======
+	master = spi_alloc_master(dev, sizeof(struct sc18is602));
+>>>>>>> FETCH_HEAD
 	if (!master)
 		return -ENOMEM;
 
@@ -303,7 +311,19 @@ static int sc18is602_probe(struct i2c_client *client,
 	master->min_speed_hz = hw->freq / 128;
 	master->max_speed_hz = hw->freq / 4;
 
+<<<<<<< HEAD
 	return devm_spi_register_master(dev, master);
+=======
+	error = devm_spi_register_master(dev, master);
+	if (error)
+		goto error_reg;
+
+	return 0;
+
+error_reg:
+	spi_master_put(master);
+	return error;
+>>>>>>> FETCH_HEAD
 }
 
 static const struct i2c_device_id sc18is602_id[] = {

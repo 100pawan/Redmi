@@ -55,7 +55,10 @@ MODULE_PARM_DESC(swap_opt_cmd, "Swap the Option (\"Alt\") and Command (\"Flag\")
 struct apple_sc {
 	unsigned long quirks;
 	unsigned int fn_on;
+<<<<<<< HEAD
 	unsigned int fn_found;
+=======
+>>>>>>> FETCH_HEAD
 	DECLARE_BITMAP(pressed_numlock, KEY_CNT);
 };
 
@@ -341,15 +344,21 @@ static int apple_input_mapping(struct hid_device *hdev, struct hid_input *hi,
 		struct hid_field *field, struct hid_usage *usage,
 		unsigned long **bit, int *max)
 {
+<<<<<<< HEAD
 	struct apple_sc *asc = hid_get_drvdata(hdev);
 
+=======
+>>>>>>> FETCH_HEAD
 	if (usage->hid == (HID_UP_CUSTOM | 0x0003) ||
 			usage->hid == (HID_UP_MSVENDOR | 0x0003) ||
 			usage->hid == (HID_UP_HPVENDOR2 | 0x0003)) {
 		/* The fn key on Apple USB keyboards */
 		set_bit(EV_REP, hi->input->evbit);
 		hid_map_usage_clear(hi, usage, bit, max, EV_KEY, KEY_FN);
+<<<<<<< HEAD
 		asc->fn_found = true;
+=======
+>>>>>>> FETCH_HEAD
 		apple_setup_input(hi->input);
 		return 1;
 	}
@@ -376,6 +385,7 @@ static int apple_input_mapped(struct hid_device *hdev, struct hid_input *hi,
 	return 0;
 }
 
+<<<<<<< HEAD
 static int apple_input_configured(struct hid_device *hdev,
 		struct hid_input *hidinput)
 {
@@ -389,6 +399,8 @@ static int apple_input_configured(struct hid_device *hdev,
 	return 0;
 }
 
+=======
+>>>>>>> FETCH_HEAD
 static int apple_probe(struct hid_device *hdev,
 		const struct hid_device_id *id)
 {
@@ -613,7 +625,10 @@ static struct hid_driver apple_driver = {
 	.event = apple_event,
 	.input_mapping = apple_input_mapping,
 	.input_mapped = apple_input_mapped,
+<<<<<<< HEAD
 	.input_configured = apple_input_configured,
+=======
+>>>>>>> FETCH_HEAD
 };
 module_hid_driver(apple_driver);
 

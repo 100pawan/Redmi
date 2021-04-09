@@ -314,16 +314,27 @@ static int qcom_smp2p_inbound_entry(struct qcom_smp2p *smp2p,
 static int smp2p_update_bits(void *data, u32 mask, u32 value)
 {
 	struct smp2p_entry *entry = data;
+<<<<<<< HEAD
 	unsigned long flags;
 	u32 orig;
 	u32 val;
 
 	spin_lock_irqsave(&entry->lock, flags);
+=======
+	u32 orig;
+	u32 val;
+
+	spin_lock(&entry->lock);
+>>>>>>> FETCH_HEAD
 	val = orig = readl(entry->value);
 	val &= ~mask;
 	val |= value;
 	writel(val, entry->value);
+<<<<<<< HEAD
 	spin_unlock_irqrestore(&entry->lock, flags);
+=======
+	spin_unlock(&entry->lock);
+>>>>>>> FETCH_HEAD
 
 	if (val != orig)
 		qcom_smp2p_kick(entry->smp2p);

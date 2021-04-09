@@ -140,7 +140,11 @@ static int amd_gpio_set_debounce(struct gpio_chip *gc, unsigned offset,
 			pin_reg |= BIT(DB_TMR_OUT_UNIT_OFF);
 			pin_reg &= ~BIT(DB_TMR_LARGE_OFF);
 		} else if (debounce < 250000) {
+<<<<<<< HEAD
 			time = debounce / 15625;
+=======
+			time = debounce / 15600;
+>>>>>>> FETCH_HEAD
 			pin_reg |= time & DB_TMR_OUT_MASK;
 			pin_reg &= ~BIT(DB_TMR_OUT_UNIT_OFF);
 			pin_reg |= BIT(DB_TMR_LARGE_OFF);
@@ -150,14 +154,22 @@ static int amd_gpio_set_debounce(struct gpio_chip *gc, unsigned offset,
 			pin_reg |= BIT(DB_TMR_OUT_UNIT_OFF);
 			pin_reg |= BIT(DB_TMR_LARGE_OFF);
 		} else {
+<<<<<<< HEAD
 			pin_reg &= ~(DB_CNTRl_MASK << DB_CNTRL_OFF);
+=======
+			pin_reg &= ~DB_CNTRl_MASK;
+>>>>>>> FETCH_HEAD
 			ret = -EINVAL;
 		}
 	} else {
 		pin_reg &= ~BIT(DB_TMR_OUT_UNIT_OFF);
 		pin_reg &= ~BIT(DB_TMR_LARGE_OFF);
 		pin_reg &= ~DB_TMR_OUT_MASK;
+<<<<<<< HEAD
 		pin_reg &= ~(DB_CNTRl_MASK << DB_CNTRL_OFF);
+=======
+		pin_reg &= ~DB_CNTRl_MASK;
+>>>>>>> FETCH_HEAD
 	}
 	writel(pin_reg, gpio_dev->base + offset * 4);
 	spin_unlock_irqrestore(&gpio_dev->lock, flags);
@@ -404,6 +416,10 @@ static int amd_gpio_irq_set_type(struct irq_data *d, unsigned int type)
 		pin_reg &= ~BIT(LEVEL_TRIG_OFF);
 		pin_reg &= ~(ACTIVE_LEVEL_MASK << ACTIVE_LEVEL_OFF);
 		pin_reg |= ACTIVE_HIGH << ACTIVE_LEVEL_OFF;
+<<<<<<< HEAD
+=======
+		pin_reg |= DB_TYPE_REMOVE_GLITCH << DB_CNTRL_OFF;
+>>>>>>> FETCH_HEAD
 		irq_set_handler_locked(d, handle_edge_irq);
 		break;
 
@@ -411,6 +427,10 @@ static int amd_gpio_irq_set_type(struct irq_data *d, unsigned int type)
 		pin_reg &= ~BIT(LEVEL_TRIG_OFF);
 		pin_reg &= ~(ACTIVE_LEVEL_MASK << ACTIVE_LEVEL_OFF);
 		pin_reg |= ACTIVE_LOW << ACTIVE_LEVEL_OFF;
+<<<<<<< HEAD
+=======
+		pin_reg |= DB_TYPE_REMOVE_GLITCH << DB_CNTRL_OFF;
+>>>>>>> FETCH_HEAD
 		irq_set_handler_locked(d, handle_edge_irq);
 		break;
 
@@ -418,6 +438,10 @@ static int amd_gpio_irq_set_type(struct irq_data *d, unsigned int type)
 		pin_reg &= ~BIT(LEVEL_TRIG_OFF);
 		pin_reg &= ~(ACTIVE_LEVEL_MASK << ACTIVE_LEVEL_OFF);
 		pin_reg |= BOTH_EADGE << ACTIVE_LEVEL_OFF;
+<<<<<<< HEAD
+=======
+		pin_reg |= DB_TYPE_REMOVE_GLITCH << DB_CNTRL_OFF;
+>>>>>>> FETCH_HEAD
 		irq_set_handler_locked(d, handle_edge_irq);
 		break;
 
@@ -425,6 +449,11 @@ static int amd_gpio_irq_set_type(struct irq_data *d, unsigned int type)
 		pin_reg |= LEVEL_TRIGGER << LEVEL_TRIG_OFF;
 		pin_reg &= ~(ACTIVE_LEVEL_MASK << ACTIVE_LEVEL_OFF);
 		pin_reg |= ACTIVE_HIGH << ACTIVE_LEVEL_OFF;
+<<<<<<< HEAD
+=======
+		pin_reg &= ~(DB_CNTRl_MASK << DB_CNTRL_OFF);
+		pin_reg |= DB_TYPE_PRESERVE_LOW_GLITCH << DB_CNTRL_OFF;
+>>>>>>> FETCH_HEAD
 		irq_set_handler_locked(d, handle_level_irq);
 		break;
 
@@ -432,6 +461,11 @@ static int amd_gpio_irq_set_type(struct irq_data *d, unsigned int type)
 		pin_reg |= LEVEL_TRIGGER << LEVEL_TRIG_OFF;
 		pin_reg &= ~(ACTIVE_LEVEL_MASK << ACTIVE_LEVEL_OFF);
 		pin_reg |= ACTIVE_LOW << ACTIVE_LEVEL_OFF;
+<<<<<<< HEAD
+=======
+		pin_reg &= ~(DB_CNTRl_MASK << DB_CNTRL_OFF);
+		pin_reg |= DB_TYPE_PRESERVE_HIGH_GLITCH << DB_CNTRL_OFF;
+>>>>>>> FETCH_HEAD
 		irq_set_handler_locked(d, handle_level_irq);
 		break;
 

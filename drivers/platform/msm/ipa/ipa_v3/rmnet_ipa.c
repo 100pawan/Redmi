@@ -2852,8 +2852,12 @@ static void tethering_stats_poll_queue(struct work_struct *work)
 
 	/* Schedule again only if there's an active polling interval */
 	if (ipa3_rmnet_ctx.polling_interval != 0)
+<<<<<<< HEAD
 		queue_delayed_work(system_power_efficient_wq, 
 			&ipa_tether_stats_poll_wakequeue_work,
+=======
+		schedule_delayed_work(&ipa_tether_stats_poll_wakequeue_work,
+>>>>>>> FETCH_HEAD
 			msecs_to_jiffies(ipa3_rmnet_ctx.polling_interval*1000));
 }
 
@@ -2947,8 +2951,12 @@ int rmnet_ipa3_poll_tethering_stats(struct wan_ioctl_poll_tethering_stats *data)
 		return 0;
 	}
 
+<<<<<<< HEAD
 	queue_delayed_work(system_power_efficient_wq, 
 						&ipa_tether_stats_poll_wakequeue_work, 0);
+=======
+	schedule_delayed_work(&ipa_tether_stats_poll_wakequeue_work, 0);
+>>>>>>> FETCH_HEAD
 	return 0;
 }
 

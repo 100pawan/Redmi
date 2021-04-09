@@ -6857,11 +6857,16 @@ static int md_ioctl(struct block_device *bdev, fmode_t mode,
 			err = -EBUSY;
 			goto out;
 		}
+<<<<<<< HEAD
 		if (test_and_set_bit(MD_CLOSING, &mddev->flags)) {
 			mutex_unlock(&mddev->open_mutex);
 			err = -EBUSY;
 			goto out;
 		}
+=======
+		WARN_ON_ONCE(test_bit(MD_CLOSING, &mddev->flags));
+		set_bit(MD_CLOSING, &mddev->flags);
+>>>>>>> FETCH_HEAD
 		did_set_md_closing = true;
 		mutex_unlock(&mddev->open_mutex);
 		sync_blockdev(bdev);
@@ -7104,8 +7109,12 @@ static int md_open(struct block_device *bdev, fmode_t mode)
 		 */
 		mddev_put(mddev);
 		/* Wait until bdev->bd_disk is definitely gone */
+<<<<<<< HEAD
 		if (work_pending(&mddev->del_work))
 			flush_workqueue(md_misc_wq);
+=======
+		flush_workqueue(md_misc_wq);
+>>>>>>> FETCH_HEAD
 		/* Then retry the open from the top */
 		return -ERESTARTSYS;
 	}

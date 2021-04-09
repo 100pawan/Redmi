@@ -57,6 +57,7 @@ extern const struct font_desc *get_default_font(int xres, int yres,
 /* Max. length for the name of a predefined font */
 #define MAX_FONT_NAME	32
 
+<<<<<<< HEAD
 /* Extra word getters */
 #define REFCOUNT(fd)	(((int *)(fd))[-1])
 #define FNTSIZE(fd)	(((int *)(fd))[-2])
@@ -70,4 +71,6 @@ struct font_data {
 	const unsigned char data[];
 } __packed;
 
+=======
+>>>>>>> FETCH_HEAD
 #endif /* _VIDEO_FONT_H */

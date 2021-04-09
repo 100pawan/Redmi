@@ -74,9 +74,12 @@ struct i2c_ram {
 	char    res1[4];	/* Reserved */
 	ushort  rpbase;		/* Relocation pointer */
 	char    res2[2];	/* Reserved */
+<<<<<<< HEAD
 	/* The following elements are only for CPM2 */
 	char    res3[4];	/* Reserved */
 	uint    sdmatmp;	/* Internal */
+=======
+>>>>>>> FETCH_HEAD
 };
 
 #define I2COM_START	0x80

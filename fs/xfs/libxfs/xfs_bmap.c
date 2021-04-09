@@ -781,8 +781,11 @@ try_another_ag:
 	*logflagsp = 0;
 	if ((error = xfs_alloc_vextent(&args))) {
 		xfs_iroot_realloc(ip, -1, whichfork);
+<<<<<<< HEAD
 		ASSERT(ifp->if_broot == NULL);
 		XFS_IFORK_FMT_SET(ip, whichfork, XFS_DINODE_FMT_EXTENTS);
+=======
+>>>>>>> FETCH_HEAD
 		xfs_btree_del_cursor(cur, XFS_BTREE_ERROR);
 		return error;
 	}
@@ -803,8 +806,11 @@ try_another_ag:
 	}
 	if (WARN_ON_ONCE(args.fsbno == NULLFSBLOCK)) {
 		xfs_iroot_realloc(ip, -1, whichfork);
+<<<<<<< HEAD
 		ASSERT(ifp->if_broot == NULL);
 		XFS_IFORK_FMT_SET(ip, whichfork, XFS_DINODE_FMT_EXTENTS);
+=======
+>>>>>>> FETCH_HEAD
 		xfs_btree_del_cursor(cur, XFS_BTREE_ERROR);
 		return -ENOSPC;
 	}

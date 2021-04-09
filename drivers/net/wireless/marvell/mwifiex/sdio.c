@@ -2049,8 +2049,11 @@ error:
 		kfree(card->mpa_rx.buf);
 		card->mpa_tx.buf_size = 0;
 		card->mpa_rx.buf_size = 0;
+<<<<<<< HEAD
 		card->mpa_tx.buf = NULL;
 		card->mpa_rx.buf = NULL;
+=======
+>>>>>>> FETCH_HEAD
 	}
 
 	return ret;

@@ -710,8 +710,12 @@ static int ieee80211_set_monitor_channel(struct wiphy *wiphy,
 			ret = ieee80211_vif_use_channel(sdata, chandef,
 					IEEE80211_CHANCTX_EXCLUSIVE);
 		}
+<<<<<<< HEAD
        // Patch: Always allow channel change, even if a normal virtual interface is present
        } else /*if (local->open_count == local->monitors)*/ {
+=======
+	} else if (local->open_count == local->monitors) {
+>>>>>>> FETCH_HEAD
 		local->_oper_chandef = *chandef;
 		ieee80211_hw_config(local, 0);
 	}
@@ -1965,7 +1969,10 @@ static int ieee80211_leave_mesh(struct wiphy *wiphy, struct net_device *dev)
 	ieee80211_stop_mesh(sdata);
 	mutex_lock(&sdata->local->mtx);
 	ieee80211_vif_release_channel(sdata);
+<<<<<<< HEAD
 	kfree(sdata->u.mesh.ie);
+=======
+>>>>>>> FETCH_HEAD
 	mutex_unlock(&sdata->local->mtx);
 
 	return 0;
@@ -2682,14 +2689,22 @@ static int ieee80211_set_bitrate_mask(struct wiphy *wiphy,
 			continue;
 
 		for (j = 0; j < IEEE80211_HT_MCS_MASK_LEN; j++) {
+<<<<<<< HEAD
 			if (sdata->rc_rateidx_mcs_mask[i][j] != 0xff) {
+=======
+			if (~sdata->rc_rateidx_mcs_mask[i][j]) {
+>>>>>>> FETCH_HEAD
 				sdata->rc_has_mcs_mask[i] = true;
 				break;
 			}
 		}
 
 		for (j = 0; j < NL80211_VHT_NSS_MAX; j++) {
+<<<<<<< HEAD
 			if (sdata->rc_rateidx_vht_mcs_mask[i][j] != 0xffff) {
+=======
+			if (~sdata->rc_rateidx_vht_mcs_mask[i][j]) {
+>>>>>>> FETCH_HEAD
 				sdata->rc_has_vht_mcs_mask[i] = true;
 				break;
 			}

@@ -1479,6 +1479,7 @@ static ssize_t usb_udc_softconn_store(struct device *dev,
 		struct device_attribute *attr, const char *buf, size_t n)
 {
 	struct usb_udc		*udc = container_of(dev, struct usb_udc, dev);
+<<<<<<< HEAD
 	ssize_t			ret;
 
 	mutex_lock(&udc_lock);
@@ -1486,6 +1487,12 @@ static ssize_t usb_udc_softconn_store(struct device *dev,
 		dev_err(dev, "soft-connect without a gadget driver\n");
 		ret = -EOPNOTSUPP;
 		goto out;
+=======
+
+	if (!udc->driver) {
+		dev_err(dev, "soft-connect without a gadget driver\n");
+		return -EOPNOTSUPP;
+>>>>>>> FETCH_HEAD
 	}
 
 	if (sysfs_streq(buf, "connect")) {
@@ -1497,6 +1504,7 @@ static ssize_t usb_udc_softconn_store(struct device *dev,
 		usb_gadget_udc_stop(udc);
 	} else {
 		dev_err(dev, "unsupported command '%s'\n", buf);
+<<<<<<< HEAD
 		ret = -EINVAL;
 		goto out;
 	}
@@ -1505,6 +1513,12 @@ static ssize_t usb_udc_softconn_store(struct device *dev,
 out:
 	mutex_unlock(&udc_lock);
 	return ret;
+=======
+		return -EINVAL;
+	}
+
+	return n;
+>>>>>>> FETCH_HEAD
 }
 static DEVICE_ATTR(soft_connect, S_IWUSR, NULL, usb_udc_softconn_store);
 

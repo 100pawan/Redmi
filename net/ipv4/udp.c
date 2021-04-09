@@ -1560,7 +1560,11 @@ int udp_queue_rcv_skb(struct sock *sk, struct sk_buff *skb)
 	/*
 	 * 	UDP-Lite specific tests, ignored on UDP sockets
 	 */
+<<<<<<< HEAD
 	if ((up->pcflag & UDPLITE_RECV_CC)  &&  UDP_SKB_CB(skb)->partial_cov) {
+=======
+	if ((is_udplite & UDPLITE_RECV_CC)  &&  UDP_SKB_CB(skb)->partial_cov) {
+>>>>>>> FETCH_HEAD
 
 		/*
 		 * MIB statistics other than incrementing the error count are
@@ -1591,7 +1595,10 @@ int udp_queue_rcv_skb(struct sock *sk, struct sk_buff *skb)
 		}
 	}
 
+<<<<<<< HEAD
 	prefetch(&sk->sk_rmem_alloc);
+=======
+>>>>>>> FETCH_HEAD
 	if (rcu_access_pointer(sk->sk_filter) &&
 	    udp_lib_checksum_complete(skb))
 			goto csum_error;

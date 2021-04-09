@@ -1129,7 +1129,10 @@ static void bond_setup_by_slave(struct net_device *bond_dev,
 
 	bond_dev->type		    = slave_dev->type;
 	bond_dev->hard_header_len   = slave_dev->hard_header_len;
+<<<<<<< HEAD
 	bond_dev->needed_headroom   = slave_dev->needed_headroom;
+=======
+>>>>>>> FETCH_HEAD
 	bond_dev->addr_len	    = slave_dev->addr_len;
 
 	memcpy(bond_dev->broadcast, slave_dev->broadcast,
@@ -1238,6 +1241,7 @@ static void bond_upper_dev_unlink(struct bonding *bond, struct slave *slave)
 	rtmsg_ifinfo(RTM_NEWLINK, slave->dev, IFF_SLAVE, GFP_KERNEL);
 }
 
+<<<<<<< HEAD
 static void slave_kobj_release(struct kobject *kobj)
 {
 	struct slave *slave = to_slave(kobj);
@@ -1271,6 +1275,9 @@ static int bond_kobj_init(struct slave *slave)
 
 static struct slave *bond_alloc_slave(struct bonding *bond,
 				      struct net_device *slave_dev)
+=======
+static struct slave *bond_alloc_slave(struct bonding *bond)
+>>>>>>> FETCH_HEAD
 {
 	struct slave *slave = NULL;
 
@@ -1278,17 +1285,24 @@ static struct slave *bond_alloc_slave(struct bonding *bond,
 	if (!slave)
 		return NULL;
 
+<<<<<<< HEAD
 	slave->bond = bond;
 	slave->dev = slave_dev;
 
 	if (bond_kobj_init(slave))
 		return NULL;
 
+=======
+>>>>>>> FETCH_HEAD
 	if (BOND_MODE(bond) == BOND_MODE_8023AD) {
 		SLAVE_AD_INFO(slave) = kzalloc(sizeof(struct ad_slave_info),
 					       GFP_KERNEL);
 		if (!SLAVE_AD_INFO(slave)) {
+<<<<<<< HEAD
 			kobject_put(&slave->kobj);
+=======
+			kfree(slave);
+>>>>>>> FETCH_HEAD
 			return NULL;
 		}
 	}
@@ -1297,6 +1311,20 @@ static struct slave *bond_alloc_slave(struct bonding *bond,
 	return slave;
 }
 
+<<<<<<< HEAD
+=======
+static void bond_free_slave(struct slave *slave)
+{
+	struct bonding *bond = bond_get_bond_by_slave(slave);
+
+	cancel_delayed_work_sync(&slave->notify_work);
+	if (BOND_MODE(bond) == BOND_MODE_8023AD)
+		kfree(SLAVE_AD_INFO(slave));
+
+	kfree(slave);
+}
+
+>>>>>>> FETCH_HEAD
 static void bond_fill_ifbond(struct bonding *bond, struct ifbond *info)
 {
 	info->bond_mode = BOND_MODE(bond);
@@ -1476,12 +1504,21 @@ int bond_enslave(struct net_device *bond_dev, struct net_device *slave_dev)
 	    bond->dev->addr_assign_type == NET_ADDR_RANDOM)
 		bond_set_dev_addr(bond->dev, slave_dev);
 
+<<<<<<< HEAD
 	new_slave = bond_alloc_slave(bond, slave_dev);
+=======
+	new_slave = bond_alloc_slave(bond);
+>>>>>>> FETCH_HEAD
 	if (!new_slave) {
 		res = -ENOMEM;
 		goto err_undo_flags;
 	}
 
+<<<<<<< HEAD
+=======
+	new_slave->bond = bond;
+	new_slave->dev = slave_dev;
+>>>>>>> FETCH_HEAD
 	/* Set the new_slave's queue_id to be zero.  Queue ID mapping
 	 * is set via sysfs or module option if desired.
 	 */
@@ -1806,7 +1843,11 @@ err_restore_mtu:
 	dev_set_mtu(slave_dev, new_slave->original_mtu);
 
 err_free:
+<<<<<<< HEAD
 	kobject_put(&new_slave->kobj);
+=======
+	bond_free_slave(new_slave);
+>>>>>>> FETCH_HEAD
 
 err_undo_flags:
 	/* Enslave of first slave has failed and we need to fix master's mac */
@@ -1990,7 +2031,11 @@ static int __bond_release_one(struct net_device *bond_dev,
 	if (!netif_is_bond_master(slave_dev))
 		slave_dev->priv_flags &= ~IFF_BONDING;
 
+<<<<<<< HEAD
 	kobject_put(&slave->kobj);
+=======
+	bond_free_slave(slave);
+>>>>>>> FETCH_HEAD
 
 	return 0;
 }
@@ -2011,8 +2056,12 @@ static int  bond_release_and_destroy(struct net_device *bond_dev,
 	int ret;
 
 	ret = bond_release(bond_dev, slave_dev);
+<<<<<<< HEAD
 	if (ret == 0 && !bond_has_slaves(bond) &&
 	    bond_dev->reg_state != NETREG_UNREGISTERING) {
+=======
+	if (ret == 0 && !bond_has_slaves(bond)) {
+>>>>>>> FETCH_HEAD
 		bond_dev->priv_flags |= IFF_DISABLE_NETPOLL;
 		netdev_info(bond_dev, "Destroying bond %s\n",
 			    bond_dev->name);
@@ -4158,6 +4207,7 @@ static netdev_tx_t bond_start_xmit(struct sk_buff *skb, struct net_device *dev)
 	return ret;
 }
 
+<<<<<<< HEAD
 static u32 bond_mode_bcast_speed(struct slave *slave, u32 speed)
 {
 	if (speed == 0 || speed == SPEED_UNKNOWN)
@@ -4168,13 +4218,21 @@ static u32 bond_mode_bcast_speed(struct slave *slave, u32 speed)
 	return speed;
 }
 
+=======
+>>>>>>> FETCH_HEAD
 static int bond_ethtool_get_settings(struct net_device *bond_dev,
 				     struct ethtool_cmd *ecmd)
 {
 	struct bonding *bond = netdev_priv(bond_dev);
+<<<<<<< HEAD
 	struct list_head *iter;
 	struct slave *slave;
 	u32 speed = 0;
+=======
+	unsigned long speed = 0;
+	struct list_head *iter;
+	struct slave *slave;
+>>>>>>> FETCH_HEAD
 
 	ecmd->duplex = DUPLEX_UNKNOWN;
 	ecmd->port = PORT_OTHER;
@@ -4186,6 +4244,7 @@ static int bond_ethtool_get_settings(struct net_device *bond_dev,
 	 */
 	bond_for_each_slave(bond, slave, iter) {
 		if (bond_slave_can_tx(slave)) {
+<<<<<<< HEAD
 			if (slave->speed != SPEED_UNKNOWN) {
 				if (BOND_MODE(bond) == BOND_MODE_BROADCAST)
 					speed = bond_mode_bcast_speed(slave,
@@ -4193,6 +4252,10 @@ static int bond_ethtool_get_settings(struct net_device *bond_dev,
 				else
 					speed += slave->speed;
 			}
+=======
+			if (slave->speed != SPEED_UNKNOWN)
+				speed += slave->speed;
+>>>>>>> FETCH_HEAD
 			if (ecmd->duplex == DUPLEX_UNKNOWN &&
 			    slave->duplex != DUPLEX_UNKNOWN)
 				ecmd->duplex = slave->duplex;

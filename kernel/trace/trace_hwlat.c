@@ -268,14 +268,34 @@ out:
 static struct cpumask save_cpumask;
 static bool disable_migrate;
 
+<<<<<<< HEAD
 static void move_to_next_cpu(void)
 {
 	struct cpumask *current_mask = &save_cpumask;
 	struct trace_array *tr = hwlat_trace;
+=======
+static void move_to_next_cpu(bool initmask)
+{
+	static struct cpumask *current_mask;
+>>>>>>> FETCH_HEAD
 	int next_cpu;
 
 	if (disable_migrate)
 		return;
+<<<<<<< HEAD
+=======
+
+	/* Just pick the first CPU on first iteration */
+	if (initmask) {
+		current_mask = &save_cpumask;
+		get_online_cpus();
+		cpumask_and(current_mask, cpu_online_mask, tracing_buffer_mask);
+		put_online_cpus();
+		next_cpu = cpumask_first(current_mask);
+		goto set_affinity;
+	}
+
+>>>>>>> FETCH_HEAD
 	/*
 	 * If for some reason the user modifies the CPU affinity
 	 * of this thread, than stop migrating for the duration
@@ -285,13 +305,21 @@ static void move_to_next_cpu(void)
 		goto disable;
 
 	get_online_cpus();
+<<<<<<< HEAD
 	cpumask_and(current_mask, cpu_online_mask, tr->tracing_cpumask);
+=======
+	cpumask_and(current_mask, cpu_online_mask, tracing_buffer_mask);
+>>>>>>> FETCH_HEAD
 	next_cpu = cpumask_next(smp_processor_id(), current_mask);
 	put_online_cpus();
 
 	if (next_cpu >= nr_cpu_ids)
 		next_cpu = cpumask_first(current_mask);
 
+<<<<<<< HEAD
+=======
+ set_affinity:
+>>>>>>> FETCH_HEAD
 	if (next_cpu >= nr_cpu_ids) /* Shouldn't happen! */
 		goto disable;
 
@@ -321,10 +349,19 @@ static void move_to_next_cpu(void)
 static int kthread_fn(void *data)
 {
 	u64 interval;
+<<<<<<< HEAD
 
 	while (!kthread_should_stop()) {
 
 		move_to_next_cpu();
+=======
+	bool initmask = true;
+
+	while (!kthread_should_stop()) {
+
+		move_to_next_cpu(initmask);
+		initmask = false;
+>>>>>>> FETCH_HEAD
 
 		local_irq_disable();
 		get_sample();
@@ -355,6 +392,7 @@ static int kthread_fn(void *data)
  */
 static int start_kthread(struct trace_array *tr)
 {
+<<<<<<< HEAD
 	struct cpumask *current_mask = &save_cpumask;
 	struct task_struct *kthread;
 	int next_cpu;
@@ -365,17 +403,23 @@ static int start_kthread(struct trace_array *tr)
 	cpumask_and(current_mask, cpu_online_mask, tr->tracing_cpumask);
 	put_online_cpus();
 	next_cpu = cpumask_first(current_mask);
+=======
+	struct task_struct *kthread;
+>>>>>>> FETCH_HEAD
 
 	kthread = kthread_create(kthread_fn, NULL, "hwlatd");
 	if (IS_ERR(kthread)) {
 		pr_err(BANNER "could not start sampling thread\n");
 		return -ENOMEM;
 	}
+<<<<<<< HEAD
 
 	cpumask_clear(current_mask);
 	cpumask_set_cpu(next_cpu, current_mask);
 	sched_setaffinity(kthread->pid, current_mask);
 
+=======
+>>>>>>> FETCH_HEAD
 	hwlat_kthread = kthread;
 	wake_up_process(kthread);
 

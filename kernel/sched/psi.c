@@ -225,7 +225,11 @@ static bool test_state(unsigned int *tasks, enum psi_states state)
 	case PSI_MEM_FULL:
 		return tasks[NR_MEMSTALL] && !tasks[NR_RUNNING];
 	case PSI_CPU_SOME:
+<<<<<<< HEAD
 		return tasks[NR_RUNNING] > tasks[NR_ONCPU];
+=======
+		return tasks[NR_RUNNING] > 1;
+>>>>>>> FETCH_HEAD
 	case PSI_NONIDLE:
 		return tasks[NR_IOWAIT] || tasks[NR_MEMSTALL] ||
 			tasks[NR_RUNNING];
@@ -669,6 +673,7 @@ static void record_times(struct psi_group_cpu *groupc, int cpu,
 		groupc->times[PSI_NONIDLE] += delta;
 }
 
+<<<<<<< HEAD
 static void psi_group_change(struct psi_group *group, int cpu,
 			     unsigned int clear, unsigned int set,
 			     bool wake_clock)
@@ -677,6 +682,15 @@ static void psi_group_change(struct psi_group *group, int cpu,
 	u32 state_mask = 0;
 	unsigned int t, m;
 	enum psi_states s;
+=======
+static u32 psi_group_change(struct psi_group *group, int cpu,
+			    unsigned int clear, unsigned int set)
+{
+	struct psi_group_cpu *groupc;
+	unsigned int t, m;
+	enum psi_states s;
+	u32 state_mask = 0;
+>>>>>>> FETCH_HEAD
 
 	groupc = per_cpu_ptr(group->pcpu, cpu);
 
@@ -696,10 +710,17 @@ static void psi_group_change(struct psi_group *group, int cpu,
 		if (!(m & (1 << t)))
 			continue;
 		if (groupc->tasks[t] == 0 && !psi_bug) {
+<<<<<<< HEAD
 			printk_deferred(KERN_ERR "psi: task underflow! cpu=%d t=%d tasks=[%u %u %u %u] clear=%x set=%x\n",
 					cpu, t, groupc->tasks[0],
 					groupc->tasks[1], groupc->tasks[2],
 					groupc->tasks[3], clear, set);
+=======
+			printk_deferred(KERN_ERR "psi: task underflow! cpu=%d t=%d tasks=[%u %u %u] clear=%x set=%x\n",
+					cpu, t, groupc->tasks[0],
+					groupc->tasks[1], groupc->tasks[2],
+					clear, set);
+>>>>>>> FETCH_HEAD
 			psi_bug = 1;
 		}
 		groupc->tasks[t]--;
@@ -718,11 +739,15 @@ static void psi_group_change(struct psi_group *group, int cpu,
 
 	write_seqcount_end(&groupc->seq);
 
+<<<<<<< HEAD
 	if (state_mask & group->poll_states)
 		psi_schedule_poll_work(group, 1);
 
 	if (wake_clock && !delayed_work_pending(&group->avgs_work))
 		schedule_delayed_work(&group->avgs_work, PSI_FREQ);
+=======
+	return state_mask;
+>>>>>>> FETCH_HEAD
 }
 
 static struct psi_group *iterate_groups(struct task_struct *task, void **iter)
@@ -749,19 +774,37 @@ static struct psi_group *iterate_groups(struct task_struct *task, void **iter)
 	return &psi_system;
 }
 
+<<<<<<< HEAD
 static void psi_flags_change(struct task_struct *task, int clear, int set)
 {
+=======
+void psi_task_change(struct task_struct *task, int clear, int set)
+{
+	int cpu = task_cpu(task);
+	struct psi_group *group;
+	bool wake_clock = true;
+	void *iter = NULL;
+
+	if (!task->pid)
+		return;
+
+>>>>>>> FETCH_HEAD
 	if (((task->psi_flags & set) ||
 	     (task->psi_flags & clear) != clear) &&
 	    !psi_bug) {
 		printk_deferred(KERN_ERR "psi: inconsistent task state! task=%d:%s cpu=%d psi_flags=%x clear=%x set=%x\n",
+<<<<<<< HEAD
 				task->pid, task->comm, task_cpu(task),
+=======
+				task->pid, task->comm, cpu,
+>>>>>>> FETCH_HEAD
 				task->psi_flags, clear, set);
 		psi_bug = 1;
 	}
 
 	task->psi_flags &= ~clear;
 	task->psi_flags |= set;
+<<<<<<< HEAD
 }
 
 void psi_task_change(struct task_struct *task, int clear, int set)
@@ -775,6 +818,8 @@ void psi_task_change(struct task_struct *task, int clear, int set)
 		return;
 
 	psi_flags_change(task, clear, set);
+=======
+>>>>>>> FETCH_HEAD
 
 	/*
 	 * Periodic aggregation shuts off if there is a period of no
@@ -787,6 +832,7 @@ void psi_task_change(struct task_struct *task, int clear, int set)
 		     wq_worker_last_func(task) == psi_avgs_work))
 		wake_clock = false;
 
+<<<<<<< HEAD
 	while ((group = iterate_groups(task, &iter)))
 		psi_group_change(group, cpu, clear, set, wake_clock);
 }
@@ -832,6 +878,16 @@ void psi_task_switch(struct task_struct *prev, struct task_struct *next,
 		iter = NULL;
 		while ((group = iterate_groups(prev, &iter)) && group != common)
 			psi_group_change(group, cpu, TSK_ONCPU, 0, true);
+=======
+	while ((group = iterate_groups(task, &iter))) {
+		u32 state_mask = psi_group_change(group, cpu, clear, set);
+
+		if (state_mask & group->poll_states)
+			psi_schedule_poll_work(group, 1);
+
+		if (wake_clock && !delayed_work_pending(&group->avgs_work))
+			schedule_delayed_work(&group->avgs_work, PSI_FREQ);
+>>>>>>> FETCH_HEAD
 	}
 }
 
@@ -963,11 +1019,17 @@ void cgroup_move_task(struct task_struct *task, struct css_set *to)
 
 	rq = task_rq_lock(task, &rf);
 
+<<<<<<< HEAD
 	if (task_on_rq_queued(task)) {
 		task_flags = TSK_RUNNING;
 		if (task_current(rq, task))
 			task_flags |= TSK_ONCPU;
 	} else if (task->in_iowait)
+=======
+	if (task_on_rq_queued(task))
+		task_flags = TSK_RUNNING;
+	else if (task->in_iowait)
+>>>>>>> FETCH_HEAD
 		task_flags = TSK_IOWAIT;
 
 	if (task->flags & PF_MEMSTALL)

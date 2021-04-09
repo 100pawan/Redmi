@@ -98,10 +98,13 @@
 #if defined(CONFIG_SYSCTL)
 
 /* External variables not in a header file. */
+<<<<<<< HEAD
 #ifdef CONFIG_USB
 int deny_new_usb __read_mostly = 0;
 EXPORT_SYMBOL(deny_new_usb);
 #endif
+=======
+>>>>>>> FETCH_HEAD
 extern int suid_dumpable;
 #ifdef CONFIG_COREDUMP
 extern int core_uses_pid;
@@ -123,7 +126,10 @@ static int sixty = 60;
 #endif
 
 static int __maybe_unused neg_one = -1;
+<<<<<<< HEAD
 static int __maybe_unused neg_three = -3;
+=======
+>>>>>>> FETCH_HEAD
 
 static int zero;
 static int __maybe_unused one = 1;
@@ -144,7 +150,10 @@ static int ten_thousand = 10000;
 #ifdef CONFIG_PERF_EVENTS
 static int six_hundred_forty_kb = 640 * 1024;
 #endif
+<<<<<<< HEAD
 static int two_hundred_fifty_five = 255;
+=======
+>>>>>>> FETCH_HEAD
 
 /* this is needed for the proc_doulongvec_minmax of vm_dirty_bytes */
 static unsigned long dirty_bytes_min = 2 * PAGE_SIZE;
@@ -347,6 +356,7 @@ static struct ctl_table kern_table[] = {
 		.maxlen		= sizeof(unsigned int),
 		.mode		= 0644,
 		.proc_handler	= sched_boost_handler,
+<<<<<<< HEAD
 		.extra1		= &neg_three,
 		.extra2		= &three,
 	},
@@ -360,6 +370,12 @@ static struct ctl_table kern_table[] = {
 		.extra2		= &one_thousand,
 	},
 	{
+=======
+		.extra1         = &zero,
+		.extra2		= &three,
+	},
+	{
+>>>>>>> FETCH_HEAD
 		.procname	= "sched_walt_rotate_big_tasks",
 		.data		= &sysctl_sched_walt_rotate_big_tasks,
 		.maxlen		= sizeof(unsigned int),
@@ -558,7 +574,11 @@ static struct ctl_table kern_table[] = {
 	},
 	{
 		.procname	= "sched_rr_timeslice_ms",
+<<<<<<< HEAD
 		.data		= &sysctl_sched_rr_timeslice,
+=======
+		.data		= &sched_rr_timeslice,
+>>>>>>> FETCH_HEAD
 		.maxlen		= sizeof(int),
 		.mode		= 0644,
 		.proc_handler	= sched_rr_handler,
@@ -599,6 +619,7 @@ static struct ctl_table kern_table[] = {
 		.extra2		= &one_hundred,
 	},
 #endif
+<<<<<<< HEAD
 	{
 		.procname	= "sched_lib_name",
 		.data		= sched_lib_name,
@@ -615,6 +636,8 @@ static struct ctl_table kern_table[] = {
 		.extra1		= &zero,
 		.extra2		= &two_hundred_fifty_five,
 	},
+=======
+>>>>>>> FETCH_HEAD
 #ifdef CONFIG_PROVE_LOCKING
 	{
 		.procname	= "prove_locking",
@@ -1005,6 +1028,7 @@ static struct ctl_table kern_table[] = {
 		.extra2		= &two,
 	},
 #endif
+<<<<<<< HEAD
 #ifdef CONFIG_USB
 	{
 		.procname	= "deny_new_usb",
@@ -1016,6 +1040,8 @@ static struct ctl_table kern_table[] = {
 		.extra2		= &one,
 	},
 #endif
+=======
+>>>>>>> FETCH_HEAD
 	{
 		.procname	= "ngroups_max",
 		.data		= &ngroups_max,

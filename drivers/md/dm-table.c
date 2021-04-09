@@ -397,13 +397,17 @@ int dm_get_device(struct dm_target *ti, const char *path, fmode_t mode,
 {
 	int r;
 	dev_t dev;
+<<<<<<< HEAD
 	unsigned int major, minor;
 	char dummy;
+=======
+>>>>>>> FETCH_HEAD
 	struct dm_dev_internal *dd;
 	struct dm_table *t = ti->table;
 
 	BUG_ON(!t);
 
+<<<<<<< HEAD
 	if (sscanf(path, "%u:%u%c", &major, &minor, &dummy) == 2) {
 		/* Extract the major/minor numbers */
 		dev = MKDEV(major, minor);
@@ -414,6 +418,11 @@ int dm_get_device(struct dm_target *ti, const char *path, fmode_t mode,
 		if (!dev)
 			return -ENODEV;
 	}
+=======
+	dev = dm_get_dev_t(path);
+	if (!dev)
+		return -ENODEV;
+>>>>>>> FETCH_HEAD
 
 	dd = find_device(&t->devices, dev);
 	if (!dd) {
@@ -849,12 +858,21 @@ void dm_table_set_type(struct dm_table *t, unsigned type)
 }
 EXPORT_SYMBOL_GPL(dm_table_set_type);
 
+<<<<<<< HEAD
 static int device_not_dax_capable(struct dm_target *ti, struct dm_dev *dev,
 				  sector_t start, sector_t len, void *data)
 {
 	struct request_queue *q = bdev_get_queue(dev->bdev);
 
 	return q && !blk_queue_dax(q);
+=======
+static int device_supports_dax(struct dm_target *ti, struct dm_dev *dev,
+			       sector_t start, sector_t len, void *data)
+{
+	struct request_queue *q = bdev_get_queue(dev->bdev);
+
+	return q && blk_queue_dax(q);
+>>>>>>> FETCH_HEAD
 }
 
 static bool dm_table_supports_dax(struct dm_table *t)
@@ -870,7 +888,11 @@ static bool dm_table_supports_dax(struct dm_table *t)
 			return false;
 
 		if (!ti->type->iterate_devices ||
+<<<<<<< HEAD
 		    ti->type->iterate_devices(ti, device_not_dax_capable, NULL))
+=======
+		    !ti->type->iterate_devices(ti, device_supports_dax, NULL))
+>>>>>>> FETCH_HEAD
 			return false;
 	}
 
@@ -1260,6 +1282,15 @@ void dm_table_event_callback(struct dm_table *t,
 
 void dm_table_event(struct dm_table *t)
 {
+<<<<<<< HEAD
+=======
+	/*
+	 * You can no longer call dm_table_event() from interrupt
+	 * context, use a bottom half instead.
+	 */
+	BUG_ON(in_interrupt());
+
+>>>>>>> FETCH_HEAD
 	mutex_lock(&_event_lock);
 	if (t->event_fn)
 		t->event_fn(t->event_context);
@@ -1307,6 +1338,7 @@ struct dm_target *dm_table_find_target(struct dm_table *t, sector_t sector)
 	return &t->targets[(KEYS_PER_NODE * n) + k];
 }
 
+<<<<<<< HEAD
 /*
  * type->iterate_devices() should be called when the sanity check needs to
  * iterate and check all underlying data devices. iterate_devices() will
@@ -1347,6 +1379,8 @@ static bool dm_table_any_dev_attr(struct dm_table *t,
 	return false;
 }
 
+=======
+>>>>>>> FETCH_HEAD
 static int count_device(struct dm_target *ti, struct dm_dev *dev,
 			sector_t start, sector_t len, void *data)
 {
@@ -1517,12 +1551,21 @@ static bool dm_table_discard_zeroes_data(struct dm_table *t)
 	return true;
 }
 
+<<<<<<< HEAD
 static int device_is_rotational(struct dm_target *ti, struct dm_dev *dev,
 				sector_t start, sector_t len, void *data)
 {
 	struct request_queue *q = bdev_get_queue(dev->bdev);
 
 	return q && !blk_queue_nonrot(q);
+=======
+static int device_is_nonrot(struct dm_target *ti, struct dm_dev *dev,
+			    sector_t start, sector_t len, void *data)
+{
+	struct request_queue *q = bdev_get_queue(dev->bdev);
+
+	return q && blk_queue_nonrot(q);
+>>>>>>> FETCH_HEAD
 }
 
 static int device_is_not_random(struct dm_target *ti, struct dm_dev *dev,
@@ -1533,12 +1576,18 @@ static int device_is_not_random(struct dm_target *ti, struct dm_dev *dev,
 	return q && !blk_queue_add_random(q);
 }
 
+<<<<<<< HEAD
 static int queue_no_sg_merge(struct dm_target *ti, struct dm_dev *dev,
 			     sector_t start, sector_t len, void *data)
+=======
+static int queue_supports_sg_merge(struct dm_target *ti, struct dm_dev *dev,
+				   sector_t start, sector_t len, void *data)
+>>>>>>> FETCH_HEAD
 {
 	struct request_queue *q = bdev_get_queue(dev->bdev);
 
 	return q && !test_bit(QUEUE_FLAG_NO_SG_MERGE, &q->queue_flags);
+<<<<<<< HEAD
 } 
 
 static int queue_no_inline_encryption(struct dm_target *ti,
@@ -1549,6 +1598,35 @@ static int queue_no_inline_encryption(struct dm_target *ti,
 	struct request_queue *q = bdev_get_queue(dev->bdev);
 
 	return q && !blk_queue_inlinecrypt(q);
+=======
+}
+
+static int queue_supports_inline_encryption(struct dm_target *ti,
+					    struct dm_dev *dev,
+					    sector_t start, sector_t len,
+					    void *data)
+{
+	struct request_queue *q = bdev_get_queue(dev->bdev);
+
+	return q && blk_queue_inlinecrypt(q);
+}
+
+static bool dm_table_all_devices_attribute(struct dm_table *t,
+					   iterate_devices_callout_fn func)
+{
+	struct dm_target *ti;
+	unsigned i = 0;
+
+	while (i < dm_table_get_num_targets(t)) {
+		ti = dm_table_get_target(t, i++);
+
+		if (!ti->type->iterate_devices ||
+		    !ti->type->iterate_devices(ti, func, NULL))
+			return false;
+	}
+
+	return true;
+>>>>>>> FETCH_HEAD
 }
 
 static int device_not_write_same_capable(struct dm_target *ti, struct dm_dev *dev,
@@ -1641,14 +1719,22 @@ void dm_table_set_restrictions(struct dm_table *t, struct request_queue *q,
 		q->limits.discard_zeroes_data = 0;
 
 	/* Ensure that all underlying devices are non-rotational. */
+<<<<<<< HEAD
 	if (dm_table_any_dev_attr(t, device_is_rotational))
 		queue_flag_clear_unlocked(QUEUE_FLAG_NONROT, q);
 	else
 		queue_flag_set_unlocked(QUEUE_FLAG_NONROT, q);
+=======
+	if (dm_table_all_devices_attribute(t, device_is_nonrot))
+		queue_flag_set_unlocked(QUEUE_FLAG_NONROT, q);
+	else
+		queue_flag_clear_unlocked(QUEUE_FLAG_NONROT, q);
+>>>>>>> FETCH_HEAD
 
 	if (!dm_table_supports_write_same(t))
 		q->limits.max_write_same_sectors = 0;
 
+<<<<<<< HEAD
 	if (dm_table_any_dev_attr(t, queue_no_sg_merge))
 		queue_flag_set_unlocked(QUEUE_FLAG_NO_SG_MERGE, q);
 	else
@@ -1658,6 +1744,17 @@ void dm_table_set_restrictions(struct dm_table *t, struct request_queue *q,
 		queue_flag_clear_unlocked(QUEUE_FLAG_INLINECRYPT, q);
 	else
 		queue_flag_set_unlocked(QUEUE_FLAG_INLINECRYPT, q);
+=======
+	if (dm_table_all_devices_attribute(t, queue_supports_sg_merge))
+		queue_flag_clear_unlocked(QUEUE_FLAG_NO_SG_MERGE, q);
+	else
+		queue_flag_set_unlocked(QUEUE_FLAG_NO_SG_MERGE, q);
+
+	if (dm_table_all_devices_attribute(t, queue_supports_inline_encryption))
+		queue_flag_set_unlocked(QUEUE_FLAG_INLINECRYPT, q);
+	else
+		queue_flag_clear_unlocked(QUEUE_FLAG_INLINECRYPT, q);
+>>>>>>> FETCH_HEAD
 
 	dm_table_verify_integrity(t);
 
@@ -1667,7 +1764,11 @@ void dm_table_set_restrictions(struct dm_table *t, struct request_queue *q,
 	 * Clear QUEUE_FLAG_ADD_RANDOM if any underlying device does not
 	 * have it set.
 	 */
+<<<<<<< HEAD
 	if (blk_queue_add_random(q) && dm_table_any_dev_attr(t, device_is_not_random))
+=======
+	if (blk_queue_add_random(q) && dm_table_all_devices_attribute(t, device_is_not_random))
+>>>>>>> FETCH_HEAD
 		queue_flag_clear_unlocked(QUEUE_FLAG_ADD_RANDOM, q);
 
 	/*

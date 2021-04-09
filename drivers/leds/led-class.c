@@ -128,7 +128,10 @@ void led_classdev_suspend(struct led_classdev *led_cdev)
 {
 	led_cdev->flags |= LED_SUSPENDED;
 	led_set_brightness_nopm(led_cdev, 0);
+<<<<<<< HEAD
 	flush_work(&led_cdev->set_brightness_work);
+=======
+>>>>>>> FETCH_HEAD
 }
 EXPORT_SYMBOL_GPL(led_classdev_suspend);
 

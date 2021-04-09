@@ -74,10 +74,15 @@ static inline void kmap_invalidate_coherent(struct page *page,
 			kvaddr = TLBTEMP_BASE_1 +
 				(page_to_phys(page) & DCACHE_ALIAS_MASK);
 
+<<<<<<< HEAD
 			preempt_disable();
 			__invalidate_dcache_page_alias(kvaddr,
 						       page_to_phys(page));
 			preempt_enable();
+=======
+			__invalidate_dcache_page_alias(kvaddr,
+						       page_to_phys(page));
+>>>>>>> FETCH_HEAD
 		}
 	}
 }
@@ -162,7 +167,10 @@ void flush_dcache_page(struct page *page)
 		if (!alias && !mapping)
 			return;
 
+<<<<<<< HEAD
 		preempt_disable();
+=======
+>>>>>>> FETCH_HEAD
 		virt = TLBTEMP_BASE_1 + (phys & DCACHE_ALIAS_MASK);
 		__flush_invalidate_dcache_page_alias(virt, phys);
 
@@ -173,7 +181,10 @@ void flush_dcache_page(struct page *page)
 
 		if (mapping)
 			__invalidate_icache_page_alias(virt, phys);
+<<<<<<< HEAD
 		preempt_enable();
+=======
+>>>>>>> FETCH_HEAD
 	}
 
 	/* There shouldn't be an entry in the cache for this page anymore. */
@@ -207,10 +218,15 @@ void local_flush_cache_page(struct vm_area_struct *vma, unsigned long address,
 	unsigned long phys = page_to_phys(pfn_to_page(pfn));
 	unsigned long virt = TLBTEMP_BASE_1 + (address & DCACHE_ALIAS_MASK);
 
+<<<<<<< HEAD
 	preempt_disable();
 	__flush_invalidate_dcache_page_alias(virt, phys);
 	__invalidate_icache_page_alias(virt, phys);
 	preempt_enable();
+=======
+	__flush_invalidate_dcache_page_alias(virt, phys);
+	__invalidate_icache_page_alias(virt, phys);
+>>>>>>> FETCH_HEAD
 }
 EXPORT_SYMBOL(local_flush_cache_page);
 
@@ -237,13 +253,19 @@ update_mmu_cache(struct vm_area_struct * vma, unsigned long addr, pte_t *ptep)
 		unsigned long phys = page_to_phys(page);
 		unsigned long tmp;
 
+<<<<<<< HEAD
 		preempt_disable();
+=======
+>>>>>>> FETCH_HEAD
 		tmp = TLBTEMP_BASE_1 + (phys & DCACHE_ALIAS_MASK);
 		__flush_invalidate_dcache_page_alias(tmp, phys);
 		tmp = TLBTEMP_BASE_1 + (addr & DCACHE_ALIAS_MASK);
 		__flush_invalidate_dcache_page_alias(tmp, phys);
 		__invalidate_icache_page_alias(tmp, phys);
+<<<<<<< HEAD
 		preempt_enable();
+=======
+>>>>>>> FETCH_HEAD
 
 		clear_bit(PG_arch_1, &page->flags);
 	}
@@ -277,9 +299,13 @@ void copy_to_user_page(struct vm_area_struct *vma, struct page *page,
 
 	if (alias) {
 		unsigned long t = TLBTEMP_BASE_1 + (vaddr & DCACHE_ALIAS_MASK);
+<<<<<<< HEAD
 		preempt_disable();
 		__flush_invalidate_dcache_page_alias(t, phys);
 		preempt_enable();
+=======
+		__flush_invalidate_dcache_page_alias(t, phys);
+>>>>>>> FETCH_HEAD
 	}
 
 	/* Copy data */
@@ -294,11 +320,17 @@ void copy_to_user_page(struct vm_area_struct *vma, struct page *page,
 	if (alias) {
 		unsigned long t = TLBTEMP_BASE_1 + (vaddr & DCACHE_ALIAS_MASK);
 
+<<<<<<< HEAD
 		preempt_disable();
 		__flush_invalidate_dcache_range((unsigned long) dst, len);
 		if ((vma->vm_flags & VM_EXEC) != 0)
 			__invalidate_icache_page_alias(t, phys);
 		preempt_enable();
+=======
+		__flush_invalidate_dcache_range((unsigned long) dst, len);
+		if ((vma->vm_flags & VM_EXEC) != 0)
+			__invalidate_icache_page_alias(t, phys);
+>>>>>>> FETCH_HEAD
 
 	} else if ((vma->vm_flags & VM_EXEC) != 0) {
 		__flush_dcache_range((unsigned long)dst,len);
@@ -320,9 +352,13 @@ extern void copy_from_user_page(struct vm_area_struct *vma, struct page *page,
 
 	if (alias) {
 		unsigned long t = TLBTEMP_BASE_1 + (vaddr & DCACHE_ALIAS_MASK);
+<<<<<<< HEAD
 		preempt_disable();
 		__flush_invalidate_dcache_page_alias(t, phys);
 		preempt_enable();
+=======
+		__flush_invalidate_dcache_page_alias(t, phys);
+>>>>>>> FETCH_HEAD
 	}
 
 	memcpy(dst, src, len);

@@ -256,7 +256,11 @@
 	case-therm-adc {
 		polling-delay-passive = <0>;
 		polling-delay = <0>;
+<<<<<<< HEAD
 		thermal-sensors = <&pm8953_vadc 0x11>;
+=======
+		thermal-sensors = <&pm8953_vadc 0x13>;
+>>>>>>> FETCH_HEAD
 		thermal-governor = "user_space";
 
 		trips {
@@ -1121,7 +1125,11 @@
 	case-therm-step {
 		polling-delay-passive = <2000>;
 		polling-delay = <0>;
+<<<<<<< HEAD
 		thermal-sensors = <&pm8953_vadc 0x11>;
+=======
+		thermal-sensors = <&pm8953_vadc 0x13>;
+>>>>>>> FETCH_HEAD
 		thermal-governor = "step_wise";
 
 		trips {

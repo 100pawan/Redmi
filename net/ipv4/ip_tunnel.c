@@ -98,10 +98,16 @@ struct ip_tunnel *ip_tunnel_lookup(struct ip_tunnel_net *itn,
 				   __be32 remote, __be32 local,
 				   __be32 key)
 {
+<<<<<<< HEAD
 	struct ip_tunnel *t, *cand = NULL;
 	struct hlist_head *head;
 	struct net_device *ndev;
 	unsigned int hash;
+=======
+	unsigned int hash;
+	struct ip_tunnel *t, *cand = NULL;
+	struct hlist_head *head;
+>>>>>>> FETCH_HEAD
 
 	hash = ip_tunnel_hash(key, remote);
 	head = &itn->tunnels[hash];
@@ -176,9 +182,14 @@ struct ip_tunnel *ip_tunnel_lookup(struct ip_tunnel_net *itn,
 	if (t)
 		return t;
 
+<<<<<<< HEAD
 	ndev = READ_ONCE(itn->fb_tunnel_dev);
 	if (ndev && ndev->flags & IFF_UP)
 		return netdev_priv(ndev);
+=======
+	if (itn->fb_tunnel_dev && itn->fb_tunnel_dev->flags & IFF_UP)
+		return netdev_priv(itn->fb_tunnel_dev);
+>>>>>>> FETCH_HEAD
 
 	return NULL;
 }
@@ -743,11 +754,15 @@ void ip_tunnel_xmit(struct sk_buff *skb, struct net_device *dev,
 		goto tx_error;
 	}
 
+<<<<<<< HEAD
 	df = tnl_params->frag_off;
 	if (skb->protocol == htons(ETH_P_IP) && !tunnel->ignore_df)
 		df |= (inner_iph->frag_off & htons(IP_DF));
 
 	if (tnl_update_pmtu(dev, skb, rt, df, inner_iph)) {
+=======
+	if (tnl_update_pmtu(dev, skb, rt, tnl_params->frag_off, inner_iph)) {
+>>>>>>> FETCH_HEAD
 		ip_rt_put(rt);
 		goto tx_error;
 	}
@@ -775,6 +790,13 @@ void ip_tunnel_xmit(struct sk_buff *skb, struct net_device *dev,
 			ttl = ip4_dst_hoplimit(&rt->dst);
 	}
 
+<<<<<<< HEAD
+=======
+	df = tnl_params->frag_off;
+	if (skb->protocol == htons(ETH_P_IP) && !tunnel->ignore_df)
+		df |= (inner_iph->frag_off&htons(IP_DF));
+
+>>>>>>> FETCH_HEAD
 	max_headroom = LL_RESERVED_SPACE(rt->dst.dev) + sizeof(struct iphdr)
 			+ rt->dst.header_len + ip_encap_hlen(&tunnel->encap);
 	if (max_headroom > dev->needed_headroom)
@@ -1195,9 +1217,15 @@ void ip_tunnel_uninit(struct net_device *dev)
 	struct ip_tunnel_net *itn;
 
 	itn = net_generic(net, tunnel->ip_tnl_net_id);
+<<<<<<< HEAD
 	ip_tunnel_del(itn, netdev_priv(dev));
 	if (itn->fb_tunnel_dev == dev)
 		WRITE_ONCE(itn->fb_tunnel_dev, NULL);
+=======
+	/* fb_tunnel_dev will be unregisted in net-exit call. */
+	if (itn->fb_tunnel_dev != dev)
+		ip_tunnel_del(itn, netdev_priv(dev));
+>>>>>>> FETCH_HEAD
 
 	dst_cache_reset(&tunnel->dst_cache);
 }

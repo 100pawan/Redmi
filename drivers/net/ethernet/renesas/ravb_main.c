@@ -1444,7 +1444,10 @@ static void ravb_tx_timeout_work(struct work_struct *work)
 	struct ravb_private *priv = container_of(work, struct ravb_private,
 						 work);
 	struct net_device *ndev = priv->ndev;
+<<<<<<< HEAD
 	int error;
+=======
+>>>>>>> FETCH_HEAD
 
 	netif_tx_stop_all_queues(ndev);
 
@@ -1453,6 +1456,7 @@ static void ravb_tx_timeout_work(struct work_struct *work)
 		ravb_ptp_stop(ndev);
 
 	/* Wait for DMA stopping */
+<<<<<<< HEAD
 	if (ravb_stop_dma(ndev)) {
 		/* If ravb_stop_dma() fails, the hardware is still operating
 		 * for TX and/or RX. So, this should not call the following
@@ -1465,11 +1469,15 @@ static void ravb_tx_timeout_work(struct work_struct *work)
 		ravb_rcv_snd_enable(ndev);
 		goto out;
 	}
+=======
+	ravb_stop_dma(ndev);
+>>>>>>> FETCH_HEAD
 
 	ravb_ring_free(ndev, RAVB_BE);
 	ravb_ring_free(ndev, RAVB_NC);
 
 	/* Device init */
+<<<<<<< HEAD
 	error = ravb_dmac_init(ndev);
 	if (error) {
 		/* If ravb_dmac_init() fails, descriptors are freed. So, this
@@ -1483,6 +1491,11 @@ static void ravb_tx_timeout_work(struct work_struct *work)
 	ravb_emac_init(ndev);
 
 out:
+=======
+	ravb_dmac_init(ndev);
+	ravb_emac_init(ndev);
+
+>>>>>>> FETCH_HEAD
 	/* Initialise PTP Clock driver */
 	if (priv->chip_id == RCAR_GEN2)
 		ravb_ptp_init(ndev, priv->pdev);
@@ -1729,6 +1742,7 @@ static int ravb_hwtstamp_get(struct net_device *ndev, struct ifreq *req)
 	config.flags = 0;
 	config.tx_type = priv->tstamp_tx_ctrl ? HWTSTAMP_TX_ON :
 						HWTSTAMP_TX_OFF;
+<<<<<<< HEAD
 	switch (priv->tstamp_rx_ctrl & RAVB_RXTSTAMP_TYPE) {
 	case RAVB_RXTSTAMP_TYPE_V2_L2_EVENT:
 		config.rx_filter = HWTSTAMP_FILTER_PTP_V2_L2_EVENT;
@@ -1739,6 +1753,14 @@ static int ravb_hwtstamp_get(struct net_device *ndev, struct ifreq *req)
 	default:
 		config.rx_filter = HWTSTAMP_FILTER_NONE;
 	}
+=======
+	if (priv->tstamp_rx_ctrl & RAVB_RXTSTAMP_TYPE_V2_L2_EVENT)
+		config.rx_filter = HWTSTAMP_FILTER_PTP_V2_L2_EVENT;
+	else if (priv->tstamp_rx_ctrl & RAVB_RXTSTAMP_TYPE_ALL)
+		config.rx_filter = HWTSTAMP_FILTER_ALL;
+	else
+		config.rx_filter = HWTSTAMP_FILTER_NONE;
+>>>>>>> FETCH_HEAD
 
 	return copy_to_user(req->ifr_data, &config, sizeof(config)) ?
 		-EFAULT : 0;

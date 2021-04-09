@@ -529,7 +529,10 @@ static void __init serial8250_isa_init_ports(void)
 		 */
 		up->mcr_mask = ~ALPHA_KLUDGE_MCR;
 		up->mcr_force = ALPHA_KLUDGE_MCR;
+<<<<<<< HEAD
 		serial8250_set_defaults(up);
+=======
+>>>>>>> FETCH_HEAD
 	}
 
 	/* chain base port ops to support Remote Supervisor Adapter */
@@ -553,6 +556,10 @@ static void __init serial8250_isa_init_ports(void)
 		port->membase  = old_serial_port[i].iomem_base;
 		port->iotype   = old_serial_port[i].io_type;
 		port->regshift = old_serial_port[i].iomem_reg_shift;
+<<<<<<< HEAD
+=======
+		serial8250_set_defaults(up);
+>>>>>>> FETCH_HEAD
 
 		port->irqflags |= irqflag;
 		if (serial8250_isa_config != NULL)
@@ -1046,10 +1053,15 @@ int serial8250_register_8250_port(struct uart_8250_port *up)
 
 			ret = uart_add_one_port(&serial8250_reg,
 						&uart->port);
+<<<<<<< HEAD
 			if (ret)
 				goto err;
 
 			ret = uart->port.line;
+=======
+			if (ret == 0)
+				ret = uart->port.line;
+>>>>>>> FETCH_HEAD
 		} else {
 			dev_info(uart->port.dev,
 				"skipping CIR port at 0x%lx / 0x%llx, IRQ %d\n",
@@ -1063,11 +1075,14 @@ int serial8250_register_8250_port(struct uart_8250_port *up)
 	mutex_unlock(&serial_mutex);
 
 	return ret;
+<<<<<<< HEAD
 
 err:
 	uart->port.dev = NULL;
 	mutex_unlock(&serial_mutex);
 	return ret;
+=======
+>>>>>>> FETCH_HEAD
 }
 EXPORT_SYMBOL(serial8250_register_8250_port);
 

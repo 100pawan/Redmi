@@ -95,7 +95,11 @@ static char *test_format_dir_get(void)
 		struct test_format *format = &test_formats[i];
 		FILE *file;
 
+<<<<<<< HEAD
 		scnprintf(name, PATH_MAX, "%s/%s", dir, format->name);
+=======
+		snprintf(name, PATH_MAX, "%s/%s", dir, format->name);
+>>>>>>> FETCH_HEAD
 
 		file = fopen(name, "w");
 		if (!file)
@@ -169,7 +173,10 @@ int test__pmu(int subtest __maybe_unused)
 		ret = 0;
 	} while (0);
 
+<<<<<<< HEAD
 	perf_pmu__del_formats(&formats);
+=======
+>>>>>>> FETCH_HEAD
 	test_format_dir_put(format);
 	return ret;
 }

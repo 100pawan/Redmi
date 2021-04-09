@@ -38,6 +38,7 @@ static bool xenvif_rx_ring_slots_available(struct xenvif_queue *queue)
 	RING_IDX prod, cons;
 	struct sk_buff *skb;
 	int needed;
+<<<<<<< HEAD
 	unsigned long flags;
 
 	spin_lock_irqsave(&queue->rx_queue.lock, flags);
@@ -47,6 +48,12 @@ static bool xenvif_rx_ring_slots_available(struct xenvif_queue *queue)
 		spin_unlock_irqrestore(&queue->rx_queue.lock, flags);
 		return false;
 	}
+=======
+
+	skb = skb_peek(&queue->rx_queue);
+	if (!skb)
+		return false;
+>>>>>>> FETCH_HEAD
 
 	needed = DIV_ROUND_UP(skb->len, XEN_PAGE_SIZE);
 	if (skb_is_gso(skb))
@@ -54,8 +61,11 @@ static bool xenvif_rx_ring_slots_available(struct xenvif_queue *queue)
 	if (skb->sw_hash)
 		needed++;
 
+<<<<<<< HEAD
 	spin_unlock_irqrestore(&queue->rx_queue.lock, flags);
 
+=======
+>>>>>>> FETCH_HEAD
 	do {
 		prod = queue->rx.sring->req_prod;
 		cons = queue->rx.req_cons;
@@ -497,13 +507,21 @@ static bool xenvif_rx_queue_ready(struct xenvif_queue *queue)
 	return queue->stalled && prod - cons >= 1;
 }
 
+<<<<<<< HEAD
 bool xenvif_have_rx_work(struct xenvif_queue *queue, bool test_kthread)
+=======
+static bool xenvif_have_rx_work(struct xenvif_queue *queue)
+>>>>>>> FETCH_HEAD
 {
 	return xenvif_rx_ring_slots_available(queue) ||
 		(queue->vif->stall_timeout &&
 		 (xenvif_rx_queue_stalled(queue) ||
 		  xenvif_rx_queue_ready(queue))) ||
+<<<<<<< HEAD
 		(test_kthread && kthread_should_stop()) ||
+=======
+		kthread_should_stop() ||
+>>>>>>> FETCH_HEAD
 		queue->vif->disabled;
 }
 
@@ -534,13 +552,18 @@ static void xenvif_wait_for_rx_work(struct xenvif_queue *queue)
 {
 	DEFINE_WAIT(wait);
 
+<<<<<<< HEAD
 	if (xenvif_have_rx_work(queue, true))
+=======
+	if (xenvif_have_rx_work(queue))
+>>>>>>> FETCH_HEAD
 		return;
 
 	for (;;) {
 		long ret;
 
 		prepare_to_wait(&queue->wq, &wait, TASK_INTERRUPTIBLE);
+<<<<<<< HEAD
 		if (xenvif_have_rx_work(queue, true))
 			break;
 		if (atomic_fetch_andnot(NETBK_RX_EOI | NETBK_COMMON_EOI,
@@ -548,6 +571,10 @@ static void xenvif_wait_for_rx_work(struct xenvif_queue *queue)
 		    (NETBK_RX_EOI | NETBK_COMMON_EOI))
 			xen_irq_lateeoi(queue->rx_irq, 0);
 
+=======
+		if (xenvif_have_rx_work(queue))
+			break;
+>>>>>>> FETCH_HEAD
 		ret = schedule_timeout(xenvif_rx_queue_timeout(queue));
 		if (!ret)
 			break;

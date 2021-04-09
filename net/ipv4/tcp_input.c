@@ -117,7 +117,10 @@ int sysctl_tcp_default_init_rwnd __read_mostly = TCP_INIT_CWND * 2;
 #define FLAG_SACK_RENEGING	0x2000 /* snd_una advanced to a sacked seq */
 #define FLAG_UPDATE_TS_RECENT	0x4000 /* tcp_replace_ts_recent() */
 #define FLAG_NO_CHALLENGE_ACK	0x8000 /* do not call tcp_send_challenge_ack()	*/
+<<<<<<< HEAD
 #define FLAG_ACK_MAYBE_DELAYED	0x10000 /* Likely a delayed ACK */
+=======
+>>>>>>> FETCH_HEAD
 
 #define FLAG_ACKED		(FLAG_DATA_ACKED|FLAG_SYN_ACKED)
 #define FLAG_NOT_DUP		(FLAG_DATA|FLAG_WIN_UPDATE|FLAG_ACKED)
@@ -2974,11 +2977,16 @@ static void tcp_fastretrans_alert(struct sock *sk, const int acked,
 	*rexmit = REXMIT_LOST;
 }
 
+<<<<<<< HEAD
 static void tcp_update_rtt_min(struct sock *sk, u32 rtt_us, const int flag)
+=======
+static void tcp_update_rtt_min(struct sock *sk, u32 rtt_us)
+>>>>>>> FETCH_HEAD
 {
 	struct tcp_sock *tp = tcp_sk(sk);
 	u32 wlen = sysctl_tcp_min_rtt_wlen * HZ;
 
+<<<<<<< HEAD
 	if ((flag & FLAG_ACK_MAYBE_DELAYED) && rtt_us > tcp_min_rtt(tp)) {
 		/* If the remote keeps returning delayed ACKs, eventually
 		 * the min filter would pick it up and overestimate the
@@ -2986,6 +2994,8 @@ static void tcp_update_rtt_min(struct sock *sk, u32 rtt_us, const int flag)
 		 */
 		return;
 	}
+=======
+>>>>>>> FETCH_HEAD
 	minmax_running_min(&tp->rtt_min, wlen, tcp_time_stamp,
 			   rtt_us ? : jiffies_to_usecs(1));
 }
@@ -3021,7 +3031,11 @@ static inline bool tcp_ack_update_rtt(struct sock *sk, const int flag,
 	 * always taken together with ACK, SACK, or TS-opts. Any negative
 	 * values will be skipped with the seq_rtt_us < 0 check above.
 	 */
+<<<<<<< HEAD
 	tcp_update_rtt_min(sk, ca_rtt_us, flag);
+=======
+	tcp_update_rtt_min(sk, ca_rtt_us);
+>>>>>>> FETCH_HEAD
 	tcp_rtt_estimator(sk, seq_rtt_us);
 	tcp_set_rto(sk);
 
@@ -3256,6 +3270,7 @@ static int tcp_clean_rtx_queue(struct sock *sk, int prior_fackets,
 	if (likely(first_ackt.v64) && !(flag & FLAG_RETRANS_DATA_ACKED)) {
 		seq_rtt_us = skb_mstamp_us_delta(now, &first_ackt);
 		ca_rtt_us = skb_mstamp_us_delta(now, &last_ackt);
+<<<<<<< HEAD
 
 		if (pkts_acked == 1 && last_in_flight < tp->mss_cache &&
 		    last_in_flight && !prior_sacked && fully_acked &&
@@ -3267,6 +3282,8 @@ static int tcp_clean_rtx_queue(struct sock *sk, int prior_fackets,
 			 */
 			flag |= FLAG_ACK_MAYBE_DELAYED;
 		}
+=======
+>>>>>>> FETCH_HEAD
 	}
 	if (sack->first_sackt.v64) {
 		sack_rtt_us = skb_mstamp_us_delta(now, &sack->first_sackt);
@@ -3586,8 +3603,15 @@ static void tcp_replace_ts_recent(struct tcp_sock *tp, u32 seq)
 	}
 }
 
+<<<<<<< HEAD
 /* This routine deals with acks during a TLP episode and ends an episode by
  * resetting tlp_high_seq. Ref: TLP algorithm in draft-ietf-tcpm-rack
+=======
+/* This routine deals with acks during a TLP episode.
+ * We mark the end of a TLP episode on receiving TLP dupack or when
+ * ack is after tlp_high_seq.
+ * Ref: loss detection algorithm in draft-dukkipati-tcpm-tcp-loss-probe.
+>>>>>>> FETCH_HEAD
  */
 static void tcp_process_tlp_ack(struct sock *sk, u32 ack, int flag)
 {
@@ -3596,10 +3620,14 @@ static void tcp_process_tlp_ack(struct sock *sk, u32 ack, int flag)
 	if (before(ack, tp->tlp_high_seq))
 		return;
 
+<<<<<<< HEAD
 	if (!tp->tlp_retrans) {
 		/* TLP of new data has been acknowledged */
 		tp->tlp_high_seq = 0;
 	} else if (flag & FLAG_DSACKING_ACK) {
+=======
+	if (flag & FLAG_DSACKING_ACK) {
+>>>>>>> FETCH_HEAD
 		/* This DSACK means original and TLP probe arrived; no loss */
 		tp->tlp_high_seq = 0;
 	} else if (after(ack, tp->tlp_high_seq)) {
@@ -3780,7 +3808,10 @@ static int tcp_ack(struct sock *sk, const struct sk_buff *skb, int flag)
 		tcp_schedule_loss_probe(sk);
 	delivered = tp->delivered - delivered;	/* freshly ACKed or SACKed */
 	lost = tp->lost - lost;			/* freshly marked lost */
+<<<<<<< HEAD
 	rs.is_ack_delayed = !!(flag & FLAG_ACK_MAYBE_DELAYED);
+=======
+>>>>>>> FETCH_HEAD
 	tcp_rate_gen(sk, delivered, lost, is_sack_reneg, &now, &rs);
 	tcp_cong_control(sk, ack, delivered, flag, &rs);
 	tcp_xmit_recovery(sk, rexmit);
@@ -4559,11 +4590,15 @@ static void tcp_data_queue_ofo(struct sock *sk, struct sk_buff *skb)
 	if (tcp_ooo_try_coalesce(sk, tp->ooo_last_skb,
 				 skb, &fragstolen)) {
 coalesce_done:
+<<<<<<< HEAD
 		/* For non sack flows, do not grow window to force DUPACK
 		 * and trigger fast retransmit.
 		 */
 		if (tcp_is_sack(tp))
 			tcp_grow_window(sk, skb);
+=======
+		tcp_grow_window(sk, skb);
+>>>>>>> FETCH_HEAD
 		kfree_skb_partial(skb, fragstolen);
 		skb = NULL;
 		goto add_sack;
@@ -4647,11 +4682,15 @@ add_sack:
 		tcp_sack_new_ofo_skb(sk, seq, end_seq);
 end:
 	if (skb) {
+<<<<<<< HEAD
 		/* For non sack flows, do not grow window to force DUPACK
 		 * and trigger fast retransmit.
 		 */
 		if (tcp_is_sack(tp))
 			tcp_grow_window(sk, skb);
+=======
+		tcp_grow_window(sk, skb);
+>>>>>>> FETCH_HEAD
 		skb_set_owner_r(skb, sk);
 	}
 }
@@ -5620,8 +5659,11 @@ void tcp_rcv_established(struct sock *sk, struct sk_buff *skb,
 				tcp_data_snd_check(sk);
 				if (!inet_csk_ack_scheduled(sk))
 					goto no_ack;
+<<<<<<< HEAD
 			} else {
 				tcp_update_wl(tp, TCP_SKB_CB(skb)->seq);
+=======
+>>>>>>> FETCH_HEAD
 			}
 
 			__tcp_ack_snd_check(sk, 0);

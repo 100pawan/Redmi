@@ -155,8 +155,12 @@ static void recent_entry_remove(struct recent_table *t, struct recent_entry *e)
 /*
  * Drop entries with timestamps older then 'time'.
  */
+<<<<<<< HEAD
 static void recent_entry_reap(struct recent_table *t, unsigned long time,
 			      struct recent_entry *working, bool update)
+=======
+static void recent_entry_reap(struct recent_table *t, unsigned long time)
+>>>>>>> FETCH_HEAD
 {
 	struct recent_entry *e;
 
@@ -166,12 +170,15 @@ static void recent_entry_reap(struct recent_table *t, unsigned long time,
 	e = list_entry(t->lru_list.next, struct recent_entry, lru_list);
 
 	/*
+<<<<<<< HEAD
 	 * Do not reap the entry which are going to be updated.
 	 */
 	if (e == working && update)
 		return;
 
 	/*
+=======
+>>>>>>> FETCH_HEAD
 	 * The last time stamp is the most recent.
 	 */
 	if (time_after(time, e->stamps[e->index-1]))
@@ -313,8 +320,12 @@ recent_mt(const struct sk_buff *skb, struct xt_action_param *par)
 
 		/* info->seconds must be non-zero */
 		if (info->check_set & XT_RECENT_REAP)
+<<<<<<< HEAD
 			recent_entry_reap(t, time, e,
 				info->check_set & XT_RECENT_UPDATE && ret);
+=======
+			recent_entry_reap(t, time);
+>>>>>>> FETCH_HEAD
 	}
 
 	if (info->check_set & XT_RECENT_SET ||

@@ -224,4 +224,7 @@ static struct platform_driver fs_enet_fec_mdio_driver = {
 };
 
 module_platform_driver(fs_enet_fec_mdio_driver);
+<<<<<<< HEAD
 MODULE_LICENSE("GPL");
+=======
+>>>>>>> FETCH_HEAD

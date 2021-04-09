@@ -18,7 +18,10 @@
 #include <linux/swap.h>
 #include <linux/falloc.h>
 #include <linux/uio.h>
+<<<<<<< HEAD
 #include <linux/fs.h>
+=======
+>>>>>>> FETCH_HEAD
 
 static const struct file_operations fuse_direct_io_file_operations;
 
@@ -2558,6 +2561,7 @@ long fuse_do_ioctl(struct file *file, unsigned int cmd, unsigned long arg,
 		struct iovec *iov = iov_page;
 
 		iov->iov_base = (void __user *)arg;
+<<<<<<< HEAD
 
 		switch (cmd) {
 		case FS_IOC_GETFLAGS:
@@ -2568,6 +2572,9 @@ long fuse_do_ioctl(struct file *file, unsigned int cmd, unsigned long arg,
 			iov->iov_len = _IOC_SIZE(cmd);
 			break;
 		}
+=======
+		iov->iov_len = _IOC_SIZE(cmd);
+>>>>>>> FETCH_HEAD
 
 		if (_IOC_DIR(cmd) & _IOC_WRITE) {
 			in_iov = iov;

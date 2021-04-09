@@ -391,6 +391,7 @@ prot_to_mode(u32 prot)
 	umode_t mode = 0;
 
 	if (!(prot & FIBF_NOWRITE))
+<<<<<<< HEAD
 		mode |= 0200;
 	if (!(prot & FIBF_NOREAD))
 		mode |= 0400;
@@ -408,6 +409,25 @@ prot_to_mode(u32 prot)
 		mode |= 0004;
 	if (prot & FIBF_OTR_EXECUTE)
 		mode |= 0001;
+=======
+		mode |= S_IWUSR;
+	if (!(prot & FIBF_NOREAD))
+		mode |= S_IRUSR;
+	if (!(prot & FIBF_NOEXECUTE))
+		mode |= S_IXUSR;
+	if (prot & FIBF_GRP_WRITE)
+		mode |= S_IWGRP;
+	if (prot & FIBF_GRP_READ)
+		mode |= S_IRGRP;
+	if (prot & FIBF_GRP_EXECUTE)
+		mode |= S_IXGRP;
+	if (prot & FIBF_OTR_WRITE)
+		mode |= S_IWOTH;
+	if (prot & FIBF_OTR_READ)
+		mode |= S_IROTH;
+	if (prot & FIBF_OTR_EXECUTE)
+		mode |= S_IXOTH;
+>>>>>>> FETCH_HEAD
 
 	return mode;
 }
@@ -418,6 +438,7 @@ mode_to_prot(struct inode *inode)
 	u32 prot = AFFS_I(inode)->i_protect;
 	umode_t mode = inode->i_mode;
 
+<<<<<<< HEAD
 	/*
 	 * First, clear all RWED bits for owner, group, other.
 	 * Then, recalculate them afresh.
@@ -463,6 +484,26 @@ mode_to_prot(struct inode *inode)
 		prot |= FIBF_OTR_WRITE;
 	if (mode & 0007)
 		prot |= FIBF_OTR_DELETE;
+=======
+	if (!(mode & S_IXUSR))
+		prot |= FIBF_NOEXECUTE;
+	if (!(mode & S_IRUSR))
+		prot |= FIBF_NOREAD;
+	if (!(mode & S_IWUSR))
+		prot |= FIBF_NOWRITE;
+	if (mode & S_IXGRP)
+		prot |= FIBF_GRP_EXECUTE;
+	if (mode & S_IRGRP)
+		prot |= FIBF_GRP_READ;
+	if (mode & S_IWGRP)
+		prot |= FIBF_GRP_WRITE;
+	if (mode & S_IXOTH)
+		prot |= FIBF_OTR_EXECUTE;
+	if (mode & S_IROTH)
+		prot |= FIBF_OTR_READ;
+	if (mode & S_IWOTH)
+		prot |= FIBF_OTR_WRITE;
+>>>>>>> FETCH_HEAD
 
 	AFFS_I(inode)->i_protect = prot;
 }

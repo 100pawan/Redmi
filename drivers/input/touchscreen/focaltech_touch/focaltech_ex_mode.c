@@ -3,7 +3,10 @@
  * FocalTech ftxxxx TouchScreen driver.
  *
  * Copyright (c) 2010-2017, Focaltech Ltd. All rights reserved.
+<<<<<<< HEAD
  * Copyright (C) 2019 XiaoMi, Inc.
+=======
+>>>>>>> FETCH_HEAD
  *
  * This software is licensed under the terms of the GNU General Public
  * License version 2, as published by the Free Software Foundation, and
@@ -17,6 +20,7 @@
  */
 
 /*****************************************************************************
+<<<<<<< HEAD
 *
 * File Name: focaltech_ex_mode.c
 *
@@ -44,11 +48,40 @@
 *****************************************************************************/
 struct fts_mode_flag
 {
+=======
+ *
+ * File Name: focaltech_ex_mode.c
+ *
+ *    Author: Liu WeiGuang
+ *
+ *   Created: 2016-08-31
+ *
+ *  Abstract:
+ *
+ * Reference:
+ *
+ *****************************************************************************/
+
+/*****************************************************************************
+ * 1.Included header files
+ *****************************************************************************/
+#include "focaltech_core.h"
+
+/*****************************************************************************
+ * 2.Private constant and macro definitions using #define
+ *****************************************************************************/
+
+/*****************************************************************************
+ * 3.Private enumerations, structures and unions using typedef
+ *****************************************************************************/
+struct fts_mode_flag {
+>>>>>>> FETCH_HEAD
 	int  fts_glove_mode_flag;
 	int  fts_cover_mode_flag;
 	int  fts_charger_mode_flag;
 };
 
+<<<<<<< HEAD
 struct fts_mode_flag g_fts_mode_flag;
 
 /*****************************************************************************
@@ -109,10 +142,58 @@ static ssize_t fts_touch_glove_store(struct device *dev, struct device_attribute
 		}
 	}
 	FTS_INFO("[Mode]glove mode status:  %d", g_fts_mode_flag.fts_glove_mode_flag);
+=======
+static struct fts_mode_flag g_fts_mode_flag;
+
+/*****************************************************************************
+ * 4.Static variables
+ *****************************************************************************/
+
+/*****************************************************************************
+ * 5.Global variable or extern global variabls/functions
+ *****************************************************************************/
+
+/*****************************************************************************
+ * 6.Static function prototypes
+ *****************************************************************************/
+
+#if FTS_GLOVE_EN
+static ssize_t fts_touch_glove_show(struct device *dev,
+		struct device_attribute *attr, char *buf)
+{
+	return snprintf(buf, PAGE_SIZE, "Glove: %s\n",
+			g_fts_mode_flag.fts_glove_mode_flag ? "On" : "Off");
+}
+
+static ssize_t fts_touch_glove_store(struct device *dev,
+		struct device_attribute *attr, const char *buf, size_t count)
+{
+	int ret;
+
+	if (FTS_SYSFS_ECHO_ON(buf)) {
+		if (!g_fts_mode_flag.fts_glove_mode_flag) {
+			FTS_INFO("[Mode]enter glove mode");
+			ret = fts_enter_glove_mode(fts_i2c_client, true);
+			if (ret >= 0)
+				g_fts_mode_flag.fts_glove_mode_flag = true;
+		}
+	} else if (FTS_SYSFS_ECHO_OFF(buf)) {
+		if (g_fts_mode_flag.fts_glove_mode_flag) {
+			FTS_INFO("[Mode]exit glove mode");
+			ret = fts_enter_glove_mode(fts_i2c_client, false);
+			if (ret >= 0)
+				g_fts_mode_flag.fts_glove_mode_flag = false;
+		}
+	}
+
+	FTS_INFO("[Mode]glove mode status:  %d",
+			g_fts_mode_flag.fts_glove_mode_flag);
+>>>>>>> FETCH_HEAD
 	return count;
 }
 
 /************************************************************************
+<<<<<<< HEAD
 * Name: fts_enter_glove_mode
 * Brief:  change glove mode
 * Input:  glove mode
@@ -120,17 +201,32 @@ static ssize_t fts_touch_glove_store(struct device *dev, struct device_attribute
 * Return: success >=0, otherwise failed
 ***********************************************************************/
 int fts_enter_glove_mode( struct i2c_client *client, int mode)
+=======
+ * Name: fts_enter_glove_mode
+ * Brief:  change glove mode
+ * Input:  glove mode
+ * Output: no
+ * Return: success >=0, otherwise failed
+ ***********************************************************************/
+int fts_enter_glove_mode(struct i2c_client *client, int mode)
+>>>>>>> FETCH_HEAD
 {
 	int ret = 0;
 	static u8 buf_addr[2] = { 0 };
 	static u8 buf_value[2] = { 0 };
+<<<<<<< HEAD
 	buf_addr[0] = FTS_REG_GLOVE_MODE_EN;
+=======
+
+	buf_addr[0] = FTS_REG_GLOVE_MODE_EN; /* glove control */
+>>>>>>> FETCH_HEAD
 
 	if (mode)
 		buf_value[0] = 0x01;
 	else
 		buf_value[0] = 0x00;
 
+<<<<<<< HEAD
 	ret = fts_i2c_write_reg( client, buf_addr[0], buf_value[0]);
 	if (ret<0)
 	{
@@ -138,10 +234,18 @@ int fts_enter_glove_mode( struct i2c_client *client, int mode)
 	}
 
 	return ret ;
+=======
+	ret = fts_i2c_write_reg(client, buf_addr[0], buf_value[0]);
+	if (ret < 0)
+		FTS_ERROR("[Mode]fts_enter_glove_mode write value fail");
+
+	return ret;
+>>>>>>> FETCH_HEAD
 
 }
 
 /* read and write glove mode
+<<<<<<< HEAD
 *   read example: cat  fts_touch_glove_mode---read  glove mode
 *   write example:echo 01 > fts_touch_glove_mode ---write glove mode to 01
 *
@@ -184,10 +288,53 @@ static ssize_t fts_touch_cover_store(struct device *dev, struct device_attribute
 		}
 	}
 	FTS_INFO("[Mode]cover mode status:  %d", g_fts_mode_flag.fts_cover_mode_flag);
+=======
+ *   read example: cat  fts_touch_glove_mode---read  glove mode
+ *   write example:echo 01 > fts_touch_glove_mode ---write glove mode to 01
+ *
+ */
+static DEVICE_ATTR(fts_glove_mode, 0644,
+		fts_touch_glove_show, fts_touch_glove_store);
+
+#endif
+
+#if FTS_COVER_EN
+static ssize_t fts_touch_cover_show(struct device *dev,
+		struct device_attribute *attr, char *buf)
+{
+	return snprintf(buf, PAGE_SIZE, "Cover: %s\n",
+			g_fts_mode_flag.fts_cover_mode_flag ? "On" : "Off");
+}
+
+static ssize_t fts_touch_cover_store(struct device *dev,
+		struct device_attribute *attr, const char *buf, size_t count)
+{
+	int ret;
+
+	if (FTS_SYSFS_ECHO_ON(buf)) {
+		if (!g_fts_mode_flag.fts_cover_mode_flag) {
+			FTS_INFO("[Mode]enter cover mode");
+			ret = fts_enter_cover_mode(fts_i2c_client, true);
+			if (ret >= 0)
+				g_fts_mode_flag.fts_cover_mode_flag = true;
+		}
+	} else if (FTS_SYSFS_ECHO_OFF(buf)) {
+		if (g_fts_mode_flag.fts_cover_mode_flag) {
+			FTS_INFO("[Mode]exit cover mode");
+			ret = fts_enter_cover_mode(fts_i2c_client, false);
+			if (ret >= 0)
+				g_fts_mode_flag.fts_cover_mode_flag = false;
+		}
+	}
+
+	FTS_INFO("[Mode]cover mode status:  %d",
+			g_fts_mode_flag.fts_cover_mode_flag);
+>>>>>>> FETCH_HEAD
 	return count;
 }
 
 /************************************************************************
+<<<<<<< HEAD
 * Name: fts_enter_cover_mode
 * Brief:  change cover mode
 * Input:  cover mode
@@ -195,17 +342,32 @@ static ssize_t fts_touch_cover_store(struct device *dev, struct device_attribute
 * Return: success >=0, otherwise failed
 ***********************************************************************/
 int  fts_enter_cover_mode( struct i2c_client *client, int mode)
+=======
+ * Name: fts_enter_cover_mode
+ * Brief:  change cover mode
+ * Input:  cover mode
+ * Output: no
+ * Return: success >=0, otherwise failed
+ ***********************************************************************/
+int  fts_enter_cover_mode(struct i2c_client *client, int mode)
+>>>>>>> FETCH_HEAD
 {
 	int ret = 0;
 	static u8 buf_addr[2] = { 0 };
 	static u8 buf_value[2] = { 0 };
+<<<<<<< HEAD
 	buf_addr[0] = FTS_REG_COVER_MODE_EN;
+=======
+
+	buf_addr[0] = FTS_REG_COVER_MODE_EN; /* cover control */
+>>>>>>> FETCH_HEAD
 
 	if (mode)
 		buf_value[0] = 0x01;
 	else
 		buf_value[0] = 0x00;
 
+<<<<<<< HEAD
 	ret = fts_i2c_write_reg( client, buf_addr[0], buf_value[0]);
 	if (ret<0)
 	{
@@ -258,28 +420,94 @@ static ssize_t fts_touch_charger_store(struct device *dev, struct device_attribu
 		}
 	}
 	FTS_INFO("[Mode]charger mode status: %d", g_fts_mode_flag.fts_charger_mode_flag);
+=======
+	ret = fts_i2c_write_reg(client, buf_addr[0], buf_value[0]);
+	if (ret < 0)
+		FTS_ERROR("[Mode] fts_enter_cover_mode write value fail\n");
+
+	return ret;
+
+}
+
+/* read and write cover mode
+ *   read example: cat  fts_touch_cover_mode---read  cover mode
+ *   write example:echo 01 > fts_touch_cover_mode ---write cover mode to 01
+ *
+ */
+static DEVICE_ATTR(fts_cover_mode, 0644,
+		fts_touch_cover_show, fts_touch_cover_store);
+
+#endif
+
+#if FTS_CHARGER_EN
+static ssize_t fts_touch_charger_show(struct device *dev,
+		struct device_attribute *attr, char *buf)
+{
+	return snprintf(buf, PAGE_SIZE, "Charger: %s\n",
+			g_fts_mode_flag.fts_charger_mode_flag ? "On" : "Off");
+}
+
+static ssize_t fts_touch_charger_store(struct device *dev,
+		struct device_attribute *attr, const char *buf, size_t count)
+{
+	int ret;
+
+	if (FTS_SYSFS_ECHO_ON(buf)) {
+		if (!g_fts_mode_flag.fts_charger_mode_flag) {
+			FTS_INFO("[Mode]enter charger mode");
+			ret = fts_enter_charger_mode(fts_i2c_client, true);
+			if (ret >= 0)
+				g_fts_mode_flag.fts_charger_mode_flag = true;
+		}
+	} else if (FTS_SYSFS_ECHO_OFF(buf)) {
+		if (g_fts_mode_flag.fts_charger_mode_flag) {
+			FTS_INFO("[Mode]exit charger mode");
+			ret = fts_enter_charger_mode(fts_i2c_client, false);
+			if (ret >= 0)
+				g_fts_mode_flag.fts_charger_mode_flag = false;
+		}
+	}
+
+	FTS_INFO("[Mode]charger mode status: %d",
+			g_fts_mode_flag.fts_charger_mode_flag);
+>>>>>>> FETCH_HEAD
 	return count;
 }
 
 /************************************************************************
+<<<<<<< HEAD
 * Name: fts_enter_charger_mode
 * Brief:  change charger mode
 * Input:  charger mode
 * Output: no
 * Return: success >=0, otherwise failed
 ***********************************************************************/
+=======
+ * Name: fts_enter_charger_mode
+ * Brief:  change charger mode
+ * Input:  charger mode
+ * Output: no
+ * Return: success >=0, otherwise failed
+ ***********************************************************************/
+>>>>>>> FETCH_HEAD
 int  fts_enter_charger_mode(struct i2c_client *client, int mode)
 {
 	int ret = 0;
 	static u8 buf_addr[2] = { 0 };
 	static u8 buf_value[2] = { 0 };
+<<<<<<< HEAD
 	buf_addr[0] = FTS_REG_CHARGER_MODE_EN;
+=======
+
+	buf_addr[0] = FTS_REG_CHARGER_MODE_EN; /* charger control */
+>>>>>>> FETCH_HEAD
 
 	if (mode)
 		buf_value[0] = 0x01;
 	else
 		buf_value[0] = 0x00;
 
+<<<<<<< HEAD
 	ret = fts_i2c_write_reg( client, buf_addr[0], buf_value[0]);
 	if (ret<0)
 	{
@@ -310,36 +538,88 @@ static struct attribute *fts_touch_mode_attrs[] =
 	#if FTS_CHARGER_EN
 	&dev_attr_fts_charger_mode.attr,
 	#endif
+=======
+	ret = fts_i2c_write_reg(client, buf_addr[0], buf_value[0]);
+	if (ret < 0)
+		FTS_DEBUG("[Mode]fts_enter_charger_mode write value fail");
+
+	return ret;
+
+}
+
+/* read and write charger mode
+ *   read example: cat  fts_touch_charger_mode---read  charger mode
+ *   write example:echo 01 > fts_touch_charger_mode ---write charger mode to 01
+ *
+ */
+static DEVICE_ATTR(fts_charger_mode, 0644,
+		fts_touch_charger_show, fts_touch_charger_store);
+
+#endif
+
+static struct attribute *fts_touch_mode_attrs[] = {
+#if FTS_GLOVE_EN
+	&dev_attr_fts_glove_mode.attr,
+#endif
+
+#if FTS_COVER_EN
+	&dev_attr_fts_cover_mode.attr,
+#endif
+
+#if FTS_CHARGER_EN
+	&dev_attr_fts_charger_mode.attr,
+#endif
+>>>>>>> FETCH_HEAD
 
 	NULL,
 };
 
+<<<<<<< HEAD
 static struct attribute_group fts_touch_mode_group =
 {
+=======
+static struct attribute_group fts_touch_mode_group = {
+>>>>>>> FETCH_HEAD
 	.attrs = fts_touch_mode_attrs,
 };
 
 int fts_ex_mode_init(struct i2c_client *client)
 {
+<<<<<<< HEAD
 	int err=0;
+=======
+	int err = 0;
+>>>>>>> FETCH_HEAD
 
 	g_fts_mode_flag.fts_glove_mode_flag = false;
 	g_fts_mode_flag.fts_cover_mode_flag = false;
 	g_fts_mode_flag.fts_charger_mode_flag = false;
 
 	err = sysfs_create_group(&client->dev.kobj, &fts_touch_mode_group);
+<<<<<<< HEAD
 	if (0 != err)
 	{
+=======
+	if (err != 0) {
+>>>>>>> FETCH_HEAD
 		FTS_ERROR("[Mode]create sysfs failed.");
 		sysfs_remove_group(&client->dev.kobj, &fts_touch_mode_group);
 		return -EIO;
 	}
+<<<<<<< HEAD
 	else
 	{
 		FTS_DEBUG("[Mode]create sysfs succeeded");
 	}
 
 	return err;
+=======
+
+	FTS_DEBUG("[Mode]create sysfs succeeded");
+
+	return err;
+
+>>>>>>> FETCH_HEAD
 }
 
 int fts_ex_mode_exit(struct i2c_client *client)
@@ -351,6 +631,7 @@ int fts_ex_mode_exit(struct i2c_client *client)
 int fts_ex_mode_recovery(struct i2c_client *client)
 {
 	int ret = 0;
+<<<<<<< HEAD
 	#if FTS_GLOVE_EN
 	if (g_fts_mode_flag.fts_glove_mode_flag)
 		ret = fts_enter_glove_mode(client, true);
@@ -368,3 +649,23 @@ int fts_ex_mode_recovery(struct i2c_client *client)
 
 	return ret;
 }
+=======
+#if FTS_GLOVE_EN
+	if (g_fts_mode_flag.fts_glove_mode_flag)
+		ret = fts_enter_glove_mode(client, true);
+#endif
+
+#if FTS_COVER_EN
+	if (g_fts_mode_flag.fts_cover_mode_flag)
+		ret = fts_enter_cover_mode(client, true);
+#endif
+
+#if FTS_CHARGER_EN
+	if (g_fts_mode_flag.fts_charger_mode_flag)
+		ret = fts_enter_charger_mode(client, true);
+#endif
+
+	return ret;
+}
+
+>>>>>>> FETCH_HEAD

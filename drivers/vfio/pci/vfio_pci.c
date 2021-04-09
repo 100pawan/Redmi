@@ -29,7 +29,10 @@
 #include <linux/vfio.h>
 #include <linux/vgaarb.h>
 #include <linux/nospec.h>
+<<<<<<< HEAD
 #include <linux/mm.h>
+=======
+>>>>>>> FETCH_HEAD
 
 #include "vfio_pci_private.h"
 
@@ -118,6 +121,11 @@ static void vfio_pci_probe_mmaps(struct vfio_pci_device *vdev)
 	int bar;
 	struct vfio_pci_dummy_resource *dummy_res;
 
+<<<<<<< HEAD
+=======
+	INIT_LIST_HEAD(&vdev->dummy_resources_list);
+
+>>>>>>> FETCH_HEAD
 	for (bar = PCI_STD_RESOURCES; bar <= PCI_STD_RESOURCE_END; bar++) {
 		res = vdev->pdev->resource + bar;
 
@@ -180,7 +188,10 @@ no_mmap:
 
 static void vfio_pci_try_bus_reset(struct vfio_pci_device *vdev);
 static void vfio_pci_disable(struct vfio_pci_device *vdev);
+<<<<<<< HEAD
 static int vfio_pci_try_zap_and_vma_lock_cb(struct pci_dev *pdev, void *data);
+=======
+>>>>>>> FETCH_HEAD
 
 /*
  * INTx masking requires the ability to disable INTx signaling via PCI_COMMAND
@@ -390,6 +401,7 @@ static void vfio_pci_release(void *device_data)
 	if (!(--vdev->refcnt)) {
 		vfio_spapr_pci_eeh_release(vdev->pdev);
 		vfio_pci_disable(vdev);
+<<<<<<< HEAD
 		mutex_lock(&vdev->igate);
 		if (vdev->err_trigger) {
 			eventfd_ctx_put(vdev->err_trigger);
@@ -403,6 +415,8 @@ static void vfio_pci_release(void *device_data)
 			vdev->req_trigger = NULL;
 		}
 		mutex_unlock(&vdev->igate);
+=======
+>>>>>>> FETCH_HEAD
 	}
 
 	mutex_unlock(&driver_lock);
@@ -669,12 +683,15 @@ int vfio_pci_register_dev_region(struct vfio_pci_device *vdev,
 	return 0;
 }
 
+<<<<<<< HEAD
 struct vfio_devices {
 	struct vfio_device **devices;
 	int cur_index;
 	int max_index;
 };
 
+=======
+>>>>>>> FETCH_HEAD
 static long vfio_pci_ioctl(void *device_data,
 			   unsigned int cmd, unsigned long arg)
 {
@@ -748,7 +765,11 @@ static long vfio_pci_ioctl(void *device_data,
 		{
 			void __iomem *io;
 			size_t size;
+<<<<<<< HEAD
 			u16 cmd;
+=======
+			u16 orig_cmd;
+>>>>>>> FETCH_HEAD
 
 			info.offset = VFIO_PCI_INDEX_TO_OFFSET(info.index);
 			info.flags = 0;
@@ -768,7 +789,14 @@ static long vfio_pci_ioctl(void *device_data,
 			 * Is it really there?  Enable memory decode for
 			 * implicit access in pci_map_rom().
 			 */
+<<<<<<< HEAD
 			cmd = vfio_pci_memory_lock_and_enable(vdev);
+=======
+			pci_read_config_word(pdev, PCI_COMMAND, &orig_cmd);
+			pci_write_config_word(pdev, PCI_COMMAND,
+					      orig_cmd | PCI_COMMAND_MEMORY);
+
+>>>>>>> FETCH_HEAD
 			io = pci_map_rom(pdev, &size);
 			if (io) {
 				info.flags = VFIO_REGION_INFO_FLAG_READ;
@@ -776,8 +804,13 @@ static long vfio_pci_ioctl(void *device_data,
 			} else {
 				info.size = 0;
 			}
+<<<<<<< HEAD
 			vfio_pci_memory_unlock_and_restore(vdev, cmd);
 
+=======
+
+			pci_write_config_word(pdev, PCI_COMMAND, orig_cmd);
+>>>>>>> FETCH_HEAD
 			break;
 		}
 		case VFIO_PCI_VGA_REGION_INDEX:
@@ -925,6 +958,7 @@ static long vfio_pci_ioctl(void *device_data,
 		return ret;
 
 	} else if (cmd == VFIO_DEVICE_RESET) {
+<<<<<<< HEAD
 		int ret;
 
 		if (!vdev->reset_works)
@@ -935,6 +969,10 @@ static long vfio_pci_ioctl(void *device_data,
 		up_write(&vdev->memory_lock);
 
 		return ret;
+=======
+		return vdev->reset_works ?
+			pci_try_reset_function(vdev->pdev) : -EINVAL;
+>>>>>>> FETCH_HEAD
 
 	} else if (cmd == VFIO_DEVICE_GET_PCI_HOT_RESET_INFO) {
 		struct vfio_pci_hot_reset_info hdr;
@@ -1014,9 +1052,14 @@ reset_info_exit:
 		int32_t *group_fds;
 		struct vfio_pci_group_entry *groups;
 		struct vfio_pci_group_info info;
+<<<<<<< HEAD
 		struct vfio_devices devs = { .cur_index = 0 };
 		bool slot = false;
 		int i, group_idx, mem_idx = 0, count = 0, ret = 0;
+=======
+		bool slot = false;
+		int i, count = 0, ret = 0;
+>>>>>>> FETCH_HEAD
 
 		minsz = offsetofend(struct vfio_pci_hot_reset, count);
 
@@ -1068,9 +1111,15 @@ reset_info_exit:
 		 * user interface and store the group and iommu ID.  This
 		 * ensures the group is held across the reset.
 		 */
+<<<<<<< HEAD
 		for (group_idx = 0; group_idx < hdr.count; group_idx++) {
 			struct vfio_group *group;
 			struct fd f = fdget(group_fds[group_idx]);
+=======
+		for (i = 0; i < hdr.count; i++) {
+			struct vfio_group *group;
+			struct fd f = fdget(group_fds[i]);
+>>>>>>> FETCH_HEAD
 			if (!f.file) {
 				ret = -EBADF;
 				break;
@@ -1083,9 +1132,14 @@ reset_info_exit:
 				break;
 			}
 
+<<<<<<< HEAD
 			groups[group_idx].group = group;
 			groups[group_idx].id =
 					vfio_external_user_iommu_id(group);
+=======
+			groups[i].group = group;
+			groups[i].id = vfio_external_user_iommu_id(group);
+>>>>>>> FETCH_HEAD
 		}
 
 		kfree(group_fds);
@@ -1104,6 +1158,7 @@ reset_info_exit:
 		ret = vfio_pci_for_each_slot_or_bus(vdev->pdev,
 						    vfio_pci_validate_devs,
 						    &info, slot);
+<<<<<<< HEAD
 
 		if (ret)
 			goto hot_reset_release;
@@ -1163,6 +1218,16 @@ hot_reset_release:
 
 		for (group_idx--; group_idx >= 0; group_idx--)
 			vfio_group_put_external_user(groups[group_idx].group);
+=======
+		if (!ret)
+			/* User has access, do the reset */
+			ret = slot ? pci_try_reset_slot(vdev->pdev->slot) :
+				     pci_try_reset_bus(vdev->pdev->bus);
+
+hot_reset_release:
+		for (i--; i >= 0; i--)
+			vfio_group_put_external_user(groups[i].group);
+>>>>>>> FETCH_HEAD
 
 		kfree(groups);
 		return ret;
@@ -1221,6 +1286,7 @@ static ssize_t vfio_pci_write(void *device_data, const char __user *buf,
 	return vfio_pci_rw(device_data, (char __user *)buf, count, ppos, true);
 }
 
+<<<<<<< HEAD
 /* Return 1 on zap and vma_lock acquired, 0 on contention (only with @try) */
 static int vfio_pci_zap_and_vma_lock(struct vfio_pci_device *vdev, bool try)
 {
@@ -1416,6 +1482,8 @@ static const struct vm_operations_struct vfio_pci_mmap_ops = {
 	.fault = vfio_pci_mmap_fault,
 };
 
+=======
+>>>>>>> FETCH_HEAD
 static int vfio_pci_mmap(void *device_data, struct vm_area_struct *vma)
 {
 	struct vfio_pci_device *vdev = device_data;
@@ -1481,6 +1549,7 @@ static int vfio_pci_mmap(void *device_data, struct vm_area_struct *vma)
 	vma->vm_page_prot = pgprot_noncached(vma->vm_page_prot);
 	vma->vm_pgoff = (pci_resource_start(pdev, index) >> PAGE_SHIFT) + pgoff;
 
+<<<<<<< HEAD
 	/*
 	 * See remap_pfn_range(), called from vfio_pci_fault() but we can't
 	 * change vm_flags within the fault handler.  Set them now.
@@ -1489,6 +1558,10 @@ static int vfio_pci_mmap(void *device_data, struct vm_area_struct *vma)
 	vma->vm_ops = &vfio_pci_mmap_ops;
 
 	return 0;
+=======
+	return remap_pfn_range(vma, vma->vm_start, vma->vm_pgoff,
+			       req_len, vma->vm_page_prot);
+>>>>>>> FETCH_HEAD
 }
 
 static void vfio_pci_request(void *device_data, unsigned int count)
@@ -1545,10 +1618,14 @@ static int vfio_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
 	vdev->irq_type = VFIO_PCI_NUM_IRQS;
 	mutex_init(&vdev->igate);
 	spin_lock_init(&vdev->irqlock);
+<<<<<<< HEAD
 	INIT_LIST_HEAD(&vdev->dummy_resources_list);
 	mutex_init(&vdev->vma_lock);
 	INIT_LIST_HEAD(&vdev->vma_list);
 	init_rwsem(&vdev->memory_lock);
+=======
+
+>>>>>>> FETCH_HEAD
 	ret = vfio_add_group_dev(&pdev->dev, &vfio_pci_ops, vdev);
 	if (ret) {
 		vfio_iommu_group_put(group, &pdev->dev);
@@ -1642,6 +1719,7 @@ static struct pci_driver vfio_pci_driver = {
 	.err_handler	= &vfio_err_handlers,
 };
 
+<<<<<<< HEAD
 static int vfio_pci_get_devs(struct pci_dev *pdev, void *data)
 {
 	struct vfio_devices *devs = data;
@@ -1668,6 +1746,18 @@ static int vfio_pci_try_zap_and_vma_lock_cb(struct pci_dev *pdev, void *data)
 	struct vfio_devices *devs = data;
 	struct vfio_device *device;
 	struct vfio_pci_device *vdev;
+=======
+struct vfio_devices {
+	struct vfio_device **devices;
+	int cur_index;
+	int max_index;
+};
+
+static int vfio_pci_get_devs(struct pci_dev *pdev, void *data)
+{
+	struct vfio_devices *devs = data;
+	struct vfio_device *device;
+>>>>>>> FETCH_HEAD
 
 	if (devs->cur_index == devs->max_index)
 		return -ENOSPC;
@@ -1681,6 +1771,7 @@ static int vfio_pci_try_zap_and_vma_lock_cb(struct pci_dev *pdev, void *data)
 		return -EBUSY;
 	}
 
+<<<<<<< HEAD
 	vdev = vfio_device_data(device);
 
 	/*
@@ -1692,6 +1783,8 @@ static int vfio_pci_try_zap_and_vma_lock_cb(struct pci_dev *pdev, void *data)
 		return -EBUSY;
 	}
 
+=======
+>>>>>>> FETCH_HEAD
 	devs->devices[devs->cur_index++] = device;
 	return 0;
 }

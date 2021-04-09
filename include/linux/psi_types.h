@@ -14,6 +14,7 @@ enum psi_task_count {
 	NR_IOWAIT,
 	NR_MEMSTALL,
 	NR_RUNNING,
+<<<<<<< HEAD
 	/*
 	 * This can't have values other than 0 or 1 and could be
 	 * implemented as a bit flag. But for now we still have room
@@ -22,13 +23,19 @@ enum psi_task_count {
 	 */
 	NR_ONCPU,
 	NR_PSI_TASK_COUNTS = 4,
+=======
+	NR_PSI_TASK_COUNTS = 3,
+>>>>>>> FETCH_HEAD
 };
 
 /* Task state bitmasks */
 #define TSK_IOWAIT	(1 << NR_IOWAIT)
 #define TSK_MEMSTALL	(1 << NR_MEMSTALL)
 #define TSK_RUNNING	(1 << NR_RUNNING)
+<<<<<<< HEAD
 #define TSK_ONCPU	(1 << NR_ONCPU)
+=======
+>>>>>>> FETCH_HEAD
 
 /* Resources that workloads could be stalled on */
 enum psi_res {

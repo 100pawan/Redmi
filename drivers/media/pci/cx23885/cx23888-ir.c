@@ -1179,11 +1179,16 @@ int cx23888_ir_probe(struct cx23885_dev *dev)
 		return -ENOMEM;
 
 	spin_lock_init(&state->rx_kfifo_lock);
+<<<<<<< HEAD
 	if (kfifo_alloc(&state->rx_kfifo, CX23888_IR_RX_KFIFO_SIZE,
 			GFP_KERNEL)) {
 		kfree(state);
 		return -ENOMEM;
 	}
+=======
+	if (kfifo_alloc(&state->rx_kfifo, CX23888_IR_RX_KFIFO_SIZE, GFP_KERNEL))
+		return -ENOMEM;
+>>>>>>> FETCH_HEAD
 
 	state->dev = dev;
 	sd = &state->sd;

@@ -96,12 +96,15 @@ extern bool msm_vidc_syscache_disable;
 	__str; \
 	})
 
+<<<<<<< HEAD
 #if defined(CONFIG_TRACING) && defined(DEBUG)
 #define msm_trace_printk(...) trace_printk(__VA_ARGS__)
 #else
 #define msm_trace_printk(...)
 #endif
 
+=======
+>>>>>>> FETCH_HEAD
 #define dprintk(__level, __fmt, arg...)	\
 	do { \
 		if (msm_vidc_debug & __level) { \
@@ -110,7 +113,11 @@ extern bool msm_vidc_syscache_disable;
 						VIDC_MSG_PRIO2STRING(__level), \
 						## arg); \
 			} else if (msm_vidc_debug_out == VIDC_OUT_FTRACE) { \
+<<<<<<< HEAD
 				msm_trace_printk(KERN_DEBUG VIDC_DBG_TAG __fmt, \
+=======
+				trace_printk(KERN_DEBUG VIDC_DBG_TAG __fmt, \
+>>>>>>> FETCH_HEAD
 						VIDC_MSG_PRIO2STRING(__level), \
 						## arg); \
 			} \

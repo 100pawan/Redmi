@@ -99,6 +99,7 @@ static const struct dmi_system_id rotated_screen[] = {
 		},
 	},
 	{
+<<<<<<< HEAD
 		.ident = "Teclast X98 Pro",
 		.matches = {
 			/*
@@ -111,6 +112,8 @@ static const struct dmi_system_id rotated_screen[] = {
 		},
 	},
 	{
+=======
+>>>>>>> FETCH_HEAD
 		.ident = "WinBook TW100",
 		.matches = {
 			DMI_MATCH(DMI_SYS_VENDOR, "WinBook"),

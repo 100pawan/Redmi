@@ -327,6 +327,7 @@ config MMU_NOTIFIER
 	bool
 	select SRCU
 
+<<<<<<< HEAD
 config OOM_SCORE_NOTIFIER
 	bool "OOM score notifier"
 	default n
@@ -336,6 +337,8 @@ config OOM_SCORE_NOTIFIER
 	  are used to build a mirrored task list in
 	  lowmemorykiller.
 
+=======
+>>>>>>> FETCH_HEAD
 config KSM
 	bool "Enable KSM for page merging"
 	depends on MMU

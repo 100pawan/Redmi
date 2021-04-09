@@ -35,7 +35,11 @@ obj-y			:= filemap.o mempool.o oom_kill.o \
 			   readahead.o swap.o truncate.o vmscan.o shmem.o \
 			   util.o mmzone.o vmstat.o backing-dev.o \
 			   mm_init.o mmu_context.o percpu.o slab_common.o \
+<<<<<<< HEAD
 			   compaction.o vmacache.o swap_slots.o \
+=======
+			   compaction.o vmacache.o \
+>>>>>>> FETCH_HEAD
 			   interval_tree.o list_lru.o workingset.o \
 			   debug.o $(mmu-y) showmem.o vmpressure.o
 
@@ -101,4 +105,7 @@ obj-$(CONFIG_FRAME_VECTOR) += frame_vector.o
 obj-$(CONFIG_DEBUG_PAGE_REF) += debug_page_ref.o
 obj-$(CONFIG_HARDENED_USERCOPY) += usercopy.o
 obj-$(CONFIG_PROCESS_RECLAIM)	+= process_reclaim.o
+<<<<<<< HEAD
 obj-$(CONFIG_OOM_SCORE_NOTIFIER) += oom_score_notifier.o
+=======
+>>>>>>> FETCH_HEAD

@@ -1024,8 +1024,13 @@ static int alloc_iommu(struct dmar_drhd_unit *drhd)
 {
 	struct intel_iommu *iommu;
 	u32 ver, sts;
+<<<<<<< HEAD
 	int agaw = -1;
 	int msagaw = -1;
+=======
+	int agaw = 0;
+	int msagaw = 0;
+>>>>>>> FETCH_HEAD
 	int err;
 
 	if (!drhd->reg_base_addr) {
@@ -1050,6 +1055,7 @@ static int alloc_iommu(struct dmar_drhd_unit *drhd)
 	}
 
 	err = -EINVAL;
+<<<<<<< HEAD
 	if (cap_sagaw(iommu->cap) == 0) {
 		pr_info("%s: No supported address widths. Not attempting DMA translation.\n",
 			iommu->name);
@@ -1072,6 +1078,19 @@ static int alloc_iommu(struct dmar_drhd_unit *drhd)
 			drhd->ignored = 1;
 			agaw = -1;
 		}
+=======
+	agaw = iommu_calculate_agaw(iommu);
+	if (agaw < 0) {
+		pr_err("Cannot get a valid agaw for iommu (seq_id = %d)\n",
+			iommu->seq_id);
+		goto err_unmap;
+	}
+	msagaw = iommu_calculate_max_sagaw(iommu);
+	if (msagaw < 0) {
+		pr_err("Cannot get a valid max agaw for iommu (seq_id = %d)\n",
+			iommu->seq_id);
+		goto err_unmap;
+>>>>>>> FETCH_HEAD
 	}
 	iommu->agaw = agaw;
 	iommu->msagaw = msagaw;
@@ -1098,7 +1117,11 @@ static int alloc_iommu(struct dmar_drhd_unit *drhd)
 
 	raw_spin_lock_init(&iommu->register_lock);
 
+<<<<<<< HEAD
 	if (intel_iommu_enabled && !drhd->ignored) {
+=======
+	if (intel_iommu_enabled) {
+>>>>>>> FETCH_HEAD
 		iommu->iommu_dev = iommu_device_create(NULL, iommu,
 						       intel_iommu_groups,
 						       "%s", iommu->name);
@@ -1110,7 +1133,10 @@ static int alloc_iommu(struct dmar_drhd_unit *drhd)
 	}
 
 	drhd->iommu = iommu;
+<<<<<<< HEAD
 	iommu->drhd = drhd;
+=======
+>>>>>>> FETCH_HEAD
 
 	return 0;
 
@@ -1125,8 +1151,12 @@ error:
 
 static void free_iommu(struct intel_iommu *iommu)
 {
+<<<<<<< HEAD
 	if (intel_iommu_enabled && !iommu->drhd->ignored)
 		iommu_device_destroy(iommu->iommu_dev);
+=======
+	iommu_device_destroy(iommu->iommu_dev);
+>>>>>>> FETCH_HEAD
 
 	if (iommu->irq) {
 		if (iommu->pr_irq) {

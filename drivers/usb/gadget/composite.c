@@ -108,6 +108,7 @@ function_descriptors(struct usb_function *f,
 }
 
 /**
+<<<<<<< HEAD
  * next_desc() - advance to the next desc_type descriptor
  * @t: currect pointer within descriptor array
  * @desc_type: descriptor type
@@ -122,12 +123,28 @@ next_desc(struct usb_descriptor_header **t, u8 desc_type)
 {
 	for (; *t; t++) {
 		if ((*t)->bDescriptorType == desc_type)
+=======
+ * next_ep_desc() - advance to the next EP descriptor
+ * @t: currect pointer within descriptor array
+ *
+ * Return: next EP descriptor or NULL
+ *
+ * Iterate over @t until either EP descriptor found or
+ * NULL (that indicates end of list) encountered
+ */
+static struct usb_descriptor_header**
+next_ep_desc(struct usb_descriptor_header **t)
+{
+	for (; *t; t++) {
+		if ((*t)->bDescriptorType == USB_DT_ENDPOINT)
+>>>>>>> FETCH_HEAD
 			return t;
 	}
 	return NULL;
 }
 
 /*
+<<<<<<< HEAD
  * for_each_desc() - iterate over desc_type descriptors in the
  * descriptors list
  * @start: pointer within descriptor array.
@@ -140,11 +157,27 @@ next_desc(struct usb_descriptor_header **t, u8 desc_type)
 
 /**
  * config_ep_by_speed_and_alt() - configures the given endpoint
+=======
+ * for_each_ep_desc()- iterate over endpoint descriptors in the
+ *		descriptors list
+ * @start:	pointer within descriptor array.
+ * @ep_desc:	endpoint descriptor to use as the loop cursor
+ */
+#define for_each_ep_desc(start, ep_desc) \
+	for (ep_desc = next_ep_desc(start); \
+	      ep_desc; ep_desc = next_ep_desc(ep_desc+1))
+
+/**
+ * config_ep_by_speed() - configures the given endpoint
+>>>>>>> FETCH_HEAD
  * according to gadget speed.
  * @g: pointer to the gadget
  * @f: usb function
  * @_ep: the endpoint to configure
+<<<<<<< HEAD
  * @alt: alternate setting number
+=======
+>>>>>>> FETCH_HEAD
  *
  * Return: error code, 0 on success
  *
@@ -157,6 +190,7 @@ next_desc(struct usb_descriptor_header **t, u8 desc_type)
  * Note: the supplied function should hold all the descriptors
  * for supported speeds
  */
+<<<<<<< HEAD
 int config_ep_by_speed_and_alt(struct usb_gadget *g,
 				struct usb_function *f,
 				struct usb_ep *_ep,
@@ -164,6 +198,13 @@ int config_ep_by_speed_and_alt(struct usb_gadget *g,
 {
 	struct usb_endpoint_descriptor *chosen_desc = NULL;
 	struct usb_interface_descriptor *int_desc = NULL;
+=======
+int config_ep_by_speed(struct usb_gadget *g,
+			struct usb_function *f,
+			struct usb_ep *_ep)
+{
+	struct usb_endpoint_descriptor *chosen_desc = NULL;
+>>>>>>> FETCH_HEAD
 	struct usb_descriptor_header **speed_desc = NULL;
 
 	struct usb_ss_ep_comp_descriptor *comp_desc = NULL;
@@ -199,6 +240,7 @@ int config_ep_by_speed_and_alt(struct usb_gadget *g,
 	default:
 		speed_desc = f->fs_descriptors;
 	}
+<<<<<<< HEAD
 
 	/* find correct alternate setting descriptor */
 	for_each_desc(speed_desc, d_spd, USB_DT_INTERFACE) {
@@ -214,6 +256,10 @@ int config_ep_by_speed_and_alt(struct usb_gadget *g,
 intf_found:
 	/* find descriptors */
 	for_each_desc(speed_desc, d_spd, USB_DT_ENDPOINT) {
+=======
+	/* find descriptors */
+	for_each_ep_desc(speed_desc, d_spd) {
+>>>>>>> FETCH_HEAD
 		chosen_desc = (struct usb_endpoint_descriptor *)*d_spd;
 		if (chosen_desc->bEndpointAddress == _ep->address)
 			goto ep_found;
@@ -266,6 +312,7 @@ ep_found:
 	}
 	return 0;
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(config_ep_by_speed_and_alt);
 
 /**
@@ -292,6 +339,8 @@ int config_ep_by_speed(struct usb_gadget *g,
 {
 	return config_ep_by_speed_and_alt(g, f, _ep, 0);
 }
+=======
+>>>>>>> FETCH_HEAD
 EXPORT_SYMBOL_GPL(config_ep_by_speed);
 
 /**
@@ -1223,7 +1272,11 @@ static void collect_langs(struct usb_gadget_strings **sp, __le16 *buf)
 	while (*sp) {
 		s = *sp;
 		language = cpu_to_le16(s->language);
+<<<<<<< HEAD
 		for (tmp = buf; *tmp && tmp < &buf[USB_MAX_STRING_LEN]; tmp++) {
+=======
+		for (tmp = buf; *tmp && tmp < &buf[126]; tmp++) {
+>>>>>>> FETCH_HEAD
 			if (*tmp == language)
 				goto repeat;
 		}
@@ -1298,7 +1351,11 @@ static int get_string(struct usb_composite_dev *cdev,
 			collect_langs(sp, s->wData);
 		}
 
+<<<<<<< HEAD
 		for (len = 0; len <= USB_MAX_STRING_LEN && s->wData[len]; len++)
+=======
+		for (len = 0; len <= 126 && s->wData[len]; len++)
+>>>>>>> FETCH_HEAD
 			continue;
 		if (!len)
 			return -EINVAL;

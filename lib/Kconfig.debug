@@ -345,6 +345,7 @@ config SECTION_MISMATCH_WARN_ONLY
 
 	  If unsure, say Y.
 
+<<<<<<< HEAD
 config OPTIMIZE_INLINING
 	bool "Allow gcc to uninline functions marked 'inline'"
 	---help---
@@ -359,14 +360,19 @@ config OPTIMIZE_INLINING
 
 	  If unsure, say N.
 
+=======
+>>>>>>> FETCH_HEAD
 #
 # Select this config option from the architecture Kconfig, if it
 # is preferred to always offer frame pointers as a config
 # option on the architecture (regardless of KERNEL_DEBUG):
 #
+<<<<<<< HEAD
 config ARCH_SUPPORTS_OPTIMIZED_INLINING
 	def_bool y
 
+=======
+>>>>>>> FETCH_HEAD
 config ARCH_WANT_FRAME_POINTERS
 	bool
 	help
@@ -2127,6 +2133,7 @@ config BUG_ON_DATA_CORRUPTION
 
 	  If unsure, say N.
 
+<<<<<<< HEAD
 config CC_WERROR
 	bool "Treat all compile warnings as errors"
 	default n
@@ -2137,6 +2144,8 @@ config CC_WERROR
 
 	 If unsure, say N.
 
+=======
+>>>>>>> FETCH_HEAD
 source "samples/Kconfig"
 
 source "lib/Kconfig.kgdb"

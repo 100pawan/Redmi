@@ -589,6 +589,10 @@ static inline u32 __er32(struct e1000_hw *hw, unsigned long reg)
 
 #define er32(reg)	__er32(hw, E1000_##reg)
 
+<<<<<<< HEAD
+=======
+s32 __ew32_prepare(struct e1000_hw *hw);
+>>>>>>> FETCH_HEAD
 void __ew32(struct e1000_hw *hw, unsigned long reg, u32 val);
 
 #define ew32(reg, val)	__ew32(hw, E1000_##reg, (val))

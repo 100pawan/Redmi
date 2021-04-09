@@ -2,7 +2,11 @@
  * Core MDSS framebuffer driver.
  *
  * Copyright (C) 2007 Google Incorporated
+<<<<<<< HEAD
  * Copyright (c) 2008-2019, The Linux Foundation. All rights reserved.
+=======
+ * Copyright (c) 2008-2020, The Linux Foundation. All rights reserved.
+>>>>>>> FETCH_HEAD
  *
  * This software is licensed under the terms of the GNU General Public
  * License version 2, as published by the Free Software Foundation, and
@@ -46,10 +50,13 @@
 #include <linux/file.h>
 #include <linux/kthread.h>
 #include <linux/dma-buf.h>
+<<<<<<< HEAD
 #include <linux/mdss_io_util.h>
 #include <linux/device.h>
 #include <linux/pm_wakeup.h>
 #include "mdss_dsi.h"
+=======
+>>>>>>> FETCH_HEAD
 #include "mdss_fb.h"
 #include "mdss_mdp_splash_logo.h"
 #define CREATE_TRACE_POINTS
@@ -59,10 +66,13 @@
 #include "mdp3_ctrl.h"
 #include "mdss_sync.h"
 
+<<<<<<< HEAD
 #ifdef CONFIG_KLAPSE
 #include <linux/klapse.h>
 #endif
 
+=======
+>>>>>>> FETCH_HEAD
 #ifdef CONFIG_FB_MSM_TRIPLE_BUFFER
 #define MDSS_FB_NUM 3
 #else
@@ -123,17 +133,21 @@ static void mdss_fb_release_fences(struct msm_fb_data_type *mfd);
 static int __mdss_fb_sync_buf_done_callback(struct notifier_block *p,
 		unsigned long val, void *data);
 
+<<<<<<< HEAD
 int ce_state, cabc_state, srgb_state, gamma_state, set_gamma;
 bool ce_resume, cabc_resume, srgb_resume, gamma_resume;
 bool first_set_bl = false, first_gamma_state = false;
 int first_ce_state, first_cabc_state, first_srgb_state;
 
+=======
+>>>>>>> FETCH_HEAD
 static int __mdss_fb_display_thread(void *data);
 static int mdss_fb_pan_idle(struct msm_fb_data_type *mfd);
 static int mdss_fb_send_panel_event(struct msm_fb_data_type *mfd,
 					int event, void *arg);
 static void mdss_fb_set_mdp_sync_pt_threshold(struct msm_fb_data_type *mfd,
 		int type);
+<<<<<<< HEAD
 #define WAIT_RESUME_TIMEOUT 200
 static struct fb_info *prim_fbi;
 static struct delayed_work prim_panel_work;
@@ -163,6 +177,8 @@ static void prim_panel_off_delayed_work(struct work_struct *work)
 #endif
 }
 		
+=======
+>>>>>>> FETCH_HEAD
 void mdss_fb_no_update_notify_timer_cb(unsigned long data)
 {
 	struct msm_fb_data_type *mfd = (struct msm_fb_data_type *)data;
@@ -334,7 +350,12 @@ static void mdss_fb_set_bl_brightness(struct led_classdev *led_cdev,
 		value = mfd->panel_info->brightness_max;
 
 	/* This maps android backlight level 0 to 255 into
+<<<<<<< HEAD
 	   driver backlight level 0 to bl_max with rounding */
+=======
+	 * driver backlight level 0 to bl_max with rounding
+	 */
+>>>>>>> FETCH_HEAD
 	MDSS_BRIGHT_TO_BL(bl_lvl, value, mfd->panel_info->bl_max,
 				mfd->panel_info->brightness_max);
 
@@ -345,9 +366,12 @@ static void mdss_fb_set_bl_brightness(struct led_classdev *led_cdev,
 							!mfd->bl_level)) {
 		mutex_lock(&mfd->bl_lock);
 		mdss_fb_set_backlight(mfd, bl_lvl);
+<<<<<<< HEAD
 #ifdef CONFIG_KLAPSE
                 set_rgb_slider(bl_lvl);
 #endif
+=======
+>>>>>>> FETCH_HEAD
 		mutex_unlock(&mfd->bl_lock);
 	}
 }
@@ -949,6 +973,7 @@ static ssize_t mdss_fb_get_persist_mode(struct device *dev,
 	return ret;
 }
 
+<<<<<<< HEAD
 extern void mdss_dsi_panel_cmds_send(struct mdss_dsi_ctrl_pdata *ctrl,
 		                           struct dsi_panel_cmds *pcmds, u32 flags);
 extern int mdss_dsi_set_gamma(struct mdss_dsi_ctrl_pdata *ctrl, int val2);
@@ -1341,6 +1366,8 @@ static ssize_t mdss_fb_set_gamma(struct device *dev, struct device_attribute *at
 	return len;
 }
 
+=======
+>>>>>>> FETCH_HEAD
 static ssize_t mdss_fb_idle_pc_notify(struct device *dev,
 		struct device_attribute *attr, char *buf)
 {
@@ -1369,12 +1396,15 @@ static DEVICE_ATTR(msm_fb_persist_mode, 0644,
 	mdss_fb_get_persist_mode, mdss_fb_change_persist_mode);
 static DEVICE_ATTR(idle_power_collapse, 0444, mdss_fb_idle_pc_notify, NULL);
 
+<<<<<<< HEAD
 
 static DEVICE_ATTR(msm_fb_ce, 0644, NULL, mdss_fb_set_ce);
 static DEVICE_ATTR(msm_fb_cabc, 0644, NULL, mdss_fb_set_cabc);
 static DEVICE_ATTR(msm_fb_srgb, 0644, NULL, mdss_fb_set_srgb);
 static DEVICE_ATTR(msm_fb_gamma, 0644, NULL, mdss_fb_set_gamma);
 
+=======
+>>>>>>> FETCH_HEAD
 static struct attribute *mdss_fb_attrs[] = {
 	&dev_attr_msm_fb_type.attr,
 	&dev_attr_msm_fb_split.attr,
@@ -1389,10 +1419,13 @@ static struct attribute *mdss_fb_attrs[] = {
 	&dev_attr_measured_fps.attr,
 	&dev_attr_msm_fb_persist_mode.attr,
 	&dev_attr_idle_power_collapse.attr,
+<<<<<<< HEAD
 	&dev_attr_msm_fb_ce.attr,
 	&dev_attr_msm_fb_cabc.attr,
 	&dev_attr_msm_fb_srgb.attr,
 	&dev_attr_msm_fb_gamma.attr,
+=======
+>>>>>>> FETCH_HEAD
 	NULL,
 };
 
@@ -1741,6 +1774,10 @@ static int mdss_fb_probe(struct platform_device *pdev)
 
 	if (mfd->panel.type == SPI_PANEL)
 		mfd->fb_imgType = MDP_RGB_565;
+<<<<<<< HEAD
+=======
+
+>>>>>>> FETCH_HEAD
 	if (mfd->panel.type == MIPI_VIDEO_PANEL || mfd->panel.type ==
 		MIPI_CMD_PANEL || mfd->panel.type == SPI_PANEL){
 		rc = of_property_read_string(pdev->dev.of_node,
@@ -1754,6 +1791,10 @@ static int mdss_fb_probe(struct platform_device *pdev)
 				mfd->fb_imgType = MDP_RGBA_8888;
 			}
 		}
+<<<<<<< HEAD
+=======
+
+>>>>>>> FETCH_HEAD
 	mfd->split_fb_left = mfd->split_fb_right = 0;
 
 	mdss_fb_set_split_mode(mfd, pdata);
@@ -1887,12 +1928,15 @@ static int mdss_fb_remove(struct platform_device *pdev)
 	if (!mfd)
 		return -ENODEV;
 
+<<<<<<< HEAD
 if (mfd->panel_info && mfd->panel_info->is_prim_panel) {
 		atomic_set(&prim_panel_is_on, false);
 		cancel_delayed_work_sync(&prim_panel_work);
 		wakeup_source_trash(&prim_panel_wakelock);
 	}
 
+=======
+>>>>>>> FETCH_HEAD
 	mdss_fb_remove_sysfs(mfd);
 
 	pm_runtime_disable(mfd->fbi->dev);
@@ -2070,6 +2114,7 @@ static int mdss_fb_resume(struct platform_device *pdev)
 #endif
 
 #ifdef CONFIG_PM_SLEEP
+<<<<<<< HEAD
 static int mdss_fb_pm_prepare(struct device *dev)
 {
 	struct msm_fb_data_type *mfd = dev_get_drvdata(dev);
@@ -2095,6 +2140,8 @@ static void mdss_fb_pm_complete(struct device *dev)
 
 	return;
 }
+=======
+>>>>>>> FETCH_HEAD
 static int mdss_fb_pm_suspend(struct device *dev)
 {
 	struct msm_fb_data_type *mfd = dev_get_drvdata(dev);
@@ -2130,8 +2177,11 @@ static int mdss_fb_pm_resume(struct device *dev)
 #endif
 
 static const struct dev_pm_ops mdss_fb_pm_ops = {
+<<<<<<< HEAD
 	.prepare = mdss_fb_pm_prepare,
 	.complete = mdss_fb_pm_complete,
+=======
+>>>>>>> FETCH_HEAD
 	SET_SYSTEM_SLEEP_PM_OPS(mdss_fb_pm_suspend, mdss_fb_pm_resume)
 };
 
@@ -2475,7 +2525,11 @@ static int mdss_fb_blank_unblank(struct msm_fb_data_type *mfd)
 
 		/* Start the work thread to signal idle time */
 		if (mfd->idle_time)
+<<<<<<< HEAD
 			queue_delayed_work(system_power_efficient_wq, &mfd->idle_notify_work,
+=======
+			schedule_delayed_work(&mfd->idle_notify_work,
+>>>>>>> FETCH_HEAD
 				msecs_to_jiffies(mfd->idle_time));
 	}
 
@@ -2505,9 +2559,13 @@ static int mdss_fb_blank_unblank(struct msm_fb_data_type *mfd)
 		}
 		mutex_unlock(&mfd->bl_lock);
 	}
+<<<<<<< HEAD
     ce_resume = false;
 	cabc_resume = false;
 	gamma_resume = false;
+=======
+
+>>>>>>> FETCH_HEAD
 error:
 	return ret;
 }
@@ -2598,10 +2656,13 @@ static int mdss_fb_blank_sub(int blank_mode, struct fb_info *info,
 	case FB_BLANK_POWERDOWN:
 	default:
 		req_power_state = MDSS_PANEL_POWER_OFF;
+<<<<<<< HEAD
 		set_gamma = cabc_state;
 		ce_resume = true;
 		cabc_resume = true;
 		gamma_resume = true;
+=======
+>>>>>>> FETCH_HEAD
 		pr_debug("blank powerdown called\n");
 		ret = mdss_fb_blank_blank(mfd, req_power_state);
 		break;
@@ -2623,6 +2684,7 @@ static int mdss_fb_blank(int blank_mode, struct fb_info *info)
 	ktime_t start, end;
 	s64 actual_time;
 
+<<<<<<< HEAD
 	if ((info == prim_fbi) && (blank_mode == FB_BLANK_UNBLANK) &&
 		atomic_read(&prim_panel_is_on)) {
 		atomic_set(&prim_panel_is_on, false);
@@ -2630,6 +2692,9 @@ static int mdss_fb_blank(int blank_mode, struct fb_info *info)
 		cancel_delayed_work_sync(&prim_panel_work);
 		return 0;
 	}
+=======
+	start = ktime_get();
+>>>>>>> FETCH_HEAD
 	ret = mdss_fb_pan_idle(mfd);
 	if (ret) {
 		pr_warn("mdss_fb_pan_idle for fb%d failed. ret=%d\n",
@@ -2706,8 +2771,14 @@ void mdss_fb_free_fb_ion_memory(struct msm_fb_data_type *mfd)
 
 	ion_unmap_kernel(mfd->fb_ion_client, mfd->fb_ion_handle);
 
+<<<<<<< HEAD
 	if (mfd->mdp.fb_mem_get_iommu_domain && !(!mfd->fb_attachment ||
 		!mfd->fb_attachment->dmabuf ||
+=======
+	if ((mfd->mdp.fb_mem_get_iommu_domain ||
+		(mfd->panel.type == SPI_PANEL)) &&
+		!(!mfd->fb_attachment || !mfd->fb_attachment->dmabuf ||
+>>>>>>> FETCH_HEAD
 		!mfd->fb_attachment->dmabuf->ops)) {
 		dma_buf_unmap_attachment(mfd->fb_attachment, mfd->fb_table,
 				DMA_BIDIRECTIONAL);
@@ -2771,6 +2842,23 @@ int mdss_fb_alloc_fb_ion_memory(struct msm_fb_data_type *mfd, size_t fb_size)
 			rc = PTR_ERR(mfd->fb_table);
 			goto err_detach;
 		}
+<<<<<<< HEAD
+=======
+	} else if (mfd->panel.type == SPI_PANEL) {
+		mfd->fb_attachment = dma_buf_attach(mfd->fbmem_buf,
+				&mfd->pdev->dev);
+		if (IS_ERR(mfd->fb_attachment)) {
+			rc = PTR_ERR(mfd->fb_attachment);
+			goto err_put;
+		}
+
+		mfd->fb_table = dma_buf_map_attachment(mfd->fb_attachment,
+			DMA_BIDIRECTIONAL);
+		if (IS_ERR(mfd->fb_table)) {
+			rc = PTR_ERR(mfd->fb_table);
+			goto err_detach;
+		}
+>>>>>>> FETCH_HEAD
 	} else {
 		pr_err("No IOMMU Domain\n");
 		rc = -EINVAL;
@@ -3267,7 +3355,10 @@ static int mdss_fb_register(struct msm_fb_data_type *mfd)
 	atomic_set(&mfd->commits_pending, 0);
 	atomic_set(&mfd->ioctl_ref_cnt, 0);
 	atomic_set(&mfd->kickoff_pending, 0);
+<<<<<<< HEAD
 	atomic_set(&mfd->resume_pending, 0);
+=======
+>>>>>>> FETCH_HEAD
 
 	init_timer(&mfd->no_update.timer);
 	mfd->no_update.timer.function = mdss_fb_no_update_notify_timer_cb;
@@ -3283,7 +3374,10 @@ static int mdss_fb_register(struct msm_fb_data_type *mfd)
 	init_waitqueue_head(&mfd->idle_wait_q);
 	init_waitqueue_head(&mfd->ioctl_q);
 	init_waitqueue_head(&mfd->kickoff_wait_q);
+<<<<<<< HEAD
 	init_waitqueue_head(&mfd->resume_wait_q);
+=======
+>>>>>>> FETCH_HEAD
 
 	ret = fb_alloc_cmap(&fbi->cmap, 256, 0);
 	if (ret)
@@ -3301,6 +3395,7 @@ static int mdss_fb_register(struct msm_fb_data_type *mfd)
 	mdss_panel_debugfs_init(panel_info, panel_name);
 	pr_info("FrameBuffer[%d] %dx%d registered successfully!\n", mfd->index,
 					fbi->var.xres, fbi->var.yres);
+<<<<<<< HEAD
 					
 				if (panel_info->is_prim_panel) {
 		prim_fbi = fbi;
@@ -3308,6 +3403,8 @@ static int mdss_fb_register(struct msm_fb_data_type *mfd)
 		INIT_DELAYED_WORK(&prim_panel_work, prim_panel_off_delayed_work);
 		wakeup_source_init(&prim_panel_wakelock, "prim_panel_wakelock");
 	}	
+=======
+>>>>>>> FETCH_HEAD
 
 	return 0;
 }
@@ -3828,6 +3925,10 @@ static int mdss_fb_pan_display_ex(struct fb_info *info,
 	mfd->msm_fb_backup.info = *info;
 	mfd->msm_fb_backup.disp_commit = *disp_commit;
 
+<<<<<<< HEAD
+=======
+	atomic_inc(&mfd->mdp_sync_pt_data.commit_cnt);
+>>>>>>> FETCH_HEAD
 	atomic_inc(&mfd->commits_pending);
 	atomic_inc(&mfd->kickoff_pending);
 	wake_up_all(&mfd->commit_wait_q);
@@ -4330,6 +4431,7 @@ static int __mdss_fb_display_thread(void *data)
 				mfd->index);
 
 	while (1) {
+<<<<<<< HEAD
 		ret = wait_event_interruptible(mfd->commit_wait_q,
 				(atomic_read(&mfd->commits_pending) ||
 				 kthread_should_stop()));
@@ -4339,6 +4441,12 @@ static int __mdss_fb_display_thread(void *data)
 			continue;
 		}
 
+=======
+		wait_event(mfd->commit_wait_q,
+				(atomic_read(&mfd->commits_pending) ||
+				 kthread_should_stop()));
+
+>>>>>>> FETCH_HEAD
 		if (kthread_should_stop())
 			break;
 
@@ -4936,7 +5044,11 @@ static int mdss_fb_handle_buf_sync_ioctl(struct msm_sync_pt_data *sync_pt_data,
 	if (IS_ERR_OR_NULL(retire_fence)) {
 		val += sync_pt_data->retire_threshold;
 		retire_fence = mdss_fb_sync_get_fence(
+<<<<<<< HEAD
 			sync_pt_data->timeline, "mdp-retire", val);
+=======
+			sync_pt_data->timeline_retire, "mdp-retire", val);
+>>>>>>> FETCH_HEAD
 	}
 
 	if (IS_ERR_OR_NULL(retire_fence)) {
@@ -5712,6 +5824,7 @@ void mdss_fb_report_panel_dead(struct msm_fb_data_type *mfd)
 	pr_err("Panel has gone bad, sending uevent - %s\n", envp[0]);
 }
 
+<<<<<<< HEAD
 /*
 + * mdss_prim_panel_fb_unblank() - Unblank primary panel FB
 + * @timeout : >0 blank primary panel FB after timeout (ms)
@@ -5767,6 +5880,8 @@ int mdss_prim_panel_fb_unblank(int timeout)
 	return -EINVAL;
 }
 
+=======
+>>>>>>> FETCH_HEAD
 
 /*
  * mdss_fb_calc_fps() - Calculates fps value.

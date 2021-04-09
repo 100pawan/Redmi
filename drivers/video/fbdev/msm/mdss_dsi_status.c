@@ -175,7 +175,11 @@ static int fb_event_callback(struct notifier_block *self,
 
 		switch (*blank) {
 		case FB_BLANK_UNBLANK:
+<<<<<<< HEAD
 			queue_delayed_work(system_power_efficient_wq, &pdata->check_status,
+=======
+			schedule_delayed_work(&pdata->check_status,
+>>>>>>> FETCH_HEAD
 				msecs_to_jiffies(interval));
 			break;
 		case FB_BLANK_VSYNC_SUSPEND:

@@ -401,10 +401,17 @@ static void thermal_zone_device_set_polling(struct workqueue_struct *queue,
 					    int delay)
 {
 	if (delay > 1000)
+<<<<<<< HEAD
 		mod_delayed_work(system_freezable_power_efficient_wq, &tz->poll_queue,
 				 round_jiffies(msecs_to_jiffies(delay)));
 	else if (delay)
 		mod_delayed_work(system_freezable_power_efficient_wq, &tz->poll_queue,
+=======
+		mod_delayed_work(queue, &tz->poll_queue,
+				 round_jiffies(msecs_to_jiffies(delay)));
+	else if (delay)
+		mod_delayed_work(queue, &tz->poll_queue,
+>>>>>>> FETCH_HEAD
 				 msecs_to_jiffies(delay));
 	else
 		cancel_delayed_work(&tz->poll_queue);
@@ -680,6 +687,7 @@ static void thermal_zone_device_check(struct work_struct *work)
 #define to_thermal_zone(_dev) \
 	container_of(_dev, struct thermal_zone_device, device)
 
+<<<<<<< HEAD
 #ifdef CONFIG_THERMAL_SWITCH
 #define to_thermal_msg_device(_dev)	\
 	container_of(_dev, struct thermal_message_device, device)
@@ -736,6 +744,8 @@ sconfig_store(struct device *dev, struct device_attribute *devattr,
 static DEVICE_ATTR(sconfig, 0644, sconfig_show, sconfig_store);
 #endif	
 
+=======
+>>>>>>> FETCH_HEAD
 static ssize_t
 type_show(struct device *dev, struct device_attribute *attr, char *buf)
 {
@@ -2661,6 +2671,7 @@ static void thermal_unregister_governors(void)
 	thermal_gov_power_allocator_unregister();
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_THERMAL_SWITCH
 int thermal_message_device_register(void) {
 	struct thermal_message_device *thermal_msg;
@@ -2700,6 +2711,8 @@ void thermal_message_device_unregister(void) {
 }
 #endif
 
+=======
+>>>>>>> FETCH_HEAD
 static int thermal_pm_notify(struct notifier_block *nb,
 				unsigned long mode, void *_unused)
 {
@@ -2758,10 +2771,13 @@ static int __init thermal_init(void)
 	result = of_parse_thermal_zones();
 	if (result)
 		goto exit_zone_parse;
+<<<<<<< HEAD
 	
 	#ifdef CONFIG_THERMAL_SWITCH
 	result = thermal_message_device_register();
 #endif
+=======
+>>>>>>> FETCH_HEAD
 
 	result = register_pm_notifier(&thermal_pm_nb);
 	if (result)
@@ -2787,9 +2803,12 @@ init_exit:
 
 static void thermal_exit(void)
 {
+<<<<<<< HEAD
 	#ifdef CONFIG_THERMAL_SWITCH
 	thermal_message_device_unregister();
 #endif
+=======
+>>>>>>> FETCH_HEAD
 	unregister_pm_notifier(&thermal_pm_nb);
 	of_thermal_destroy_zones();
 	destroy_workqueue(thermal_passive_wq);

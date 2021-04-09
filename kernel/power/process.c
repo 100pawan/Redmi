@@ -24,7 +24,11 @@
 /*
  * Timeout for stopping processes
  */
+<<<<<<< HEAD
 unsigned int __read_mostly freeze_timeout_msecs = 2 * MSEC_PER_SEC;
+=======
+unsigned int __read_mostly freeze_timeout_msecs = 20 * MSEC_PER_SEC;
+>>>>>>> FETCH_HEAD
 
 static int try_to_freeze_tasks(bool user_only)
 {

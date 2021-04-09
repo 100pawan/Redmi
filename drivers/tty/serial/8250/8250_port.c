@@ -1806,7 +1806,10 @@ int serial8250_handle_irq(struct uart_port *port, unsigned int iir)
 	unsigned char status;
 	unsigned long flags;
 	struct uart_8250_port *up = up_to_u8250p(port);
+<<<<<<< HEAD
 	bool skip_rx = false;
+=======
+>>>>>>> FETCH_HEAD
 
 	if (iir & UART_IIR_NO_INT)
 		return 0;
@@ -1815,6 +1818,7 @@ int serial8250_handle_irq(struct uart_port *port, unsigned int iir)
 
 	status = serial_port_in(port, UART_LSR);
 
+<<<<<<< HEAD
 	/*
 	 * If port is stopped and there are no error conditions in the
 	 * FIFO, then don't drain the FIFO, as this may lead to TTY buffer
@@ -1829,6 +1833,9 @@ int serial8250_handle_irq(struct uart_port *port, unsigned int iir)
 		skip_rx = true;
 
 	if (status & (UART_LSR_DR | UART_LSR_BI) && !skip_rx) {
+=======
+	if (status & (UART_LSR_DR | UART_LSR_BI)) {
+>>>>>>> FETCH_HEAD
 		if (!up->dma || handle_rx_dma(up, iir))
 			status = serial8250_rx_chars(up, status);
 	}
@@ -2219,10 +2226,13 @@ int serial8250_do_startup(struct uart_port *port)
 
 	if (port->irq) {
 		unsigned char iir1;
+<<<<<<< HEAD
 
 		if (port->irqflags & IRQF_SHARED)
 			disable_irq_nosync(port->irq);
 
+=======
+>>>>>>> FETCH_HEAD
 		/*
 		 * Test for UARTs that do not reassert THRE when the
 		 * transmitter is idle and the interrupt has already
@@ -2232,6 +2242,11 @@ int serial8250_do_startup(struct uart_port *port)
 		 * allow register changes to become visible.
 		 */
 		spin_lock_irqsave(&port->lock, flags);
+<<<<<<< HEAD
+=======
+		if (up->port.irqflags & IRQF_SHARED)
+			disable_irq_nosync(port->irq);
+>>>>>>> FETCH_HEAD
 
 		wait_for_xmitr(up, UART_LSR_THRE);
 		serial_port_out_sync(port, UART_IER, UART_IER_THRI);
@@ -2243,10 +2258,16 @@ int serial8250_do_startup(struct uart_port *port)
 		iir = serial_port_in(port, UART_IIR);
 		serial_port_out(port, UART_IER, 0);
 
+<<<<<<< HEAD
 		spin_unlock_irqrestore(&port->lock, flags);
 
 		if (port->irqflags & IRQF_SHARED)
 			enable_irq(port->irq);
+=======
+		if (port->irqflags & IRQF_SHARED)
+			enable_irq(port->irq);
+		spin_unlock_irqrestore(&port->lock, flags);
+>>>>>>> FETCH_HEAD
 
 		/*
 		 * If the interrupt is not reasserted, or we otherwise

@@ -14,7 +14,10 @@
 #include "walt.h"
 
 int sched_rr_timeslice = RR_TIMESLICE;
+<<<<<<< HEAD
 int sysctl_sched_rr_timeslice = (MSEC_PER_SEC / HZ) * RR_TIMESLICE;
+=======
+>>>>>>> FETCH_HEAD
 
 static int do_sched_rt_period_timer(struct rt_bandwidth *rt_b, int overrun);
 
@@ -1462,8 +1465,12 @@ task_may_not_preempt(struct task_struct *task, int cpu)
 }
 
 static int
+<<<<<<< HEAD
 select_task_rq_rt(struct task_struct *p, int cpu, int sd_flag, int flags,
 		  int sibling_count_hint)
+=======
+select_task_rq_rt(struct task_struct *p, int cpu, int sd_flag, int flags)
+>>>>>>> FETCH_HEAD
 {
 	struct task_struct *curr;
 	struct rq *rq;

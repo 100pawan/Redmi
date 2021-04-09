@@ -17,8 +17,11 @@ extern struct static_key_false psi_disabled;
 void psi_init(void);
 
 void psi_task_change(struct task_struct *task, int clear, int set);
+<<<<<<< HEAD
 void psi_task_switch(struct task_struct *prev, struct task_struct *next,
 		     bool sleep);
+=======
+>>>>>>> FETCH_HEAD
 
 void psi_memstall_tick(struct task_struct *task, int cpu);
 void psi_memstall_enter(unsigned long *flags);

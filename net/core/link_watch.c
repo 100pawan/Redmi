@@ -137,7 +137,11 @@ static void linkwatch_schedule_work(int urgent)
 	if (test_bit(LW_URGENT, &linkwatch_flags))
 		mod_delayed_work(system_wq, &linkwatch_work, 0);
 	else
+<<<<<<< HEAD
 		queue_delayed_work(system_power_efficient_wq, &linkwatch_work, delay);
+=======
+		schedule_delayed_work(&linkwatch_work, delay);
+>>>>>>> FETCH_HEAD
 }
 
 

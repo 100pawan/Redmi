@@ -634,6 +634,7 @@ static int add_ballooned_pages(int nr_pages)
 	if (xen_hotplug_unpopulated) {
 		st = reserve_additional_memory();
 		if (st != BP_ECANCELED) {
+<<<<<<< HEAD
 			int rc;
 
 			mutex_unlock(&balloon_mutex);
@@ -641,6 +642,13 @@ static int add_ballooned_pages(int nr_pages)
 				   !list_empty(&ballooned_pages));
 			mutex_lock(&balloon_mutex);
 			return rc ? -ENOMEM : 0;
+=======
+			mutex_unlock(&balloon_mutex);
+			wait_event(balloon_wq,
+				   !list_empty(&ballooned_pages));
+			mutex_lock(&balloon_mutex);
+			return 0;
+>>>>>>> FETCH_HEAD
 		}
 	}
 
@@ -696,12 +704,15 @@ int alloc_xenballooned_pages(int nr_pages, struct page **pages)
  out_undo:
 	mutex_unlock(&balloon_mutex);
 	free_xenballooned_pages(pgno, pages);
+<<<<<<< HEAD
 	/*
 	 * NB: free_xenballooned_pages will only subtract pgno pages, but since
 	 * target_unpopulated is incremented with nr_pages at the start we need
 	 * to remove the remaining ones also, or accounting will be screwed.
 	 */
 	balloon_stats.target_unpopulated -= nr_pages - pgno;
+=======
+>>>>>>> FETCH_HEAD
 	return ret;
 }
 EXPORT_SYMBOL(alloc_xenballooned_pages);
@@ -747,7 +758,11 @@ static void __init balloon_add_region(unsigned long start_pfn,
 
 	for (pfn = start_pfn; pfn < extra_pfn_end; pfn++) {
 		page = pfn_to_page(pfn);
+<<<<<<< HEAD
 		/* totalram_pages() and totalhigh_pages() do not
+=======
+		/* totalram_pages and totalhigh_pages do not
+>>>>>>> FETCH_HEAD
 		   include the boot-time balloon extension, so
 		   don't subtract from it. */
 		__balloon_append(page);

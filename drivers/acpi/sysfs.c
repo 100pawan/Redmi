@@ -845,13 +845,21 @@ static void __exit interrupt_stats_exit(void)
 }
 
 static ssize_t
+<<<<<<< HEAD
 acpi_show_profile(struct kobject *kobj, struct kobj_attribute *attr,
+=======
+acpi_show_profile(struct device *dev, struct device_attribute *attr,
+>>>>>>> FETCH_HEAD
 		  char *buf)
 {
 	return sprintf(buf, "%d\n", acpi_gbl_FADT.preferred_profile);
 }
 
+<<<<<<< HEAD
 static const struct kobj_attribute pm_profile_attr =
+=======
+static const struct device_attribute pm_profile_attr =
+>>>>>>> FETCH_HEAD
 	__ATTR(pm_profile, S_IRUGO, acpi_show_profile, NULL);
 
 static ssize_t hotplug_enabled_show(struct kobject *kobj,
@@ -900,10 +908,15 @@ void acpi_sysfs_add_hotplug_profile(struct acpi_hotplug_profile *hotplug,
 
 	error = kobject_init_and_add(&hotplug->kobj,
 		&acpi_hotplug_profile_ktype, hotplug_kobj, "%s", name);
+<<<<<<< HEAD
 	if (error) {
 		kobject_put(&hotplug->kobj);
 		goto err_out;
 	}
+=======
+	if (error)
+		goto err_out;
+>>>>>>> FETCH_HEAD
 
 	kobject_uevent(&hotplug->kobj, KOBJ_ADD);
 	return;

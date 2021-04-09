@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 /* Copyright (c) 2009-2019, Linux Foundation. All rights reserved.
+=======
+/* Copyright (c) 2009-2020, Linux Foundation. All rights reserved.
+>>>>>>> FETCH_HEAD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -890,6 +894,10 @@ static int msm_otg_reset(struct usb_phy *phy)
 	u32 val = 0;
 	u32 ulpi_val = 0;
 
+<<<<<<< HEAD
+=======
+	mutex_lock(&motg->lock);
+>>>>>>> FETCH_HEAD
 	msm_otg_dbg_log_event(&motg->phy, "USB RESET", phy->otg->state,
 			get_pm_runtime_counter(phy->dev));
 	/*
@@ -898,10 +906,20 @@ static int msm_otg_reset(struct usb_phy *phy)
 	 * USB BAM reset on other cases e.g. USB cable disconnections.
 	 * If hardware reported error then it must be reset for recovery.
 	 */
+<<<<<<< HEAD
 	if (motg->err_event_seen)
 		dev_info(phy->dev, "performing USB h/w reset for recovery\n");
 	else if (pdata->disable_reset_on_disconnect && motg->reset_counter)
 		return 0;
+=======
+	if (motg->err_event_seen) {
+		dev_info(phy->dev, "performing USB h/w reset for recovery\n");
+	} else if (pdata->disable_reset_on_disconnect &&
+				motg->reset_counter) {
+		mutex_unlock(&motg->lock);
+		return 0;
+	}
+>>>>>>> FETCH_HEAD
 
 	motg->reset_counter++;
 
@@ -916,6 +934,10 @@ static int msm_otg_reset(struct usb_phy *phy)
 			enable_irq(motg->phy_irq);
 
 		enable_irq(motg->irq);
+<<<<<<< HEAD
+=======
+		mutex_unlock(&motg->lock);
+>>>>>>> FETCH_HEAD
 		return ret;
 	}
 
@@ -926,6 +948,10 @@ static int msm_otg_reset(struct usb_phy *phy)
 	ret = msm_otg_link_reset(motg);
 	if (ret) {
 		dev_err(phy->dev, "link reset failed\n");
+<<<<<<< HEAD
+=======
+		mutex_unlock(&motg->lock);
+>>>>>>> FETCH_HEAD
 		return ret;
 	}
 
@@ -982,6 +1008,10 @@ static int msm_otg_reset(struct usb_phy *phy)
 
 	if (phy->otg->state == OTG_STATE_UNDEFINED && motg->rm_pulldown)
 		msm_chg_block_on(motg);
+<<<<<<< HEAD
+=======
+	mutex_unlock(&motg->lock);
+>>>>>>> FETCH_HEAD
 
 	return 0;
 }
@@ -3006,7 +3036,10 @@ static void msm_otg_set_vbus_state(int online)
 		pr_debug("EXTCON: BSV set\n");
 		msm_otg_dbg_log_event(&motg->phy, "EXTCON: BSV SET",
 				motg->inputs, 0);
+<<<<<<< HEAD
 				 msleep(1500);
+=======
+>>>>>>> FETCH_HEAD
 		if (test_and_set_bit(B_SESS_VLD, &motg->inputs))
 			return;
 	} else {
@@ -4172,6 +4205,10 @@ static int msm_otg_probe(struct platform_device *pdev)
 	motg->pdev = pdev;
 	motg->dbg_idx = 0;
 	motg->dbg_lock = __RW_LOCK_UNLOCKED(lck);
+<<<<<<< HEAD
+=======
+	mutex_init(&motg->lock);
+>>>>>>> FETCH_HEAD
 
 	if (motg->pdata->bus_scale_table) {
 		motg->bus_perf_client =

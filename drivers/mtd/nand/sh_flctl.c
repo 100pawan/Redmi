@@ -1229,7 +1229,11 @@ static int flctl_remove(struct platform_device *pdev)
 	struct sh_flctl *flctl = platform_get_drvdata(pdev);
 
 	flctl_release_dma(flctl);
+<<<<<<< HEAD
 	nand_release(&flctl->chip);
+=======
+	nand_release(nand_to_mtd(&flctl->chip));
+>>>>>>> FETCH_HEAD
 	pm_runtime_disable(&pdev->dev);
 
 	return 0;

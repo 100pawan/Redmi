@@ -930,7 +930,10 @@ err_destroy_groups:
 	ft->g[ft->num_groups] = NULL;
 	mlx5e_destroy_groups(ft);
 	kvfree(in);
+<<<<<<< HEAD
 	kfree(ft->g);
+=======
+>>>>>>> FETCH_HEAD
 
 	return err;
 }

@@ -785,9 +785,12 @@ bool virtqueue_poll(struct virtqueue *_vq, unsigned last_used_idx)
 {
 	struct vring_virtqueue *vq = to_vvq(_vq);
 
+<<<<<<< HEAD
 	if (unlikely(vq->broken))
 		return false;
 
+=======
+>>>>>>> FETCH_HEAD
 	virtio_mb(vq->weak_barriers);
 	return (u16)last_used_idx != virtio16_to_cpu(_vq->vdev, vq->vring.used->idx);
 }

@@ -26,17 +26,32 @@
 #define CP_2WHEEL_MOUSE_HACK		0x02
 #define CP_2WHEEL_MOUSE_HACK_ON		0x04
 
+<<<<<<< HEAD
 #define VA_INVAL_LOGICAL_BOUNDARY	0x08
 
+=======
+>>>>>>> FETCH_HEAD
 /*
  * Some USB barcode readers from cypress have usage min and usage max in
  * the wrong order
  */
+<<<<<<< HEAD
 static __u8 *cp_rdesc_fixup(struct hid_device *hdev, __u8 *rdesc,
 		unsigned int *rsize)
 {
 	unsigned int i;
 
+=======
+static __u8 *cp_report_fixup(struct hid_device *hdev, __u8 *rdesc,
+		unsigned int *rsize)
+{
+	unsigned long quirks = (unsigned long)hid_get_drvdata(hdev);
+	unsigned int i;
+
+	if (!(quirks & CP_RDESC_SWAPPED_MIN_MAX))
+		return rdesc;
+
+>>>>>>> FETCH_HEAD
 	if (*rsize < 4)
 		return rdesc;
 
@@ -49,6 +64,7 @@ static __u8 *cp_rdesc_fixup(struct hid_device *hdev, __u8 *rdesc,
 	return rdesc;
 }
 
+<<<<<<< HEAD
 static __u8 *va_logical_boundary_fixup(struct hid_device *hdev, __u8 *rdesc,
 		unsigned int *rsize)
 {
@@ -83,6 +99,8 @@ static __u8 *cp_report_fixup(struct hid_device *hdev, __u8 *rdesc,
 	return rdesc;
 }
 
+=======
+>>>>>>> FETCH_HEAD
 static int cp_input_mapped(struct hid_device *hdev, struct hid_input *hi,
 		struct hid_field *field, struct hid_usage *usage,
 		unsigned long **bit, int *max)
@@ -163,8 +181,11 @@ static const struct hid_device_id cp_devices[] = {
 		.driver_data = CP_RDESC_SWAPPED_MIN_MAX },
 	{ HID_USB_DEVICE(USB_VENDOR_ID_CYPRESS, USB_DEVICE_ID_CYPRESS_MOUSE),
 		.driver_data = CP_2WHEEL_MOUSE_HACK },
+<<<<<<< HEAD
 	{ HID_USB_DEVICE(USB_VENDOR_ID_CYPRESS, USB_DEVICE_ID_CYPRESS_VARMILO_VA104M_07B1),
 		.driver_data = VA_INVAL_LOGICAL_BOUNDARY },
+=======
+>>>>>>> FETCH_HEAD
 	{ }
 };
 MODULE_DEVICE_TABLE(hid, cp_devices);

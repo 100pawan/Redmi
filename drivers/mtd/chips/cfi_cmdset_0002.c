@@ -722,6 +722,10 @@ static struct mtd_info *cfi_amdstd_setup(struct mtd_info *mtd)
 	kfree(mtd->eraseregions);
 	kfree(mtd);
 	kfree(cfi->cmdset_priv);
+<<<<<<< HEAD
+=======
+	kfree(cfi->cfiq);
+>>>>>>> FETCH_HEAD
 	return NULL;
 }
 

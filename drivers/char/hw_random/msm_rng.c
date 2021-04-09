@@ -183,7 +183,11 @@ static int msm_rng_read(struct hwrng *rng, void *data, size_t max, bool wait)
 static struct hwrng msm_rng = {
 	.name = DRIVER_NAME,
 	.read = msm_rng_read,
+<<<<<<< HEAD
 	.quality = 1024,
+=======
+	.quality = 700,
+>>>>>>> FETCH_HEAD
 };
 
 static int msm_rng_enable_hw(struct msm_rng_device *msm_rng_dev)

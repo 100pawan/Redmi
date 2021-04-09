@@ -36,6 +36,7 @@
 #include "rxe.h"
 #include "rxe_loc.h"
 
+<<<<<<< HEAD
 /* check that QP matches packet opcode type and is in a valid state */
 static int check_type_state(struct rxe_dev *rxe, struct rxe_pkt_info *pkt,
 			    struct rxe_qp *qp)
@@ -50,12 +51,27 @@ static int check_type_state(struct rxe_dev *rxe, struct rxe_pkt_info *pkt,
 	switch (qp_type(qp)) {
 	case IB_QPT_RC:
 		if (unlikely(pkt_type != IB_OPCODE_RC)) {
+=======
+static int check_type_state(struct rxe_dev *rxe, struct rxe_pkt_info *pkt,
+			    struct rxe_qp *qp)
+{
+	if (unlikely(!qp->valid))
+		goto err1;
+
+	switch (qp_type(qp)) {
+	case IB_QPT_RC:
+		if (unlikely((pkt->opcode & IB_OPCODE_RC) != 0)) {
+>>>>>>> FETCH_HEAD
 			pr_warn_ratelimited("bad qp type\n");
 			goto err1;
 		}
 		break;
 	case IB_QPT_UC:
+<<<<<<< HEAD
 		if (unlikely(pkt_type != IB_OPCODE_UC)) {
+=======
+		if (unlikely(!(pkt->opcode & IB_OPCODE_UC))) {
+>>>>>>> FETCH_HEAD
 			pr_warn_ratelimited("bad qp type\n");
 			goto err1;
 		}
@@ -63,7 +79,11 @@ static int check_type_state(struct rxe_dev *rxe, struct rxe_pkt_info *pkt,
 	case IB_QPT_UD:
 	case IB_QPT_SMI:
 	case IB_QPT_GSI:
+<<<<<<< HEAD
 		if (unlikely(pkt_type != IB_OPCODE_UD)) {
+=======
+		if (unlikely(!(pkt->opcode & IB_OPCODE_UD))) {
+>>>>>>> FETCH_HEAD
 			pr_warn_ratelimited("bad qp type\n");
 			goto err1;
 		}

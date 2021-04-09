@@ -754,8 +754,12 @@ static int m5mols_sensor_power(struct m5mols_info *info, bool enable)
 
 		ret = regulator_bulk_enable(ARRAY_SIZE(supplies), supplies);
 		if (ret) {
+<<<<<<< HEAD
 			if (info->set_power)
 				info->set_power(&client->dev, 0);
+=======
+			info->set_power(&client->dev, 0);
+>>>>>>> FETCH_HEAD
 			return ret;
 		}
 

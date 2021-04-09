@@ -61,8 +61,11 @@ gss_mech_free(struct gss_api_mech *gm)
 
 	for (i = 0; i < gm->gm_pf_num; i++) {
 		pf = &gm->gm_pfs[i];
+<<<<<<< HEAD
 		if (pf->domain)
 			auth_domain_put(pf->domain);
+=======
+>>>>>>> FETCH_HEAD
 		kfree(pf->auth_domain_name);
 		pf->auth_domain_name = NULL;
 	}
@@ -85,7 +88,10 @@ make_auth_domain_name(char *name)
 static int
 gss_mech_svc_setup(struct gss_api_mech *gm)
 {
+<<<<<<< HEAD
 	struct auth_domain *dom;
+=======
+>>>>>>> FETCH_HEAD
 	struct pf_desc *pf;
 	int i, status;
 
@@ -95,6 +101,7 @@ gss_mech_svc_setup(struct gss_api_mech *gm)
 		status = -ENOMEM;
 		if (pf->auth_domain_name == NULL)
 			goto out;
+<<<<<<< HEAD
 		dom = svcauth_gss_register_pseudoflavor(
 			pf->pseudoflavor, pf->auth_domain_name);
 		if (IS_ERR(dom)) {
@@ -102,6 +109,12 @@ gss_mech_svc_setup(struct gss_api_mech *gm)
 			goto out;
 		}
 		pf->domain = dom;
+=======
+		status = svcauth_gss_register_pseudoflavor(pf->pseudoflavor,
+							pf->auth_domain_name);
+		if (status)
+			goto out;
+>>>>>>> FETCH_HEAD
 	}
 	return 0;
 out:

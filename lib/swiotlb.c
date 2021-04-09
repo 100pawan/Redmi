@@ -199,7 +199,10 @@ int __init swiotlb_init_with_tbl(char *tlb, unsigned long nslabs, int verbose)
 		io_tlb_orig_addr[i] = INVALID_PHYS_ADDR;
 	}
 	io_tlb_index = 0;
+<<<<<<< HEAD
 	no_iotlb_memory = false;
+=======
+>>>>>>> FETCH_HEAD
 
 	if (verbose)
 		swiotlb_print_info();
@@ -230,11 +233,17 @@ swiotlb_init(int verbose)
 	if (vstart && !swiotlb_init_with_tbl(vstart, io_tlb_nslabs, verbose))
 		return;
 
+<<<<<<< HEAD
 	if (io_tlb_start) {
 		memblock_free_early(io_tlb_start,
 				    PAGE_ALIGN(io_tlb_nslabs << IO_TLB_SHIFT));
 		io_tlb_start = 0;
 	}
+=======
+	if (io_tlb_start)
+		memblock_free_early(io_tlb_start,
+				    PAGE_ALIGN(io_tlb_nslabs << IO_TLB_SHIFT));
+>>>>>>> FETCH_HEAD
 	pr_warn("Cannot allocate buffer");
 	no_iotlb_memory = true;
 }
@@ -333,7 +342,10 @@ swiotlb_late_init_with_tbl(char *tlb, unsigned long nslabs)
 		io_tlb_orig_addr[i] = INVALID_PHYS_ADDR;
 	}
 	io_tlb_index = 0;
+<<<<<<< HEAD
 	no_iotlb_memory = false;
+=======
+>>>>>>> FETCH_HEAD
 
 	swiotlb_print_info();
 

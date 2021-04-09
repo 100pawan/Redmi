@@ -2240,7 +2240,10 @@ static int lanai_dev_open(struct atm_dev *atmdev)
 	conf1_write(lanai);
 #endif
 	iounmap(lanai->base);
+<<<<<<< HEAD
 	lanai->base = NULL;
+=======
+>>>>>>> FETCH_HEAD
     error_pci:
 	pci_disable_device(lanai->pci);
     error:
@@ -2253,8 +2256,11 @@ static int lanai_dev_open(struct atm_dev *atmdev)
 static void lanai_dev_close(struct atm_dev *atmdev)
 {
 	struct lanai_dev *lanai = (struct lanai_dev *) atmdev->dev_data;
+<<<<<<< HEAD
 	if (lanai->base==NULL)
 		return;
+=======
+>>>>>>> FETCH_HEAD
 	printk(KERN_INFO DEV_LABEL "(itf %d): shutting down interface\n",
 	    lanai->number);
 	lanai_timed_poll_stop(lanai);
@@ -2564,7 +2570,11 @@ static int lanai_init_one(struct pci_dev *pci,
 	struct atm_dev *atmdev;
 	int result;
 
+<<<<<<< HEAD
 	lanai = kzalloc(sizeof(*lanai), GFP_KERNEL);
+=======
+	lanai = kmalloc(sizeof(*lanai), GFP_KERNEL);
+>>>>>>> FETCH_HEAD
 	if (lanai == NULL) {
 		printk(KERN_ERR DEV_LABEL
 		       ": couldn't allocate dev_data structure!\n");

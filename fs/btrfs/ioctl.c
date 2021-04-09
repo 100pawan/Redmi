@@ -2041,6 +2041,7 @@ static noinline int copy_to_sk(struct btrfs_path *path,
 		sh.len = item_len;
 		sh.transid = found_transid;
 
+<<<<<<< HEAD
 		/*
 		 * Copy search result header. If we fault then loop again so we
 		 * can fault in the pages and -EFAULT there if there's a
@@ -2049,6 +2050,11 @@ static noinline int copy_to_sk(struct btrfs_path *path,
 		 */
 		if (probe_user_write(ubuf + *sk_offset, &sh, sizeof(sh))) {
 			ret = 0;
+=======
+		/* copy search result header */
+		if (copy_to_user(ubuf + *sk_offset, &sh, sizeof(sh))) {
+			ret = -EFAULT;
+>>>>>>> FETCH_HEAD
 			goto out;
 		}
 
@@ -2056,6 +2062,7 @@ static noinline int copy_to_sk(struct btrfs_path *path,
 
 		if (item_len) {
 			char __user *up = ubuf + *sk_offset;
+<<<<<<< HEAD
 			/*
 			 * Copy the item, same behavior as above, but reset the
 			 * * sk_offset so we copy the full thing again.
@@ -2064,6 +2071,12 @@ static noinline int copy_to_sk(struct btrfs_path *path,
 						item_off, item_len)) {
 				ret = 0;
 				*sk_offset -= sizeof(sh);
+=======
+			/* copy the item */
+			if (read_extent_buffer_to_user(leaf, up,
+						       item_off, item_len)) {
+				ret = -EFAULT;
+>>>>>>> FETCH_HEAD
 				goto out;
 			}
 
@@ -2151,11 +2164,14 @@ static noinline int search_ioctl(struct inode *inode,
 	key.offset = sk->min_offset;
 
 	while (1) {
+<<<<<<< HEAD
 		ret = fault_in_pages_writeable(ubuf + sk_offset,
 					       *buf_size - sk_offset);
 		if (ret)
 			break;
 
+=======
+>>>>>>> FETCH_HEAD
 		ret = btrfs_search_forward(root, &key, path, sk->min_transid);
 		if (ret != 0) {
 			if (ret > 0)
@@ -3854,8 +3870,11 @@ process_slot:
 			ret = -EINTR;
 			goto out;
 		}
+<<<<<<< HEAD
 
 		cond_resched();
+=======
+>>>>>>> FETCH_HEAD
 	}
 	ret = 0;
 

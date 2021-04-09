@@ -2325,9 +2325,12 @@ int regulatory_hint_user(const char *alpha2,
 	if (WARN_ON(!alpha2))
 		return -EINVAL;
 
+<<<<<<< HEAD
 	if (!is_world_regdom(alpha2) && !is_an_alpha2(alpha2))
 		return -EINVAL;
 
+=======
+>>>>>>> FETCH_HEAD
 	request = kzalloc(sizeof(struct regulatory_request), GFP_KERNEL);
 	if (!request)
 		return -ENOMEM;
@@ -2764,7 +2767,11 @@ static void print_rd_rules(const struct ieee80211_regdomain *rd)
 		power_rule = &reg_rule->power_rule;
 
 		if (reg_rule->flags & NL80211_RRF_AUTO_BW)
+<<<<<<< HEAD
 			snprintf(bw, sizeof(bw), "%d KHz, %u KHz AUTO",
+=======
+			snprintf(bw, sizeof(bw), "%d KHz, %d KHz AUTO",
+>>>>>>> FETCH_HEAD
 				 freq_range->max_bandwidth_khz,
 				 reg_get_max_bandwidth(rd, reg_rule));
 		else

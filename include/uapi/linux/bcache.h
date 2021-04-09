@@ -5,7 +5,11 @@
  * Bcache on disk data structures
  */
 
+<<<<<<< HEAD
 #include <linux/types.h>
+=======
+#include <asm/types.h>
+>>>>>>> FETCH_HEAD
 
 #define BITMASK(name, type, field, offset, size)		\
 static inline __u64 name(const type *k)				\

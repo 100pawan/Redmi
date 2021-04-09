@@ -709,6 +709,7 @@ static int ovs_ct_nat(struct net *net, struct sw_flow_key *key,
 	}
 	err = ovs_ct_nat_execute(skb, ct, ctinfo, &info->range, maniptype);
 
+<<<<<<< HEAD
 	if (err == NF_ACCEPT && ct->status & IPS_DST_NAT) {
 		if (ct->status & IPS_SRC_NAT) {
 			if (maniptype == NF_NAT_MANIP_SRC)
@@ -722,6 +723,17 @@ static int ovs_ct_nat(struct net *net, struct sw_flow_key *key,
 			err = ovs_ct_nat_execute(skb, ct, ctinfo, NULL,
 						 NF_NAT_MANIP_SRC);
 		}
+=======
+	if (err == NF_ACCEPT &&
+	    ct->status & IPS_SRC_NAT && ct->status & IPS_DST_NAT) {
+		if (maniptype == NF_NAT_MANIP_SRC)
+			maniptype = NF_NAT_MANIP_DST;
+		else
+			maniptype = NF_NAT_MANIP_SRC;
+
+		err = ovs_ct_nat_execute(skb, ct, ctinfo, &info->range,
+					 maniptype);
+>>>>>>> FETCH_HEAD
 	}
 
 	/* Mark NAT done if successful and update the flow key. */

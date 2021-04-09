@@ -425,8 +425,11 @@ static int ibmvscsi_reenable_crq_queue(struct crq_queue *queue,
 	int rc = 0;
 	struct vio_dev *vdev = to_vio_dev(hostdata->dev);
 
+<<<<<<< HEAD
 	set_adapter_info(hostdata);
 
+=======
+>>>>>>> FETCH_HEAD
 	/* Re-enable the CRQ */
 	do {
 		if (rc)

@@ -734,6 +734,7 @@ static inline int acpi_device_modalias(struct device *dev,
 	return -ENODEV;
 }
 
+<<<<<<< HEAD
 static inline struct platform_device *
 acpi_create_platform_device(struct acpi_device *adev,
 			    struct property_entry *properties)
@@ -741,6 +742,8 @@ acpi_create_platform_device(struct acpi_device *adev,
 	return NULL;
 }
 
+=======
+>>>>>>> FETCH_HEAD
 static inline bool acpi_dma_supported(struct acpi_device *adev)
 {
 	return false;

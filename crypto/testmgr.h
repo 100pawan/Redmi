@@ -37859,6 +37859,7 @@ static struct hash_testvec bfin_crc_tv_template[] = {
 
 static struct comp_testvec lz4_comp_tv_template[] = {
 	{
+<<<<<<< HEAD
 		.inlen	= 255,
 		.outlen	= 218,
 		.input	= "LZ4 is lossless compression algorithm, providing"
@@ -37885,11 +37886,24 @@ static struct comp_testvec lz4_comp_tv_template[] = {
 			  "\x6c\x69\x6d\x69\x74\x73\x20\x6f\x3f\x00\x01\x85\x00"
 			  "\x90\x20\x73\x79\x73\x74\x65\x6d\x73\x2e",
 
+=======
+		.inlen	= 70,
+		.outlen	= 45,
+		.input	= "Join us now and share the software "
+			  "Join us now and share the software ",
+		.output = "\xf0\x10\x4a\x6f\x69\x6e\x20\x75"
+			  "\x73\x20\x6e\x6f\x77\x20\x61\x6e"
+			  "\x64\x20\x73\x68\x61\x72\x65\x20"
+			  "\x74\x68\x65\x20\x73\x6f\x66\x74"
+			  "\x77\x0d\x00\x0f\x23\x00\x0b\x50"
+			  "\x77\x61\x72\x65\x20",
+>>>>>>> FETCH_HEAD
 	},
 };
 
 static struct comp_testvec lz4_decomp_tv_template[] = {
 	{
+<<<<<<< HEAD
 		.inlen	= 218,
 		.outlen	= 255,
 		.input	= "\xf9\x21\x4c\x5a\x34\x20\x69\x73\x20\x6c\x6f\x73\x73"
@@ -37915,6 +37929,18 @@ static struct comp_testvec lz4_decomp_tv_template[] = {
 			 "decoder, with speed in multiple GB/s per core, "
 			 "typically reaching RAM speed limits on multi-core "
 			 "systems.",
+=======
+		.inlen	= 45,
+		.outlen	= 70,
+		.input  = "\xf0\x10\x4a\x6f\x69\x6e\x20\x75"
+			  "\x73\x20\x6e\x6f\x77\x20\x61\x6e"
+			  "\x64\x20\x73\x68\x61\x72\x65\x20"
+			  "\x74\x68\x65\x20\x73\x6f\x66\x74"
+			  "\x77\x0d\x00\x0f\x23\x00\x0b\x50"
+			  "\x77\x61\x72\x65\x20",
+		.output	= "Join us now and share the software "
+			  "Join us now and share the software ",
+>>>>>>> FETCH_HEAD
 	},
 };
 
@@ -37923,6 +37949,7 @@ static struct comp_testvec lz4_decomp_tv_template[] = {
 
 static struct comp_testvec lz4hc_comp_tv_template[] = {
 	{
+<<<<<<< HEAD
 		.inlen	= 255,
 		.outlen	= 216,
 		.input	= "LZ4 is lossless compression algorithm, providing"
@@ -37949,11 +37976,24 @@ static struct comp_testvec lz4hc_comp_tv_template[] = {
 			  "\x6c\x69\x6d\x69\x74\x73\x20\x6f\x6e\x85\x00\x90\x20"
 			  "\x73\x79\x73\x74\x65\x6d\x73\x2e",
 
+=======
+		.inlen	= 70,
+		.outlen	= 45,
+		.input	= "Join us now and share the software "
+			  "Join us now and share the software ",
+		.output = "\xf0\x10\x4a\x6f\x69\x6e\x20\x75"
+			  "\x73\x20\x6e\x6f\x77\x20\x61\x6e"
+			  "\x64\x20\x73\x68\x61\x72\x65\x20"
+			  "\x74\x68\x65\x20\x73\x6f\x66\x74"
+			  "\x77\x0d\x00\x0f\x23\x00\x0b\x50"
+			  "\x77\x61\x72\x65\x20",
+>>>>>>> FETCH_HEAD
 	},
 };
 
 static struct comp_testvec lz4hc_decomp_tv_template[] = {
 	{
+<<<<<<< HEAD
 		.inlen	= 216,
 		.outlen	= 255,
 		.input	= "\xf9\x21\x4c\x5a\x34\x20\x69\x73\x20\x6c\x6f\x73\x73"
@@ -37979,6 +38019,18 @@ static struct comp_testvec lz4hc_decomp_tv_template[] = {
 			 "decoder, with speed in multiple GB/s per core, "
 			 "typically reaching RAM speed limits on multi-core "
 			 "systems.",
+=======
+		.inlen	= 45,
+		.outlen	= 70,
+		.input  = "\xf0\x10\x4a\x6f\x69\x6e\x20\x75"
+			  "\x73\x20\x6e\x6f\x77\x20\x61\x6e"
+			  "\x64\x20\x73\x68\x61\x72\x65\x20"
+			  "\x74\x68\x65\x20\x73\x6f\x66\x74"
+			  "\x77\x0d\x00\x0f\x23\x00\x0b\x50"
+			  "\x77\x61\x72\x65\x20",
+		.output	= "Join us now and share the software "
+			  "Join us now and share the software ",
+>>>>>>> FETCH_HEAD
 	},
 };
 

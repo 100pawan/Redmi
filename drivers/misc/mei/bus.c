@@ -639,8 +639,14 @@ static int mei_cl_device_remove(struct device *dev)
 		ret = cldrv->remove(cldev);
 
 	module_put(THIS_MODULE);
+<<<<<<< HEAD
 
 	return ret;
+=======
+	dev->driver = NULL;
+	return ret;
+
+>>>>>>> FETCH_HEAD
 }
 
 static ssize_t name_show(struct device *dev, struct device_attribute *a,

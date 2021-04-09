@@ -561,12 +561,19 @@ static void kprobe_optimizer(struct work_struct *work)
 	do_free_cleaned_kprobes();
 
 	mutex_unlock(&module_mutex);
+<<<<<<< HEAD
+=======
+	mutex_unlock(&kprobe_mutex);
+>>>>>>> FETCH_HEAD
 
 	/* Step 5: Kick optimizer again if needed */
 	if (!list_empty(&optimizing_list) || !list_empty(&unoptimizing_list))
 		kick_kprobe_optimizer();
+<<<<<<< HEAD
 
 	mutex_unlock(&kprobe_mutex);
+=======
+>>>>>>> FETCH_HEAD
 }
 
 /* Wait for completing optimization and unoptimization */
@@ -1150,6 +1157,7 @@ __releases(hlist_lock)
 }
 NOKPROBE_SYMBOL(kretprobe_table_unlock);
 
+<<<<<<< HEAD
 struct kprobe kprobe_busy = {
 	.addr = (void *) get_kprobe,
 };
@@ -1170,6 +1178,8 @@ void kprobe_busy_end(void)
 	preempt_enable();
 }
 
+=======
+>>>>>>> FETCH_HEAD
 /*
  * This function is called from finish_task_switch when task tk becomes dead,
  * so that we can recycle any function-return probe instances associated
@@ -1187,8 +1197,11 @@ void kprobe_flush_task(struct task_struct *tk)
 		/* Early boot.  kretprobe_table_locks not yet initialized. */
 		return;
 
+<<<<<<< HEAD
 	kprobe_busy_begin();
 
+=======
+>>>>>>> FETCH_HEAD
 	INIT_HLIST_HEAD(&empty_rp);
 	hash = hash_ptr(tk, KPROBE_HASH_BITS);
 	head = &kretprobe_inst_table[hash];
@@ -1202,8 +1215,11 @@ void kprobe_flush_task(struct task_struct *tk)
 		hlist_del(&ri->hlist);
 		kfree(ri);
 	}
+<<<<<<< HEAD
 
 	kprobe_busy_end();
+=======
+>>>>>>> FETCH_HEAD
 }
 NOKPROBE_SYMBOL(kprobe_flush_task);
 
@@ -1884,10 +1900,13 @@ int register_kretprobe(struct kretprobe *rp)
 	int i;
 	void *addr;
 
+<<<<<<< HEAD
 	/* If only rp->kp.addr is specified, check reregistering kprobes */
 	if (rp->kp.addr && check_kprobe_rereg(&rp->kp))
 		return -EINVAL;
 
+=======
+>>>>>>> FETCH_HEAD
 	if (kretprobe_blacklist_size) {
 		addr = kprobe_addr(&rp->kp);
 		if (IS_ERR(addr))
@@ -2016,9 +2035,12 @@ static void kill_kprobe(struct kprobe *p)
 {
 	struct kprobe *kp;
 
+<<<<<<< HEAD
 	if (WARN_ON_ONCE(kprobe_gone(p)))
 		return;
 
+=======
+>>>>>>> FETCH_HEAD
 	p->flags |= KPROBE_FLAG_GONE;
 	if (kprobe_aggrprobe(p)) {
 		/*
@@ -2036,6 +2058,7 @@ static void kill_kprobe(struct kprobe *p)
 	 * the original probed function (which will be freed soon) any more.
 	 */
 	arch_remove_kprobe(p);
+<<<<<<< HEAD
 
 	/*
 	 * The module is going away. We should disarm the kprobe which
@@ -2044,6 +2067,8 @@ static void kill_kprobe(struct kprobe *p)
 	 */
 	if (kprobe_ftrace(p) && !kprobe_disabled(p) && !kprobes_all_disarmed)
 		disarm_kprobe_ftrace(p);
+=======
+>>>>>>> FETCH_HEAD
 }
 
 /* Disable one kprobe */
@@ -2162,10 +2187,14 @@ static int kprobes_module_callback(struct notifier_block *nb,
 	mutex_lock(&kprobe_mutex);
 	for (i = 0; i < KPROBE_TABLE_SIZE; i++) {
 		head = &kprobe_table[i];
+<<<<<<< HEAD
 		hlist_for_each_entry_rcu(p, head, hlist) {
 			if (kprobe_gone(p))
 				continue;
 
+=======
+		hlist_for_each_entry_rcu(p, head, hlist)
+>>>>>>> FETCH_HEAD
 			if (within_module_init((unsigned long)p->addr, mod) ||
 			    (checkcore &&
 			     within_module_core((unsigned long)p->addr, mod))) {
@@ -2176,7 +2205,10 @@ static int kprobes_module_callback(struct notifier_block *nb,
 				 */
 				kill_kprobe(p);
 			}
+<<<<<<< HEAD
 		}
+=======
+>>>>>>> FETCH_HEAD
 	}
 	mutex_unlock(&kprobe_mutex);
 	return NOTIFY_DONE;

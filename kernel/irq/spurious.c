@@ -426,7 +426,11 @@ void note_interrupt(struct irq_desc *desc, irqreturn_t action_ret)
 	desc->irqs_unhandled = 0;
 }
 
+<<<<<<< HEAD
 bool noirqdebug __read_mostly = true;
+=======
+bool noirqdebug __read_mostly;
+>>>>>>> FETCH_HEAD
 
 int noirqdebug_setup(char *str)
 {

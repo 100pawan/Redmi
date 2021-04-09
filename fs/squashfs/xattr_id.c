@@ -44,6 +44,7 @@ int squashfs_xattr_lookup(struct super_block *sb, unsigned int index,
 	struct squashfs_sb_info *msblk = sb->s_fs_info;
 	int block = SQUASHFS_XATTR_BLOCK(index);
 	int offset = SQUASHFS_XATTR_BLOCK_OFFSET(index);
+<<<<<<< HEAD
 	u64 start_block;
 	struct squashfs_xattr_id id;
 	int err;
@@ -53,6 +54,12 @@ int squashfs_xattr_lookup(struct super_block *sb, unsigned int index,
 
 	start_block = le64_to_cpu(msblk->xattr_id_table[block]);
 
+=======
+	u64 start_block = le64_to_cpu(msblk->xattr_id_table[block]);
+	struct squashfs_xattr_id id;
+	int err;
+
+>>>>>>> FETCH_HEAD
 	err = squashfs_read_metadata(sb, &id, &start_block, &offset,
 							sizeof(id));
 	if (err < 0)
@@ -68,6 +75,7 @@ int squashfs_xattr_lookup(struct super_block *sb, unsigned int index,
 /*
  * Read uncompressed xattr id lookup table indexes from disk into memory
  */
+<<<<<<< HEAD
 __le64 *squashfs_read_xattr_id_table(struct super_block *sb, u64 table_start,
 		u64 *xattr_table_start, int *xattr_ids)
 {
@@ -79,6 +87,15 @@ __le64 *squashfs_read_xattr_id_table(struct super_block *sb, u64 table_start,
 	int n;
 
 	id_table = squashfs_read_table(sb, table_start, sizeof(*id_table));
+=======
+__le64 *squashfs_read_xattr_id_table(struct super_block *sb, u64 start,
+		u64 *xattr_table_start, int *xattr_ids)
+{
+	unsigned int len;
+	struct squashfs_xattr_id_table *id_table;
+
+	id_table = squashfs_read_table(sb, start, sizeof(*id_table));
+>>>>>>> FETCH_HEAD
 	if (IS_ERR(id_table))
 		return (__le64 *) id_table;
 
@@ -92,6 +109,7 @@ __le64 *squashfs_read_xattr_id_table(struct super_block *sb, u64 table_start,
 	if (*xattr_ids == 0)
 		return ERR_PTR(-EINVAL);
 
+<<<<<<< HEAD
 	len = SQUASHFS_XATTR_BLOCK_BYTES(*xattr_ids);
 	indexes = SQUASHFS_XATTR_BLOCKS(*xattr_ids);
 
@@ -142,4 +160,15 @@ __le64 *squashfs_read_xattr_id_table(struct super_block *sb, u64 table_start,
 	}
 
 	return table;
+=======
+	/* xattr_table should be less than start */
+	if (*xattr_table_start >= start)
+		return ERR_PTR(-EINVAL);
+
+	len = SQUASHFS_XATTR_BLOCK_BYTES(*xattr_ids);
+
+	TRACE("In read_xattr_index_table, length %d\n", len);
+
+	return squashfs_read_table(sb, start + sizeof(*id_table), len);
+>>>>>>> FETCH_HEAD
 }

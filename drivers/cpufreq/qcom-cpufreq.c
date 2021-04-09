@@ -23,15 +23,22 @@
 #include <linux/cpu.h>
 #include <linux/cpumask.h>
 #include <linux/suspend.h>
+<<<<<<< HEAD
 #include <linux/clk/msm-clk-provider.h>
+=======
+#include <linux/clk.h>
+>>>>>>> FETCH_HEAD
 #include <linux/err.h>
 #include <linux/platform_device.h>
 #include <linux/of.h>
 #include <linux/of_device.h>
 #include <linux/cpu_cooling.h>
 #include <trace/events/power.h>
+<<<<<<< HEAD
 #include <linux/proc_fs.h>
 #include <linux/uaccess.h>
+=======
+>>>>>>> FETCH_HEAD
 
 static DEFINE_MUTEX(l2bw_lock);
 
@@ -372,6 +379,7 @@ static struct cpufreq_driver msm_cpufreq_driver = {
 	.ready		= msm_cpufreq_ready,
 };
 
+<<<<<<< HEAD
 static unsigned long max_freq = 0;
 static int cpumaxfreq_proc_show(struct seq_file *m, void *v)
 {
@@ -399,6 +407,8 @@ static const struct file_operations cpumaxfreq_proc_fops = {
 	.release	= single_release,
 };
 
+=======
+>>>>>>> FETCH_HEAD
 static struct cpufreq_frequency_table *cpufreq_parse_dt(struct device *dev,
 						char *tbl_name, int cpu)
 {
@@ -446,8 +456,11 @@ static struct cpufreq_frequency_table *cpufreq_parse_dt(struct device *dev,
 		ftbl[j].driver_data = j;
 		ftbl[j].frequency = f;
 		j++;
+<<<<<<< HEAD
 		if(max_freq < f)
 			max_freq = f;
+=======
+>>>>>>> FETCH_HEAD
 	}
 
 	ftbl[j].driver_data = j;
@@ -478,9 +491,12 @@ static int msm_cpufreq_probe(struct platform_device *pdev)
 			return PTR_ERR(c);
 		else if (IS_ERR(c))
 			c = cpu_clk[cpu-1];
+<<<<<<< HEAD
 #ifdef CONFIG_COMMON_CLK_MSM
 		c->flags |= CLKFLAG_NO_RATE_CACHE;
 #endif
+=======
+>>>>>>> FETCH_HEAD
 		cpu_clk[cpu] = c;
 	}
 	hotplug_ready = true;
@@ -488,8 +504,11 @@ static int msm_cpufreq_probe(struct platform_device *pdev)
 	/* Use per-policy governor tunable for some targets */
 	if (of_property_read_bool(dev->of_node, "qcom,governor-per-policy"))
 		msm_cpufreq_driver.flags |= CPUFREQ_HAVE_GOVERNOR_PER_POLICY;
+<<<<<<< HEAD
 	
 	proc_create("cpumaxfreq", 0444, NULL, &cpumaxfreq_proc_fops);
+=======
+>>>>>>> FETCH_HEAD
 
 	/* Parse commong cpufreq table for all CPUs */
 	ftbl = cpufreq_parse_dt(dev, "qcom,cpufreq-table", 0);

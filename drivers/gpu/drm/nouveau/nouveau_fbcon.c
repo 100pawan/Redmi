@@ -183,10 +183,15 @@ nouveau_fbcon_open(struct fb_info *info, int user)
 	struct nouveau_fbdev *fbcon = info->par;
 	struct nouveau_drm *drm = nouveau_drm(fbcon->dev);
 	int ret = pm_runtime_get_sync(drm->dev->dev);
+<<<<<<< HEAD
 	if (ret < 0 && ret != -EACCES) {
 		pm_runtime_put(drm->dev->dev);
 		return ret;
 	}
+=======
+	if (ret < 0 && ret != -EACCES)
+		return ret;
+>>>>>>> FETCH_HEAD
 	return 0;
 }
 
@@ -586,7 +591,10 @@ fini:
 	drm_fb_helper_fini(&fbcon->helper);
 free:
 	kfree(fbcon);
+<<<<<<< HEAD
 	drm->fbcon = NULL;
+=======
+>>>>>>> FETCH_HEAD
 	return ret;
 }
 

@@ -37,7 +37,12 @@ static __inline__ void *drm_calloc_large(size_t nmemb, size_t size)
 	if (size * nmemb <= PAGE_SIZE)
 	    return kcalloc(nmemb, size, GFP_KERNEL);
 
+<<<<<<< HEAD
 	return vzalloc(size * nmemb);
+=======
+	return __vmalloc(size * nmemb,
+			 GFP_KERNEL | __GFP_HIGHMEM | __GFP_ZERO, PAGE_KERNEL);
+>>>>>>> FETCH_HEAD
 }
 
 /* Modeled after cairo's malloc_ab, it's like calloc but without the zeroing. */
@@ -49,7 +54,12 @@ static __inline__ void *drm_malloc_ab(size_t nmemb, size_t size)
 	if (size * nmemb <= PAGE_SIZE)
 	    return kmalloc(nmemb * size, GFP_KERNEL);
 
+<<<<<<< HEAD
 	return vmalloc(size * nmemb);
+=======
+	return __vmalloc(size * nmemb,
+			 GFP_KERNEL | __GFP_HIGHMEM, PAGE_KERNEL);
+>>>>>>> FETCH_HEAD
 }
 
 static __inline__ void *drm_malloc_gfp(size_t nmemb, size_t size, gfp_t gfp)
@@ -67,7 +77,12 @@ static __inline__ void *drm_malloc_gfp(size_t nmemb, size_t size, gfp_t gfp)
 			return ptr;
 	}
 
+<<<<<<< HEAD
 	return __vmalloc(size * nmemb, gfp, PAGE_KERNEL);
+=======
+	return __vmalloc(size * nmemb,
+			 gfp | __GFP_HIGHMEM, PAGE_KERNEL);
+>>>>>>> FETCH_HEAD
 }
 
 static __inline void drm_free_large(void *ptr)

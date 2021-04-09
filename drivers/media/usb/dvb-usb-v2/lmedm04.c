@@ -446,7 +446,11 @@ static int lme2510_int_read(struct dvb_usb_adapter *adap)
 	ep = usb_pipe_endpoint(d->udev, lme_int->lme_urb->pipe);
 
 	if (usb_endpoint_type(&ep->desc) == USB_ENDPOINT_XFER_BULK)
+<<<<<<< HEAD
 		lme_int->lme_urb->pipe = usb_rcvbulkpipe(d->udev, 0xa);
+=======
+		lme_int->lme_urb->pipe = usb_rcvbulkpipe(d->udev, 0xa),
+>>>>>>> FETCH_HEAD
 
 	lme_int->lme_urb->transfer_flags |= URB_NO_TRANSFER_DMA_MAP;
 

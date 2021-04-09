@@ -2161,8 +2161,12 @@ static int tpacket_rcv(struct sk_buff *skb, struct net_device *dev,
 	int skb_len = skb->len;
 	unsigned int snaplen, res;
 	unsigned long status = TP_STATUS_USER;
+<<<<<<< HEAD
 	unsigned short macoff, hdrlen;
 	unsigned int netoff;
+=======
+	unsigned short macoff, netoff, hdrlen;
+>>>>>>> FETCH_HEAD
 	struct sk_buff *copy_skb = NULL;
 	struct timespec ts;
 	__u32 ts_status;
@@ -2224,12 +2228,15 @@ static int tpacket_rcv(struct sk_buff *skb, struct net_device *dev,
 		}
 		macoff = netoff - maclen;
 	}
+<<<<<<< HEAD
 	if (netoff > USHRT_MAX) {
 		spin_lock(&sk->sk_receive_queue.lock);
 		po->stats.stats1.tp_drops++;
 		spin_unlock(&sk->sk_receive_queue.lock);
 		goto drop_n_restore;
 	}
+=======
+>>>>>>> FETCH_HEAD
 	if (po->tp_version <= TPACKET_V2) {
 		if (macoff + snaplen > po->rx_ring.frame_size) {
 			if (po->copy_thresh &&

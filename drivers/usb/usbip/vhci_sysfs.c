@@ -278,8 +278,11 @@ static ssize_t store_attach(struct device *dev, struct device_attribute *attr,
 	struct vhci_device *vdev;
 	int err;
 	unsigned long flags;
+<<<<<<< HEAD
 	struct task_struct *tcp_rx = NULL;
 	struct task_struct *tcp_tx = NULL;
+=======
+>>>>>>> FETCH_HEAD
 
 	/*
 	 * @rhport: port number of vhci_hcd
@@ -311,6 +314,7 @@ static ssize_t store_attach(struct device *dev, struct device_attribute *attr,
 
 	/* Extract socket from fd. */
 	socket = sockfd_lookup(sockfd, &err);
+<<<<<<< HEAD
 	if (!socket) {
 		dev_err(dev, "failed to lookup sock");
 		return -EINVAL;
@@ -340,6 +344,14 @@ static ssize_t store_attach(struct device *dev, struct device_attribute *attr,
 	get_task_struct(tcp_tx);
 
 	/* now begin lock until setting vdev status set */
+=======
+	if (!socket)
+		return -EINVAL;
+
+	/* now need lock until setting vdev status as used */
+
+	/* begin a lock */
+>>>>>>> FETCH_HEAD
 	spin_lock_irqsave(&vhci->lock, flags);
 	spin_lock(&vdev->ud.lock);
 
@@ -349,8 +361,11 @@ static ssize_t store_attach(struct device *dev, struct device_attribute *attr,
 		spin_unlock_irqrestore(&vhci->lock, flags);
 
 		sockfd_put(socket);
+<<<<<<< HEAD
 		kthread_stop_put(tcp_rx);
 		kthread_stop_put(tcp_tx);
+=======
+>>>>>>> FETCH_HEAD
 
 		dev_err(dev, "port %d already used\n", rhport);
 		return -EINVAL;
@@ -365,16 +380,24 @@ static ssize_t store_attach(struct device *dev, struct device_attribute *attr,
 	vdev->speed         = speed;
 	vdev->ud.sockfd     = sockfd;
 	vdev->ud.tcp_socket = socket;
+<<<<<<< HEAD
 	vdev->ud.tcp_rx     = tcp_rx;
 	vdev->ud.tcp_tx     = tcp_tx;
+=======
+>>>>>>> FETCH_HEAD
 	vdev->ud.status     = VDEV_ST_NOTASSIGNED;
 
 	spin_unlock(&vdev->ud.lock);
 	spin_unlock_irqrestore(&vhci->lock, flags);
 	/* end the lock */
 
+<<<<<<< HEAD
 	wake_up_process(vdev->ud.tcp_rx);
 	wake_up_process(vdev->ud.tcp_tx);
+=======
+	vdev->ud.tcp_rx = kthread_get_run(vhci_rx_loop, &vdev->ud, "vhci_rx");
+	vdev->ud.tcp_tx = kthread_get_run(vhci_tx_loop, &vdev->ud, "vhci_tx");
+>>>>>>> FETCH_HEAD
 
 	rh_port_connect(vdev, speed);
 

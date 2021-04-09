@@ -124,7 +124,10 @@ static struct ip6_tnl *ip6gre_tunnel_lookup(struct net_device *dev,
 	int dev_type = (gre_proto == htons(ETH_P_TEB)) ?
 		       ARPHRD_ETHER : ARPHRD_IP6GRE;
 	int score, cand_score = 4;
+<<<<<<< HEAD
 	struct net_device *ndev;
+=======
+>>>>>>> FETCH_HEAD
 
 	for_each_ip_tunnel_rcu(t, ign->tunnels_r_l[h0 ^ h1]) {
 		if (!ipv6_addr_equal(local, &t->parms.laddr) ||
@@ -227,9 +230,15 @@ static struct ip6_tnl *ip6gre_tunnel_lookup(struct net_device *dev,
 	if (cand)
 		return cand;
 
+<<<<<<< HEAD
 	ndev = READ_ONCE(ign->fb_tunnel_dev);
 	if (ndev && ndev->flags & IFF_UP)
 		return netdev_priv(ndev);
+=======
+	dev = ign->fb_tunnel_dev;
+	if (dev->flags & IFF_UP)
+		return netdev_priv(dev);
+>>>>>>> FETCH_HEAD
 
 	return NULL;
 }
@@ -365,8 +374,11 @@ static void ip6gre_tunnel_uninit(struct net_device *dev)
 	struct ip6gre_net *ign = net_generic(t->net, ip6gre_net_id);
 
 	ip6gre_tunnel_unlink(ign, t);
+<<<<<<< HEAD
 	if (ign->fb_tunnel_dev == dev)
 		WRITE_ONCE(ign->fb_tunnel_dev, NULL);
+=======
+>>>>>>> FETCH_HEAD
 	dst_cache_reset(&t->dst_cache);
 	dev_put(dev);
 }
@@ -1134,6 +1146,7 @@ static void ip6gre_destroy_tunnels(struct net *net, struct list_head *head)
 static int __net_init ip6gre_init_net(struct net *net)
 {
 	struct ip6gre_net *ign = net_generic(net, ip6gre_net_id);
+<<<<<<< HEAD
 	struct net_device *ndev;
 	int err;
 
@@ -1144,6 +1157,17 @@ static int __net_init ip6gre_init_net(struct net *net)
 		goto err_alloc_dev;
 	}
 	ign->fb_tunnel_dev = ndev;
+=======
+	int err;
+
+	ign->fb_tunnel_dev = alloc_netdev(sizeof(struct ip6_tnl), "ip6gre0",
+					  NET_NAME_UNKNOWN,
+					  ip6gre_tunnel_setup);
+	if (!ign->fb_tunnel_dev) {
+		err = -ENOMEM;
+		goto err_alloc_dev;
+	}
+>>>>>>> FETCH_HEAD
 	dev_net_set(ign->fb_tunnel_dev, net);
 	/* FB netdevice is special: we have one, and only one per netns.
 	 * Allowing to move it to another netns is clearly unsafe.
@@ -1163,7 +1187,11 @@ static int __net_init ip6gre_init_net(struct net *net)
 	return 0;
 
 err_reg_dev:
+<<<<<<< HEAD
 	ip6gre_dev_free(ndev);
+=======
+	ip6gre_dev_free(ign->fb_tunnel_dev);
+>>>>>>> FETCH_HEAD
 err_alloc_dev:
 	return err;
 }

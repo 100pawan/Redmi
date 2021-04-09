@@ -451,7 +451,11 @@ void tcp_v4_err(struct sk_buff *icmp_skb, u32 info)
 			if (!sock_owned_by_user(sk)) {
 				tcp_v4_mtu_reduced(sk);
 			} else {
+<<<<<<< HEAD
 				if (!test_and_set_bit(TCP_MTU_REDUCED_DEFERRED, &sk->sk_tsq_flags))
+=======
+				if (!test_and_set_bit(TCP_MTU_REDUCED_DEFERRED, &tp->tsq_flags))
+>>>>>>> FETCH_HEAD
 					sock_hold(sk);
 			}
 			goto out;
@@ -944,6 +948,7 @@ int tcp_md5_do_add(struct sock *sk, const union tcp_md5_addr *addr,
 
 	key = tcp_md5_do_lookup(sk, addr, family);
 	if (key) {
+<<<<<<< HEAD
 		/* Pre-existing entry - just update that one.
 		 * Note that the key might be used concurrently.
 		 */
@@ -956,6 +961,11 @@ int tcp_md5_do_add(struct sock *sk, const union tcp_md5_addr *addr,
 		 */
 		WRITE_ONCE(key->keylen, newkeylen);
 
+=======
+		/* Pre-existing entry - just update that one. */
+		memcpy(key->key, newkey, newkeylen);
+		key->keylen = newkeylen;
+>>>>>>> FETCH_HEAD
 		return 0;
 	}
 
@@ -971,7 +981,11 @@ int tcp_md5_do_add(struct sock *sk, const union tcp_md5_addr *addr,
 		rcu_assign_pointer(tp->md5sig_info, md5sig);
 	}
 
+<<<<<<< HEAD
 	key = sock_kmalloc(sk, sizeof(*key), gfp | __GFP_ZERO);
+=======
+	key = sock_kmalloc(sk, sizeof(*key), gfp);
+>>>>>>> FETCH_HEAD
 	if (!key)
 		return -ENOMEM;
 	if (!tcp_alloc_md5sig_pool()) {

@@ -3399,6 +3399,11 @@ void dasd_generic_remove(struct ccw_device *cdev)
 	struct dasd_device *device;
 	struct dasd_block *block;
 
+<<<<<<< HEAD
+=======
+	cdev->handler = NULL;
+
+>>>>>>> FETCH_HEAD
 	device = dasd_device_from_cdev(cdev);
 	if (IS_ERR(device)) {
 		dasd_remove_sysfs_files(cdev);
@@ -3417,7 +3422,10 @@ void dasd_generic_remove(struct ccw_device *cdev)
 	 * no quite down yet.
 	 */
 	dasd_set_target_state(device, DASD_STATE_NEW);
+<<<<<<< HEAD
 	cdev->handler = NULL;
+=======
+>>>>>>> FETCH_HEAD
 	/* dasd_delete_device destroys the device reference. */
 	block = device->block;
 	dasd_delete_device(device);

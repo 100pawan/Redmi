@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 /* Copyright (c) 2014-2017, The Linux Foundation. All rights reserved.
+=======
+/* Copyright (c) 2014-2017,2020, The Linux Foundation. All rights reserved.
+>>>>>>> FETCH_HEAD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -575,7 +579,11 @@ static void a5xx_preemption_close(struct kgsl_device *device)
 	unsigned int i;
 
 	del_timer(&preempt->timer);
+<<<<<<< HEAD
 	kgsl_free_global(device, &preempt->counters);
+=======
+	kgsl_free_global(device, &preempt->scratch);
+>>>>>>> FETCH_HEAD
 	a5xx_preemption_iommu_close(adreno_dev);
 
 	FOR_EACH_RINGBUFFER(adreno_dev, rb, i) {
@@ -602,14 +610,22 @@ int a5xx_preemption_init(struct adreno_device *adreno_dev)
 		(unsigned long) adreno_dev);
 
 	/* Allocate mem for storing preemption counters */
+<<<<<<< HEAD
 	ret = kgsl_allocate_global(device, &preempt->counters,
+=======
+	ret = kgsl_allocate_global(device, &preempt->scratch,
+>>>>>>> FETCH_HEAD
 		adreno_dev->num_ringbuffers *
 		A5XX_CP_CTXRECORD_PREEMPTION_COUNTER_SIZE, 0, 0,
 		"preemption_counters");
 	if (ret)
 		goto err;
 
+<<<<<<< HEAD
 	addr = preempt->counters.gpuaddr;
+=======
+	addr = preempt->scratch.gpuaddr;
+>>>>>>> FETCH_HEAD
 
 	/* Allocate mem for storing preemption switch record */
 	FOR_EACH_RINGBUFFER(adreno_dev, rb, i) {

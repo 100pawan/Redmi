@@ -91,11 +91,14 @@ enum kx_chipset {
 	KX_MAX_CHIPS /* this must be last */
 };
 
+<<<<<<< HEAD
 enum kx_acpi_type {
 	ACPI_GENERIC,
 	ACPI_SMO8500,
 };
 
+=======
+>>>>>>> FETCH_HEAD
 struct kxcjk1013_data {
 	struct i2c_client *client;
 	struct iio_trigger *dready_trig;
@@ -112,7 +115,11 @@ struct kxcjk1013_data {
 	bool motion_trigger_on;
 	int64_t timestamp;
 	enum kx_chipset chipset;
+<<<<<<< HEAD
 	enum kx_acpi_type acpi_type;
+=======
+	bool is_smo8500_device;
+>>>>>>> FETCH_HEAD
 };
 
 enum kxcjk1013_axis {
@@ -1149,7 +1156,11 @@ static irqreturn_t kxcjk1013_data_rdy_trig_poll(int irq, void *private)
 
 static const char *kxcjk1013_match_acpi_device(struct device *dev,
 					       enum kx_chipset *chipset,
+<<<<<<< HEAD
 					       enum kx_acpi_type *acpi_type)
+=======
+					       bool *is_smo8500_device)
+>>>>>>> FETCH_HEAD
 {
 	const struct acpi_device_id *id;
 
@@ -1158,7 +1169,11 @@ static const char *kxcjk1013_match_acpi_device(struct device *dev,
 		return NULL;
 
 	if (strcmp(id->id, "SMO8500") == 0)
+<<<<<<< HEAD
 		*acpi_type = ACPI_SMO8500;
+=======
+		*is_smo8500_device = true;
+>>>>>>> FETCH_HEAD
 
 	*chipset = (enum kx_chipset)id->driver_data;
 
@@ -1194,7 +1209,11 @@ static int kxcjk1013_probe(struct i2c_client *client,
 	} else if (ACPI_HANDLE(&client->dev)) {
 		name = kxcjk1013_match_acpi_device(&client->dev,
 						   &data->chipset,
+<<<<<<< HEAD
 						   &data->acpi_type);
+=======
+						   &data->is_smo8500_device);
+>>>>>>> FETCH_HEAD
 	} else
 		return -ENODEV;
 
@@ -1212,7 +1231,11 @@ static int kxcjk1013_probe(struct i2c_client *client,
 	indio_dev->modes = INDIO_DIRECT_MODE;
 	indio_dev->info = &kxcjk1013_info;
 
+<<<<<<< HEAD
 	if (client->irq > 0 && data->acpi_type != ACPI_SMO8500) {
+=======
+	if (client->irq > 0 && !data->is_smo8500_device) {
+>>>>>>> FETCH_HEAD
 		ret = devm_request_threaded_irq(&client->dev, client->irq,
 						kxcjk1013_data_rdy_trig_poll,
 						kxcjk1013_event_handler,

@@ -1286,8 +1286,15 @@ static int __blkdev_get(struct block_device *bdev, fmode_t mode, int for_part)
 	 */
 	if (!for_part) {
 		ret = devcgroup_inode_permission(bdev->bd_inode, perm);
+<<<<<<< HEAD
 		if (ret != 0)
 			return ret;
+=======
+		if (ret != 0) {
+			bdput(bdev);
+			return ret;
+		}
+>>>>>>> FETCH_HEAD
 	}
 
  restart:
@@ -1359,10 +1366,15 @@ static int __blkdev_get(struct block_device *bdev, fmode_t mode, int for_part)
 				goto out_clear;
 			BUG_ON(for_part);
 			ret = __blkdev_get(whole, mode, 1);
+<<<<<<< HEAD
 			if (ret) {
 				bdput(whole);
 				goto out_clear;
 			}
+=======
+			if (ret)
+				goto out_clear;
+>>>>>>> FETCH_HEAD
 			bdev->bd_contains = whole;
 			bdev->bd_part = disk_get_part(disk, partno);
 			if (!(disk->flags & GENHD_FL_UP) ||
@@ -1416,6 +1428,10 @@ static int __blkdev_get(struct block_device *bdev, fmode_t mode, int for_part)
 	put_disk(disk);
 	module_put(owner);
  out:
+<<<<<<< HEAD
+=======
+	bdput(bdev);
+>>>>>>> FETCH_HEAD
 
 	return ret;
 }
@@ -1501,9 +1517,12 @@ int blkdev_get(struct block_device *bdev, fmode_t mode, void *holder)
 		bdput(whole);
 	}
 
+<<<<<<< HEAD
 	if (res)
 		bdput(bdev);
 
+=======
+>>>>>>> FETCH_HEAD
 	return res;
 }
 EXPORT_SYMBOL(blkdev_get);
@@ -1620,6 +1639,7 @@ static void __blkdev_put(struct block_device *bdev, fmode_t mode, int for_part)
 	struct gendisk *disk = bdev->bd_disk;
 	struct block_device *victim = NULL;
 
+<<<<<<< HEAD
 	/*
 	 * Sync early if it looks like we're the last one.  If someone else
 	 * opens the block device between now and the decrement of bd_openers
@@ -1630,6 +1650,8 @@ static void __blkdev_put(struct block_device *bdev, fmode_t mode, int for_part)
 	if (bdev->bd_openers == 1)
 		sync_blockdev(bdev);
 
+=======
+>>>>>>> FETCH_HEAD
 	mutex_lock_nested(&bdev->bd_mutex, for_part);
 	if (for_part)
 		bdev->bd_part_count--;

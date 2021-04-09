@@ -49,7 +49,11 @@ SECTIONS
 	/* . = 0xa800000000300000; */
 	. = 0xffffffff80300000;
 #endif
+<<<<<<< HEAD
 	. = LINKER_LOAD_ADDRESS;
+=======
+	. = VMLINUX_LOAD_ADDRESS;
+>>>>>>> FETCH_HEAD
 	/* read-only */
 	_text = .;	/* Text and read-only data */
 	.text : {
@@ -92,7 +96,10 @@ SECTIONS
 
 		INIT_TASK_DATA(THREAD_SIZE)
 		NOSAVE_DATA
+<<<<<<< HEAD
 		PAGE_ALIGNED_DATA(PAGE_SIZE)
+=======
+>>>>>>> FETCH_HEAD
 		CACHELINE_ALIGNED_DATA(1 << CONFIG_MIPS_L1_CACHE_SHIFT)
 		READ_MOSTLY_DATA(1 << CONFIG_MIPS_L1_CACHE_SHIFT)
 		DATA_DATA

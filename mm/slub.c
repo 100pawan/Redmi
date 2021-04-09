@@ -624,6 +624,7 @@ static void slab_fix(struct kmem_cache *s, char *fmt, ...)
 	va_end(args);
 }
 
+<<<<<<< HEAD
 static bool freelist_corrupted(struct kmem_cache *s, struct page *page,
 			       void **freelist, void *nextfree)
 {
@@ -638,6 +639,8 @@ static bool freelist_corrupted(struct kmem_cache *s, struct page *page,
 	return false;
 }
 
+=======
+>>>>>>> FETCH_HEAD
 static void print_trailer(struct kmem_cache *s, struct page *page, u8 *p)
 {
 	unsigned int off;	/* Offset of last byte */
@@ -1331,11 +1334,14 @@ static inline void inc_slabs_node(struct kmem_cache *s, int node,
 static inline void dec_slabs_node(struct kmem_cache *s, int node,
 							int objects) {}
 
+<<<<<<< HEAD
 static bool freelist_corrupted(struct kmem_cache *s, struct page *page,
 			       void **freelist, void *nextfree)
 {
 	return false;
 }
+=======
+>>>>>>> FETCH_HEAD
 #endif /* CONFIG_SLUB_DEBUG */
 
 /*
@@ -2048,6 +2054,7 @@ static void deactivate_slab(struct kmem_cache *s, struct page *page,
 		void *prior;
 		unsigned long counters;
 
+<<<<<<< HEAD
 		/*
 		 * If 'nextfree' is invalid, it is possible that the object at
 		 * 'freelist' is already corrupted.  So isolate all objects
@@ -2056,6 +2063,8 @@ static void deactivate_slab(struct kmem_cache *s, struct page *page,
 		if (freelist_corrupted(s, page, &freelist, nextfree))
 			break;
 
+=======
+>>>>>>> FETCH_HEAD
 		do {
 			prior = page->freelist;
 			counters = page->counters;
@@ -3231,7 +3240,11 @@ EXPORT_SYMBOL(kmem_cache_alloc_bulk);
  * take the list_lock.
  */
 static int slub_min_order;
+<<<<<<< HEAD
 static int slub_max_order;
+=======
+static int slub_max_order = PAGE_ALLOC_COSTLY_ORDER;
+>>>>>>> FETCH_HEAD
 static int slub_min_objects;
 
 /*
@@ -5556,8 +5569,12 @@ static void memcg_propagate_slab_attrs(struct kmem_cache *s)
 		 */
 		if (buffer)
 			buf = buffer;
+<<<<<<< HEAD
 		else if (root_cache->max_attr_size < ARRAY_SIZE(mbuf) &&
 			 !IS_ENABLED(CONFIG_SLUB_STATS))
+=======
+		else if (root_cache->max_attr_size < ARRAY_SIZE(mbuf))
+>>>>>>> FETCH_HEAD
 			buf = mbuf;
 		else {
 			buffer = (char *) get_zeroed_page(GFP_KERNEL);

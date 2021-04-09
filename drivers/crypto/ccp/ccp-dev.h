@@ -444,7 +444,10 @@ struct ccp_sg_workarea {
 	int nents;
 
 	struct scatterlist *dma_sg;
+<<<<<<< HEAD
 	struct scatterlist *dma_sg_head;
+=======
+>>>>>>> FETCH_HEAD
 	struct device *dma_dev;
 	unsigned int dma_count;
 	enum dma_data_direction dma_dir;

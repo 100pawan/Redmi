@@ -409,7 +409,10 @@ static int choke_change(struct Qdisc *sch, struct nlattr *opt)
 	struct sk_buff **old = NULL;
 	unsigned int mask;
 	u32 max_P;
+<<<<<<< HEAD
 	u8 *stab;
+=======
+>>>>>>> FETCH_HEAD
 
 	if (opt == NULL)
 		return -EINVAL;
@@ -425,8 +428,13 @@ static int choke_change(struct Qdisc *sch, struct nlattr *opt)
 	max_P = tb[TCA_CHOKE_MAX_P] ? nla_get_u32(tb[TCA_CHOKE_MAX_P]) : 0;
 
 	ctl = nla_data(tb[TCA_CHOKE_PARMS]);
+<<<<<<< HEAD
 	stab = nla_data(tb[TCA_CHOKE_STAB]);
 	if (!red_check_params(ctl->qth_min, ctl->qth_max, ctl->Wlog, ctl->Scell_log, stab))
+=======
+
+	if (!red_check_params(ctl->qth_min, ctl->qth_max, ctl->Wlog))
+>>>>>>> FETCH_HEAD
 		return -EINVAL;
 
 	if (ctl->limit > CHOKE_MAX_QUEUE)
@@ -479,7 +487,11 @@ static int choke_change(struct Qdisc *sch, struct nlattr *opt)
 
 	red_set_parms(&q->parms, ctl->qth_min, ctl->qth_max, ctl->Wlog,
 		      ctl->Plog, ctl->Scell_log,
+<<<<<<< HEAD
 		      stab,
+=======
+		      nla_data(tb[TCA_CHOKE_STAB]),
+>>>>>>> FETCH_HEAD
 		      max_P);
 	red_set_vars(&q->vars);
 

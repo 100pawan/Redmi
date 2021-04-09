@@ -25,10 +25,13 @@
 #include "step-chg-jeita.h"
 #include "storm-watch.h"
 
+<<<<<<< HEAD
 #ifdef CONFIG_FORCE_FAST_CHARGE
 #include <linux/fastchg.h>
 #endif
 
+=======
+>>>>>>> FETCH_HEAD
 #define smblib_err(chg, fmt, ...)		\
 	pr_err("%s: %s: " fmt, chg->name,	\
 		__func__, ##__VA_ARGS__)	\
@@ -881,6 +884,7 @@ static int set_sdp_current(struct smb_charger *chg, int icl_ua)
 	u8 icl_options;
 	const struct apsd_result *apsd_result = smblib_get_apsd_result(chg);
 
+<<<<<<< HEAD
 #ifdef CONFIG_FORCE_FAST_CHARGE
 	if (force_fast_charge > 0 && icl_ua == USBIN_500MA)
 	{
@@ -888,6 +892,8 @@ static int set_sdp_current(struct smb_charger *chg, int icl_ua)
 	}
 #endif
 
+=======
+>>>>>>> FETCH_HEAD
 	/* power source is SDP */
 	switch (icl_ua) {
 	case USBIN_100MA:

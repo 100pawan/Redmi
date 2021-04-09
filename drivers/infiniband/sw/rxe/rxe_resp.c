@@ -600,7 +600,11 @@ static struct sk_buff *prepare_ack_packet(struct rxe_qp *qp,
 	pad = (-payload) & 0x3;
 	paylen = rxe_opcode[opcode].length + payload + pad + RXE_ICRC_SIZE;
 
+<<<<<<< HEAD
 	skb = rxe_init_packet(rxe, &qp->pri_av, paylen, ack);
+=======
+	skb = rxe->ifc_ops->init_packet(rxe, &qp->pri_av, paylen, ack);
+>>>>>>> FETCH_HEAD
 	if (!skb)
 		return NULL;
 
@@ -629,7 +633,11 @@ static struct sk_buff *prepare_ack_packet(struct rxe_qp *qp,
 	if (ack->mask & RXE_ATMACK_MASK)
 		atmack_set_orig(ack, qp->resp.atomic_orig);
 
+<<<<<<< HEAD
 	err = rxe_prepare(rxe, ack, skb, &crc);
+=======
+	err = rxe->ifc_ops->prepare(rxe, ack, skb, &crc);
+>>>>>>> FETCH_HEAD
 	if (err) {
 		kfree_skb(skb);
 		return NULL;

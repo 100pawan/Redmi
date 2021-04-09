@@ -128,7 +128,11 @@ static int adc_jack_probe(struct platform_device *pdev)
 	for (i = 0; data->adc_conditions[i].id != EXTCON_NONE; i++);
 	data->num_conditions = i;
 
+<<<<<<< HEAD
 	data->chan = devm_iio_channel_get(&pdev->dev, pdata->consumer_channel);
+=======
+	data->chan = iio_channel_get(&pdev->dev, pdata->consumer_channel);
+>>>>>>> FETCH_HEAD
 	if (IS_ERR(data->chan))
 		return PTR_ERR(data->chan);
 
@@ -170,6 +174,10 @@ static int adc_jack_remove(struct platform_device *pdev)
 
 	free_irq(data->irq, data);
 	cancel_work_sync(&data->handler.work);
+<<<<<<< HEAD
+=======
+	iio_channel_release(data->chan);
+>>>>>>> FETCH_HEAD
 
 	return 0;
 }

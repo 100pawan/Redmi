@@ -1141,7 +1141,10 @@ static bool smb347_volatile_reg(struct device *dev, unsigned int reg)
 	switch (reg) {
 	case IRQSTAT_A:
 	case IRQSTAT_C:
+<<<<<<< HEAD
 	case IRQSTAT_D:
+=======
+>>>>>>> FETCH_HEAD
 	case IRQSTAT_E:
 	case IRQSTAT_F:
 	case STAT_A:

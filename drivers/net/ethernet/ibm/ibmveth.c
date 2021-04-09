@@ -1256,7 +1256,10 @@ static int ibmveth_poll(struct napi_struct *napi, int budget)
 			int offset = ibmveth_rxq_frame_offset(adapter);
 			int csum_good = ibmveth_rxq_csum_good(adapter);
 			int lrg_pkt = ibmveth_rxq_large_packet(adapter);
+<<<<<<< HEAD
 			__sum16 iph_check = 0;
+=======
+>>>>>>> FETCH_HEAD
 
 			skb = ibmveth_rxq_get_buffer(adapter);
 
@@ -1308,6 +1311,7 @@ static int ibmveth_poll(struct napi_struct *napi, int budget)
 				}
 			}
 
+<<<<<<< HEAD
 			/* PHYP without PLSO support places a -1 in the ip
 			 * checksum for large send frames.
 			 */
@@ -1319,6 +1323,9 @@ static int ibmveth_poll(struct napi_struct *napi, int budget)
 
 			if ((length > netdev->mtu + ETH_HLEN) ||
 			    lrg_pkt || iph_check == 0xffff) {
+=======
+			if (length > netdev->mtu + ETH_HLEN) {
+>>>>>>> FETCH_HEAD
 				ibmveth_rx_mss_helper(skb, mss, lrg_pkt);
 				adapter->rx_large_packets++;
 			}

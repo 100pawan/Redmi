@@ -129,6 +129,7 @@ config EFI_TEST
 	  Say Y here to enable the runtime services support via /dev/efi_test.
 	  If unsure, say N.
 
+<<<<<<< HEAD
 config EFI_CUSTOM_SSDT_OVERLAYS
 	bool "Load custom ACPI SSDT overlay from an EFI variable"
 	depends on EFI_VARS && ACPI
@@ -140,6 +141,8 @@ config EFI_CUSTOM_SSDT_OVERLAYS
 	  See Documentation/admin-guide/acpi/ssdt-overlays.rst for more
 	  information.
 
+=======
+>>>>>>> FETCH_HEAD
 endmenu
 
 config UEFI_CPER

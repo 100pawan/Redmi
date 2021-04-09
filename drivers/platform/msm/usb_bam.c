@@ -44,7 +44,11 @@
 #define ARRAY_INDEX_FROM_ADDR(base, addr) ((addr) - (base))
 
 #define ENABLE_EVENT_LOG 1
+<<<<<<< HEAD
 static unsigned int enable_event_log = 0;
+=======
+static unsigned int enable_event_log = ENABLE_EVENT_LOG;
+>>>>>>> FETCH_HEAD
 module_param(enable_event_log, uint, 0644);
 MODULE_PARM_DESC(enable_event_log, "enable event logging in debug buffer");
 
@@ -3300,7 +3304,11 @@ static int usb_bam_probe(struct platform_device *pdev)
 	mutex_init(&info[bam_type].suspend_resume_mutex);
 
 	ctx->usb_bam_wq = alloc_workqueue("usb_bam_wq",
+<<<<<<< HEAD
 		WQ_UNBOUND | WQ_POWER_EFFICIENT | WQ_HIGHPRI | WQ_MEM_RECLAIM, 1);
+=======
+		WQ_UNBOUND | WQ_MEM_RECLAIM, 1);
+>>>>>>> FETCH_HEAD
 	if (!ctx->usb_bam_wq) {
 		log_event_err("unable to create workqueue usb_bam_wq\n");
 		return -ENOMEM;

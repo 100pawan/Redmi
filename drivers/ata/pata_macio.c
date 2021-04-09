@@ -507,7 +507,11 @@ static int pata_macio_cable_detect(struct ata_port *ap)
 	return ATA_CBL_PATA40;
 }
 
+<<<<<<< HEAD
 static enum ata_completion_errors pata_macio_qc_prep(struct ata_queued_cmd *qc)
+=======
+static void pata_macio_qc_prep(struct ata_queued_cmd *qc)
+>>>>>>> FETCH_HEAD
 {
 	unsigned int write = (qc->tf.flags & ATA_TFLAG_WRITE);
 	struct ata_port *ap = qc->ap;
@@ -520,7 +524,11 @@ static enum ata_completion_errors pata_macio_qc_prep(struct ata_queued_cmd *qc)
 		   __func__, qc, qc->flags, write, qc->dev->devno);
 
 	if (!(qc->flags & ATA_QCFLAG_DMAMAP))
+<<<<<<< HEAD
 		return AC_ERR_OK;
+=======
+		return;
+>>>>>>> FETCH_HEAD
 
 	table = (struct dbdma_cmd *) priv->dma_table_cpu;
 
@@ -565,8 +573,11 @@ static enum ata_completion_errors pata_macio_qc_prep(struct ata_queued_cmd *qc)
 	table->command = cpu_to_le16(DBDMA_STOP);
 
 	dev_dbgdma(priv->dev, "%s: %d DMA list entries\n", __func__, pi);
+<<<<<<< HEAD
 
 	return AC_ERR_OK;
+=======
+>>>>>>> FETCH_HEAD
 }
 
 

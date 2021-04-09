@@ -2601,7 +2601,10 @@ void ipv6_mc_destroy_dev(struct inet6_dev *idev)
 		idev->mc_list = i->next;
 
 		write_unlock_bh(&idev->lock);
+<<<<<<< HEAD
 		ip6_mc_clear_src(i);
+=======
+>>>>>>> FETCH_HEAD
 		ma_put(i);
 		write_lock_bh(&idev->lock);
 	}

@@ -34,6 +34,7 @@
 
 #include "power.h"
 
+<<<<<<< HEAD
 #include <linux/gpio.h>
 extern int slst_gpio_base_id;
 #define PROC_AWAKE_ID 12 /* 12th bit */
@@ -51,6 +52,10 @@ const char *mem_sleep_states[PM_SUSPEND_MAX];
 
 suspend_state_t mem_sleep_current = PM_SUSPEND_FREEZE;
 static suspend_state_t mem_sleep_default = PM_SUSPEND_MEM;
+=======
+const char *pm_labels[] = { "mem", "standby", "freeze", NULL };
+const char *pm_states[PM_SUSPEND_MAX];
+>>>>>>> FETCH_HEAD
 
 unsigned int pm_suspend_global_flags;
 EXPORT_SYMBOL_GPL(pm_suspend_global_flags);
@@ -127,6 +132,7 @@ static bool valid_state(suspend_state_t state)
 	return suspend_ops && suspend_ops->valid && suspend_ops->valid(state);
 }
 
+<<<<<<< HEAD
 void __init pm_states_init(void)
 {
 	/*
@@ -150,6 +156,32 @@ static int __init mem_sleep_default_setup(char *str)
 	return 1;
 }
 __setup("mem_sleep_default=", mem_sleep_default_setup);
+=======
+/*
+ * If this is set, the "mem" label always corresponds to the deepest sleep state
+ * available, the "standby" label corresponds to the second deepest sleep state
+ * available (if any), and the "freeze" label corresponds to the remaining
+ * available sleep state (if there is one).
+ */
+static bool relative_states;
+
+void __init pm_states_init(void)
+{
+	/*
+	 * freeze state should be supported even without any suspend_ops,
+	 * initialize pm_states accordingly here
+	 */
+	pm_states[PM_SUSPEND_FREEZE] = pm_labels[relative_states ? 0 : 2];
+}
+
+static int __init sleep_states_setup(char *str)
+{
+	relative_states = !strncmp(str, "1", 1);
+	return 1;
+}
+
+__setup("relative_sleep_states=", sleep_states_setup);
+>>>>>>> FETCH_HEAD
 
 /**
  * suspend_set_ops - Set the global suspend method table.
@@ -157,6 +189,7 @@ __setup("mem_sleep_default=", mem_sleep_default_setup);
  */
 void suspend_set_ops(const struct platform_suspend_ops *ops)
 {
+<<<<<<< HEAD
 	lock_system_sleep();
 
 	suspend_ops = ops;
@@ -172,6 +205,23 @@ void suspend_set_ops(const struct platform_suspend_ops *ops)
 		if (mem_sleep_default == PM_SUSPEND_MEM)
 			mem_sleep_current = PM_SUSPEND_MEM;
 	}
+=======
+	suspend_state_t i;
+	int j = 0;
+
+	lock_system_sleep();
+
+	suspend_ops = ops;
+	for (i = PM_SUSPEND_MEM; i >= PM_SUSPEND_STANDBY; i--)
+		if (valid_state(i)) {
+			pm_states[i] = pm_labels[j++];
+		} else if (!relative_states) {
+			pm_states[i] = NULL;
+			j++;
+		}
+
+	pm_states[PM_SUSPEND_FREEZE] = pm_labels[j];
+>>>>>>> FETCH_HEAD
 
 	unlock_system_sleep();
 }
@@ -585,9 +635,13 @@ int pm_suspend(suspend_state_t state)
 		return -EINVAL;
 
 	pm_suspend_marker("entry");
+<<<<<<< HEAD
 	gpio_set_value(slst_gpio_base_id + PROC_AWAKE_ID, 0);
 	error = enter_state(state);
 	gpio_set_value(slst_gpio_base_id + PROC_AWAKE_ID, 1);
+=======
+	error = enter_state(state);
+>>>>>>> FETCH_HEAD
 	if (error) {
 		suspend_stats.fail++;
 		dpm_save_failed_errno(error);

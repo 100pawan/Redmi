@@ -51,9 +51,12 @@ rsa_generic-y += rsa_helper.o
 rsa_generic-y += rsa-pkcs1pad.o
 obj-$(CONFIG_CRYPTO_RSA) += rsa_generic.o
 
+<<<<<<< HEAD
 obj-$(CONFIG_CRYPTO_ACOMP2) += acompress.o
 obj-$(CONFIG_CRYPTO_ACOMP2) += scompress.o
 
+=======
+>>>>>>> FETCH_HEAD
 cryptomgr-y := algboss.o testmgr.o
 
 obj-$(CONFIG_CRYPTO_MANAGER2) += cryptomgr.o
@@ -120,7 +123,11 @@ obj-$(CONFIG_CRYPTO_CRC32C) += crc32c_generic.o
 obj-$(CONFIG_CRYPTO_CRC32) += crc32_generic.o
 obj-$(CONFIG_CRYPTO_CRCT10DIF) += crct10dif_common.o crct10dif_generic.o
 obj-$(CONFIG_CRYPTO_AUTHENC) += authenc.o authencesn.o
+<<<<<<< HEAD
 obj-$(CONFIG_CRYPTO_LZO) += lzo.o lzo-rle.o
+=======
+obj-$(CONFIG_CRYPTO_LZO) += lzo.o
+>>>>>>> FETCH_HEAD
 obj-$(CONFIG_CRYPTO_LZ4) += lz4.o
 obj-$(CONFIG_CRYPTO_LZ4HC) += lz4hc.o
 obj-$(CONFIG_CRYPTO_842) += 842.o

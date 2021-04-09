@@ -60,8 +60,11 @@ static ssize_t store_sockfd(struct device *dev, struct device_attribute *attr,
 	int sockfd = 0;
 	struct socket *socket;
 	int rv;
+<<<<<<< HEAD
 	struct task_struct *tcp_rx = NULL;
 	struct task_struct *tcp_tx = NULL;
+=======
+>>>>>>> FETCH_HEAD
 
 	if (!sdev) {
 		dev_err(dev, "sdev is null\n");
@@ -85,6 +88,7 @@ static ssize_t store_sockfd(struct device *dev, struct device_attribute *attr,
 		}
 
 		socket = sockfd_lookup(sockfd, &err);
+<<<<<<< HEAD
 		if (!socket) {
 			dev_err(dev, "failed to lookup sock");
 			goto err;
@@ -126,6 +130,25 @@ static ssize_t store_sockfd(struct device *dev, struct device_attribute *attr,
 		wake_up_process(sdev->ud.tcp_rx);
 		wake_up_process(sdev->ud.tcp_tx);
 
+=======
+		if (!socket)
+			goto err;
+
+		sdev->ud.tcp_socket = socket;
+		sdev->ud.sockfd = sockfd;
+
+		spin_unlock_irq(&sdev->ud.lock);
+
+		sdev->ud.tcp_rx = kthread_get_run(stub_rx_loop, &sdev->ud,
+						  "stub_rx");
+		sdev->ud.tcp_tx = kthread_get_run(stub_tx_loop, &sdev->ud,
+						  "stub_tx");
+
+		spin_lock_irq(&sdev->ud.lock);
+		sdev->ud.status = SDEV_ST_USED;
+		spin_unlock_irq(&sdev->ud.lock);
+
+>>>>>>> FETCH_HEAD
 	} else {
 		dev_info(dev, "stub down\n");
 
@@ -140,8 +163,11 @@ static ssize_t store_sockfd(struct device *dev, struct device_attribute *attr,
 
 	return count;
 
+<<<<<<< HEAD
 sock_err:
 	sockfd_put(socket);
+=======
+>>>>>>> FETCH_HEAD
 err:
 	spin_unlock_irq(&sdev->ud.lock);
 	return -EINVAL;

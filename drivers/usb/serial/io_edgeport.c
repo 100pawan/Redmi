@@ -2959,13 +2959,26 @@ static int edge_startup(struct usb_serial *serial)
 				response = -ENODEV;
 			}
 
+<<<<<<< HEAD
 			goto error;
+=======
+			usb_free_urb(edge_serial->interrupt_read_urb);
+			kfree(edge_serial->interrupt_in_buffer);
+
+			usb_free_urb(edge_serial->read_urb);
+			kfree(edge_serial->bulk_in_buffer);
+
+			kfree(edge_serial);
+
+			return response;
+>>>>>>> FETCH_HEAD
 		}
 
 		/* start interrupt read for this edgeport this interrupt will
 		 * continue as long as the edgeport is connected */
 		response = usb_submit_urb(edge_serial->interrupt_read_urb,
 								GFP_KERNEL);
+<<<<<<< HEAD
 		if (response) {
 			dev_err(ddev, "%s - Error %d submitting control urb\n",
 				__func__, response);
@@ -2985,6 +2998,13 @@ error:
 	kfree(edge_serial);
 
 	return response;
+=======
+		if (response)
+			dev_err(ddev, "%s - Error %d submitting control urb\n",
+				__func__, response);
+	}
+	return response;
+>>>>>>> FETCH_HEAD
 }
 
 

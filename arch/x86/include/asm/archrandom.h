@@ -45,7 +45,11 @@ static inline bool rdrand_long(unsigned long *v)
 	bool ok;
 	unsigned int retry = RDRAND_RETRY_LOOPS;
 	do {
+<<<<<<< HEAD
 		asm volatile(RDRAND_LONG
+=======
+		asm volatile(RDRAND_LONG "\n\t"
+>>>>>>> FETCH_HEAD
 			     CC_SET(c)
 			     : CC_OUT(c) (ok), "=a" (*v));
 		if (ok)
@@ -59,7 +63,11 @@ static inline bool rdrand_int(unsigned int *v)
 	bool ok;
 	unsigned int retry = RDRAND_RETRY_LOOPS;
 	do {
+<<<<<<< HEAD
 		asm volatile(RDRAND_INT
+=======
+		asm volatile(RDRAND_INT "\n\t"
+>>>>>>> FETCH_HEAD
 			     CC_SET(c)
 			     : CC_OUT(c) (ok), "=a" (*v));
 		if (ok)
@@ -71,7 +79,11 @@ static inline bool rdrand_int(unsigned int *v)
 static inline bool rdseed_long(unsigned long *v)
 {
 	bool ok;
+<<<<<<< HEAD
 	asm volatile(RDSEED_LONG
+=======
+	asm volatile(RDSEED_LONG "\n\t"
+>>>>>>> FETCH_HEAD
 		     CC_SET(c)
 		     : CC_OUT(c) (ok), "=a" (*v));
 	return ok;
@@ -80,7 +92,11 @@ static inline bool rdseed_long(unsigned long *v)
 static inline bool rdseed_int(unsigned int *v)
 {
 	bool ok;
+<<<<<<< HEAD
 	asm volatile(RDSEED_INT
+=======
+	asm volatile(RDSEED_INT "\n\t"
+>>>>>>> FETCH_HEAD
 		     CC_SET(c)
 		     : CC_OUT(c) (ok), "=a" (*v));
 	return ok;

@@ -20,7 +20,10 @@
 #define __ASM_CACHEFLUSH_H
 
 #include <linux/mm.h>
+<<<<<<< HEAD
 #include <asm/set_memory.h>
+=======
+>>>>>>> FETCH_HEAD
 
 /*
  * This flag is used to indicate that the page pointed to by a pte is clean

@@ -71,13 +71,20 @@
 /*
  * SCRATCH MEMORY: The scratch memory is one page worth of data that
  * is mapped into the GPU. This allows for some 'shared' data between
+<<<<<<< HEAD
  * the GPU and CPU. For example, it will be used by the GPU to write
  * each updated RPTR for each RB.
+=======
+ * the GPU and CPU.
+>>>>>>> FETCH_HEAD
  *
  * Used Data:
  * Offset: Length(bytes): What
  * 0x0: 4 * KGSL_PRIORITY_MAX_RB_LEVELS: RB0 RPTR
+<<<<<<< HEAD
  * 0x10: 8 * KGSL_PRIORITY_MAX_RB_LEVELS: RB0 CTXT RESTORE ADDR
+=======
+>>>>>>> FETCH_HEAD
  */
 
 /* Shadow global helpers */
@@ -85,6 +92,7 @@
 #define SCRATCH_RPTR_GPU_ADDR(dev, id) \
 	((dev)->scratch.gpuaddr + SCRATCH_RPTR_OFFSET(id))
 
+<<<<<<< HEAD
 #define SCRATCH_PREEMPTION_CTXT_RESTORE_ADDR_OFFSET(id) \
 	(SCRATCH_RPTR_OFFSET(KGSL_PRIORITY_MAX_RB_LEVELS) + \
 	((id) * sizeof(uint64_t)))
@@ -92,6 +100,8 @@
 	((dev)->scratch.gpuaddr + \
 	SCRATCH_PREEMPTION_CTXT_RESTORE_ADDR_OFFSET(id))
 
+=======
+>>>>>>> FETCH_HEAD
 /* Timestamp window used to detect rollovers (half of integer range) */
 #define KGSL_TIMESTAMP_WINDOW 0x80000000
 

@@ -216,7 +216,11 @@ static int korina_send_packet(struct sk_buff *skb, struct net_device *dev)
 			dev_kfree_skb_any(skb);
 			spin_unlock_irqrestore(&lp->lock, flags);
 
+<<<<<<< HEAD
 			return NETDEV_TX_OK;
+=======
+			return NETDEV_TX_BUSY;
+>>>>>>> FETCH_HEAD
 		}
 	}
 
@@ -1188,7 +1192,11 @@ out:
 	return rc;
 
 probe_err_register:
+<<<<<<< HEAD
 	kfree((struct dma_desc *)KSEG0ADDR(lp->td_ring));
+=======
+	kfree(lp->td_ring);
+>>>>>>> FETCH_HEAD
 probe_err_td_ring:
 	iounmap(lp->tx_dma_regs);
 probe_err_dma_tx:
@@ -1208,7 +1216,10 @@ static int korina_remove(struct platform_device *pdev)
 	iounmap(lp->eth_regs);
 	iounmap(lp->rx_dma_regs);
 	iounmap(lp->tx_dma_regs);
+<<<<<<< HEAD
 	kfree((struct dma_desc *)KSEG0ADDR(lp->td_ring));
+=======
+>>>>>>> FETCH_HEAD
 
 	unregister_netdev(bif->dev);
 	free_netdev(bif->dev);

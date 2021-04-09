@@ -106,6 +106,9 @@ source "drivers/staging/greybus/Kconfig"
 
 source "drivers/staging/vc04_services/Kconfig"
 
+<<<<<<< HEAD
 source "drivers/staging/prima/Kconfig"
 
+=======
+>>>>>>> FETCH_HEAD
 endif # STAGING

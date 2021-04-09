@@ -8,6 +8,7 @@ for each state.
 
 The states are represented by strings that can be read or written to the
 /sys/power/state file.  Those strings may be "mem", "standby", "freeze" and
+<<<<<<< HEAD
 "disk", where the last three always represent Power-On Suspend (if supported),
 Suspend-To-Idle and hibernation (Suspend-To-Disk), respectively.
 
@@ -43,6 +44,27 @@ The properties of all of the sleep states are described below.
 State:		Suspend-To-Idle
 ACPI state:	S0
 Label:		"s2idle" ("freeze")
+=======
+"disk", where the last one always represents hibernation (Suspend-To-Disk) and
+the meaning of the remaining ones depends on the relative_sleep_states command
+line argument.
+
+For relative_sleep_states=1, the strings "mem", "standby" and "freeze" label the
+available non-hibernation sleep states from the deepest to the shallowest,
+respectively.  In that case, "mem" is always present in /sys/power/state,
+because there is at least one non-hibernation sleep state in every system.  If
+the given system supports two non-hibernation sleep states, "standby" is present
+in /sys/power/state in addition to "mem".  If the system supports three
+non-hibernation sleep states, "freeze" will be present in /sys/power/state in
+addition to "mem" and "standby".
+
+For relative_sleep_states=0, which is the default, the following descriptions
+apply.
+
+state:		Suspend-To-Idle
+ACPI state:	S0
+Label:		"freeze"
+>>>>>>> FETCH_HEAD
 
 This state is a generic, pure software, light-weight, system sleep state.
 It allows more energy to be saved relative to runtime idle by freezing user
@@ -51,13 +73,22 @@ lower-power than available at run time), such that the processors can
 spend more time in their idle states.
 
 This state can be used for platforms without Power-On Suspend/Suspend-to-RAM
+<<<<<<< HEAD
 support, or it can be used in addition to Suspend-to-RAM to provide reduced
 resume latency.  It is always supported.
+=======
+support, or it can be used in addition to Suspend-to-RAM (memory sleep)
+to provide reduced resume latency.  It is always supported.
+>>>>>>> FETCH_HEAD
 
 
 State:		Standby / Power-On Suspend
 ACPI State:	S1
+<<<<<<< HEAD
 Label:		"shallow" ("standby")
+=======
+Label:		"standby"
+>>>>>>> FETCH_HEAD
 
 This state, if supported, offers moderate, though real, power savings, while
 providing a relatively low-latency transition back to a working system.  No
@@ -74,7 +105,11 @@ state.
 
 State:		Suspend-to-RAM
 ACPI State:	S3
+<<<<<<< HEAD
 Label:		"deep"
+=======
+Label:		"mem"
+>>>>>>> FETCH_HEAD
 
 This state, if supported, offers significant power savings as everything in the
 system is put into a low-power state, except for memory, which should be placed

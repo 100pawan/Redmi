@@ -1733,16 +1733,26 @@ static void scsi_sysfs_add_devices(struct Scsi_Host *shost)
  */
 static struct async_scan_data *scsi_prep_async_scan(struct Scsi_Host *shost)
 {
+<<<<<<< HEAD
 	struct async_scan_data *data = NULL;
+=======
+	struct async_scan_data *data;
+>>>>>>> FETCH_HEAD
 	unsigned long flags;
 
 	if (strncmp(scsi_scan_type, "sync", 4) == 0)
 		return NULL;
 
+<<<<<<< HEAD
 	mutex_lock(&shost->scan_mutex);
 	if (shost->async_scan) {
 		shost_printk(KERN_DEBUG, shost, "%s called twice\n", __func__);
 		goto err;
+=======
+	if (shost->async_scan) {
+		shost_printk(KERN_DEBUG, shost, "%s called twice\n", __func__);
+		return NULL;
+>>>>>>> FETCH_HEAD
 	}
 
 	data = kmalloc(sizeof(*data), GFP_KERNEL);
@@ -1753,6 +1763,10 @@ static struct async_scan_data *scsi_prep_async_scan(struct Scsi_Host *shost)
 		goto err;
 	init_completion(&data->prev_finished);
 
+<<<<<<< HEAD
+=======
+	mutex_lock(&shost->scan_mutex);
+>>>>>>> FETCH_HEAD
 	spin_lock_irqsave(shost->host_lock, flags);
 	shost->async_scan = 1;
 	spin_unlock_irqrestore(shost->host_lock, flags);
@@ -1767,7 +1781,10 @@ static struct async_scan_data *scsi_prep_async_scan(struct Scsi_Host *shost)
 	return data;
 
  err:
+<<<<<<< HEAD
 	mutex_unlock(&shost->scan_mutex);
+=======
+>>>>>>> FETCH_HEAD
 	kfree(data);
 	return NULL;
 }

@@ -409,7 +409,11 @@ static struct page **bm_realloc_pages(struct drbd_bitmap *b, unsigned long want)
 	new_pages = kzalloc(bytes, GFP_NOIO | __GFP_NOWARN);
 	if (!new_pages) {
 		new_pages = __vmalloc(bytes,
+<<<<<<< HEAD
 				GFP_NOIO | __GFP_ZERO,
+=======
+				GFP_NOIO | __GFP_HIGHMEM | __GFP_ZERO,
+>>>>>>> FETCH_HEAD
 				PAGE_KERNEL);
 		if (!new_pages)
 			return NULL;
@@ -1070,7 +1074,11 @@ static int bm_rw(struct drbd_device *device, const unsigned int flags, unsigned 
 		.done = 0,
 		.flags = flags,
 		.error = 0,
+<<<<<<< HEAD
 		.kref = KREF_INIT(2),
+=======
+		.kref = { ATOMIC_INIT(2) },
+>>>>>>> FETCH_HEAD
 	};
 
 	if (!get_ldev_if_state(device, D_ATTACHING)) {  /* put is in drbd_bm_aio_ctx_destroy() */

@@ -811,7 +811,11 @@ static int fsl_elbc_chip_remove(struct fsl_elbc_mtd *priv)
 	struct fsl_elbc_fcm_ctrl *elbc_fcm_ctrl = priv->ctrl->nand;
 	struct mtd_info *mtd = nand_to_mtd(&priv->chip);
 
+<<<<<<< HEAD
 	nand_release(&priv->chip);
+=======
+	nand_release(mtd);
+>>>>>>> FETCH_HEAD
 
 	kfree(mtd->name);
 

@@ -2478,7 +2478,11 @@ void synchronize_net(void);
 int init_dummy_netdev(struct net_device *dev);
 
 DECLARE_PER_CPU(int, xmit_recursion);
+<<<<<<< HEAD
 #define XMIT_RECURSION_LIMIT	8
+=======
+#define XMIT_RECURSION_LIMIT	10
+>>>>>>> FETCH_HEAD
 
 static inline int dev_recursion_level(void)
 {
@@ -3707,7 +3711,10 @@ static inline void netif_tx_disable(struct net_device *dev)
 
 	local_bh_disable();
 	cpu = smp_processor_id();
+<<<<<<< HEAD
 	spin_lock(&dev->tx_global_lock);
+=======
+>>>>>>> FETCH_HEAD
 	for (i = 0; i < dev->num_tx_queues; i++) {
 		struct netdev_queue *txq = netdev_get_tx_queue(dev, i);
 
@@ -3715,7 +3722,10 @@ static inline void netif_tx_disable(struct net_device *dev)
 		netif_tx_stop_queue(txq);
 		__netif_tx_unlock(txq);
 	}
+<<<<<<< HEAD
 	spin_unlock(&dev->tx_global_lock);
+=======
+>>>>>>> FETCH_HEAD
 	local_bh_enable();
 }
 

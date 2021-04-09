@@ -92,6 +92,7 @@ static inline void psi_dequeue(struct task_struct *p, bool sleep)
 		if (p->flags & PF_MEMSTALL)
 			clear |= TSK_MEMSTALL;
 	} else {
+<<<<<<< HEAD
 		/*
 		 * When a task sleeps, schedule() dequeues it before
 		 * switching to the next one. Merge the clearing of
@@ -100,6 +101,8 @@ static inline void psi_dequeue(struct task_struct *p, bool sleep)
 		 */
 		clear |= TSK_ONCPU;
 
+=======
+>>>>>>> FETCH_HEAD
 		if (p->in_iowait)
 			set |= TSK_IOWAIT;
 	}
@@ -133,6 +136,7 @@ static inline void psi_ttwu_dequeue(struct task_struct *p)
 	}
 }
 
+<<<<<<< HEAD
 static inline void psi_sched_switch(struct task_struct *prev,
 				    struct task_struct *next,
 				    bool sleep)
@@ -143,6 +147,8 @@ static inline void psi_sched_switch(struct task_struct *prev,
 	psi_task_switch(prev, next, sleep);
 }
 
+=======
+>>>>>>> FETCH_HEAD
 static inline void psi_task_tick(struct rq *rq)
 {
 	if (static_branch_likely(&psi_disabled))
@@ -155,9 +161,12 @@ static inline void psi_task_tick(struct rq *rq)
 static inline void psi_enqueue(struct task_struct *p, bool wakeup) {}
 static inline void psi_dequeue(struct task_struct *p, bool sleep) {}
 static inline void psi_ttwu_dequeue(struct task_struct *p) {}
+<<<<<<< HEAD
 static inline void psi_sched_switch(struct task_struct *prev,
 				    struct task_struct *next,
 				    bool sleep) {}
+=======
+>>>>>>> FETCH_HEAD
 static inline void psi_task_tick(struct rq *rq) {}
 #endif /* CONFIG_PSI */
 

@@ -125,6 +125,10 @@ static const struct slave_attribute *slave_attrs[] = {
 };
 
 #define to_slave_attr(_at) container_of(_at, struct slave_attribute, attr)
+<<<<<<< HEAD
+=======
+#define to_slave(obj)	container_of(obj, struct slave, kobj)
+>>>>>>> FETCH_HEAD
 
 static ssize_t slave_show(struct kobject *kobj,
 			  struct attribute *attr, char *buf)
@@ -135,15 +139,38 @@ static ssize_t slave_show(struct kobject *kobj,
 	return slave_attr->show(slave, buf);
 }
 
+<<<<<<< HEAD
 const struct sysfs_ops slave_sysfs_ops = {
 	.show = slave_show,
 };
 
+=======
+static const struct sysfs_ops slave_sysfs_ops = {
+	.show = slave_show,
+};
+
+static struct kobj_type slave_ktype = {
+#ifdef CONFIG_SYSFS
+	.sysfs_ops = &slave_sysfs_ops,
+#endif
+};
+
+>>>>>>> FETCH_HEAD
 int bond_sysfs_slave_add(struct slave *slave)
 {
 	const struct slave_attribute **a;
 	int err;
 
+<<<<<<< HEAD
+=======
+	err = kobject_init_and_add(&slave->kobj, &slave_ktype,
+				   &(slave->dev->dev.kobj), "bonding_slave");
+	if (err) {
+		kobject_put(&slave->kobj);
+		return err;
+	}
+
+>>>>>>> FETCH_HEAD
 	for (a = slave_attrs; *a; ++a) {
 		err = sysfs_create_file(&slave->kobj, &((*a)->attr));
 		if (err) {
@@ -161,4 +188,9 @@ void bond_sysfs_slave_del(struct slave *slave)
 
 	for (a = slave_attrs; *a; ++a)
 		sysfs_remove_file(&slave->kobj, &((*a)->attr));
+<<<<<<< HEAD
+=======
+
+	kobject_put(&slave->kobj);
+>>>>>>> FETCH_HEAD
 }

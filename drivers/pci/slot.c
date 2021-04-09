@@ -303,6 +303,7 @@ placeholder:
 	slot_name = make_slot_name(name);
 	if (!slot_name) {
 		err = -ENOMEM;
+<<<<<<< HEAD
 		kfree(slot);
 		goto err;
 	}
@@ -316,6 +317,18 @@ placeholder:
 		kobject_put(&slot->kobj);
 		goto err;
 	}
+=======
+		goto err;
+	}
+
+	err = kobject_init_and_add(&slot->kobj, &pci_slot_ktype, NULL,
+				   "%s", slot_name);
+	if (err)
+		goto err;
+
+	INIT_LIST_HEAD(&slot->list);
+	list_add(&slot->list, &parent->slots);
+>>>>>>> FETCH_HEAD
 
 	down_read(&pci_bus_sem);
 	list_for_each_entry(dev, &parent->devices, bus_list)
@@ -331,6 +344,10 @@ out:
 	mutex_unlock(&pci_slot_mutex);
 	return slot;
 err:
+<<<<<<< HEAD
+=======
+	kfree(slot);
+>>>>>>> FETCH_HEAD
 	slot = ERR_PTR(err);
 	goto out;
 }

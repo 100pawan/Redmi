@@ -1283,7 +1283,11 @@ sba_ioc_init_pluto(struct parisc_device *sba, struct ioc *ioc, int ioc_num)
 	** (one that doesn't overlap memory or LMMIO space) in the
 	** IBASE and IMASK registers.
 	*/
+<<<<<<< HEAD
 	ioc->ibase = READ_REG(ioc->ioc_hpa + IOC_IBASE) & ~0x1fffffULL;
+=======
+	ioc->ibase = READ_REG(ioc->ioc_hpa + IOC_IBASE);
+>>>>>>> FETCH_HEAD
 	iova_space_size = ~(READ_REG(ioc->ioc_hpa + IOC_IMASK) & 0xFFFFFFFFUL) + 1;
 
 	if ((ioc->ibase < 0xfed00000UL) && ((ioc->ibase + iova_space_size) > 0xfee00000UL)) {
@@ -1435,7 +1439,11 @@ sba_ioc_init(struct parisc_device *sba, struct ioc *ioc, int ioc_num)
 	DBG_INIT("%s() hpa 0x%lx mem %ldMB IOV %dMB (%d bits)\n",
 			__func__,
 			ioc->ioc_hpa,
+<<<<<<< HEAD
 			(unsigned long) totalram_pages() >> (20 - PAGE_SHIFT),
+=======
+			(unsigned long) totalram_pages >> (20 - PAGE_SHIFT),
+>>>>>>> FETCH_HEAD
 			iova_space_size>>20,
 			iov_order + PAGE_SHIFT);
 

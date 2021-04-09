@@ -45,6 +45,7 @@ mtk8250_set_termios(struct uart_port *port, struct ktermios *termios,
 	unsigned long flags;
 	unsigned int baud, quot;
 
+<<<<<<< HEAD
 	/*
 	 * Store the requested baud rate before calling the generic 8250
 	 * set_termios method. Standard 8250 port expects bauds to be
@@ -59,6 +60,9 @@ mtk8250_set_termios(struct uart_port *port, struct ktermios *termios,
 	serial8250_do_set_termios(port, termios, NULL);
 
 	tty_termios_encode_baud_rate(termios, baud, baud);
+=======
+	serial8250_do_set_termios(port, termios, old);
+>>>>>>> FETCH_HEAD
 
 	/*
 	 * Mediatek UARTs use an extra highspeed register (UART_MTK_HIGHS)
@@ -98,11 +102,14 @@ mtk8250_set_termios(struct uart_port *port, struct ktermios *termios,
 	 */
 	spin_lock_irqsave(&port->lock, flags);
 
+<<<<<<< HEAD
 	/*
 	 * Update the per-port timeout.
 	 */
 	uart_update_timeout(port, termios->c_cflag, baud);
 
+=======
+>>>>>>> FETCH_HEAD
 	/* set DLAB we have cval saved in up->lcr from the call to the core */
 	serial_port_out(port, UART_LCR, up->lcr | UART_LCR_DLAB);
 	serial_dl_write(up, quot);

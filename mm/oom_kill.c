@@ -238,7 +238,11 @@ static enum oom_constraint constrained_alloc(struct oom_control *oc)
 	}
 
 	/* Default to all available memory */
+<<<<<<< HEAD
 	oc->totalpages = totalram_pages() + total_swap_pages;
+=======
+	oc->totalpages = totalram_pages + total_swap_pages;
+>>>>>>> FETCH_HEAD
 
 	if (!IS_ENABLED(CONFIG_NUMA))
 		return CONSTRAINT_NONE;

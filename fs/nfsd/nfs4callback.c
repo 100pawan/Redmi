@@ -1156,8 +1156,11 @@ static void nfsd4_process_cb_update(struct nfsd4_callback *cb)
 	err = setup_callback_client(clp, &conn, ses);
 	if (err) {
 		nfsd4_mark_cb_down(clp, err);
+<<<<<<< HEAD
 		if (c)
 			svc_xprt_put(c->cn_xprt);
+=======
+>>>>>>> FETCH_HEAD
 		return;
 	}
 }

@@ -122,6 +122,7 @@ static inline void init_llist_head(struct llist_head *list)
 	for ((pos) = (node); pos; (pos) = (pos)->next)
 
 /**
+<<<<<<< HEAD
  * llist_for_each_safe - iterate over some deleted entries of a lock-less list
  *			 safe against removal of list entry
  * @pos:	the &struct llist_node to use as a loop cursor
@@ -141,6 +142,8 @@ static inline void init_llist_head(struct llist_head *list)
 	for ((pos) = (node); (pos) && ((n) = (pos)->next, true); (pos) = (n))
 
 /**
+=======
+>>>>>>> FETCH_HEAD
  * llist_for_each_entry - iterate over some deleted entries of lock-less list of given type
  * @pos:	the type * to use as a loop cursor.
  * @node:	the fist entry of deleted list entries.

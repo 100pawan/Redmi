@@ -477,10 +477,17 @@ static int __init obdclass_init(void)
 	 * For clients with less memory, a larger fraction is needed
 	 * for other purposes (mostly for BGL).
 	 */
+<<<<<<< HEAD
 	if (totalram_pages() <= 512 << (20 - PAGE_SHIFT))
 		obd_max_dirty_pages = totalram_pages() / 4;
 	else
 		obd_max_dirty_pages = totalram_pages() / 2;
+=======
+	if (totalram_pages <= 512 << (20 - PAGE_SHIFT))
+		obd_max_dirty_pages = totalram_pages / 4;
+	else
+		obd_max_dirty_pages = totalram_pages / 2;
+>>>>>>> FETCH_HEAD
 
 	err = obd_init_caches();
 	if (err)

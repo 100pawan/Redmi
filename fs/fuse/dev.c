@@ -835,6 +835,10 @@ static int fuse_check_page(struct page *page)
 {
 	if (page_mapcount(page) ||
 	    page->mapping != NULL ||
+<<<<<<< HEAD
+=======
+	    page_count(page) != 1 ||
+>>>>>>> FETCH_HEAD
 	    (page->flags & PAGE_FLAGS_CHECK_AT_PREP &
 	     ~(1 << PG_locked |
 	       1 << PG_referenced |
@@ -856,16 +860,26 @@ static int fuse_try_move_page(struct fuse_copy_state *cs, struct page **pagep)
 	struct page *newpage;
 	struct pipe_buffer *buf = cs->pipebufs;
 
+<<<<<<< HEAD
 	get_page(oldpage);
 	err = unlock_request(cs->req);
 	if (err)
 		goto out_put_old;
+=======
+	err = unlock_request(cs->req);
+	if (err)
+		return err;
+>>>>>>> FETCH_HEAD
 
 	fuse_copy_finish(cs);
 
 	err = pipe_buf_confirm(cs->pipe, buf);
 	if (err)
+<<<<<<< HEAD
 		goto out_put_old;
+=======
+		return err;
+>>>>>>> FETCH_HEAD
 
 	BUG_ON(!cs->nr_segs);
 	cs->currbuf = buf;
@@ -905,7 +919,11 @@ static int fuse_try_move_page(struct fuse_copy_state *cs, struct page **pagep)
 	err = replace_page_cache_page(oldpage, newpage, GFP_KERNEL);
 	if (err) {
 		unlock_page(newpage);
+<<<<<<< HEAD
 		goto out_put_old;
+=======
+		return err;
+>>>>>>> FETCH_HEAD
 	}
 
 	get_page(newpage);
@@ -924,6 +942,7 @@ static int fuse_try_move_page(struct fuse_copy_state *cs, struct page **pagep)
 	if (err) {
 		unlock_page(newpage);
 		put_page(newpage);
+<<<<<<< HEAD
 		goto out_put_old;
 	}
 
@@ -937,6 +956,16 @@ out_put_old:
 	/* Drop ref obtained in this function */
 	put_page(oldpage);
 	return err;
+=======
+		return err;
+	}
+
+	unlock_page(oldpage);
+	put_page(oldpage);
+	cs->len = 0;
+
+	return 0;
+>>>>>>> FETCH_HEAD
 
 out_fallback_unlock:
 	unlock_page(newpage);
@@ -945,10 +974,17 @@ out_fallback:
 	cs->offset = buf->offset;
 
 	err = lock_request(cs->req);
+<<<<<<< HEAD
 	if (!err)
 		err = 1;
 
 	goto out_put_old;
+=======
+	if (err)
+		return err;
+
+	return 1;
+>>>>>>> FETCH_HEAD
 }
 
 static int fuse_ref_page(struct fuse_copy_state *cs, struct page *page,
@@ -960,16 +996,26 @@ static int fuse_ref_page(struct fuse_copy_state *cs, struct page *page,
 	if (cs->nr_segs == cs->pipe->buffers)
 		return -EIO;
 
+<<<<<<< HEAD
 	get_page(page);
 	err = unlock_request(cs->req);
 	if (err) {
 		put_page(page);
 		return err;
 	}
+=======
+	err = unlock_request(cs->req);
+	if (err)
+		return err;
+>>>>>>> FETCH_HEAD
 
 	fuse_copy_finish(cs);
 
 	buf = cs->pipebufs;
+<<<<<<< HEAD
+=======
+	get_page(page);
+>>>>>>> FETCH_HEAD
 	buf->page = page;
 	buf->offset = offset;
 	buf->len = count;

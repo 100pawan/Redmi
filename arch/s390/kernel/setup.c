@@ -529,7 +529,11 @@ static struct notifier_block kdump_mem_nb = {
 /*
  * Make sure that the area behind memory_end is protected
  */
+<<<<<<< HEAD
 static void __init reserve_memory_end(void)
+=======
+static void reserve_memory_end(void)
+>>>>>>> FETCH_HEAD
 {
 #ifdef CONFIG_CRASH_DUMP
 	if (ipl_info.type == IPL_TYPE_FCP_DUMP &&
@@ -547,7 +551,11 @@ static void __init reserve_memory_end(void)
 /*
  * Make sure that oldmem, where the dump is stored, is protected
  */
+<<<<<<< HEAD
 static void __init reserve_oldmem(void)
+=======
+static void reserve_oldmem(void)
+>>>>>>> FETCH_HEAD
 {
 #ifdef CONFIG_CRASH_DUMP
 	if (OLDMEM_BASE)
@@ -559,7 +567,11 @@ static void __init reserve_oldmem(void)
 /*
  * Make sure that oldmem, where the dump is stored, is protected
  */
+<<<<<<< HEAD
 static void __init remove_oldmem(void)
+=======
+static void remove_oldmem(void)
+>>>>>>> FETCH_HEAD
 {
 #ifdef CONFIG_CRASH_DUMP
 	if (OLDMEM_BASE)
